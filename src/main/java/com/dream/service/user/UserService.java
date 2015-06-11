@@ -249,6 +249,7 @@ public class UserService {
                     userGroupInfo= new UserGroupInfo();
                 }
 
+
                 if(request.getParameter("groupSize")!=null){
                     userGroupInfo.setGroupSize(Integer.parseInt(request.getParameter("groupSize")));
                 }
