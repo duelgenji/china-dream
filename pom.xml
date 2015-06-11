@@ -10,7 +10,7 @@
   <repositories>
     <repository>
       <id>xlab-nexus-snapshots</id>
-      <url>http://101.231.124.8:45675/nexus/content/repositories/shapshots</url>
+      <url>http://101.231.124.8:45675/nexus/content/repositories/snapshots</url>
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
@@ -50,6 +50,13 @@
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
       <scope>runtime</scope>
+    </dependency>
+
+
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+      <version>1.9</version>
     </dependency>
 
   </dependencies>
