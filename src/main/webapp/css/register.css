@@ -1,0 +1,191 @@
+
+
+
+
+
+.ui-reg,
+.ui-create
+{
+    width: 800px;
+    height: auto;
+    margin: 0 auto;
+
+    margin-top:20px;
+}
+
+.ui-reg
+{
+    border: 1px solid #ddd;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.2);
+}
+
+.ui-reg ul,
+.ui-create ul
+{
+    position: relative;
+
+    margin: 5px 0 0 0;
+    margin: 0 auto;
+}
+
+
+/**************顶部title****************/
+.ui-label
+{
+    margin: 0;
+    padding: 20px 0;
+
+    text-align: center;
+
+    background-color: #5bc0de;
+}
+
+/***********上面tab标签导航****************/
+.ui-tab li
+{
+    width: 200px;
+    padding: 10px 0;
+
+    text-align: center;
+    float:left;
+}
+.ui-tab .active
+{
+    background: #f0ffff;
+}
+
+.ui-tab a
+{
+    font-size: 14px;
+    font-weight: bold;
+
+    display: block;
+
+    cursor: pointer;
+}
+/************内容显示区域****************/
+.ui-items
+{
+    clear: both;
+
+    height: 100%;
+}
+
+.ui-items-register
+{
+    height: 900px;
+}
+
+.ui-items li
+{
+    display: list-item;
+
+    width: 800px;
+
+    height:42px;
+
+    line-height: 42px;
+}
+
+.ui-items li label
+{
+    font-weight: bold;
+
+    float: left;
+
+    width: 200px;
+
+    margin-right:10px;
+
+    text-align: right;
+    vertical-align: middle;
+}
+
+.ui-items li span.ui-valid
+{
+    color: red;
+}
+
+.ui-items select,
+.ui-textarea,
+.ui-items input[type=text],
+.ui-items input[type=number],
+.ui-items input[type=password],
+textarea
+{
+    line-height: 1.5;
+
+    width: 250px;
+    height: 30px;
+    margin-left: 20px;
+
+    vertical-align: middle;
+
+    color: #555;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    border-radius: 4px;
+    background-color: #fff;
+    background-image: none;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+}
+
+.ui-items .ui-isopen
+{
+    width: 100px;
+}
+
+
+.ui-descript
+{
+    margin-bottom: 10px;
+    padding: 0;
+}
+.ui-descript span
+{
+    font-size: 10px;
+
+    padding-left: 120px;
+
+    color: #999;
+}
+
+em{
+    color:#999;
+    text-transform: none;
+}
+
+
+/***************底部操作栏的样式*******************/
+.ui-operate
+{
+    margin-left: -20px;
+
+    text-align: center;
+}
+
+.ui-operate button
+{
+    font-size: 14px;
+    line-height: 40px;
+
+    width: 180px;
+    height: 40px;
+
+    cursor: pointer;
+    vertical-align: middle;
+
+    border-width: 0;
+    border-radius: 15px;
+    /*opacity: .3;*/
+}
+
+.ui-operate button a
+{
+    display: block;
+}
+
+#serviceAgreement{
+    text-decoration: underline;
+    cursor: pointer;
+}

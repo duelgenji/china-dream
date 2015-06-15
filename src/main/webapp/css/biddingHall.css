@@ -1,0 +1,191 @@
+﻿body,
+table
+{
+    font: 12px/1.5 Tahoma,Helvetica,Arial,'宋体',sans-serif;
+}
+
+.label
+{
+    margin-top: 5px;
+    margin-bottom: 5px;
+
+    cursor: pointer;
+}
+a:hover
+{
+    text-decoration: none;
+
+    color: red;
+}
+/*******************************************/
+#menu
+{
+/*    width: 700px;
+    min-width: 700px;*/
+    height: 40px;
+    margin: 1px 0 0 500px;
+
+    border: solid 1px #999;
+    background: #fff;
+    margin-left:50px;
+}
+
+#menu div
+{
+    position: fixed;
+
+    float: left;
+
+    margin: 10px;
+}
+
+#menu .title h1{
+    float:left;
+}
+
+#categoryHeaderDiv h2
+{
+    cursor: pointer;
+}
+/****************顶部搜索栏****************/
+.searchBar
+{
+    position: fixed;
+
+    height: 38px;
+    min-height: 38px;
+
+    width:500px;
+    min-width: 500px;
+}
+
+.searchBar *
+{
+    float: left;
+
+    vertical-align: middle;
+}
+
+.searchBar .content
+{
+    width: 500px;
+
+    border: none;
+}
+
+.searchBar .searchbtn
+{
+    margin-left: 10px;
+}
+
+.searchBar .searchTool
+{
+    border: 0 solid red;
+}
+
+/***************分类列表******************/
+#categoryTb
+{
+    font-size: 13px;
+
+    width: 100%;
+}
+
+#categoryTb .ltd
+{
+    width: 10%;
+
+    text-align: center;
+}
+
+.ltd span
+{
+    margin: 1px auto;
+}
+.categoryTb .rtd
+{
+    width: 90%;
+
+    text-align: left;
+}
+.rtd p
+{
+    font-size: 14px;
+    line-height: 5px;
+
+    height: 5px;
+    margin: 1px auto;
+}
+
+
+
+
+.biddingList
+{
+    width: 1140px;
+    margin: 0 auto;
+    margin-top: 20px;
+    padding: 0;
+}
+
+.biddingList .biddingEach,
+.biddingList .pagerLi
+{
+    padding: 20px 0;
+
+    list-style: none;
+
+    border-bottom: 1px dashed #e0e0e0;
+}
+
+.biddingList .biddingEach:hover
+{
+    background-color: #f2f2f2;
+}
+
+.biddingList .pagerLi
+{
+    text-align: right;
+
+    border: none;
+}
+
+.biddingEach ul
+{
+    display: table;
+
+    width: 100%;
+    margin: 0;
+    padding: 0 10px;
+}
+
+.biddingEach ul li
+{
+    float: left;
+
+    list-style: none;
+}
+
+.biddingEach ul .biddingNum
+{
+    width: 170px;
+}
+
+.biddingEach ul .biddingName
+{
+    width: 400px;
+}
+
+.biddingEach ul .biddingRound,
+.biddingEach ul .biddingType,
+.biddingEach ul .biddingDeadline
+{
+    width: 180px;
+
+    text-align: center;
+}
+
+.biddingEach ul .biddingDeadline
+{
+    text-align: right;
+}

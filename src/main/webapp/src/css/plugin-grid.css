@@ -1,0 +1,113 @@
+.ui-grid-lock_headDiv,
+.ui-grid-lock_bodyDiv
+{
+/*    border-right: 1px #fff solid;
+    border-left: 1px #fff solid;*/
+}
+.ui-grid-unlock_headDiv,
+.ui-grid-unlock_bodyDiv
+{
+/*    border-right: 1px #fff solid;*/
+}
+
+.ui-grid-unlock_headTable,
+.ui-grid-unlock_bodyTable,
+.ui-grid-lock_headTable,
+.ui-grid-lock_bodyTable
+{
+    font-family: 微软雅黑;
+    font-size: 12px;
+
+    border-collapse: collapse;
+/*
+    border-top: 1px #85b6e3 solid;
+    border-bottom: 1px #ccc solid;*/
+}
+/**
+ * 数据空行的样式
+ */
+.ui-grid-empty
+{
+    font-size: 15px;
+    font-weight: bold;
+
+    display: inline-block;
+
+    padding: 10px 0 10px 0;
+
+    text-align: center;
+}
+/**
+ * 表头样式
+ */
+.ui-grid-th
+{
+    line-height: 40px;
+
+    height: 40px;
+
+    background-color: rgb(211, 234, 239);
+    
+    font-size:15px;
+
+    font-weight: bolder;
+
+    vertical-align: middle;
+}
+/**
+ * 鼠标单击时显示的行样式
+ */
+.ui-grid-clickTr
+{
+    background-color: #85b6e3;
+}
+
+/**
+ * 鼠标双击的行样式
+ */
+.ui-grid-dbclickTr
+{
+    background-color: #85b6e3;
+}
+/**
+ * 鼠标滑过的行样式
+ */
+.ui-grid-mouseoverTr
+{
+    background-color: #85b6e3;
+}
+
+/**
+ * 奇数行
+ */
+.ui-grid-oddTr
+{
+    line-height: 24px;
+
+    height: 24px;
+
+    background-color: #f6f4f4;
+}
+/**
+ * 偶数行
+ */
+.ui-grid-evenTr
+{
+    line-height: 24px;
+
+    height: 24px;
+
+    background-color: #fff;
+
+    _height: 24px;
+}
+/**
+ * 单元格内内容div的样式
+ */
+.ui-grid-contentDiv
+{
+    overflow: hidden;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

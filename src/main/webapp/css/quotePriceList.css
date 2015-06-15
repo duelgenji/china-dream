@@ -1,0 +1,39 @@
+﻿.pageContainer {
+    width: 1140px;
+    margin: 0 auto;
+}
+
+.bidList {
+    margin: 0px;
+    padding: 0px;
+}
+
+    .bidList li {
+        list-style: none;
+        border-bottom: 1px dashed #E0E0E0;
+        padding: 20px 15px;
+    }
+
+    .bidList .bidDetail {
+        display: table;
+        padding: 10px 0px;
+    }
+
+    .bidList li .bidNum, .bidList li .bidRound, .bidList li .bidType {
+        width: 170px;
+        float: left;
+    }
+
+    .bidList li .bidName {
+        width: 450px;
+        float: left;
+    }
+
+    .bidList li .bidDeadLine {
+        float: left;
+    }
+
+    .bidList .btnGroup {
+        padding-top: 10px;
+        text-align: right;
+    }

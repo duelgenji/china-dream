@@ -1,0 +1,427 @@
+.ui-steps
+{
+    position: relative;
+
+    height: 46px;
+    padding-left: 110px;
+
+    border-bottom: 2px solid #e6e6e6;
+}
+.ui-steps ol li
+{
+    font-family: '\5FAE\8F6F\96C5\9ED1','\534E\6587\7EC6\9ED1','\9ED1\4F53',arial;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 46px;
+
+    display: inline;
+    float: left;
+
+    width: 170px;
+    padding-left: 30px;
+
+    color: #999;
+
+    hegiht: 46px;
+}
+.ui-steps ol li.active
+{
+    color: #3e3e3e;
+    border-bottom: 2px solid #ff4700;
+}
+.ui-steps ol li i
+{
+    font-size: 14px;
+    font-weight: bold;
+    font-style: normal;
+    line-height: 24px;
+
+    display: inline-block;
+    zoom: 1;
+
+    width: 24px;
+    height: 24px;
+    margin-right: 5px;
+
+    text-align: center;
+}
+
+
+.ui-reg,
+.ui-create
+{
+    width: 800px;
+    height: auto;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+.ui-reg
+{
+    border: 1px solid #ddd;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.2);
+}
+
+.ui-reg ul,
+.ui-create ul
+{
+    position: relative;
+
+    margin: 5px 0 0 0;
+    margin: 0 auto;
+}
+
+
+/**************顶部title****************/
+.ui-label
+{
+    margin: 0;
+    padding: 20px 0;
+
+    text-align: center;
+
+    background-color: #5bc0de;
+}
+
+/***********上面tab标签导航****************/
+.ui-tab li
+{
+    line-height: 40px;
+
+    float: left;
+
+    width: 265px;
+    height: 40px;
+
+    text-align: center;
+}
+.ui-tab a
+{
+    font-size: 14px;
+    font-weight: bold;
+
+    display: block;
+
+    cursor: pointer;
+}
+.ui-tab a:hover,
+.ui-tab li.active
+{
+    color: #fff;
+    background: #337ab7;
+}
+/************内容显示区域****************/
+.ui-items
+{
+    clear: both;
+
+    height: 100%;
+}
+
+.ui-items-register
+{
+    height: 900px;
+}
+
+.ui-items li
+{
+    line-height: 42px;
+
+    display: list-item;
+
+    width: 800px;
+    height: 42px;
+}
+
+.ui-items li label
+{
+    font-weight: bold;
+
+    float: left;
+
+    width: 200px;
+    margin-right: 10px;
+
+    text-align: right;
+    vertical-align: middle;
+}
+
+.ui-items li span.ui-valid
+{
+    color: red;
+}
+
+.ui-items select,
+.ui-textarea,
+.ui-items input[type=text],
+.ui-items input[type=number],
+.ui-items input[type=password],
+textarea
+{
+    line-height: 1.5;
+
+    width: 250px;
+    height: 30px;
+    margin-left: 20px;
+
+    vertical-align: middle;
+
+    color: #555;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    border-radius: 4px;
+    background-color: #fff;
+    background-image: none;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+}
+
+.ui-items .ui-isopen
+{
+    width: 100px;
+}
+
+.ui-descript
+{
+    margin-bottom: 10px;
+    padding: 0;
+}
+.ui-descript span
+{
+    font-size: 10px;
+
+    padding-left: 120px;
+
+    color: #999;
+}
+
+em
+{
+    text-transform: none;
+
+    color: #999;
+}
+
+
+/***************底部操作栏的样式*******************/
+.ui-operate
+{
+    margin-left: -20px;
+
+    text-align: center;
+}
+
+.ui-operate button
+{
+    font-size: 14px;
+    line-height: 40px;
+
+    width: 180px;
+
+    vertical-align: middle;
+
+    border-radius: 15px;
+    /*opacity: .3;*/
+}
+
+.ui-operate button a
+{
+    display: block;
+
+    color: #fff;
+}
+
+.ui-operate button:hover a
+{
+    color: #337ab7;
+}
+
+
+#serviceAgreement
+{
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+
+/* 气泡提示 */
+.layer-hd,
+.layer-mid,
+.layer-ft,
+.layer-arrow,
+.error-tt p
+{
+    background: url(../../image/error_bg.png) no-repeat;
+
+    _background: url(../../image/error_bg_ie6.png) no-repeat;
+}
+.layer
+{
+    position: absolute;
+    z-index: 1000;
+    top: 0;
+    left: 762px;
+
+    display: none;
+
+    width: 347px;
+
+    text-align: left;
+
+    color: #434343;
+}
+.layer.bubbleLayer-show
+{
+    display: block;
+
+    -webkit-animation: shake .6s ease-in-out .3s;
+       -moz-animation: shake .6s ease-in-out .3s;
+         -o-animation: shake .6s ease-in-out .3s;
+            animation: shake .6s ease-in-out .3s;
+}
+.layer-hd,
+.layer-ft
+{
+    font-size: 0;
+    line-height: 0;
+
+    overflow: hidden;
+}
+.layer-hd
+{
+    height: 8px;
+
+    background-repeat: no-repeat;
+    background-position: -10px 0;
+}
+.layer-ft
+{
+    height: 10px;
+
+    background-repeat: no-repeat;
+    background-position: -10px -8px;
+}
+.layer-mid
+{
+    padding: 5px 20px 7px;
+
+    background-repeat: repeat-y;
+    background-position: -357px 0;
+}
+.layer-arrow
+{
+    position: absolute;
+    top: 35px;
+    right: -6px;
+
+    width: 10px;
+    height: 19px;
+
+    background-repeat: no-repeat;
+    background-position: 0 0;
+}
+/* 错误提示 */
+.layer .error-tt a
+{
+    font-family: simsun;
+
+    color: #5b8cca;
+}
+.layer .error-tt p
+{
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 22px;
+
+    padding: 10px 10px 8px 50px;
+
+    background-repeat: no-repeat;
+    background-position: -714px -4px;
+}
+.layer .error-detail
+{
+    line-height: 18px;
+
+    margin-top: 2px;
+    padding: 8px 12px 5px;
+
+    color: #7d7d7d;
+    border-top: 1px solid #e1e1e1;
+}
+.layer .error-detail a
+{
+    text-decoration: underline;
+
+    color: #4e90e2;
+}
+
+
+.ui-pure-dialog-arrowA,
+.ui-pure-dialog-arrowB
+{
+    font-size: 0; /*IE6中存在一个小问题，上下边能形成三角形，左右两边仍然还是梯形*/
+    line-height: 0; /*IE6中存在一个小问题，上下边能形成三角形，左右两边仍然还是梯形*/
+
+    position: absolute;
+    top: 50%;
+    left: -5px;
+
+    display: block;
+    overflow: hidden;
+
+    width: 0;
+    height: 0;
+    margin-top: -8px;
+
+    border-width: 8px;
+    border-style: solid dashed dashed; /*解决IE6下transparent无效！其他三边被设置成默认的黑色了 不能变成透明的bug*/
+    border-color: #ccc transparent transparent transparent;
+    border-top: 8px solid transparent;
+    border-right: 8px solid #ccc;
+    border-bottom: 8px solid transparent;
+    border-left: 0 none;
+
+    _color: #ff3fff;
+    _filter: chroma(color=#ff3fff);
+}
+
+.ui-calendar_ctrl
+{
+    width: 16px;
+    height: 16px;
+
+    cursor: pointer;
+
+    background: url(../../image/icon-triangle.png) no-repeat center;
+}
+
+/********************注册提示相关样式*******************/
+div.ui-regTip
+{
+    font-size:20px;
+
+    font-weight: bold;
+}
+
+div.ui-regTip a{
+    font-size:14px;
+
+    text-decoration:  underline;
+
+    margin-left:10px;
+}
+div.ui-regTip img{
+    width:16px;
+    height:16px;
+}
+
+div.ui-regTip .ui-tipOkIcon{
+    background: url(../../image/icon/icon-ok.png) no-repeat;
+}
+
+div.ui-regTip .ui-tipFailIcon{
+    background: url(../../image/icon/icon-fail.png) no-repeat;
+}
+
+div.ui-regTip .ui-tipErrorIcon{
+    background: url(../../image/icon/icon-error.png) no-repeat;
+}

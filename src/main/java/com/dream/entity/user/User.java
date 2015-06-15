@@ -1,5 +1,6 @@
 package com.dream.entity.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.*;
@@ -19,6 +20,7 @@ public class User extends AbstractPersistable<Long> {
 
     private String headImage;
 
+    @JsonIgnore
     private String password;
 
     private int status;
@@ -71,6 +73,8 @@ public class User extends AbstractPersistable<Long> {
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "user")
     private UserGroupInfo userGroupInfo;
+
+    private int VIP = 0;
 
     public String getEmail() {
         return email;
@@ -270,5 +274,13 @@ public class User extends AbstractPersistable<Long> {
 
     public void setUserGroupInfo(UserGroupInfo userGroupInfo) {
         this.userGroupInfo = userGroupInfo;
+    }
+
+    public int getVIP() {
+        return VIP;
+    }
+
+    public void setVIP(int VIP) {
+        this.VIP = VIP;
     }
 }

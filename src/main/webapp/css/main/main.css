@@ -1,0 +1,133 @@
+body
+{
+    font: 12px/1.5 Tahoma,Helvetica,Arial,'宋体',sans-serif;
+
+    width: 98%;
+    height: 100%;
+}
+ul
+{
+    list-style: none;
+}
+ul li *
+{
+    vertical-align: middle;
+}
+a
+{
+    text-decoration: none;
+}
+button
+{
+    cursor: pointer;
+
+    border: none;
+    border-radius: 5px;
+}
+.ui-clear
+{
+    clear: both;
+}
+
+#mainPage{
+    position: relative;
+    overflow: hidden;
+}
+#header
+{
+    height: 40px;
+    min-height: 40px;
+
+    background: #3cf;
+}
+#menu li
+{
+    float: left;
+
+    cursor: pointer;
+    text-align: center;
+}
+#menu .ui-menuItem
+{
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 40px;
+
+    width: 140px;
+    min-width: 140px;
+    height: 40px;
+    margin-left: 5px;
+
+    vertical-align: middle;
+
+    color: #fff;
+}
+#menu  .ui-smallMenuItem
+{
+    width: 80px;
+    min-width: 80px;
+}
+#menu .ui-menuItem span
+{
+    display: block;
+
+    height: 36px;
+    min-height: 36px;
+    margin: 2px auto;
+}
+#menu .ui-selectedItem,
+#menu .ui-menuItem span:hover
+{
+    color: #000;
+    background: #fff;
+}
+#content
+{
+    width: 1000px;
+    min-width: 1000px;
+}
+#content .ui-leftEmpty,
+#content .ui-rightEmpty
+{
+    float: left;
+}
+#content .ui-content
+{
+    float: left;
+
+    width: 100%;
+    height: auto;
+    margin: 0 160px 0 160px;
+}
+#footer
+{
+    font-size: 16px;
+    
+    position: relative;
+
+    text-align: center;
+}
+#footer .ui-footer-nav
+{
+    margin-left: 130px;
+}
+#footer .ui-footer-nav ul li
+{
+    float: left;
+
+    padding-left: 20px;
+}
+#footer.ui-share
+{
+    margin-top: 6px;
+}
+.ui-share a
+{
+    padding: 0 0 5px 5px;
+}
+.ui-footer-nav ul li  span
+{
+    font-family: 楷体;
+
+    color: blue;
+}

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<base target="_self">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="description" content="中国梦-一个让你实现自己梦想的舞台！">
+	<meta name="Keywords" content="撮合平台，项目招投标">
+    <link rel="icon" href="../image/icon/icon.jpg" mce_href="../image/icon/icon.jpg" type="image/x-icon">
+	<title>我的中国梦-注册大厅</title>
+	<link rel="icon" href="" mce_href="" type="image/x-icon">
+	<link rel="stylesheet" href="../dest/css/base.css">
+	<link rel="stylesheet" href="../dest/css/plugins.css">
+	<link rel="stylesheet" href="../dest/css/register.css">
+</head>
+<body>
+	<div id="mainPage">
+		<div id="header">
+		</div>
+		<div id="container">
+			<div id="bubbleLayer" class="layer">
+				<div class="layer-hd"></div>
+				<div id="bubbleLayerWrap" class="layer-mid">
+					<div class="error-tt"><p></p></div></div>
+				<div class="layer-ft"></div>
+				<div class="ui-pure-dialog-arrowA"></div>
+            	<div class="ui-pure-dialog-arrowB"></div>
+			</div>
+			<form id="form" method="post">
+				<div class="ui-reg">
+					<ul class="ui-tab">
+						<li class="active" data-type="p"><a>个人注册</a></li>
+						<li data-type="c"><a>企业注册</a></li>
+						<li data-type="g"><a>群注册</a></li>
+					</ul>
+
+					<ul class="ui-items ui-items-register">
+						<li>
+							<label for="">
+								<span class="ui-valid">*</span>昵称:
+							</label>
+							<input type="text" id="input_nickName" name="user.nickName" placeholder="请输入昵称" data-valid="require" data-pos="204">
+						</li>
+						<li>
+							<label for=""><span class="ui-valid">*</span>邮箱用户名:</label>
+							<input type="text" id="input_email" name="user.userName" placeholder="请输入邮箱用户名" data-pos="246" data-valid="require" data-errmsg="邮箱用户名格式错误">
+						</li>
+						<li>
+							<label for=""><span class="ui-valid">*</span>密码:</label>
+							<input type="password" id="input_psw" name="user.password" placeholder="请输入密码" data-pos="288" data-valid="require">
+						</li>
+						<li>
+							<label for=""><span class="ui-valid">*</span>确认密码:</label>
+							<input id="input_psw2" type="password" placeholder="请输入确认密码" data-pos="330" data-errmsg="两次输入的密码不一致">
+						</li>
+						<li data-type="p">
+			<label>真实姓名：</label>
+							<input name="user.realName" type="text" placeholder="请输入真实姓名">
+							<select name="user.realNameOpen" class="ui-isopen">
+		                        <option value="0">公开</option>
+		                        <option value="1">不公开</option>
+		                        <option value="2">授权后公开</option>
+							</select>
+							
+						</li>
+						<li data-type="g" style="display:none;">
+			
+								<label for="">群大小:</label>
+								<input type="number" name="group.groupSize" value="" step='1' min=1 placeholder="请输入群大小">
+							
+						</li>
+						<li data-type="g" style="display:none;">
+			
+								<label for="">群号:</label>
+								<input type="number" name="group.number" value="" step='1' min=1 placeholder="请输入群号">
+							
+						</li>
+						<li data-type="g" style="display:none;">
+			
+								<label for="">群简介:</label>
+								<textarea name="group.description" placeholder="请输入群简介"></textarea>
+							
+						</li>
+						<li data-type="p">
+			
+							<label for="">性别:</label>
+							 <select name="user.sex">
+		                        <option value="1">男</option>
+		                        <option value="2">女</option>
+			                 </select> 
+						</li>
+						<li data-type="p">
+							<label for="">出生年月：</label>
+							<input type="text" id="birthday" name="user.birthday" placeholder="请填写正确的出生日期" type="text" autocomplete="OFF">
+							<img id="calendar_ctrl" class="ui-calendar_ctrl"/>
+						</li>
+						<li>
+			<label for="">身份证号：</label><input type="text" name="user.idcardNumber" placeholder="请填写正确的身份证">
+						</li>
+						<li data-type="p">
+							<label for="">最高学历:</label>
+							<select id="degree" name="user.degree">
+	                            <option value="0">请选择学历</option>
+	                            <option value="1">文盲</option>
+	                            <option value="2">小学</option>
+	                            <option value="3">中学</option>
+	                            <option value="4">大学</option>	
+	                            <option value="5">硕士</option>       
+	                            <option value="6">博士</option>   
+	                            <option value="7">博士后</option>                   
+	                        </select>
+				             <select id="degreeOpen" name="user.degreeOpen"  class="ui-isopen">	                            
+	                            <option value="0">公开</option>
+	                            <option value="1">不公开</option>
+	                            <option value="2">授权后公开</option>
+	                        </select>				                        
+						</li>
+						<li data-type="p">
+								<label for="">毕业学校:</label><input type="text" name="user.school" placeholder="请填写毕业学校">
+								<select name="user.schoolOpen" class="ui-isopen">	
+		                            <option value="0">公开</option>
+		                            <option value="1">不公开</option>
+		                            <option value="2">授权后公开</option>
+		                        </select>	
+						</li>
+						<li data-type="p">
+							<label for="">专业:</label><input type="text" name="user.major"  placeholder="请填写专业">
+							<select name="user.majorOpen" class="ui-isopen"> 
+	                            <option value="0">公开</option>
+	                            <option value="1">不公开</option>
+	                            <option value="2">授权后公开</option>
+	                        </select>
+						</li>
+						<li data-type="c" style="display: none;">
+			<label for=""><span class="ui-valid">*</span>公司名称:</label><input type="text" id="input_companyName" placeholder="请输入公司名称" data-valid="require" data-pos="414">
+						</li>
+						<li data-type="c" style="display: none;">
+							<label for=""><span class="ui-valid">*</span>企业所属行业：</label>
+  							<select name="company.industryCode" id="industryCode" class="form-control input-sm" style="width:250px;" data-valid="require"  data-pos="455" data-errmsg="请选择企业所属行业">
+	                         		<option value="0">请选择企业所属行业</option>
+	                             
+                					 <option value="mhmx">梦幻梦想</option>
+									
+                					 <option value="qsmx">奇思妙想</option>
+									
+                					 <option value="gymx">公益梦想</option>
+									
+                					 <option value="hymx">行业梦想</option>
+									
+                					 <option value="qyfw">企业服务</option>
+									
+                					 <option value="gqrz">股权融资</option>
+									
+                					 <option value="itcy">IT产业</option>
+									
+                					 <option value="fczs">房产租售</option>
+									
+                					 <option value="ggwa">广告文案</option>
+									
+                					 <option value="gcjz">工程建筑</option>
+									
+                					 <option value="yyws">医药卫生</option>
+									
+                					 <option value="whys">文化艺术</option>
+									
+                					 <option value="fzfz">服装纺织</option>
+									
+                					 <option value="zyfw">专业服务</option>
+									
+                					 <option value="aqfh">安全防护</option>
+									
+                					 <option value="hblh">环保绿化</option>
+									
+                					 <option value="lyxx">旅游休闲</option>
+									
+                					 <option value="bgwj">办公文教</option>
+									
+                					 <option value="dzdg">电子电工</option>
+									
+                					 <option value="wjlp">玩具礼品</option>
+									
+                					 <option value="fxtz">风险投资</option>
+									
+                					 <option value="yjcc">冶金矿产</option>
+									
+                					 <option value="syhg">石油化工</option>
+									
+                					 <option value="slsd">水利水电</option>
+									
+                					 <option value="jtys">交通运输</option>
+									
+                					 <option value="xxcy">信息产业</option>
+									
+                					 <option value="jxjd">机械机电</option>
+									
+                					 <option value="qgsp">轻工食品</option>
+									
+                					 <option value="nlmy">农林牧渔</option>
+									
+                					 <option value="jjyp">家居用品</option>
+									
+                					 <option value="wlbz">物流包装</option>
+									
+                					 <option value="tyyp">体育用品</option>
+									
+                					 <option value="wjbg">互联网+</option>
+									
+                					 <option value="gcjz">软件游戏</option>
+									
+                					 <option value="qyfw">强电弱电</option>
+									
+                					 <option value="fcwy">债券清算</option>
+									
+                					 <option value="fczs">反向团购</option>
+									
+                					 <option value="qt">其他</option>                            	                            
+	                        </select>								
+						</li>
+						<li data-type="c" style="display: none;">
+								<label for=""><span class="ui-valid">*</span>企业所在地：</label>
+
+									<select name="company.provinceCode" id="provinceCode" data-valid="require" data-pos="497" data-errmsg="请选择企业所在地">
+			                         	<option value="0">请选择企业所在地</option>
+		                					 	<option value="BJj">北京</option>
+												
+		                					 	<option value="TJj">天津</option>
+												
+		                					 	<option value="SHh">上海</option>
+												
+		                					 	<option value="CQy">重庆</option>
+												
+		                					 	<option value="HEBj">河北</option>
+												
+		                					 	<option value="HENy">河南</option>
+												
+		                					 	<option value="YNy">云南</option>
+												
+		                					 	<option value="LNl">辽宁</option>
+												
+		                					 	<option value="HLJh">黑龙江</option>
+												
+		                					 	<option value="HUNx">湖南</option>
+												
+		                					 	<option value="AHw">安徽</option>
+												
+		                					 	<option value="SDl">山东</option>
+												
+		                					 	<option value="XJx">新疆</option>
+												
+		                					 	<option value="JSs">江苏</option>
+												
+		                					 	<option value="ZJz">浙江</option>
+												
+		                					 	<option value="JXg">江西</option>
+												
+		                					 	<option value="HUBe">湖北</option>
+												
+		                					 	<option value="GXg">广西</option>
+												
+		                					 	<option value="GSg">甘肃</option>
+												
+		                					 	<option value="SXj">山西</option>
+												
+		                					 	<option value="NMGm">内蒙</option>
+												
+		                					 	<option value="SXs">陕西</option>
+												
+		                					 	<option value="JLj">吉林</option>
+												
+		                					 	<option value="FJm">福建</option>
+												
+		                					 	<option value="GZg">贵州</option>
+												
+		                					 	<option value="GDy">广东</option>
+												
+		                					 	<option value="QHq">青海</option>
+												
+		                					 	<option value="XZz">西藏</option>
+												
+		                					 	<option value="SCc">四川</option>
+												
+		                					 	<option value="NXn">宁夏</option>
+												
+		                					 	<option value="HANq">海南</option>
+												
+		                					 	<option value="TWt">台湾</option>
+												
+		                					 	<option value="HK">香港</option>
+												
+		                					 	<option value="MC">澳门</option>
+												
+		                					 	<option value="DYDd">钓鱼岛</option>
+												
+		                					 	<option value="GWw">国外</option>
+											</select>
+						</li>
+						<li data-type="c" style="display: none;">
+							<label for=""><span class="ui-valid">*</span>企业性质：</label>
+							<select name="company.ownershipCode" id="ownershipCode" data-valid="require" data-pos="539" data-errmsg="请选择企业性质">
+		                            <option value="0">请选择企业性质</option>
+		                            <option value="1">名营企业</option>
+		                            <option value="2">国有企业</option>
+		                            <option value="3">私有企业</option>
+		                            <option value="4">事业单位</option>
+		                            <option value="5">设计院</option>
+		                            <option value="6">金融机构</option>
+		                            <option value="7">其他</option>                            	                            
+		                    </select>
+						</li>
+						<li>
+			<label for="">固定电话：</label><input type="text"  name="user.tel"  placeholder="请填写固定电话">
+		 					<select name="user.telOpen" class="ui-isopen">	                            
+				                            <option value="0">公开</option>
+				                            <option value="1">不公开</option>
+				                            <option value="2">授权后公开</option>
+				             </select>	
+							
+						</li>
+						<li>
+			<label for="">手机号码：</label><input type="text" name="user.telephone"  placeholder="请填写手机号码">
+							 <select name="user.telephoneOpen" class="ui-isopen"> 
+				                            <option value="0">公开</option>
+				                            <option value="1">不公开</option>
+				                            <option value="2">授权后公开</option>
+				                        </select>
+
+							
+						</li>
+						<li data-type="c" style="display: none;">
+			<label for="">电子邮件：</label><input name="user.mail" type="text" placeholder="请填写电子邮件">
+							 <select name="user.mailOpen" class="ui-isopen">	                            
+				                            <option value="0">公开</option>
+				                            <option value="1">不公开</option>
+				                            <option value="2">授权后公开</option>
+				                        </select>
+						</li>
+						<li data-type="c" style="display: none;">
+			<label for="">税号：</label><input name="company.taxNumber" type="text" placeholder="请填写税号"> 
+							<select name="company.taxNumberOpen" class="ui-isopen">	                            
+				                            <option value="0">公开</option>
+				                            <option value="1">不公开</option>
+				                            <option value="2">授权后公开</option>
+				                        </select>	
+						</li>
+						<li data-type="c" style="display: none;">
+			
+								<label for="">组织机构代码证：</label><input type="text" placeholder="请填写组织机构代码证">
+		  						<select name="company.organizationsCodeOpen" class="ui-isopen">	                            
+				                            <option value="0">公开</option>
+				                            <option value="1">不公开</option>
+				                            <option value="2">授权后公开</option>
+				              	</select>
+							
+						</li>
+						<li data-type="c" style="display: none;">
+			
+								<label for="">开户行：</label><input type="text" name="company.bank" placeholder="请填写开户行">
+								<select name="company.bankOpen" class="ui-isopen">	                            
+		                            <option value="0">公开</option>
+		                            <option value="1">不公开</option>
+		                            <option value="2">授权后公开</option>
+		                        </select>	   
+							
+						</li>
+						<li>
+			
+								<label for="">银行账号：</label><input type="text" name="user.bankAccount" placeholder="请输入银行账号">
+								<select name="user.bankAccountOpen" class="ui-isopen">	                            
+		                            <option value="0">公开</option>
+		                            <option value="1">不公开</option>
+		                            <option value="2">授权后公开</option>
+		                        </select>
+							
+						</li>
+						<li>
+			
+								<label for="">支付宝账号：</label><input type="text" name="user.zhifubaoAccount" placeholder="支付宝">
+								<select name="user.zhifubaoAccountOpen" class="ui-isopen">	                            
+		                            <option value="0">公开</option>
+		                            <option value="1">不公开</option>
+		                            <option value="2">授权后公开</option>
+		                        </select>
+							
+						</li>
+			    		<li>
+			    				<label for="">关键字:</label><input type="text" name="user.keywords" placeholder="请输入关键字">
+			    		</li>
+						<li>   
+		    				<div class="person" style="">
+		    				   <div class="checkbox" style="margin-left:70px;">
+								      <label style="width:300px;font-size:12px;color:red;">
+								      	<input type="checkbox" id="chk_xieyi" style="margin-top:1px;">
+										<span id="serviceAgreement">看过并且同意中梦国网服务协议</span>
+								      	<input type="hidden" id="status" name="user.status" value="0">
+								      </label>
+									</div>				
+		    				</div>
+			    		</li>
+			    		<li class="ui-operate">
+							<button id="btn_confirm" disabled="disabled" type="button">确保信息无误并提交</button>
+							<button id="btn_cancel" type="cancel"><a href="index.html" target="_self">取消</a></button>
+					    </li>
+					</ul>
+				</div>
+			</form>
+		</div>
+		<div id="footer">
+		</div>
+	</div>
+	<iframe id="inquiryNew_ifm" name="inquiryNewIFM" style="display: none;"></iframe>
+</body>
+<script src="../dest/js/lib/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="../dest/js/lib/sea.js" type="text/javascript" charset="utf-8"></script>
+<script src="../dest/js/plugins/plugins.js" charset="utf-8"></script>
+<script src="../dest/js/app-data/app-data.js" charset="utf-8"></script>
+
+<!-- <script src="../src/js/app/main.js" charset="utf-8"></script>
+<script src="../src/js/app/login/register-logic.js" charset="utf-8" ></script> -->
+<script src="../dest/js/app/user.reg.logic.js" charset="utf-8"></script>
+
+<script type="text/javascript">
+	define("jquery",function(){
+		return $;
+	});
+	seajs.use(["main","register-logic"],function(mod,mod2){
+		mod.load();
+		mod2.load();
+	});
+</script>
+</html>

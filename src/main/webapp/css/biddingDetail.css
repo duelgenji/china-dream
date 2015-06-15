@@ -1,0 +1,103 @@
+﻿.formContainer {
+    width: 1140px;
+    margin: 0 auto;
+    padding: 15px;
+}
+
+.formList {
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    display: table;
+}
+
+    .formList .formEach {
+        width: 100%;
+        padding: 10px;
+        list-style: none;
+    }
+
+        .formList .formEach ul {
+            width: 100%;
+            margin: 0px;
+            padding: 0px;
+            display: table;
+        }
+
+        .formList .formEach li {
+            margin: 0px;
+            padding: 0px;
+            list-style: none;
+            line-height: 30px;
+            float: left;
+        }
+
+        .formList .formEach .formLabel {
+            width: 80px;
+        }
+
+        .formList .formEach .formInput {
+        }
+
+            .formList .formEach .formInput input[type=text], .formList .formEach .formInput select {
+                width: 500px;
+            }
+
+            .formList .formEach .formInput .selArea {
+                float: left;
+                width: 145px;
+                margin-right: 10px;
+            }
+
+            .formList .formEach .formInput #txtContent {
+                width: 500px;
+                height: 150px;
+                max-width: 500px;
+                max-height: 150px;
+            }
+
+.formEach .fileList {
+    width: 580px;
+}
+
+    .formEach .fileList ul {
+        width: 580px;
+        margin: 0px;
+        padding: 0px;
+    }
+
+        .formEach .fileList ul li {
+            width: 100px;
+            list-style: none;
+            margin: 5px;
+            padding: 5px;
+            float: left;
+            text-align: center;
+            border: 1px solid #E0E0E0;
+            border-radius: 3px;
+        }
+
+            .formEach .fileList ul li img {
+                width: 32px;
+                line-height: 32px;
+            }
+
+            .formEach .fileList ul li p {
+                width: 100%;
+                margin: 0 auto;
+                line-height: initial;
+                font-size: 12px;
+            }
+
+.customerList {
+    width: 100%;
+    border-top: 1px solid #E0E0E0;
+    margin-top: 20px;
+    padding-top: 20px;
+}
+
+    .customerList .inviteP {
+        width: 590px;
+        text-align: right;
+        padding-top: 20px;
+    }

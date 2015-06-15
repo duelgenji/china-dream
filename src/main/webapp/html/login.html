@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<base target="_blank">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="description" content="中国梦-一个让你实现自己梦想的舞台！">
+	<meta name="Keywords" content="撮合平台，项目招投标">
+    <link rel="icon" href="../image/icon/icon.jpg" mce_href="../image/icon/icon.jpg" type="image/x-icon">
+	<title>我的中国梦-用户登录大厅</title>
+	<link rel="icon" href="" mce_href="" type="image/x-icon">
+	<link rel="stylesheet" href="../dest/css/base.css">
+	<link rel="stylesheet" href="../dest/css/login.css">
+</head>
+<body>
+	<div id="mainPage" >
+		<header id="header">
+			<h1>欢迎来到中梦国网</h1>
+		</header><!-- /header -->
+		<section id="container">
+			<div id="mainMask" style="display: none;"></div>
+			<div id="bubbleLayer" class="layer">
+				<div class="layer-hd"></div>
+				<div id="bubbleLayerWrap" class="layer-mid">
+					<div class="error-tt"><p>请输入您的密码</p></div></div>
+				<div class="layer-ft"></div>
+				<div id="layerArr" class="layer-arrow" style="top: 25.5px;"></div>
+			</div>
+			<div class="ui-loginBlock">
+				<div class="ui-logintype">
+					<ul id="ul_loginType">
+						<li data-type="1" class="active">个人用户</li>
+						<li data-type="2">企业用户</li>
+						<li data-type="3">群用户</li>
+					</ul>
+				</div>
+				<div class="ui-container clearfloat">
+					<form id="loginForm" action="../login/login.action" method="post" accept-charset="utf-8" target="login_ifm">
+						<input type="hidden" name="user.userName" id="hd_username" value="">
+						<input type="hidden" name="savelogin" id="hd_savelogin" value="0">
+						<input type="hidden" name="type" id="hd_type" value="0">
+						<div class="ui-logininput-container">
+							<input type="text" id="input_user" class="ui-logininput" autocomplete="off" value="" placeholder="请输入邮箱">
+						</div>
+						<div class="ui-logininput-container">
+							<input type="password" name="user.password" id="input_password" autocomplete="off" class="ui-logininput" value="" placeholder="请输入密码">
+						</div>
+						<div class="ui-logincheck">
+							<div>
+								<input id="chk_cookie" type="checkbox" value=""><span>十天内免登录</span>
+							</div>
+							<div class="ui-findpsw">						
+								<a href="#">忘记密码了?</a>
+							</div>
+						</div>
+						<div class="ui-login-button clearfloat">
+							<button type="button" id="btn_login">登录</button>
+							<button type="button"><a href="register.html">注册</a></button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</section>
+		<footer id="footer">
+		</footer>
+	</div>
+	<iframe id="login_ifm" name="login_ifm" style="display: none;" iframeborder=0></iframe>
+</body>
+<script src="../dest/js/lib/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="../dest/js/lib/sea.js" type="text/javascript" charset="utf-8"></script>
+<script src="../dest/js/app-data/app-data.js" type="text/javascript" charset="utf-8"></script>
+<script src="../dest/js/plugins/plugins.js" type="text/javascript" charset="utf-8"></script>
+<script src="../src/js/app/main.js" charset="utf-8"></script>
+<script src="../src/js/app/login/login-logic.js" charset="utf-8" ></script>
+<script type="text/javascript">
+	define("jquery",function(){
+		return $;
+	});
+	seajs.use(["main","login-logic"],function(mod,mod2){
+		mod.load("footer").closeTopFixed();
+		mod2.load();
+	});
+</script>
+</html>

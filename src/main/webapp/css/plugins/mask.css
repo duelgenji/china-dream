@@ -1,0 +1,16 @@
+.ui-pure-mask
+{
+    position: absolute;
+    z-index: 98;
+    top: 0;
+    left: 0;
+
+    margin: 0;
+    padding: 0;
+
+    opacity: .3;
+    border: 0;
+    background: #000;
+
+    filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
+}

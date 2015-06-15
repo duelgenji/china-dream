@@ -47,6 +47,9 @@ public class UserService {
     @Autowired
     CompanyIndustryRepository companyIndustryRepository;
 
+    /**
+     * 修改用户 可选字段
+     */
     @Transactional
     public User generateOptionalInfo(User user, HttpServletRequest request) {
 
@@ -95,7 +98,7 @@ public class UserService {
     }
 
     /**
-     * 根据 注册类型 来添加相应的info表
+     * 根据 用户类型 来修改相应的info表
      */
     @Transactional
     public String generateUserByType(User user,int type,HttpServletRequest request) {
@@ -163,13 +166,17 @@ public class UserService {
                 }
 
 
-                if(request.getParameter("website")!=null && !request.getParameter("website").equals("")){
+                if(request.getParameter("website")!=null){
+                    if(request.getParameter("website").equals(""))
+                        return "网址不能为空" ;
                     userCompanyInfo.setWebsite(request.getParameter("website"));
                 }else if (userCompanyInfo.getWebsite()==null){
                     return "网址不能为空";
                 }
 
-                if(request.getParameter("companyName")!=null){
+                if(request.getParameter("companyName")!=null && !request.getParameter("website").equals("")){
+                    if(userCompanyInfo.getCompanyName()!=null)
+                        return "公司名称不能修改";
                     if(userCompanyInfoRepository.findByCompanyName(request.getParameter("companyName")).size()==0){
                         userCompanyInfo.setCompanyName(request.getParameter("companyName"));
                     }else{

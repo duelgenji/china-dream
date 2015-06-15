@@ -1,0 +1,309 @@
+#query_item,
+.ui-queryitem
+{
+    display: block;
+
+    width: 1090px;
+    margin: 0 auto;
+}
+
+#query_item
+{
+    margin-bottom: 5px;
+}
+
+#query_item span.link
+{
+    margin-left: 20px;
+
+    color: #c40000;
+    border: 1px solid #c40000;
+}
+
+#query_item .ui-close
+{
+    font-size: 14px;
+
+    padding: 0 8px;
+
+    cursor: pointer;
+}
+#query_item .ui-close:hover
+{
+    text-decoration: underline;
+}
+
+.ui-singleShowRow
+{
+    margin-top: -1px;
+
+    border-top: 1px solid #e6e2e1;
+}
+.ui-regisAttr
+{
+    border-bottom: 1px solid #d1ccc7;
+}
+
+.ui-attr
+{
+    border-top: 1px solid #e6e2e1;
+    background-color: #f7f5f5;
+}
+.ui-attr:after,
+.ui-attr ul:after
+{
+    display: block;
+    clear: both;
+
+    height: 0;
+
+    content: ' ';
+}
+
+.ui-attrkey
+{
+    line-height: 16px;
+
+    position: relative;
+
+    display: block;
+    float: left;
+    overflow: hidden;
+
+    width: 10%;
+    height: 16px;
+    padding: 7px 0 0;
+
+    vertical-align: middle;
+    white-space: nowrap;
+    text-indent: 13px;
+
+    color: #b0a59f;
+}
+
+.ui-attrValues
+{
+    position: relative;
+
+    float: left;
+    overflow: hidden;
+
+    width: 90%;
+    padding: 4px 0 0 0;
+
+    background-color: #fff;
+}
+.ui-options
+{
+    position: absolute;
+    z-index: 1;
+    top: 2px;
+    right: 0;
+
+    width: 105px;
+
+    text-align: right;
+}
+.ui-more-drop-l
+{
+    line-height: 25px;
+
+    position: relative;
+
+    display: inline-block;
+
+    height: 25px;
+    padding: 0 5px 0 0;
+
+    cursor: pointer;
+    vertical-align: middle;
+
+    color: #806f66;
+}
+
+.ui-more-drop-l:hover,
+.ui-more-drop-l:visited
+{
+    text-decoration: underline;
+
+    color: #c40000;
+}
+
+.ui-attrValues ul
+{
+    position: relative;
+
+    margin-right: 105px;
+    margin-left: 25px;
+}
+
+.ui-moreShowRow .ui-attrValues ul.ui-normal
+{
+    overflow: hidden;
+
+    height: 60px;
+    max-height: 60px;
+}
+
+.ui-singleShowRow .ui-attrValues ul.ui-normal
+{
+    overflow: hidden;
+
+    height: 25px;
+    max-height: 60px;
+}
+.ui-attrValues ul.ui-expand
+{
+    height: auto;
+    margin-right: 30px;
+}
+
+.ui-attrValues li
+{
+    line-height: 22px;
+
+    float: left;
+
+    height: 22px;
+    margin: 0 25px 10px 0;
+}
+.ui-attrValues li a
+{
+    line-height: 20px;
+
+    position: relative;
+
+    display: inline-block;
+
+    height: 20px;
+    padding: 1px 20px 1px 4px;
+
+    cursor: pointer;
+    white-space: nowrap;
+
+    color: #806f66;
+}
+.ui-attrValues li a:hover,
+.ui-attrValues li a:visited
+{
+    text-decoration: underline;
+
+    color: #c40000;
+}
+
+
+.ui-attrExtra
+{
+    position: relative;
+    z-index: 2;
+    top: -1px;
+
+    display: block;
+
+    width: 1090px;
+    height: 29px;
+    margin: 0 auto;
+}
+.ui-attrExtraBorder
+{
+    font-size: 0;
+    line-height: 2px;
+
+    display: block;
+    overflow: hidden;
+
+    height: 4px;
+
+    border: 1px solid #ebe4de;
+    border-top: 0;
+    background: #efebea;
+}
+.ui-attrExtraMore
+{
+    font-size: 12px;
+    line-height: 14px;
+
+    position: absolute;
+    z-index: 1;
+    top: 4px;
+    right: 0;
+
+    display: block;
+
+    width: 85px;
+    height: 16px;
+
+    cursor: pointer;
+    vertical-align: middle;
+    text-indent: 12px;
+
+    color: #806f66;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #efeceb #e6e2e1 #e6e2e1;
+    background-color: #efeceb;
+}
+.ui-attrExtraMore i
+{
+    position: absolute;
+    top: 5px;
+    right: 10px;
+
+    display: block;
+    overflow: hidden;
+
+    width: 10px;
+    height: 5px;
+
+    background-position: -58px -13px;
+}
+
+.content
+{
+    position: relative;
+
+    width: 1090px;
+    margin: 8px auto;
+}
+
+
+/***********grid内部***********/
+.ui-name,
+.ui-inquiryTitle
+{
+    font-size: 14px;
+    font-weight: bolder;
+}
+.ui-inquiryTitle
+{
+    margin-top: -6px;
+}
+.ui-name
+{
+    white-space: normal;
+    word-break: break-all;
+}
+
+.ui-name:hover,
+.ui-inquiryTitle a:hover
+{
+    text-decoration: underline;
+}
+
+.ui-inner-logo
+{
+    width: 120px;
+    height: 75px;
+    margin-top: 4px;
+}
+
+.ui-biaohao
+{
+    margin-top: -5px;
+
+    color: red;
+}
+.ui-userName
+{
+    margin-top: -8px;
+}

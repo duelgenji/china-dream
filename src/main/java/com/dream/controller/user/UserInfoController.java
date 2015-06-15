@@ -8,6 +8,8 @@ import com.dream.repository.user.UserRepository;
 import com.dream.service.user.UserService;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -41,8 +44,8 @@ public class UserInfoController {
     @Autowired
     UserGroupInfoRepository userGroupInfoRepository;
 
-    @RequestMapping("getInfo")
-    public Map<String, Object> getInfo(@ModelAttribute("currentUser") User user) {
+    @RequestMapping("retrieveInfo")
+    public Map<String, Object> retrieveInfo(@ModelAttribute("currentUser") User user) {
 
         Map<String, Object> res = new HashMap<>();
 
@@ -71,6 +74,7 @@ public class UserInfoController {
             res.put("tel",user.getTel());
             res.put("telephoneOpen",user.getTelephoneOpen().ordinal());
             res.put("telephone",user.getTelephone());
+            res.put("VIO",user.getVIP());
 
 
             Map<String, Object> info = new HashMap<>();
@@ -130,16 +134,13 @@ public class UserInfoController {
     @RequestMapping("modifyInfo")
     public Map<String, Object> modifyInfo(@ModelAttribute("currentUser") User user,
                                           HttpServletRequest request) {
-
         Map<String, Object> res = new HashMap<>();
 
         if(user.getId()!=null){
+
             user = userService.generateOptionalInfo(user,request);
 
-
-
             String message= userService.generateUserByType(user, user.getType(), request);
-
 
             if(!message.equals("")){
                 res.put("success", "0");
@@ -153,9 +154,34 @@ public class UserInfoController {
             return res;
         }
 
-
         res.put("success",1);
         return res;
     }
+
+
+
+    /**
+     * 获取用户列表
+     */
+    @RequestMapping("retrieveUserList")
+    public Map<String, Object> retrieveUserList(
+            @PageableDefault(page = 0, size = 20) Pageable pageable,
+            @ModelAttribute("currentUser") User user) {
+        Map<String, Object> res = new HashMap<>();
+
+        if(user.getId()==null){
+            res.put("success",0);
+            res.put("message","请先登录");
+            return res;
+        }
+
+
+        List<User> userList= userRepository.findByStatus(0,pageable);
+
+        res.put("success",1);
+        res.put("data",userList);
+        return res;
+    }
+
 
 }

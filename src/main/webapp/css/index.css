@@ -1,0 +1,423 @@
+@charset 'utf-8';
+
+body
+{
+    font: 12px/1.5 tahoma,arial,'Hiragino Sans GB','\5FAE\8F6F\96C5\9ED1','\5b8b\4f53',sans-serif;
+}
+
+*
+{
+    margin: 0;
+    padding: 0;
+}
+
+ul
+{
+    list-style: none;
+}
+
+img
+{
+    border: 0;
+}a
+{
+    cursor: pointer;
+    text-decoration: none;
+}
+button
+{
+    padding: .3em .8em .4em .8em;
+
+    cursor: pointer;
+
+    border:1px solid;
+
+    background-color: #337ab7;
+    
+    color:#fff;
+
+    border-radius: 5px;
+}
+
+button:hover{
+    color:#337ab7;
+    background-color: transparent;
+    border-color:#337ab7;
+}
+
+.clearfloat
+{
+    clear: both;
+}
+
+.clearfloat:before
+{
+    clear: both;
+}
+
+.clearfloat:after
+{
+    clear: both;
+}
+
+#mainPage
+{
+    width: auto;
+    min-width: 1190px;
+    margin: 0 auto;
+
+    background-color: transparent;
+}
+
+/*********site_nav************/
+#site_nav
+{
+    position: relative!important;
+    z-index: 998;
+
+    width: 100%;
+    height: 26px;
+
+    -webkit-transform: translate3d(0,0,0);
+
+    border-bottom: 1px solid #e5e5e5;
+    background: #f2f2f2;
+}
+
+#site_nav .ui-sn-container
+{
+    position: relative;
+
+    height: 26px;
+    margin-left: 40px;
+
+    color: #999;
+}
+
+#site_nav .ui-sn-container:after
+{
+    display: block;
+    clear: both;
+
+    content: '\20';
+}
+
+#site_nav .ui-back-home
+{
+    line-height: 26px;
+
+    position: relative;
+
+    float: left;
+
+    height: 26px;
+    margin-right: 20px;
+}
+
+#site_nav .ui-welcome
+{
+    line-height: 26px;
+
+    position: relative;
+
+    display: inline-block;
+    float: left;
+
+    height: 26px;
+}
+
+#site_nav .scroll_div
+{
+    float: left;
+    overflow: hidden;
+
+    width: 950px;
+    height: 25px;
+    margin-left: 30px;
+
+    word-break: break-all;
+}
+#site_nav .scroll_ul
+{
+    font-weight: bolder;
+    line-height: 26px;
+
+    overflow: hidden;
+
+    height: 26px;
+
+    color: #000;
+}
+
+
+#site_nav .ui-quick-menu
+{
+    line-height: 26px;
+
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    height: 26px;
+}
+
+#site_nav .ui-quick-menu li
+{
+    position: relative;
+
+    float: left;
+}
+
+#site_nav .ui-sn_login
+{
+    padding: 0 10px 0 16px;
+}
+
+#site_nav .ui-sn_reg
+{
+    padding: 0 15px 0 15px;
+}
+
+/**********header**************/
+
+#header
+{
+    position: relative;
+    z-index: 998;
+
+    width: 100%;
+    min-width: 1190px;
+    height: 152px;
+    margin: 0 auto;
+    /*margin-top: 1px;*/
+
+    border-bottom: 0;
+}
+
+.ui-fixedHeader
+{
+    /*background-color: rgb(211, 234, 239);*/
+    background-color: #f2f2f2;
+}
+
+#header .ui-header
+{
+    margin: 0 auto;
+}
+
+#header #logo
+{
+    position: relative;
+    z-index: 9;
+
+    float: left;
+    overflow: hidden;
+
+    width: 340px;
+    height: 139px;
+    padding-top: 0;
+}
+
+#header .ui-query
+{
+    position: relative;
+
+    float: left;
+
+    width: 540px !important;
+    padding: 25px 0 0 50px;
+}
+#search
+{
+    line-height: 35px;
+
+    height: 35px;
+
+    border: solid #c40000;
+    border-width: 3px 0 3px 3px;
+}
+#search .ui-search-combox
+{
+    position: relative;
+
+    float: left;
+}
+#search #mq
+{
+    line-height: 33px;
+
+    width: 450px;
+    height: 33px;
+
+    border: none;
+}
+#search button
+{
+    line-height: 35px;
+
+    width: 87px;
+    height: 35px;
+
+    color: #fff;
+    border: none;
+    background-color: #c40000;
+
+    padding:0;
+    border-radius: 0;
+}
+
+.ui-nav
+{
+    position: absolute;
+    top: 120px;
+    left: 300px;
+
+    width: auto;
+    min-width: 900px;
+
+    color: #000;
+    border-bottom: 3px solid red;
+}
+
+#nav li
+{
+    font-family: 微软雅黑;
+    font-size: 18px;
+    font-weight: bold;
+
+    float: left;
+
+    width: 160px;
+
+    text-align: center;
+
+    color: #000;
+}
+
+#nav a
+{
+    color: #000;
+}
+
+#nav a.active,
+#nav a:hover
+{
+    color: rgb(255,106,54);
+}
+
+
+/***************container*****************/
+#container
+{
+    width: 1190px;
+    min-width: 1190px;
+    margin-top: 22px;
+    margin-right: auto;
+    /*height:2000px;*/
+    margin-left: auto;
+}
+
+/***************footer*******************/
+#footer
+{
+    position: relative;
+
+    clear: both;
+
+    width: 100%;
+    height: 161px;
+    min-height: 161px;
+    margin: 10px 0 10px 0;
+    padding: 10px 0 10px 0;
+
+    border-top: 2px solid red;
+}
+#footer .ui-title
+{
+    font-size: 14px;
+    font-weight: bold;
+
+    padding-bottom: 20px;
+
+    text-align: center;
+
+    color: #000;
+}
+#footer .ui-zhinan
+{
+    vertical-align: middle;
+}
+
+#footer .ui-share
+{
+    padding-top: 20px;
+
+    vertical-align: middle;
+}
+#footer .ui-share a
+{
+    margin-left: 10px;
+}
+
+#footer .ui-beian
+{
+    text-align: center;
+    vertical-align: middle;
+}
+
+#footer dl
+{
+    float: left;
+
+    width: 186px;
+    padding-left: 52px;
+}
+
+#footer dl dd
+{
+    text-align: left;
+}
+
+#footer dl a
+{
+    line-height: 20px;
+
+    display: block;
+    overflow: hidden;
+
+    width: 100px;
+    height: 20px;
+
+    text-align: left;
+
+    color: #8b8b8b;
+}
+
+#weixin
+{
+    position: relative;
+
+    display: inline-block;
+}
+#weixinLogo
+{
+    font-family: '微软雅黑'!important;
+
+    position: absolute;
+    z-index: 10;
+    bottom: 49px;
+    left: -110px;
+
+    text-align: center;
+
+    background: #fff;
+    box-shadow: 0 0 5px #aaa;
+}
+
+#footer .ui-weicode
+{
+    width: 258px;
+    height: 258px;
+
+    background: url(../image/weixinLogo.jpg) no-repeat;
+}

@@ -1,0 +1,80 @@
+/************************inquiryDetail************************/
+.ui-main
+{
+    width: 100%;
+
+    text-align: center;
+
+    border: 3px solid #f2f2f2;
+    border-radius: 5px;
+}
+
+#detail .ui-toptitle,
+#myBid .ui-toptitle,
+#otherBid .ui-toptitle
+{
+    text-align: center;
+
+    border-radius: 5px;
+    background-color: rgb(211, 234, 239);
+}
+
+#myBid,
+#otherBid
+{
+    margin-top: 10px;
+}
+#detail ul
+{
+    font-size: 14px;
+
+    float: left;
+
+    margin-left: 20px;
+
+    text-align: left;
+}
+
+#detail li
+{
+    width: 335px;
+    margin: 28px auto;
+}
+#detail li.ui-normal
+{
+    overflow: hidden;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#detail li.ui-break .ui-value
+{
+    margin-left: 10px;
+
+    word-break: break-all;
+}
+
+#detail span.ui-field
+{
+    font-weight: bolder;
+
+    width: 50px;
+
+    text-align: right;
+}
+
+.ui-autoHeight
+{
+    height: auto;
+    height: 0;
+}
+
+.ui-datalist
+{
+    margin-top: 8px;
+}
+.ui-noOpen
+{
+    color: red;
+}

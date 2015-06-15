@@ -1,0 +1,72 @@
+﻿.mainContainer {
+    width: 1140px;
+    height: 100px;
+    margin: 0 auto;
+}
+
+    .mainContainer .biddingInfo {
+        border-bottom: 1px dashed #E0E0E0;
+        padding-bottom: 15px;
+        padding-left: 15px;
+    }
+
+        .mainContainer .biddingInfo div {
+            line-height: 30px;
+        }
+
+.bidDetail {
+    padding-top: 20px;
+    padding-left: 15px;
+}
+
+    .bidDetail .moneyContainer {
+        display: table;
+    }
+
+        .bidDetail .moneyContainer .bidLabel {
+            width: 55px;
+            float: left;
+            line-height: 30px;
+        }
+
+        .bidDetail .moneyContainer #txtBid {
+            width: 200px;
+            float: left;
+        }
+
+    .bidDetail .fileContainer {
+        margin-top: 20px;
+        display: table;
+    }
+
+        .bidDetail .fileContainer .fileList {
+        }
+
+            .bidDetail .fileContainer .fileList li {
+                width: 100px;
+                list-style: none;
+                margin: 5px;
+                padding: 5px;
+                float: left;
+                text-align: center;
+                border: 1px solid #E0E0E0;
+                border-radius: 3px;
+            }
+
+                .bidDetail .fileContainer .fileList li img {
+                    width: 32px;
+                    line-height: 32px;
+                }
+
+                .bidDetail .fileContainer .fileList li div {
+                    width: 100%;
+                    margin: 0 auto;
+                    line-height: initial;
+                    font-size: 12px;
+                }
+
+
+    .bidDetail .btnContainer {
+        margin-top:20px;
+        text-align:right;
+    }
