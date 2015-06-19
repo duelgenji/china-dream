@@ -18,6 +18,7 @@ define("login-logic", ["jquery", "user-repos"], function(require, exports) {
 		});
 
 		$("#btn_login").click(function() {
+
 			var val = $("#input_user").val(),
 				psw;
 
@@ -38,23 +39,23 @@ define("login-logic", ["jquery", "user-repos"], function(require, exports) {
 				return;
 			}
 
-			userRepos.login(val, psw, function(data) {
-				var date = $("#hd_savelogin").val() == "1" ? 10 : (new Date().getTime() + (30 * 60 * 1000));
-
-				$.cookie("username", encodeURI(val), {
-					expires: date,
-					path: "/",
-					security: true
-				});
-				$.cookie("usertype", $("#ul_loginType li.active").data("type"), {
-					expires: date,
-					path: "/"
-				});
-				$.cookie("nickname", data, {
-					expires: date,
-					path: "/",
-					security: true
-				});
+			ajaxlogin(val,psw,function(data) {
+				//var date = $("#hd_savelogin").val() == "1" ? 10 : (new Date().getTime() + (30 * 60 * 1000));
+                //
+				//$.cookie("username", encodeURI(val), {
+				//	expires: date,
+				//	path: "/",
+				//	security: true
+				//});
+				//$.cookie("usertype", $("#ul_loginType li.active").data("type"), {
+				//	expires: date,
+				//	path: "/"
+				//});
+				//$.cookie("nickname", data, {
+				//	expires: date,
+				//	path: "/",
+				//	security: true
+				//});
 
 				location.href = "index.html";
 
@@ -63,7 +64,7 @@ define("login-logic", ["jquery", "user-repos"], function(require, exports) {
 				$("#bubbleLayer").addClass("bubbleLayer-show").css("top", 160);
 				$("#bubbleLayerWrap .error-tt p").text("您的用戶名或密码不正确!");
 			},function(){
-								$("#mainMask").css("display", "block");
+				$("#mainMask").css("display", "block");
 				$("#bubbleLayer").addClass("bubbleLayer-show").css("top", 180);
 				$("#bubbleLayerWrap .error-tt p").text("对不起,服务端异常,您目前无法登录!");
 			});
