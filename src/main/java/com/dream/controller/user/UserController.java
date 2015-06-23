@@ -93,7 +93,8 @@ public  class UserController extends AbstractBaseController<User, Long> {
             return res;
         }
 
-        commonEmail.sendTextMail("http://localhost:8080/user/",user.getId(), email, captcha);
+//        commonEmail.sendTextMail("http://localhost:8080/user/",user.getId(), email, captcha);
+        commonEmail.sendTextMail("http://121.40.143.120:8080/dream/user/",user.getId(), email, captcha);
 
         res.put("success", "1");
         return res;
@@ -160,7 +161,7 @@ public  class UserController extends AbstractBaseController<User, Long> {
         model.addAttribute("currentUser", user);
         res.put("success", "1");
         try {
-            response.sendRedirect("/html/index.html");
+            response.sendRedirect("/dream/html/index.html");
         } catch (IOException e) {
             e.printStackTrace();
         }
