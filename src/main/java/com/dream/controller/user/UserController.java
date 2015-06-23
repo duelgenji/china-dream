@@ -103,7 +103,7 @@ public  class UserController extends AbstractBaseController<User, Long> {
     /**
      * 登录
      */
-      @RequestMapping("login")
+    @RequestMapping("login")
     public Map<String, Object> login(
             @RequestParam String email,
             @RequestParam String password,
@@ -119,6 +119,9 @@ public  class UserController extends AbstractBaseController<User, Long> {
             return res;
         }
         model.addAttribute("currentUser", user);
+
+        res = userService.User2Map(user);
+
         res.put("success", "1");
 
         return res;

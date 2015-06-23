@@ -11,6 +11,7 @@ import com.dream.repository.user.UserCompanyInfoRepository;
 import com.dream.repository.user.UserGroupInfoRepository;
 import com.dream.repository.user.UserPersonalInfoRepository;
 import com.dream.repository.user.UserRepository;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Knight on 2015/6/10 15:04.
@@ -281,4 +284,84 @@ public class UserService {
 
         return "";
     }
+
+    public Map<String, Object> User2Map(User user){
+
+        Map<String, Object> res = new HashMap<>();
+
+        if(user.getId()!=null){
+            res.put("id",user.getId());
+            res.put("email",user.getEmail());
+            res.put("nickName",user.getNickName());
+            res.put("IDCardNumber",user.getIDCardNumber());
+            res.put("logoUrl",user.getLogoUrl());
+            res.put("headImage",user.getHeadImage());
+            int type = user.getType();
+            res.put("type",user.getType());
+            res.put("status",user.getStatus());
+
+            res.put("createTime", DateFormatUtils.format(user.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
+            res.put("inquiryTimes",0);
+            res.put("inquirySuccessTimes",0);
+            res.put("keywords",user.getKeywords());
+
+            res.put("bank",user.getBank());
+            res.put("bankAccountOpen",user.getBankAccountOpen().ordinal());
+            res.put("bankAccount",user.getBankAccount());
+            res.put("zhifubaoAccountOpen",user.getZhifubaoAccountOpen().ordinal());
+            res.put("zhifubaoAccount",user.getZhifubaoAccount());
+            res.put("telOpen",user.getTelOpen().ordinal());
+            res.put("tel",user.getTel());
+            res.put("telephoneOpen",user.getTelephoneOpen().ordinal());
+            res.put("telephone",user.getTelephone());
+            res.put("VIP",user.getVIP());
+
+
+            //Map<String, Object> info = new HashMap<>();
+            switch (type){
+                case 1 :
+                    res.put("birthday",user.getUserPersonalInfo().getBirthday());
+                    res.put("sex",user.getUserPersonalInfo().getSex());
+                    res.put("weiboUrl",user.getUserPersonalInfo().getWeiboUrl());
+                    res.put("weixin",user.getUserPersonalInfo().getWeixin());
+                    res.put("realName",user.getUserPersonalInfo().getRealName());
+                    res.put("realNameOpen",user.getUserPersonalInfo().getRealNameOpen().ordinal());
+                    res.put("degree",user.getUserPersonalInfo().getDegree());
+                    res.put("degreeOpen",user.getUserPersonalInfo().getDegreeOpen().ordinal());
+                    res.put("major",user.getUserPersonalInfo().getMajor());
+                    res.put("majorOpen",user.getUserPersonalInfo().getMajorOpen().ordinal());
+                    res.put("school",user.getUserPersonalInfo().getSchool());
+                    res.put("schoolOpen",user.getUserPersonalInfo().getSchoolOpen().ordinal());
+                    break;
+                case 2:
+                    res.put("website",user.getUserCompanyInfo().getWebsite());
+                    res.put("weiboUrl",user.getUserCompanyInfo().getWeiboUrl());
+                    res.put("weixin",user.getUserCompanyInfo().getWeixin());
+                    res.put("companyName",user.getUserCompanyInfo().getCompanyName());
+                    res.put("companyIndustry",user.getUserCompanyInfo().getCompanyIndustry().getId());
+                    res.put("companyOwnership",user.getUserCompanyInfo().getCompanyOwnership().getId());
+                    res.put("companyProvince",user.getUserCompanyInfo().getCompanyProvince().getId());
+                    res.put("companyEmail",user.getUserCompanyInfo().getCompanyEmail());
+                    res.put("companyEmailOpen",user.getUserCompanyInfo().getCompanyEmailOpen().ordinal());
+                    res.put("organizationsCode",user.getUserCompanyInfo().getOrganizationsCode());
+                    res.put("organizationsCodeOpen", user.getUserCompanyInfo().getOrganizationsCodeOpen().ordinal());
+                    res.put("taxNumber",user.getUserCompanyInfo().getTaxNumber());
+                    res.put("taxNumberOpen",user.getUserCompanyInfo().getTaxNumberOpen().ordinal());
+
+                    break;
+                case 3:
+                    res.put("description",user.getUserGroupInfo().getDescription());
+                    res.put("groupSize", user.getUserGroupInfo().getGroupSize());
+                    res.put("groupNumber",user.getUserGroupInfo().getGroupNumber());
+
+                    break;
+                default:
+                    break;
+            }
+            //res.put("info",info);
+
+        }
+        return res;
+    }
+
 }

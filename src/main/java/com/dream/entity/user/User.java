@@ -82,6 +82,7 @@ public class User extends AbstractPersistable<Long> {
     /**
      * 验证码
      */
+    @JsonIgnore
     private String captcha;
 
     public String getEmail() {
