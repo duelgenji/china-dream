@@ -1,13 +1,12 @@
 /**
- * 注册页涉及到的js逻辑操作：
- *  不同注册用户的显示切换
+ *  修改信息页涉及到的js逻辑操作：
  *  验证表单提交:更具不同用户的注册内容进行验证
  *  提交表单
  *    提交成功后的显示 弹出对话框-显示当前用户的流水号
  *    提交失败后的警告 弹出对话框-提示错误
  */
 
-define("register-logic", ["user-repos", "jquery", "pure-dialog", "pure-validator"], function (require, exports) {
+define("modifyUserInfo-logic", ["user-repos", "jquery", "pure-dialog", "pure-validator"], function (require, exports) {
 
     var
         $ = require("jquery"),
@@ -23,6 +22,8 @@ define("register-logic", ["user-repos", "jquery", "pure-dialog", "pure-validator
         regFailHtml = '<div class="ui-regTip"><span><img class="ui-tipFailIcon"/>对不起,注册失败!</span></div>',
 
         regErrorHtml = '<div class="ui-regTip"><span><img class="ui-tipErrorIcon"/>对不起,注册出现异常!</span></div>',
+
+        type = 'p',
 
         serviceDg = {
             id: "serviceDg",
@@ -89,7 +90,7 @@ define("register-logic", ["user-repos", "jquery", "pure-dialog", "pure-validator
         $("#bubbleLayerWrap .error-tt p").text(errorMsg);
     }
 
-    function registerParams() {
+    function modifyUserInfoParams() {
         var type = $("ul.ui-tab li.active").first().data("type");
         var typeCode = 1;
         switch (type) {
@@ -112,11 +113,9 @@ define("register-logic", ["user-repos", "jquery", "pure-dialog", "pure-validator
         var inputs = li.find("input, select, textarea");
 
         inputs.each(function () {
-            var name;
-            var value;
-            if ((value = $(this).val()) != "" && (name = $(this).attr("name")) != null) {
-                params[name] = value;
-            }
+            var name = $(this).attr("name");
+            var value = $(this).val();
+            params[name] = value;
         });
 
         return params;
@@ -128,7 +127,8 @@ define("register-logic", ["user-repos", "jquery", "pure-dialog", "pure-validator
 
             type = $(".ui-tab li.active").data("type"),
 
-            doms = $("#input_nickName,#input_email,#input_psw,#input_psw2");
+            //doms = $("#input_nickName,#input_email,#input_psw,#input_psw2");
+            doms = $("#input_nickName");
 
         for (var i = 0, l = doms.length, dom, val, psw; i < l; i++) {
             val = (dom = $(doms[i])).val();
@@ -178,8 +178,8 @@ define("register-logic", ["user-repos", "jquery", "pure-dialog", "pure-validator
 
     function fn_submitForm() {
 
-        var params = registerParams();
-        console.log(params);
+        var params = modifyUserInfoParams();
+        //console.log(params);
 
         if (fn_checkSubmit()) {
 
@@ -228,41 +228,31 @@ define("register-logic", ["user-repos", "jquery", "pure-dialog", "pure-validator
         }
     }
 
+    function showOriginInfo (type,params) {
+        $("#form").css("display", "");
+        var li = $("ul.ui-items li[data-type=" + type + "], ul.ui-items li[data-type='pcg']");
+
+        var inputs = li.find("input, select, textarea");
+
+        inputs.each(function() {
+            var value = params[$(this).attr('name')];
+            console.log(value);
+            if (!validMod.isEmptyOrNull(value)) {
+                console.log(value);
+                $(this).val(value);
+            }
+        })
+
+        li.css("display", "");
+    }
+
     /**
      * 初始化元素数据绑定
      * @return {[type]} [description]
      */
     function fn_initEvent() {
-        $("ul.ui-tab li").click(function () {
 
-            $("input[type=text],input[type=password]").val('');
-
-            $("#mainMask").css("display", "none");
-            $("#bubbleLayer").removeClass("bubbleLayer-show");
-            $("#bubbleLayerWrap .error-tt p").text("");
-
-            var type = $(this).removeClass("active").addClass('active').siblings().removeClass('active').end().data("type");
-
-            var currentLi = $("ul.ui-items li[data-type=" + type + "]");
-
-            var hideLi;
-
-            switch (type) {
-                case "p":
-                    hideLi = $("ul.ui-items li[data-type=c], ul.ui-items li[data-type=g]");
-                    break;
-                case "c":
-                    hideLi = $("ul.ui-items li[data-type=p], ul.ui-items li[data-type=g]");
-                    break;
-                case "g":
-                    hideLi = $("ul.ui-items li[data-type=p], ul.ui-items li[data-type=c]");
-                    break;
-            }
-
-            currentLi.siblings().css("display", "");
-            hideLi.css("display", "none");
-
-        });
+        showOriginInfo("g",{realNameOpen:"1",email:"123123@123.com"});
 
         $("#chk_xieyi").click(function () {
 

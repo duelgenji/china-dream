@@ -1,16 +1,10 @@
-function ajaxlogin(email, password, ok, fail, error) {
-
-    var data = {}
-    data.email = email;
-    data.password = password;
-
+function ajaxmodify(params, ok, fail, error) {
     $.ajax({
-        url: "../user/login",
+        url: "../user/modify",
         type : "post",
         dataType: "json",
-        data : data,
+        data : params,
         success: function (result) {
-            console.log(result);
             if (result.success == 1) {
                 ok(result);
             } else {
