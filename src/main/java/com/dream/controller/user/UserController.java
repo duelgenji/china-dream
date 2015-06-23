@@ -2,6 +2,7 @@ package com.dream.controller.user;
 
 import com.dream.entity.user.User;
 import com.dream.repository.user.UserRepository;
+import com.dream.service.CommonEmail;
 import com.dream.service.user.UserService;
 import com.wonders.xlab.framework.controller.AbstractBaseController;
 import com.wonders.xlab.framework.repository.MyRepository;
@@ -32,6 +33,9 @@ public  class UserController extends AbstractBaseController<User, Long> {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    CommonEmail commonEmail;
 
     @Override
     protected MyRepository<User, Long> getRepository() {
@@ -106,6 +110,22 @@ public  class UserController extends AbstractBaseController<User, Long> {
             return res;
         }
         model.addAttribute("currentUser", user);
+        res.put("success", "1");
+
+        return res;
+
+    }
+
+    /**
+     * 登录
+     */
+    @RequestMapping("send")
+    public Map<String, Object> send() {
+
+        Map<String, Object> res = new HashMap<>();
+
+        commonEmail.sendTextMail("http://localhost:8080/",1l, "361714571@qq.com", "123456");
+
         res.put("success", "1");
 
         return res;
