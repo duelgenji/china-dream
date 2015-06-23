@@ -7,7 +7,7 @@
     <meta name="description" content="中国梦-一个让你实现自己梦想的舞台！">
     <meta name="Keywords" content="撮合平台，项目招投标">
     <link rel="icon" href="../image/icon/icon.jpg" mce_href="../image/icon/icon.jpg" type="image/x-icon">
-    <title>我的中国梦-注册大厅</title>
+    <title>我的中国梦-修改信息</title>
     <link rel="icon" href="" mce_href="" type="image/x-icon">
     <link rel="stylesheet" href="../dest/css/base.css">
     <link rel="stylesheet" href="../dest/css/plugins.css">
@@ -192,38 +192,22 @@
             <div class="ui-pure-dialog-arrowA"></div>
             <div class="ui-pure-dialog-arrowB"></div>
         </div>
-        <form id="form" method="post">
+        <form id="form" method="post" style="display:none;">
             <div class="ui-reg">
-                <ul class="ui-tab">
-                    <li class="active" data-type="p"><a>个人注册</a></li>
-                    <li data-type="c"><a>企业注册</a></li>
-                    <li data-type="g"><a>群注册</a></li>
-                </ul>
-
                 <ul class="ui-items ui-items-register">
-                    <li data-type="pcg">
+                    <li data-type="pcg" style="display:none;">
                         <label for="">
                             <span class="ui-valid">*</span>昵称:
                         </label>
                         <input type="text" id="input_nickName" name="nickName" placeholder="请输入昵称" data-valid="require"
                                data-pos="204">
                     </li>
-                    <li data-type="pcg">
+                    <li data-type="pcg" style="display:none;">
                         <label for=""><span class="ui-valid">*</span>邮箱用户名:</label>
                         <input type="text" id="input_email" name="email" placeholder="请输入邮箱用户名" data-pos="246"
-                               data-valid="require" data-errmsg="邮箱用户名格式错误">
+                               data-valid="require" data-errmsg="邮箱用户名格式错误" disabled="disabled">
                     </li>
-                    <li data-type="pcg">
-                        <label for=""><span class="ui-valid">*</span>密码:</label>
-                        <input type="password" id="input_psw" name="password" placeholder="请输入密码" data-pos="288"
-                               data-valid="require">
-                    </li>
-                    <li data-type="pcg">
-                        <label for=""><span class="ui-valid">*</span>确认密码:</label>
-                        <input id="input_psw2" type="password" placeholder="请输入确认密码" data-pos="330"
-                               data-errmsg="两次输入的密码不一致">
-                    </li>
-                    <li data-type="p">
+                    <li data-type="p" style="display:none;">
                         <label>真实姓名:</label>
                         <input name="realName" type="text" placeholder="请输入真实姓名">
                         <select name="realNameOpen" class="ui-isopen">
@@ -251,7 +235,7 @@
                         <textarea name="description" placeholder="请输入群简介"></textarea>
 
                     </li>
-                    <li data-type="p">
+                    <li data-type="p" style="display:none;">
 
                         <label for="">性别:</label>
                         <select name="sex">
@@ -259,16 +243,16 @@
                             <option value="2">女</option>
                         </select>
                     </li>
-                    <li data-type="p">
+                    <li data-type="p" style="display:none;">
                         <label for="">出生年月:</label>
                         <input type="text" id="birthday" name="birthday" placeholder="请填写正确的出生日期" type="text"
                                autocomplete="OFF">
                         <img id="calendar_ctrl" class="ui-calendar_ctrl"/>
                     </li>
-                    <li data-type="pcg">
+                    <li data-type="pcg" style="display:none;">
                         <label for="">身份证号:</label><input type="text" name="IDCardNumber" placeholder="请填写正确的身份证">
                     </li>
-                    <li data-type="p">
+                    <li data-type="p" style="display:none;">
                         <label for="">最高学历:</label>
                         <select id="degree" name="degree">
                             <option value="0">请选择学历</option>
@@ -286,7 +270,7 @@
                             <option value="2">授权后公开</option>
                         </select>
                     </li>
-                    <li data-type="p">
+                    <li data-type="p" style="display:none;">
                         <label for="">毕业学校:</label><input type="text" name="school" placeholder="请填写毕业学校">
                         <select name="schoolOpen" class="ui-isopen">
                             <option value="0">公开</option>
@@ -294,7 +278,7 @@
                             <option value="2">授权后公开</option>
                         </select>
                     </li>
-                    <li data-type="p">
+                    <li data-type="p" style="display:none;">
                         <label for="">专业:</label><input type="text" name="major" placeholder="请填写专业">
                         <select name="majorOpen" class="ui-isopen">
                             <option value="0">公开</option>
@@ -493,7 +477,7 @@
                                                                                          data-valid="require"
                                                                                          data-pos="581">
                     </li>
-                    <li data-type="pcg">
+                    <li data-type="pcg" style="display:none;">
                         <label for="">固定电话:</label><input type="text" name="tel" placeholder="请填写固定电话">
                         <select name="telOpen" class="ui-isopen">
                             <option value="0">公开</option>
@@ -502,7 +486,7 @@
                         </select>
 
                     </li>
-                    <li data-type="pcg">
+                    <li data-type="pcg" style="display:none;">
                         <label for="">手机号码:</label><input type="text" name="telephone" placeholder="请填写手机号码">
                         <select name="telephoneOpen" class="ui-isopen">
                             <option value="0">公开</option>
@@ -539,7 +523,7 @@
                         </select>
 
                     </li>
-                    <li data-type="pcg">
+                    <li data-type="pcg" style="display:none;">
                         <label for="">银行账号:</label><input type="text" name="bankAccount" placeholder="请输入银行账号">
                         <select name="bankAccountOpen" class="ui-isopen">
                             <option value="0">公开</option>
@@ -548,7 +532,7 @@
                         </select>
 
                     </li>
-                    <li data-type="pcg">
+                    <li data-type="pcg" style="display:none;">
                         <label for="">支付宝账号:</label><input type="text" name="zhifubaoAccount" placeholder="支付宝">
                         <select name="zhifubaoAccountOpen" class="ui-isopen">
                             <option value="0">公开</option>
@@ -557,37 +541,23 @@
                         </select>
 
                     </li>
-                    <li data-type="p">
+                    <li data-type="p" style="display:none;">
                         <label for="">微博:</label><input type="text" name="weiboUrl" placeholder="请输入微博">
                     </li>
                     <li data-type="c" style="display: none;">
                         <label for="">微博:</label><input type="text" name="weiboUrl" placeholder="请输入微博">
                     </li>
-                    <li data-type="p">
+                    <li data-type="p" style="display:none;">
                         <label for="">微信:</label><input type="text" name="weixin" placeholder="请输入微信">
                     </li>
                     <li data-type="c" style="display: none;">
                         <label for="">微信:</label><input type="text" name="weixin" placeholder="请输入微信">
                     </li>
-                    <li data-type="pcg">
+                    <li data-type="pcg" style="display:none;">
                         <label for="">关键字:</label><input type="text" name="keywords" placeholder="请输入关键字">
                     </li>
-                    <li>
-                        <div class="person" style="">
-                            <div class="checkbox" style="margin-left:70px;">
-                                <label style="width:300px;font-size:12px;color:red;">
-                                    <input type="checkbox" id="chk_xieyi" style="margin-top:1px;">
-                                    <!--<span id="serviceAgreement">看过并且同意中梦国网服务协议</span>-->
-                                    <a id="serviceAgreement" class="" data-toggle="modal" data-target="#myModal">
-                                        看过并且同意中梦国网服务协议
-                                    </a>
-                                    <input type="hidden" id="status" value="0">
-                                </label>
-                            </div>
-                        </div>
-                    </li>
                     <li class="ui-operate">
-                        <button id="btn_confirm" disabled="disabled" type="button">确保信息无误并提交</button>
+                        <button id="btn_confirm" type="button">确保信息无误并提交</button>
                         <button id="btn_cancel" type="cancel"><a href="index.html" target="_self">取消</a></button>
                     </li>
                 </ul>
@@ -815,15 +785,15 @@
 
 <script src="../src/js/bootstrap/bootstrap.min.js" charset="utf-8"></script>
 <script src="../src/js/app/main.js" charset="utf-8"></script>
-<script src="../src/js/app/login/register-logic.js" charset="utf-8"></script>
-<script src="../src/js/ajax/ajax-register.js" charset="utf-8"></script>
+<script src="../src/js/app/login/modifyUserInfo-logic.js" charset="utf-8"></script>
+<script src="../src/js/ajax/ajax-modifyUserInfo.js" charset="utf-8"></script>
 <!--<script src="../dest/js/app/user.reg.logic.js" charset="utf-8"></script>-->
 
 <script type="text/javascript">
     define("jquery", function () {
         return $;
     });
-    seajs.use(["main", "register-logic"], function (mod, mod2) {
+    seajs.use(["main", "modifyUserInfo-logic"], function (mod, mod2) {
         mod.load();
         mod2.load();
     });

@@ -1,5 +1,4 @@
 function ajaxregister(params, ok, fail, error) {
-    console.log(12222132);
     $.ajax({
         url: "../user/register",
         type : "post",
@@ -10,10 +9,10 @@ function ajaxregister(params, ok, fail, error) {
             if (result.success == 1) {
                 ok(result);
             } else {
-                fail();
+                fail(result);
             }
         },
-        error: error
+        error: error()
         //complete
     })
 }
