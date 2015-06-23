@@ -74,7 +74,15 @@ public class User extends AbstractPersistable<Long> {
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "user")
     private UserGroupInfo userGroupInfo;
 
+    /**
+     * vip 标记位
+     */
     private int VIP = 0;
+
+    /**
+     * 验证码
+     */
+    private String captcha;
 
     public String getEmail() {
         return email;
@@ -282,5 +290,13 @@ public class User extends AbstractPersistable<Long> {
 
     public void setVIP(int VIP) {
         this.VIP = VIP;
+    }
+
+    public String getCaptcha() {
+        return captcha;
+    }
+
+    public void setCaptcha(String captcha) {
+        this.captcha = captcha;
     }
 }

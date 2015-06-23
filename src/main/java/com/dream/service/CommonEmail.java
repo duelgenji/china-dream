@@ -28,7 +28,7 @@ public class CommonEmail {
             StringBuffer buffer = new StringBuffer();
             buffer.append("感谢您中国梦！");
             buffer.append("<br>");
-            buffer.append("请在15分钟内点击以下链接激活您的帐户、完成注册。");
+            buffer.append("请点击以下链接激活您的帐户、完成注册。");
             buffer.append("<br>");
             buffer.append("<br>");
             buffer.append("<div><font size =\"3\" face=\"arial\" >" + url + "activateAccount?id=" + userId +"&captcha=" + captcha + "</font></div>");

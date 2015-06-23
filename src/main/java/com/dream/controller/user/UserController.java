@@ -7,6 +7,8 @@ import com.dream.service.user.UserService;
 import com.wonders.xlab.framework.controller.AbstractBaseController;
 import com.wonders.xlab.framework.repository.MyRepository;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -69,10 +74,13 @@ public  class UserController extends AbstractBaseController<User, Long> {
         }
 
         user = new User();
+        String captcha = DateFormatUtils.format(new Date(), "yyyyMMdd") + RandomStringUtils.random(22, "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+
         user.setEmail(email);
         user.setPassword(DigestUtils.md5Hex(password));
         user.setNickName(nickName);
         user.setType(type);
+        user.setCaptcha(captcha);
         user = userService.generateOptionalInfo(user, request);
 
 
@@ -85,6 +93,7 @@ public  class UserController extends AbstractBaseController<User, Long> {
             return res;
         }
 
+        commonEmail.sendTextMail("http://localhost:8080/user/",user.getId(), email, captcha);
 
         res.put("success", "1");
         return res;
@@ -94,7 +103,7 @@ public  class UserController extends AbstractBaseController<User, Long> {
     /**
      * 登录
      */
-    @RequestMapping("login")
+      @RequestMapping("login")
     public Map<String, Object> login(
             @RequestParam String email,
             @RequestParam String password,
@@ -116,18 +125,42 @@ public  class UserController extends AbstractBaseController<User, Long> {
 
     }
 
+
     /**
-     * 登录
+     * 激活
      */
-    @RequestMapping("send")
-    public Map<String, Object> send() {
+    @RequestMapping("activateAccount")
+    public Map<String, Object> activateAccount(
+            @RequestParam long id,
+            @RequestParam String captcha,
+            Model model,HttpServletResponse response) {
 
         Map<String, Object> res = new HashMap<>();
 
-        commonEmail.sendTextMail("http://localhost:8080/",1l, "361714571@qq.com", "123456");
+        User user;
+        user = userRepository.findOne(id);
+        if(user==null){
+            res.put("success", "0");
+            res.put("message", "没有该用户");
+            return res;
+        }
 
+        if(!user.getCaptcha().equals(captcha)){
+            res.put("success", "0");
+            res.put("message", "验证码不正确");
+            return res;
+        }
+
+        user.setStatus(1);
+        user.setCaptcha("");
+        userRepository.save(user);
+        model.addAttribute("currentUser", user);
         res.put("success", "1");
-
+        try {
+            response.sendRedirect("/html/index.html");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return res;
 
     }
