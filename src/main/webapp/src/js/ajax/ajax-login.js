@@ -17,7 +17,7 @@ function ajaxlogin(email, password, ok, fail, error) {
                 fail(result);
             }
         },
-        error: error()
+        error: error
         //complete
     })
 }

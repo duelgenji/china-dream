@@ -11,7 +11,7 @@ function ajaxmodify(params, ok, fail, error) {
                 fail(result);
             }
         },
-        error: error()
+        error: error
         //complete
     })
 }

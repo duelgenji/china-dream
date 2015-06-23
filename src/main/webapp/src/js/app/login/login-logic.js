@@ -56,6 +56,8 @@ define("login-logic", ["jquery", "user-repos"], function(require, exports) {
 				//	path: "/",
 				//	security: true
 				//});
+				alert(data);
+				sessionStorage.chinaDream_userInfo = data;
 
 				location.href = "index.html";
 
