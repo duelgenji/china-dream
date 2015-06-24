@@ -49,8 +49,6 @@ define("modifyUserInfo-logic", ["user-repos", "jquery", "pure-dialog", "pure-val
      *   密码/确认密码（必填+相同)
      */
     function fn_companyCheck() {
-        console.log('com');
-
         var
             isError = false,
             doms = $("#input_companyName,#industryCode,#provinceCode,#ownershipCode,#input_website");

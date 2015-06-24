@@ -243,7 +243,7 @@ define("register-logic", ["user-repos", "jquery", "pure-dialog", "pure-validator
     function fn_submitForm() {
 
         var params = registerParams();
-        console.log(params);
+        //console.log(params);
 
         if (fn_checkSubmit()) {
 

@@ -2,14 +2,14 @@
  * 保存登陆信息
  */
 function saveUserInfo(userInfo) {
-    sessionStorage.chinaDream_userInfo = userInfo;
+    sessionStorage.chinaDream_userInfo = JSON.stringify(userInfo);
 }
 
 /**
  * 读取登陆信息
  */
 function loadUserInfo() {
-    return sessionStorage.chinaDream_userInfo;
+    return eval("(" + sessionStorage.chinaDream_userInfo + ")");
 }
 
 /**
@@ -23,14 +23,14 @@ function clearUserInfo() {
  * 保存账号密码
  */
 function saveAccount(account) {
-    localStorage.chinaDream_account = account;
+    localStorage.chinaDream_account = JSON.stringify(account);
 }
 
 /**
  * 读取账号密码
  */
 function loadAccount() {
-    return localStorage.chinaDream_account;
+    return eval("(" + localStorage.chinaDream_account + ")");
 }
 
 /**
@@ -45,7 +45,7 @@ define("main", ["systemDefine-repos", "pure-dialog"], function (require, exports
         base = ((location.origin || (location.protocol + "//" + location.hostname + ":" + (location.port || "80"))) + "/ChinaDream"),
 
         headerHtml =
-            '  <div id="site_nav" role="navigation">' + '    <div class="ui-sn-container">' + '      <p class="ui-welcome">' + '        <em>Hello Dreamer! 您好:<span id="loginTitle"></span></em>' + '        <div class="scroll_div">' + '          <ul class="scroll_ul" id="scrollarea">' + '          </ul>' + '         </div>' + '      </p>' + '      <ul class="ui-quick-menu" id="quick_menu" style="display:none;">' + '        <li class="ui-sn_login">' + '          <a target="_self" href="login.html" title="登录">登录</a>' + '        </li>' + '        <li class="ui-sn_reg">' + '          <a href="register.html" title="还等什么亲，赶快去注册吧！">注册</a>' + '        </li></ul>' + '      <ul class="ui-quick-menu" id="loginout_menu" style="display:none;">' + '        <li class="ui-sn_reg" >' + '          <a href="modifyUserInfo.html">修改资料</a>' + '        </li>' + '        <li class="ui-sn_reg" >' + '          <a id="a_loginOut">退出</a>' + '        </li>' + '      </ul>' + '    </div>' + '  </div>' + '  <div style="position: absolute;width: 100%;"></div>' + '  <div class="ui-header">' + '    <h1 id="logo">' + '      <span class="mlogo">' + '        <div id="J_FpLogo">' + '          <a class="" href="index.html" title="我的中国梦">' + '            <img src="%1/image/logo.png" height="124" width="290" alt="我的中国梦">' + '          </a>' + '        </div>' + '      </span>' + '    </h1>' + '    <div class="ui-query">' + '      <div id="search">' + '        <div class="ui-search-combox">' + '          <input id="mq" type="text" name="search" value="" placeholder="请输入关键字">' + '        </div>' + '        <button type="button" title="查找对应询价名称" id="btn_search">搜索</button>' + '      </div>' + '    </div>' + '    <div class="ui-nav clearfloat">' + '        <ul id="nav">' + '          <li data-mod="index" data-link="index.html">' + '            <a title="询价大厅">询价大厅</a>' + '          </li>' + '          <li data-mod="usercenter" data-link="userRoom.html">' + '            <a title="用户大厅" >用户大厅</a>' + '          </li>' + '          <li data-mod="selfcenter" data-link="myZone.html">' + '            <a title="我的主页">我的主页</a>' + '          </li>' + '          <li data-mod="createinquiry" data-link="inquiryNew.html">' + '            <a title="询价发布" >发布询价/梦想</a>' + '          </li>' + '          <li data-mod="help">' + '            <a title="新手上路">新手上路</a>' + '          </li>' + '        </ul>' + '      </div>' + '  </div>',
+            '  <div id="site_nav" role="navigation">' + '    <div class="ui-sn-container">' + '      <p class="ui-welcome">' + '        <em>Hello Dreamer! 您好:<span id="loginTitle"></span></em>' + '        <div class="scroll_div">' + '          <ul class="scroll_ul" id="scrollarea">' + '          </ul>' + '         </div>' + '      </p>' + '      <ul class="ui-quick-menu" id="quick_menu" style="display:none;">' + '        <li class="ui-sn_login">' + '          <a target="_self" href="login.html" title="登录">登录</a>' + '        </li>' + '        <li class="ui-sn_reg">' + '          <a href="register.html" title="还等什么亲，赶快去注册吧！">注册</a>' + '        </li></ul>' + '      <ul class="ui-quick-menu" id="loginout_menu" style="display:none;">' + '        <li class="ui-sn_reg" >' + '          <a href="modifyUserInfo.html">设置</a>' + '        </li>' + '        <li class="ui-sn_reg" >' + '          <a id="a_loginOut">退出</a>' + '        </li>' + '      </ul>' + '    </div>' + '  </div>' + '  <div style="position: absolute;width: 100%;"></div>' + '  <div class="ui-header">' + '    <h1 id="logo">' + '      <span class="mlogo">' + '        <div id="J_FpLogo">' + '          <a class="" href="index.html" title="我的中国梦">' + '            <img src="%1/image/logo.png" height="124" width="290" alt="我的中国梦">' + '          </a>' + '        </div>' + '      </span>' + '    </h1>' + '    <div class="ui-query">' + '      <div id="search">' + '        <div class="ui-search-combox">' + '          <input id="mq" type="text" name="search" value="" placeholder="请输入关键字">' + '        </div>' + '        <button type="button" title="查找对应询价名称" id="btn_search">搜索</button>' + '      </div>' + '    </div>' + '    <div class="ui-nav clearfloat">' + '        <ul id="nav">' + '          <li data-mod="index" data-link="index.html">' + '            <a title="询价大厅">询价大厅</a>' + '          </li>' + '          <li data-mod="usercenter" data-link="userRoom.html">' + '            <a title="用户大厅" >用户大厅</a>' + '          </li>' + '          <li data-mod="selfcenter" data-link="myZone.html">' + '            <a title="我的主页">我的主页</a>' + '          </li>' + '          <li data-mod="createinquiry" data-link="inquiryNew.html">' + '            <a title="询价发布" >发布询价/梦想</a>' + '          </li>' + '          <li data-mod="help">' + '            <a title="新手上路">新手上路</a>' + '          </li>' + '        </ul>' + '      </div>' + '  </div>',
 
         footerHtml =
             ' <div class="ui-title">' + '    <span>中梦国网</span>' + '  </div>' + '  <div class="ui-zhinan">' + '    <dl>' + '      <dt></dt>' + '      <dd>' + '        <a href="#">写在开始</a>' + '        <a href="#">产生背景</a>' + '        <a href="#">案例分析</a>' + '      </dd>' + '    </dl>' + '    <dl>' + '      <dt></dt>' + '      <dd>' + '        <a href="#">提问回答(Q&A)</a>' + '        <a href="#">公司章程(节选)</a>' + '        <a href="#">采购规则(节选)</a>' + '      </dd>' + '    </dl>' + '    <dl>' + '      <dt></dt>' + '      <dd>' + '        <a href="#">接受捐赠</a>' + '        <a href="#">与我联系</a>' + '        <a href="#">文件下载</a>' + '      </dd>' + '    </dl>' + '    <dl>' + '      <dt></dt>' + '      <dd>' + '        <a href="#">周公吐哺</a>' + '        <a href="#">核心价值</a>' + '        <a href="#">投诉建议</a>' + '        <a href="#">问题举报</a>' + '      </dd>' + '    </dl>' + '  </div>' + '  <div class="ui-share">' + '    <a href="http://t.qq.com/mychinadreams" target="_blank">' + '      <img src="%1/image/weiboicon32.png" height="32" width="32" alt="腾讯微博" title="分享至腾讯微博">' + '    </a>' + '    <a href="http://www.weibo.com/5511866263/profile?topnav=1&wvr=6" target="_blank" title="分享至新浪微博">' + '      <img src="%1/image/weibo.png" height="32" width="36" alt="新浪微博">' + '    </a>' + '    <a id="weixin">' + '      <img src="%1/image/weixin.png" height="32" width="38" alt="微信" title="微信扫一扫">' + '      <div id="weixinLogo" style="display: none;">' + '        <div class="ui-weicode"></div>' + '        <h4>中国梦 等你来</h4>' + '        <b></b>' + '      </div>' + '    </a>' + '  </div>' + '  <div class="ui-beian clearfloat">' + '    <span>© COPYRIGHT 2015-2018 <a href="http://www.miitbeian.gov.cn/" target="_blank">沪ICP备15008817</a>  mychinadreams.com</span>' + '  </div>',
@@ -121,8 +121,7 @@ define("main", ["systemDefine-repos", "pure-dialog"], function (require, exports
         } else {
             $("#quick_menu").css("display", "none");
             $("#loginout_menu").css("display", "");
-            $("#loginTitle").text(loadUserInfo().nickname);
-
+            $("#loginTitle").text(loadUserInfo().nickName);
         }
 
         $("#a_loginOut").click(fn_loginOut);
@@ -208,7 +207,6 @@ define("main", ["systemDefine-repos", "pure-dialog"], function (require, exports
     }
 
 
-
     /**
      * 登录信息
      * @type {[type]}
@@ -223,8 +221,6 @@ define("main", ["systemDefine-repos", "pure-dialog"], function (require, exports
         var isLogin = !!loadUserInfo();
         var status = 1;
 
-        console.log(isLogin);
-
         if (!isLogin) {
             // 获取登陆信息
             $.ajax({
@@ -233,7 +229,6 @@ define("main", ["systemDefine-repos", "pure-dialog"], function (require, exports
                 async: false,
                 dataType: "json",
                 success: function (result) {
-                    console.log(result);
                     if (result.success == 1) {
                         isLogin = true;
                         saveUserInfo(result);
@@ -247,7 +242,7 @@ define("main", ["systemDefine-repos", "pure-dialog"], function (require, exports
         if (!isLogin) {
             //  如本地有账号信息，尝试自动登陆
             var account = loadAccount();
-            if (account){
+            if (account) {
                 $.ajax({
                     url: "../user/login",
                     type: "post",
@@ -255,7 +250,6 @@ define("main", ["systemDefine-repos", "pure-dialog"], function (require, exports
                     dataType: "json",
                     data: account,
                     success: function (result) {
-                        console.log(result);
                         if (result.success == 1) {
                             isLogin = true;
                             saveUserInfo(result);
@@ -298,10 +292,9 @@ define("main", ["systemDefine-repos", "pure-dialog"], function (require, exports
 
         $.ajax({
             url: "../user/logout",
-            type : "post",
+            type: "post",
             dataType: "json",
             success: function (result) {
-                console.log('111'+result);
                 if (result.success == 1) {
                     location.href = "index.html";
                 }

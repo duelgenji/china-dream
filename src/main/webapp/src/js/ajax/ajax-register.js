@@ -5,7 +5,6 @@ function ajaxregister(params, ok, fail, error) {
         dataType: "json",
         data : params,
         success: function (result) {
-            console.log(result);
             if (result.success == 1) {
                 ok(result);
             } else {

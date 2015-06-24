@@ -10,7 +10,6 @@ function ajaxlogin(email, password, ok, fail, error) {
         dataType: "json",
         data : data,
         success: function (result) {
-            console.log(result);
             if (result.success == 1) {
                 ok(result);
             } else {
