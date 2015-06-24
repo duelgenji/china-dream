@@ -105,47 +105,6 @@ define("register-logic", ["user-repos", "jquery", "pure-dialog", "pure-validator
             buttons: []
         };
 
-
-    /**
-     * 企业用户注册验证
-     *   账户（必填）
-     *   密码/确认密码（必填+相同)
-     */
-    function fn_companyCheck() {
-        var
-            isError = false,
-            doms = $("#input_companyName,#industryCode,#provinceCode,#ownershipCode,#input_website");
-
-        for (var i = 0, l = doms.length, dom; i < l; i++) {
-            dom = $(doms[i]);
-
-            if ((i == 0 || i == 4) && validMod.isEmptyOrNull(dom.val())) {
-                showErrorTip(dom.data("pos"), dom.attr("placeholder"));
-                isError = true;
-                break;
-            }
-
-            if (dom.val() == "0") {
-                showErrorTip(dom.data("pos"), dom.data("errmsg"));
-                isError = true;
-                break;
-            }
-        }
-
-        return !isError;
-    }
-
-    /**
-     * 群用户注册验证
-     *   群大小(数字)
-     *   群号
-     *   群名称
-     *   群简介
-     */
-    function fn_groupCheck() {
-        return true;
-    }
-
     function showErrorTip(errorPos, errorMsg) {
         window.scrollTo(0, 0);
         $("#mainMask").css("display", "block");
@@ -154,34 +113,38 @@ define("register-logic", ["user-repos", "jquery", "pure-dialog", "pure-validator
     }
 
     function registerParams() {
-        var type = $("ul.ui-tab li.active").first().data("type");
-        var typeCode = 1;
-        switch (type) {
-            case "p":
-                typeCode = 1;
-                break;
-            case "c":
-                typeCode = 2;
-                break;
-            case "g":
-                typeCode = 3;
-                break;
-        }
-
+        //var type = $("ul.ui-tab li.active").first().data("type");
+        //var typeCode = 1;
+        //switch (type) {
+        //    case "p":
+        //        typeCode = 1;
+        //        break;
+        //    case "c":
+        //        typeCode = 2;
+        //        break;
+        //    case "g":
+        //        typeCode = 3;
+        //        break;
+        //}
+        //
+        //
+        //var params = {};
+        //params.type = typeCode;
+        //
+        //var li = $("#form").find("[data-type=" + type + "], [data-type='pcg']");
+        //var inputs = li.find("input, select, textarea");
+        //
+        //inputs.each(function () {
+        //    var name;
+        //    var value;
+        //    if ((value = $(this).val()) != "" && (name = $(this).attr("name")) != null) {
+        //        params[name] = value;
+        //    }
+        //});
 
         var params = {};
-        params.type = typeCode;
 
-        var li = $("#form").find("[data-type=" + type + "], [data-type='pcg']");
-        var inputs = li.find("input, select, textarea");
-
-        inputs.each(function () {
-            var name;
-            var value;
-            if ((value = $(this).val()) != "" && (name = $(this).attr("name")) != null) {
-                params[name] = value;
-            }
-        });
+        params[$("#input_psw").attr("name")] = $("#input_psw").val();
 
         return params;
     }
@@ -192,11 +155,11 @@ define("register-logic", ["user-repos", "jquery", "pure-dialog", "pure-validator
 
             type = $(".ui-tab li.active").data("type"),
 
-            doms = $("#input_nickName,#input_email,#input_psw,#input_psw2");
+            doms = $("#input_psw,#input_psw2");
 
         for (var i = 0, l = doms.length, dom, val, psw; i < l; i++) {
             val = (dom = $(doms[i])).val();
-            if (i == 2) {
+            if (i == 0) {
                 psw = val;
             }
 
@@ -206,30 +169,11 @@ define("register-logic", ["user-repos", "jquery", "pure-dialog", "pure-validator
                 break;
             }
 
-            if (i == 1 && !validMod.isEmail(val)) {
+            if (i == 1 && val !== psw) {
                 showErrorTip(dom.data("pos"), dom.data("errmsg"));
                 isError = true;
                 break;
             }
-
-            if (i == 3 && val !== psw) {
-                showErrorTip(dom.data("pos"), dom.data("errmsg"));
-                isError = true;
-                break;
-            }
-        }
-
-        if (isError)
-            return false;
-
-
-        switch (type) {
-            case "c":
-                isError = !fn_companyCheck();
-                break;
-            case "g":
-                isError = !fn_groupCheck();
-                break;
         }
 
         return !isError;
@@ -242,30 +186,28 @@ define("register-logic", ["user-repos", "jquery", "pure-dialog", "pure-validator
 
     function fn_submitForm() {
 
-        var params = registerParams();
-        console.log(params);
-
         if (fn_checkSubmit()) {
+
+            var params = registerParams();
 
             var dialog = dialogMod(regCallDg)
                 .showModal()
                 .content('<div><img src="../image/loading.gif" alt="" />正在提交中,请耐心等候!</div>');
 
-            ajaxregister(params, function () {
-                dialog.content(regOkHtml).title("注册成功");
+            ajaxmodifypsw(params, function () {
+                dialog.content(regOkHtml).title("修改成功");
                 dialog.close();
 
-                location.href = "emailSent.html";
+                location.href = "index.html";
             }, function (result) {
                 var message = result.message;
                 if (validMod.isEmptyOrNull(message)) {
-                    message = "对不起,服务端异常,您目前无法注册!";
+                    message = "对不起,服务端异常,您目前无法修改密码!";
                 }
-                showMessage(message);
 
-                //$("#mainMask").css("display", "block");
-                //$("#bubbleLayer").addClass("bubbleLayer-show").css("top", 160);
-                //$("#bubbleLayerWrap .error-tt p").text("对不起,服务端异常,您目前无法注册!");
+                $("#mainMask").css("display", "block");
+                $("#bubbleLayer").addClass("bubbleLayer-show").css("top", 160);
+                $("#bubbleLayerWrap .error-tt p").text(message);
 
                 dialog.content(regFailHtml)
                     .title("注册失败!")
@@ -275,11 +217,9 @@ define("register-logic", ["user-repos", "jquery", "pure-dialog", "pure-validator
                     }]);
                 dialog.close();
             }, function () {
-                showMessage("对不起,服务端异常,您目前无法注册!");
-
-                //$("#mainMask").css("display", "block");
-                //$("#bubbleLayer").addClass("bubbleLayer-show").css("top", 160);
-                //$("#bubbleLayerWrap .error-tt p").text("对不起,服务端异常,您目前无法注册!");
+                $("#mainMask").css("display", "block");
+                $("#bubbleLayer").addClass("bubbleLayer-show").css("top", 160);
+                $("#bubbleLayerWrap .error-tt p").text("对不起,服务端异常,您目前无法修改密码!");
 
                 dialog.content(regErrorHtml)
                     .title("注册异常")
@@ -297,63 +237,11 @@ define("register-logic", ["user-repos", "jquery", "pure-dialog", "pure-validator
      * @return {[type]} [description]
      */
     function fn_initEvent() {
-        $("ul.ui-tab li").click(function () {
-
-            $("input[type=text],input[type=password]").val('');
-
-            $("#mainMask").css("display", "none");
-            $("#bubbleLayer").removeClass("bubbleLayer-show");
-            $("#bubbleLayerWrap .error-tt p").text("");
-
-            var type = $(this).removeClass("active").addClass('active').siblings().removeClass('active').end().data("type");
-
-            var currentLi = $("ul.ui-items li[data-type=" + type + "]");
-
-            var hideLi;
-
-            switch (type) {
-                case "p":
-                    hideLi = $("ul.ui-items li[data-type=c], ul.ui-items li[data-type=g]");
-                    break;
-                case "c":
-                    hideLi = $("ul.ui-items li[data-type=p], ul.ui-items li[data-type=g]");
-                    break;
-                case "g":
-                    hideLi = $("ul.ui-items li[data-type=p], ul.ui-items li[data-type=c]");
-                    break;
-            }
-
-            currentLi.siblings().css("display", "");
-            hideLi.css("display", "none");
-
-        });
-
-        $("#chk_xieyi").click(function () {
-
-            var status = parseInt($("#status").val());
-
-            $("#btn_confirm")[status == 1 ? "attr" : "removeAttr"]("disabled", "disabled");
-
-            $("#status").val(1 - status);
-        })
-
         $("#btn_confirm").click(fn_submitForm);
-
-        $("#serviceAgreement").click(function () {
-            //$("#myModal").modal('toggle');
-            //window.open("serviceAgreement.html");
-            //dialogMod(serviceDg).showModal().iframe("serviceAgreement.html");
-        });
 
         $("input, select, textarea").on("focus", function() {
             $("#mainMask").css("display", "none");
             $("#bubbleLayer").removeClass("bubbleLayer-show");
-        });
-
-        //日期选择事件注册
-        $("#calendar_ctrl").click(function (event) {
-            event.stopPropagation();
-            __showCalendar(event, "birthday");
         });
     }
 

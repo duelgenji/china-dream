@@ -18,7 +18,6 @@ define("login-logic", ["jquery", "user-repos"], function(require, exports) {
 		});
 
 		$("#btn_login").click(function() {
-
 			var val = $("#input_user").val(),
 				psw;
 
@@ -40,27 +39,14 @@ define("login-logic", ["jquery", "user-repos"], function(require, exports) {
 			}
 
 			ajaxlogin(val,psw,function(data) {
-				//var date = $("#hd_savelogin").val() == "1" ? 10 : (new Date().getTime() + (30 * 60 * 1000));
-                //
-				//$.cookie("username", encodeURI(val), {
-				//	expires: date,
-				//	path: "/",
-				//	security: true
-				//});
-				//$.cookie("usertype", $("#ul_loginType li.active").data("type"), {
-				//	expires: date,
-				//	path: "/"
-				//});
-				//$.cookie("nickname", data, {
-				//	expires: date,
-				//	path: "/",
-				//	security: true
-				//});
-				//alert(data);
-				sessionStorage.chinaDream_userInfo = data;
+				var account = {}
+				account.email = val;
+				account.password = psw;
+				saveAccount(account);
+
+				saveUserInfo(data);
 
 				location.href = "index.html";
-
 			}, function() {
 				$("#mainMask").css("display", "block");
 				$("#bubbleLayer").addClass("bubbleLayer-show").css("top", 160);

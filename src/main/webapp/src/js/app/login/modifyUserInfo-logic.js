@@ -23,7 +23,7 @@ define("modifyUserInfo-logic", ["user-repos", "jquery", "pure-dialog", "pure-val
 
         regErrorHtml = '<div class="ui-regTip"><span><img class="ui-tipErrorIcon"/>对不起,注册出现异常!</span></div>',
 
-        type = 'p',
+        type = 'c',
 
         serviceDg = {
             id: "serviceDg",
@@ -49,6 +49,8 @@ define("modifyUserInfo-logic", ["user-repos", "jquery", "pure-dialog", "pure-val
      *   密码/确认密码（必填+相同)
      */
     function fn_companyCheck() {
+        console.log('com');
+
         var
             isError = false,
             doms = $("#input_companyName,#industryCode,#provinceCode,#ownershipCode,#input_website");
@@ -91,7 +93,6 @@ define("modifyUserInfo-logic", ["user-repos", "jquery", "pure-dialog", "pure-val
     }
 
     function modifyUserInfoParams() {
-        var type = $("ul.ui-tab li.active").first().data("type");
         var typeCode = 1;
         switch (type) {
             case "p":
@@ -124,8 +125,6 @@ define("modifyUserInfo-logic", ["user-repos", "jquery", "pure-dialog", "pure-val
     function fn_checkSubmit() {
 
         var isError = false,
-
-            type = $(".ui-tab li.active").data("type"),
 
             //doms = $("#input_nickName,#input_email,#input_psw,#input_psw2");
             doms = $("#input_nickName");
@@ -187,7 +186,7 @@ define("modifyUserInfo-logic", ["user-repos", "jquery", "pure-dialog", "pure-val
                 .showModal()
                 .content('<div><img src="../image/loading.gif" alt="" />正在提交中,请耐心等候!</div>');
 
-            ajaxregister(params, function () {
+            ajaxmodify(params, function () {
                 dialog.content(regOkHtml).title("注册成功");
                 dialog.close();
 
@@ -195,7 +194,7 @@ define("modifyUserInfo-logic", ["user-repos", "jquery", "pure-dialog", "pure-val
             }, function (result) {
                 var message = result.message;
                 if (validMod.isEmptyOrNull(message)) {
-                    message = "对不起,服务端异常,您目前无法注册!";
+                    message = "对不起,服务端异常,您目前无法修改信息!";
                 }
                 showMessage(message);
 
@@ -211,7 +210,7 @@ define("modifyUserInfo-logic", ["user-repos", "jquery", "pure-dialog", "pure-val
                     }]);
                 dialog.close();
             }, function () {
-                showMessage("对不起,服务端异常,您目前无法注册!");
+                showMessage("对不起,服务端异常,您目前无法修改信息!");
 
                 //$("#mainMask").css("display", "block");
                 //$("#bubbleLayer").addClass("bubbleLayer-show").css("top", 160);
@@ -236,9 +235,7 @@ define("modifyUserInfo-logic", ["user-repos", "jquery", "pure-dialog", "pure-val
 
         inputs.each(function() {
             var value = params[$(this).attr('name')];
-            console.log(value);
             if (!validMod.isEmptyOrNull(value)) {
-                console.log(value);
                 $(this).val(value);
             }
         })
@@ -252,7 +249,7 @@ define("modifyUserInfo-logic", ["user-repos", "jquery", "pure-dialog", "pure-val
      */
     function fn_initEvent() {
 
-        showOriginInfo("g",{realNameOpen:"1",email:"123123@123.com"});
+        showOriginInfo(type,{realNameOpen:"1",email:"123123@123.com"});
 
         $("#chk_xieyi").click(function () {
 
@@ -269,6 +266,11 @@ define("modifyUserInfo-logic", ["user-repos", "jquery", "pure-dialog", "pure-val
             //$("#myModal").modal('toggle');
             //window.open("serviceAgreement.html");
             //dialogMod(serviceDg).showModal().iframe("serviceAgreement.html");
+        });
+
+        $("input, select, textarea").on("focus", function() {
+            $("#mainMask").css("display", "none");
+            $("#bubbleLayer").removeClass("bubbleLayer-show");
         });
 
         //日期选择事件注册
