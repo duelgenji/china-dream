@@ -6,13 +6,11 @@ import com.dream.repository.user.UserGroupInfoRepository;
 import com.dream.repository.user.UserPersonalInfoRepository;
 import com.dream.repository.user.UserRepository;
 import com.dream.service.user.UserService;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -112,6 +110,28 @@ public class UserInfoController {
 
         res.put("success",1);
         res.put("data",userList);
+        return res;
+    }
+
+    /**
+     * 修改密码
+     */
+    @RequestMapping("modifyPassword")
+    public Map<String, Object> modifyPassword(
+            @RequestParam String password,
+            @ModelAttribute("currentUser") User user) {
+        Map<String, Object> res = new HashMap<>();
+
+        if(user.getId()==null){
+            res.put("success",0);
+            res.put("message","请先登录");
+            return res;
+        }
+
+        user.setPassword(DigestUtils.md5Hex(password));
+        userRepository.save(user);
+
+        res.put("success",1);
         return res;
     }
 
