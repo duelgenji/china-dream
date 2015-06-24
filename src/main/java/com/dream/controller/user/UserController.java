@@ -11,10 +11,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -129,9 +126,30 @@ public  class UserController extends AbstractBaseController<User, Long> {
 
     }
 
+    /**
+     * 登出
+     */
+    @RequestMapping("logout")
+    public Map<String, Object> logout(
+            @ModelAttribute("currentUser") User user,
+            Model model) {
+
+        Map<String, Object> res = new HashMap<>();
+
+
+        if(user.getId()!=null){
+            model.addAttribute("currentUser", new User());
+        }
+
+        res.put("success", "1");
+
+        return res;
+
+    }
+
 
     /**
-     * 激活
+     * 邮箱激活
      */
     @RequestMapping("activateAccount")
     public Map<String, Object> activateAccount(
