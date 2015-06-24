@@ -22,12 +22,12 @@ public class CommonEmail {
         //smtp host
         sEmail.setHostName("smtp.mxhichina.com");
         //登陆邮件服务器的用户名和密码
-        sEmail.setAuthentication("postmaster@qudiaoyan.cn", "Qubaopen2013");
+        sEmail.setAuthentication("info@mychinadreams.com", "Macbook010");
         //接收人
         try {
             sEmail.addTo(email);
             //发送人
-            sEmail.setFrom("postmaster@qudiaoyan.cn", "中梦国网");
+            sEmail.setFrom("info@mychinadreams.com", "中梦国网");
             //标题
             StringBuffer buffer = new StringBuffer();
             buffer.append("<img src='http://121.40.143.120:8080/ChinaDream/image/logo.png'/>");
@@ -71,12 +71,12 @@ public class CommonEmail {
         //smtp host
         sEmail.setHostName("smtp.mxhichina.com");
         //登陆邮件服务器的用户名和密码
-        sEmail.setAuthentication("postmaster@qudiaoyan.cn", "Qubaopen2013");
+        sEmail.setAuthentication("info@mychinadreams.com", "Macbook010");
         //接收人
         try {
             sEmail.addTo(email);
             //发送人
-            sEmail.setFrom("postmaster@qudiaoyan.cn", "中梦国网");
+            sEmail.setFrom("info@mychinadreams.com", "中梦国网");
             //标题
             StringBuffer buffer = new StringBuffer();
             buffer.append("<img src='http://121.40.143.120:8080/ChinaDream/image/logo.png'/>");
