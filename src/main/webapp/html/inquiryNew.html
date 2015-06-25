@@ -10,508 +10,624 @@
     <title>我的中国梦-询价发布</title>
     <link rel="stylesheet" href="../dest/css/base.css">
     <link rel="stylesheet" href="../dest/css/plugins.css">
-	<link rel="stylesheet" href="../dest/css/inquiry.css">
+    <link rel="stylesheet" href="../dest/css/inquiry.css">
+    <!--<link rel="stylesheet" href="../src/css/bootstrap/bootstrap.css">-->
+
+    <style>
+
+        .dropdown {
+            position: relative;
+
+            /*line-height: 1.5;*/
+
+            /*width: 248px;*/
+            /*height: 30px;*/
+            /*margin-left: 20px;*/
+
+            /*vertical-align: middle;*/
+
+            /*color: #555;*/
+            /*border: 1px solid #ccc;*/
+            /*border-radius: 3px;*/
+            /*background-color: #fff;*/
+            /*box-shadow: inset 0 1px 1px rgba(0,0,0,.075);*/
+        }
+
+        .dropdown-toggle:focus {
+            outline: 0;
+        }
+
+        .dropdown-menu {
+            background-color: #e6e6e6;
+            width: 248px;
+            margin-left: 230px !important;
+            min-width: 20px;
+            overflow-x: div_stepsdden;
+            border-radius: 0;
+            max-height: 200px;
+            overflow-y: auto;
+            /*margin: 0px 12px;*/
+
+            position: absolute !important;
+            top: 100%;
+            left: 0;
+            z-index: 1000;
+            display: none;
+            float: left;
+            padding: 5px 0;
+            font-size: 14px;
+            text-align: left;
+            list-style: none;
+            -webkit-background-clip: padding-box;
+            background-clip: padding-box;
+            border: 1px solid #ccc;
+            -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+        }
+
+        .dropdown-menu li {
+            padding: 0;
+        }
+
+        .dropdown-menu.pull-right {
+            right: 0;
+            left: auto;
+        }
+
+        .dropdown-menu .divider {
+            height: 1px;
+            margin: 9px 0;
+            overflow: hidden;
+            background-color: #e5e5e5;
+        }
+
+        .dropdown-menu > li > a {
+            display: block;
+            padding: 3px 20px;
+            clear: both;
+            font-weight: normal;
+            line-height: 1.42857143;
+            color: #333;
+            white-space: nowrap;
+        }
+
+        .dropdown-menu > li > a:hover,
+        .dropdown-menu > li > a:focus {
+            color: #262626;
+            text-decoration: none;
+            background-color: #f5f5f5;
+        }
+
+        .dropdown-menu > .active > a,
+        .dropdown-menu > .active > a:hover,
+        .dropdown-menu > .active > a:focus {
+            color: #fff;
+            text-decoration: none;
+            background-color: #337ab7;
+            outline: 0;
+        }
+
+        .dropdown-menu > .disabled > a,
+        .dropdown-menu > .disabled > a:hover,
+        .dropdown-menu > .disabled > a:focus {
+            color: #777;
+        }
+
+        .dropdown-menu > .disabled > a:hover,
+        .dropdown-menu > .disabled > a:focus {
+            text-decoration: none;
+            cursor: not-allowed;
+            background-color: transparent;
+            background-image: none;
+            filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+        }
+
+        .open > .dropdown-menu {
+            display: block;
+        }
+
+        .open > a {
+            outline: 0;
+        }
+
+        .dropdown-menu-right {
+            right: 0;
+            left: auto;
+        }
+
+        .dropdown-menu-left {
+            right: auto;
+            left: 0;
+        }
+
+        .dropdown-header {
+            display: block;
+            padding: 3px 20px;
+            font-size: 12px;
+            line-height: 1.42857143;
+            color: #777;
+            white-space: nowrap;
+        }
+
+        .dropdown-backdrop {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 990;
+        }
+
+        .pull-right > .dropdown-menu {
+            right: 0;
+            left: auto;
+        }
+
+        .dropup .caret,
+        .navbar-fixed-bottom .dropdown .caret {
+            content: "";
+            border-top: 0;
+            border-bottom: 4px solid;
+        }
+
+        .dropup .dropdown-menu,
+        .navbar-fixed-bottom .dropdown .dropdown-menu {
+            top: auto;
+            bottom: 100%;
+            margin-bottom: 1px;
+        }
+
+        @media (max-width: 767px) {
+            .navbar-inverse .navbar-nav .open .dropdown-menu > .dropdown-header {
+                border-color: #080808;
+            }
+            .navbar-inverse .navbar-nav .open .dropdown-menu .divider {
+                background-color: #080808;
+            }
+            .navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
+                color: #9d9d9d;
+            }
+            .navbar-inverse .navbar-nav .open .dropdown-menu > li > a:hover,
+            .navbar-inverse .navbar-nav .open .dropdown-menu > li > a:focus {
+                color: #fff;
+                background-color: transparent;
+            }
+            .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a,
+            .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a:hover,
+            .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a:focus {
+                color: #fff;
+                background-color: #080808;
+            }
+            .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > a,
+            .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > a:hover,
+            .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > a:focus {
+                color: #444;
+                background-color: transparent;
+            }
+        }
+
+    </style>
+
 </head>
 <body>
-    <div id="mainPage">
-        <div id="header">
-        </div>
-        <div id="container">
-            <form id="inquiryForm">
-                <div id="div_steps" class="ui-steps">
-                     <ol>
-                        <li class="active"><i>1</i><span>项目信息</span></li>
-                        <li><i>2</i><span>项目联系人</span></li>
-                        <li><i>3</i><span>项目文档</span></li>
-                        <li><i>4</i><span>发布确认</span></li>
-                        <li><i>5</i><span>发布成功</span></li>
-                    </ol>
-                </div>
+<div id="mainPage">
+    <div id="header">
+    </div>
+    <div id="container">
+        <form id="inquiryForm" method="post" enctype="multipart/form-data" accept-charset="utf-8">
+            <div id="div_steps" class="ui-steps">
+                <ol>
+                    <li class="active"><i>1</i><span>项目信息</span></li>
+                    <li><i>2</i><span>项目联系人</span></li>
+                    <li><i>3</i><span>项目文档</span></li>
+                    <li><i>4</i><span>发布确认</span></li>
+                    <li><i>5</i><span>发布成功</span></li>
+                </ol>
+            </div>
             <div class="layer" id="bubbleLayer">
                 <div id="bubbleLayerWrap" class="layer-mid">
-                <div class="error-tt"><p></p></div></div>
+                    <div class="error-tt"><p></p></div>
+                </div>
                 <div class="layer-ft"></div>
                 <div class="ui-pure-dialog-arrowA"></div>
                 <div class="ui-pure-dialog-arrowB"></div>
             </div>
-                <div class="ui-create" id="div_step1">
-                    <ul class="ui-items">
-                            <li>
-                                <label>项目询价方:</label>
-                                <input id="userName" name="inquiry.userName" type="text" readonly="readonly"> 
-                                <input id="hd_userName" name="user.userName" type="hidden">  
-                                <input id="hd_inqueryUserName" name="inquiry.userName" type="hidden">  
-                            </li>
-                            <li>
-                                <label>
-                                    项目开始流程:
-                                </label>
-                                <input type="radio" name="inquiry.round" value="0" disabled="disabled" />
-                                <span for="lunshu" class="STYLE1">预告轮&nbsp;(仅限高级用户)</span>                       
-                                <input type="radio" name="inquiry.round" value="1" style="margin-left:30px;" checked="checked" title="第一轮"/>
-                                <span for="lunshu2" class="STYLE1">第一轮&nbsp;(第二轮,第三轮系统会根据时间或者进程情况自动判断)</span>
-                            </li>  
-                            <li>
-                                <label><span class="ui-valid">*</span>&nbsp;项目询价标题:</label>
-                                <input id="title" name="inquiry.title" type="text" placeholder="请输入项目询价标题" data-valid="require" data-pos="319">
-                                <img src="../image/icon-wenhao.png" alt="提示" title="尽可能多的表现询价内容的关键字如(中梦国网50000平方米双数据中心(互为灾难备份系统)建设">
-                            </li>
-                            <li>
-                                    <label>
-                                        <span class="ui-valid">*</span>&nbsp;项目所处行业:
-                                    </label>
-                                    <select id="industryCode" name="inquiry.industryCode" data-valid="require" data-pos="370" placeholder="项目所处行业">
-                                         <option value="">-请选择项目行业-</option>
-                                        
-                                         <option value="mhmx">梦幻梦想</option>
-                                        
-                                         <option value="qsmx">奇思妙想</option>
-                                        
-                                         <option value="gymx">公益梦想</option>
-                                        
-                                         <option value="hymx">行业梦想</option>
-                                        
-                                         <option value="qyfw">企业服务</option>
-                                        
-                                         <option value="gqrz">股权融资</option>
-                                        
-                                         <option value="itcy">IT产业</option>
-                                        
-                                         <option value="fczs">房产租售</option>
-                                        
-                                         <option value="ggwa">广告文案</option>
-                                        
-                                         <option value="gcjz">工程建筑</option>
-                                        
-                                         <option value="yyws">医药卫生</option>
-                                        
-                                         <option value="whys">文化艺术</option>
-                                        
-                                         <option value="fzfz">服装纺织</option>
-                                        
-                                         <option value="zyfw">专业服务</option>
-                                        
-                                         <option value="aqfh">安全防护</option>
-                                        
-                                         <option value="hblh">环保绿化</option>
-                                        
-                                         <option value="lyxx">旅游休闲</option>
-                                        
-                                         <option value="bgwj">办公文教</option>
-                                        
-                                         <option value="dzdg">电子电工</option>
-                                        
-                                         <option value="wjlp">玩具礼品</option>
-                                        
-                                         <option value="fxtz">风险投资</option>
-                                        
-                                         <option value="yjcc">冶金矿产</option>
-                                        
-                                         <option value="syhg">石油化工</option>
-                                        
-                                         <option value="slsd">水利水电</option>
-                                        
-                                         <option value="jtys">交通运输</option>
-                                        
-                                         <option value="xxcy">信息产业</option>
-                                        
-                                         <option value="jxjd">机械机电</option>
-                                        
-                                         <option value="qgsp">轻工食品</option>
-                                        
-                                         <option value="nlmy">农林牧渔</option>
-                                        
-                                         <option value="jjyp">家居用品</option>
-                                        
-                                         <option value="wlbz">物流包装</option>
-                                        
-                                         <option value="tyyp">体育用品</option>
-                                        
-                                         <option value="wjbg">互联网+</option>
-                                        
-                                         <option value="gcjz">软件游戏</option>
-                                        
-                                         <option value="qyfw">强电弱电</option>
-                                        
-                                         <option value="fcwy">债券清算</option>
-                                        
-                                         <option value="fxtg">反向团购</option>
-                                        
-                                         <option value="qt">其他</option>
-                                    </select>    
-                                    <img src="../image/icon-wenhao.png" alt="提示" title="(并非企业所处行业,而是发布询价所处行业 如淘宝网属于互联网行业, 但发布询价“企业员工领导力培训”, 故应选企业服务)"/>
-                            </li>
-                            <li>
-                                
-                                    <label>
-                                        <span class="ui-valid">*</span>&nbsp;项目实施地点:
-                                    </label>
-                                    <select id="provinceCode" name="inquiry.provinceCode" data-valid="require" data-pos="418" placeholder="请选择项目实施地点">
-                                        <option value="">-请选择项目实施地点-</option>
+            <div class="ui-create" id="div_step1">
+                <ul class="ui-items">
+                    <li>
+                        <label>项目询价方:</label>
+                        <input id="userName" type="text" readonly="readonly">
+                        <input id="hd_userName" type="hidden">
+                        <input id="hd_inqueryUserName" type="hidden">
+                    </li>
+                    <li>
+                        <label>
+                            项目开始流程:
+                        </label>
+                        <input type="radio" name="round" value="0" disabled="disabled" title="预告轮"/>
+                        <span for="lunshu" class="STYLE1">预告轮&nbsp;(仅限高级用户)</span>
+                        <input type="radio" name="round" value="1" style="margin-left:30px;" checked="checked"
+                               title="第一轮"/>
+                        <span for="lunshu2" class="STYLE1">第一轮&nbsp;(第二轮,第三轮系统会根据时间或者进程情况自动判断)</span>
+                    </li>
+                    <li>
+                        <label><span class="ui-valid">*</span>&nbsp;项目询价标题:</label>
+                        <input id="title" name="title" type="text" placeholder="请输入项目询价标题" data-valid="require"
+                               data-pos="319">
+                        <img src="../image/icon-wenhao.png" alt="提示"
+                             title="尽可能多的表现询价内容的关键字如(中梦国网50000平方米双数据中心(互为灾难备份系统)建设">
+                    </li>
+                    <li>
+                        <label>
+                            <span class="ui-valid">*</span>&nbsp;项目所处行业:
+                        </label>
 
-                                         <option value="BJj">北京</option>
-                                        
-                                         <option value="TJj">天津</option>
-                                        
-                                         <option value="SHh">上海</option>
-                                        
-                                         <option value="CQy">重庆</option>
-                                        
-                                         <option value="HEBj">河北</option>
-                                        
-                                         <option value="HENy">河南</option>
-                                        
-                                         <option value="YNy">云南</option>
-                                        
-                                         <option value="LNl">辽宁</option>
-                                        
-                                         <option value="HLJh">黑龙江</option>
-                                        
-                                         <option value="HUNx">湖南</option>
-                                        
-                                         <option value="AHw">安徽</option>
-                                        
-                                         <option value="SDl">山东</option>
-                                        
-                                         <option value="XJx">新疆</option>
-                                        
-                                         <option value="JSs">江苏</option>
-                                        
-                                         <option value="ZJz">浙江</option>
-                                        
-                                         <option value="JXg">江西</option>
-                                        
-                                         <option value="HUBe">湖北</option>
-                                        
-                                         <option value="GXg">广西</option>
-                                        
-                                         <option value="GSg">甘肃</option>
-                                        
-                                         <option value="SXj">山西</option>
-                                        
-                                         <option value="NMGm">内蒙</option>
-                                        
-                                         <option value="SXs">陕西</option>
-                                        
-                                         <option value="JLj">吉林</option>
-                                        
-                                         <option value="FJm">福建</option>
-                                        
-                                         <option value="GZg">贵州</option>
-                                        
-                                         <option value="GDy">广东</option>
-                                        
-                                         <option value="QHq">青海</option>
-                                        
-                                         <option value="XZz">西藏</option>
-                                        
-                                         <option value="SCc">四川</option>
-                                        
-                                         <option value="NXn">宁夏</option>
-                                        
-                                         <option value="HANq">海南</option>
-                                        
-                                         <option value="TWt">台湾</option>
-                                        
-                                         <option value="HK">香港</option>
-                                        
-                                         <option value="MC">澳门</option>
-                                        
-                                         <option value="DYDd">钓鱼岛</option>
-                                        
-                                         <option value="GWw">国外</option>
-                                    </select>
-                                    <img src="../image/icon-wenhao.png" alt="提示" title="(并非企业总部所在地, 而是项目所在地,如腾讯公司位于深圳, 要在上海建造腾讯大楼, 故应选上海, 如有多个地点, 可选主要地, 并在以下项目内容中公布细节。)"/>
-                            </li>
-                            <li>
-                                    <label>
-                                        <span class="ui-valid">*</span>&nbsp;项目截止时间:
-                                    </label>
-                                    <input type="hidden" id="hd_purchaseCloseDate" name="inquiry.purchaseCloseDate">
-                                    <input id="purchaseCloseDate" type="text" autocomplete="OFF" style="width:162px;"
-                                    placeholder="请输入项目截止时间"  data-valid="require" data-pos="470">
-                                    <img id="calendar_ctrl" class="ui-calendar_ctrl"/>
-                                    <select id="purchaseCloseDateHour" style="width:59px;margin-left:2px;">
-                                        <option value="1:00">1:00</option>
-                                        <option value="2:00">2:00</option>
-                                        <option value="3:00">3:00</option>
-                                        <option value="4:00">4:00</option>
-                                        <option value="5:00">5:00</option>
-                                        <option value="6:00">6:00</option>
-                                        <option value="7:00">7:00</option>
-                                        <option value="8:00">8:00</option>
-                                        <option value="9:00">9:00</option>
-                                        <option value="10:00" selected="selected">10:00</option>
-                                        <option value="11:00">11:00</option>
-                                        <option value="12:00">12:00</option>
-                                        <option value="13:00">13:00</option>
-                                        <option value="14:00">14:00</option>
-                                        <option value="15:00">15:00</option>
-                                        <option value="16:00">16:00</option>
-                                        <option value="17:00">17:00</option>
-                                        <option value="18:00">18:00</option>
-                                        <option value="19:00">19:00</option>
-                                        <option value="20:00">20:00</option>
-                                        <option value="21:00">21:00</option>
-                                        <option value="22:00">22:00</option>
-                                        <option value="23:00">23:00</option>
-                                        <option value="24:00">24:00</option>
-                                    </select>
-                                    <img src="../image/icon-wenhao.png" alt="提示" title="每次询价最长60天, 建议选用前45天,预留15天缓冲,评标, 3轮总计最长180天,可根据具体情况逐渐缩小采购范围, 直至确定最佳供应商。"/>
-                            </li>
-                            <li>
-                                   <label><span class="ui-valid">*</span>&nbsp;项目总标的:</label>
-                                   <input id="totalPrice" name="inquiry.totalPrice" type="text" placeholder="请输入项目总标的（元）" data-valid="require" data-pos="522" data-errmsg="项目总标的只能是大于0的数字">
-                                
-                                    <img src="../image/icon-wenhao.png" alt="提示" title="所填金额只是大致预算，仅供参考，  并不对之后出价询价产生决定作用， 如实在不愿公开， 可填1元， 但在询价大厅被筛选时可能会被误认为玩笑而影响您的候选人数量"/>
-                            </li>
-                            <li>
-                                <label>
-                                        <span class="ui-valid">*</span>&nbsp;项目的询价方式:
-                                    </label>
-                                    <select id="inquiryMode" name="inquiry.inquiryMode"  data-valid="require" data-pos="575" placeholder="请选择项目询价方式">
-                                         <option value="">-请选择项目询价方式-</option>
-                                         <option value="1" title="&nbsp;&nbsp;&nbsp;&nbsp;&#13;&#13;当询价方勾选全明询价选项后&#10;即所有在本网站注册用户均可在该询价截止时间前看见所有出价方之方案， 报价， 清单及所有文件">全明询价</option>
-                                         <option value="2" title="&nbsp;&nbsp;&nbsp;&nbsp;&#13;&#13;当询价方勾选明询价选项后，&#10;即所有被授权出价方均可在该询价截止时间前看见对手之方案， 报价， 清单及所有文件。&#10;并可多次修改方案和出价">明询价</option>
-                                         <option value="3" title="&nbsp;&nbsp;&nbsp;&nbsp;&#13;&#13;当询价方勾选半明询价选项后，&#10;即所有出价方可在该询价截止时间前仅看见对手之报价。并可多次出价">半明询价</option>
-                                         <option value="4" title="&nbsp;&nbsp;&nbsp;&nbsp;&#13;&#13;当询价方勾选暗询价选项后，&#10;仅询价方可看见出价方之方案， 报价， 清单及所有文件">半暗询价</option>
-                                         <option value="5" title="&nbsp;&nbsp;&nbsp;&nbsp;&#13;&#13;当询价方勾选半暗询价选项后，&#10;仅询价方可看见出价方之方案，及所有不涉及价格之文件，&#10; 而清单及报价均储存于本网站服务器上， 待截止时间后1小时—72小时（用户自行定义）之内发送至询价方">暗询价</option>
-                                         <option value="6" title="&nbsp;&nbsp;&nbsp;&nbsp;&#13;&#13;当询价方勾选全暗询价选项后，&#10;所有出价方可之方案， 报价， 清单及所有文件均储存于本网站服务器上， 待截止时间后1小时—480小时（用户自行定义）之内发送至询价方">全暗询价</option>      
-                                     </select>
-                                     <em>
-                                         <span  title="&nbsp;&nbsp;&nbsp;&nbsp;&#13;&#13;当询价方勾选全明询价选项后，&#10;即所有在本网站注册用户均可在该询价截止时间前看见所有出价方之方案， 报价， 清单及所有文件">全明询价</span>
-                                         <span title="&nbsp;&nbsp;&nbsp;&nbsp;&#13;&#13;当询价方勾选明询价选项后，&#10;即所有被授权出价方均可在该询价截止时间前看见对手之方案， 报价， 清单及所有文件。并可多次修改方案和出价">明询价</span>
-                                         <span title="&nbsp;&nbsp;&nbsp;&nbsp;&#13;&#13;当询价方勾选半明询价选项后，&#10;即所有出价方可在该询价截止时间前仅看见对手之报价。&#10;并可多次出价">半明询价</span>
-                                         <span title="&nbsp;&nbsp;&nbsp;&nbsp;&#13;&#13;当询价方勾选暗询价选项后，&#10;仅询价方可看见出价方之方案， 报价， 清单及所有文件">半暗询价</span>
-                                         <span title="&nbsp;&nbsp;&nbsp;&nbsp;&#13;&#13;当询价方勾选半暗询价选项后，&#10;仅询价方可看见出价方之方案，及所有不涉及价格之文件，&#10; 而清单及报价均储存于本网站服务器上， 待截止时间后1小时—72小时（用户自行定义）之内发送至询价方">暗询价</span>
-                                         <span title="&nbsp;&nbsp;&nbsp;&nbsp;&#13;&#13;当询价方勾选全暗询价选项后，&#10;所有出价方可之方案， 报价， 清单及所有文件均储存于本网站服务器上， 待截止时间后1小时—480小时（用户自行定义）之内发送至询价方">全暗询价</span>
-                                     </em>
-                            </li>
-                            <li>
-                                    <label>项目相关备注内容:</label>
-                                    <textarea id="remarks" name="inquiry.remarks"  rows="10" cols="33" class="ui-textarea" placeholder="请输入项目备注内容:(字数限制在500个字以内)" data-errmsg="备注内容超出500字" data-pos="692"></textarea>
-                                    <select id="remarksOpen" name="inquiry.remarksOpen" class="ui-isopen">                             
-                                        <option value="0">公开</option>
-                                        <option value="2">授权后公开</option>
-                                    </select>
-                            </li>
-                            <li>
-                                
-                                   <label>出价限制:</label>
-                                    <select id="biddingLimit" name="inquiry.biddingLimit">
-                                        <option value="0">不限</option>
-                                        <option value="1">仅接受个人出价</option>
-                                        <option value="2">仅接受企业出价</option>
-                                    </select>
-                            </li>
-                    </ul>
-                </div>
-                <div class="ui-create" id="div_step2" style="display:none;">
-                     <ul class="ui-items">
-                            <li>    
-                                    <label><span class="ui-valid">*</span>&nbsp;联系人姓名:</label>
-                                    <input id="contactName" name="inquiry.contactName" type="text" placeholder="请输入联系人姓名" data-valid="require" data-pos="226">
-                                     <select id="contactNameOpen" name="inquiry.contactNameOpen" class="ui-isopen">                                
-                                        <option value="0">公开</option>
-                                        <option value="1">不公开</option>
-                                        <option value="2">授权后公开</option>
-                                    </select> 
-                                
-                            </li>
-                            <li>
-                                
-                                    <label><span class="ui-valid">*</span>&nbsp;联系人电子邮件:</label>
-                                    <input id="contactMail" name="inquiry.contactMail" type="text" placeholder="请输入联系人电子邮件" data-valid="require" data-pos="277" data-errmsg="邮件格式不正确">
-                                     <select id="contactMailOpen" name="inquiry.contactMailOpen" class="ui-isopen">                      
-                                            <option value="0">公开</option>
-                                            <option value="1">不公开</option>
-                                            <option value="2">授权后公开</option>
-                                    </select>
-                                
-                            </li>
-                            <li>
-                                
-                                 <label><span class="ui-valid">*</span>&nbsp;联系人手机号:</label>
-                                    <input id="contactTelephone" name="inquiry.contactTelephone" type="text" placeholder="请输入联系人手机号" data-valid="require" data-pos="330" data-errmsg="手机格式不正确">
-                                        <select id="contactTelephoneOpen" name="inquiry.contactTelephoneOpen" class="ui-isopen">   
-                                                <option value="0">公开</option>
-                                                <option value="1">不公开</option>
-                                                <option value="2">授权后公开</option>
-                                        </select> 
-                                                                    </li>            
-                            <li>
-                                
-                                    <label>联系人电话:</label>
-                                    <input id="contactTel" name="inquiry.contactTel" type="text" placeholder="请输入联系人电话">
-                                    <select id="contactTelOpen" name="inquiry.contactTelOpen" class="ui-isopen">                                
-                                        <option value="0">公开</option>
-                                        <option value="1">不公开</option>
-                                        <option value="2">授权后公开</option>
-                                    </select>     
-                                
-                            </li>
-                            <li>
-                                    <label>联系人传真:</label>
-                                    <input id="contactFax" name="inquiry.contactFax" type="text" placeholder="请输入联系人传真">
-                                    <select id="contactFaxOpen" name="inquiry.contactFaxOpen" class="ui-isopen">                             
-                                        <option value="0">公开</option>
-                                        <option value="1">不公开</option>
-                                        <option value="2">授权后公开</option>
-                                    </select>
-                            </li>                
-                            <li>
-                                
-                                    <label>联系人微博:</label>
-                                    <input id="contactWeiBo" name="inquiry.contactWeiBo" type="text" placeholder="请输入联系人微博">
-                                      <select id="contactWeiBoOpen" name="inquiry.contactWeiBoOpen" class="ui-isopen">
-                                            <option value="0">公开</option>
-                                            <option value="1">不公开</option>
-                                            <option value="2">授权后公开</option>
-                                        </select>
-                                
-                            </li>              
-                            <li>
-                                    <label>联系人微信号:</label>
-                                        <input id="contactWeiXin" name="inquiry.contactWeiXin" type="text" placeholder="请输入联系人微信号">
-                                           <select id="contactWeiXinOpen"  name="inquiry.contactWeiXinOpen" class="ui-isopen">
-                                                <option value="0">公开</option>
-                                                <option value="1">不公开</option>
-                                                <option value="2">授权后公开</option>
-                                            </select>
-                            </li>  
-                     </ul>
-                </div>
-                <div class="ui-create" id="div_step3" style="display: none;">
-                     <ul class="ui-items">
-                            <li>
-                                <label>具体要求上传(文档、清单、图纸等):</label>                            
-                                <select id="filesOpen" name="inquiry.filesOpen" class="ui-isopen">                              
-                                    <option value="0">公开</option>
-                                    <option value="2">授权后公开</option>
-                                </select>
-                            </li>
-                            <li>
-                                <form method="post" enctype="multipart/form-data" accept-charset="utf-8" target="inquiryNewIframe">  
-                                    <input type="file" name="file1" value="" placeholder="请选择要上传的附件">
-                                    <input type="file" name="file2" value="" placeholder="请选择要上传的附件">
-                                    <input type="file" name="file3" value="" placeholder="请选择要上传的附件">
-                                    <input type="file" name="file4" value="" placeholder="请选择要上传的附件">
-                                    <input type="file" name="file5" value="" placeholder="请选择要上传的附件">
-                                </form>
-                            </li>
-                     </ul>
-                </div>
-                <div class="ui-create" id="div_step4" style="display:none">
-                    <ul class="ui-infoUl">
-                            <li>
-                                <label>项目开始流程:</label>
-                                <span field="round" data-from="attrTitle"></span>
-                            </li>  
-                            <li>
-                                <label>项目询价标题:</label><span field="title"></span>
-                            </li>
-                            <li>
-                                    <label>项目所处行业:
-                                    </label><span field="industryCode" data-from="selectedText"></span>          
-                            </li>
-                            <li>
-                                
-                                    <label>项目实施地点:
-                                    </label><span field="provinceCode" data-from="selectedText"></span>
-                            </li>
-                            <li>
-                                    <label>项目截止时间:
-                                    </label><span field="hd_purchaseCloseDate"></span>
-                            </li>
-                            <li>
-                                   <label>项目总标的:</label>
-                                   <span field="totalPrice"></span>
-                            </li>
-                            <li>
-                                    <label>项目的询价方式:</label>
-                                    <span field="inquiryMode" data-from="selectedText"></span>
-                            </li>
-                            <li>
-                                    <label>项目相关备注内容:</label>
-                                    <span field="remarks"></span>
-                                    (<span field="remarksOpen" data-from="selectedText"></span>)
-                            </li>
-                            <li>   
-                                   <label>出价限制:</label>
-                                   <span field="biddingLimit" data-from="selectedText"></span>
-                            </li>
-                    </ul> 
-                    <ul class="ui-infoUl">
-                            <li>    
-                                    <label>联系人姓名:</label>
-                                    <span field="contactName"></span>
-                                    (<span field="contactNameOpen" data-from="selectedText"></span>)
-                            </li>
-                            <li>
-                                    <label>联系人电子邮件:</label>
-                                    <span field="contactMail"></span>
-                                    (<span field="contactMailOpen" data-from="selectedText"></span>)
-                            </li>
-                            <li>
-                                    <label>联系人手机号:</label>
-                                    <span field="contactTelephone"></span>
-                                    (<span field="contactTelephoneOpen" data-from="selectedText"></span>)
-                            </li>            
-                            <li>
-                                    <label>联系人电话:</label> 
-                                    <span field="contactTel"></span>
-                                    (<span field="contactTelOpen" data-from="selectedText"></span>)
-                            </li>
-                            <li>
-                                    <label>联系人传真:</label>
-                                    <span field="contactFax"></span>
-                                    (<span field="contactFaxOpen" data-from="selectedText"></span>)
-                            </li>                
-                            <li>
-                                    <label>联系人微博:</label>
-                                    <span field="contactWeiBo"></span>
-                                    (<span field="contactWeiBoOpen" data-from="selectedText"></span>)
-                            </li>              
-                            <li>
-                                    <label>联系人微信号:</label>
-                                    <span field="contactWeiXin"></span>
-                                    (<span field="contactWeiXinOpen" data-from="selectedText"></span>)
-                            </li> 
-                    </ul> 
-                    <ul class="ui-infoUl">
-                            <li>    
-                                    <label>项目文档:</label>
-                            </li>
-                    </ul> 
-                </div>
-                <div class="ui-create" id="div_step5" style="display: none;">
-                    
-                </div>
-                <div class="ui-operate">
-                     <button id="btn_pre" type="button" data-pre="1" data-current="1" style="display:none;">上一步</button>
-                     <button id="btn_next" type="button" data-next="2" data-current="1">下一步</button>
-                </div>
-            </form>
-        </div>
-        <div id="footer">
-        </div>
+                        <input type="hidden" id="hd_industryCode" name="industryCode"/>
+
+                        <div class="input-group dropdown">
+                            <input type="text" class="form-control dropdown-input dropdown-toggle"
+                                   data-toggle="dropdown" id="industryCode" data-lastContent=""
+                                   placeholder="输入或选择项目行业"/>
+                            <img src="../image/icon-wenhao.png" alt="提示"
+                                 title="(并非企业所处行业,而是发布询价所处行业 如淘宝网属于互联网行业, 但发布询价“企业员工领导力培训”, 故应选企业服务)"/>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" id="industry-list">
+                            </ul>
+
+                        </div>
+
+                    </li>
+                    <li>
+
+                        <label>
+                            <span class="ui-valid">*</span>&nbsp;项目实施地点:
+                        </label>
+
+                        <input type="hidden" id="hd_provinceCode" name="provinceCode"/>
+
+                        <div class="input-group dropdown">
+                            <input type="text" class="form-control dropdown-input dropdown-toggle"
+                                   data-toggle="dropdown" id="provinceCode" data-lastContent=""
+                                   placeholder="输入或选择项目实施地点"/>
+
+                            <img src="../image/icon-wenhao.png" alt="提示"
+                                 title="(并非企业总部所在地, 而是项目所在地,如腾讯公司位于深圳, 要在上海建造腾讯大楼, 故应选上海, 如有多个地点, 可选主要地, 并在以下项目内容中公布细节。)"/>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" id="province-list">
+                            </ul>
+                        </div>
+
+                    </li>
+                    <li>
+                        <label>
+                            <span class="ui-valid">*</span>&nbsp;项目截止时间:
+                        </label>
+                        <input type="hidden" id="hd_purchaseCloseDate" name="limitDate">
+                        <input id="purchaseCloseDate" type="text" autocomplete="OFF" style="width:156px;"
+                               placeholder="请输入项目截止时间" data-valid="require" data-pos="470">
+                        <img id="calendar_ctrl" class="ui-calendar_ctrl"/>
+                        <select id="purchaseCloseDateHour" style="width:65px;margin-left:2px;">
+                            <option value="1:00">1:00</option>
+                            <option value="2:00">2:00</option>
+                            <option value="3:00">3:00</option>
+                            <option value="4:00">4:00</option>
+                            <option value="5:00">5:00</option>
+                            <option value="6:00">6:00</option>
+                            <option value="7:00">7:00</option>
+                            <option value="8:00">8:00</option>
+                            <option value="9:00">9:00</option>
+                            <option value="10:00" selected="selected">10:00</option>
+                            <option value="11:00">11:00</option>
+                            <option value="12:00">12:00</option>
+                            <option value="13:00">13:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="15:00">15:00</option>
+                            <option value="16:00">16:00</option>
+                            <option value="17:00">17:00</option>
+                            <option value="18:00">18:00</option>
+                            <option value="19:00">19:00</option>
+                            <option value="20:00">20:00</option>
+                            <option value="21:00">21:00</option>
+                            <option value="22:00">22:00</option>
+                            <option value="23:00">23:00</option>
+                            <option value="24:00">24:00</option>
+                        </select>
+                        <img src="../image/icon-wenhao.png" alt="提示"
+                             title="每次询价最长60天, 建议选用前45天,预留15天缓冲,评标, 3轮总计最长180天,可根据具体情况逐渐缩小采购范围, 直至确定最佳供应商。"/>
+                    </li>
+                    <li>
+                        <label><span class="ui-valid">*</span>&nbsp;项目总标的:</label>
+                        <input id="totalPrice" name="totalPrice" type="text" placeholder="请输入项目总标的（元）"
+                               data-valid="require" data-pos="522" data-errmsg="项目总标的只能是大于0的数字">
+
+                        <img src="../image/icon-wenhao.png" alt="提示"
+                             title="所填金额只是大致预算，仅供参考，  并不对之后出价询价产生决定作用， 如实在不愿公开， 可填1元， 但在询价大厅被筛选时可能会被误认为玩笑而影响您的候选人数量"/>
+                    </li>
+                    <li>
+                        <label>
+                            <span class="ui-valid">*</span>&nbsp;项目的询价方式:
+                        </label>
+                        <select id="inquiryMode" name="inquiryModeCode" data-valid="require" data-pos="575"
+                                placeholder="请选择项目询价方式">
+                            <option value="">-请选择项目询价方式-</option>
+                            <option value="1"
+                                    title="&nbsp;&nbsp;&nbsp;&nbsp;&#13;&#13;当询价方勾选全明询价选项后&#10;即所有在本网站注册用户均可在该询价截止时间前看见所有出价方之方案， 报价， 清单及所有文件">
+                                全明询价
+                            </option>
+                            <option value="2"
+                                    title="&nbsp;&nbsp;&nbsp;&nbsp;&#13;&#13;当询价方勾选明询价选项后，&#10;即所有被授权出价方均可在该询价截止时间前看见对手之方案， 报价， 清单及所有文件。&#10;并可多次修改方案和出价">
+                                明询价
+                            </option>
+                            <option value="3"
+                                    title="&nbsp;&nbsp;&nbsp;&nbsp;&#13;&#13;当询价方勾选半明询价选项后，&#10;即所有出价方可在该询价截止时间前仅看见对手之报价。并可多次出价">
+                                半明询价
+                            </option>
+                            <option value="4"
+                                    title="&nbsp;&nbsp;&nbsp;&nbsp;&#13;&#13;当询价方勾选暗询价选项后，&#10;仅询价方可看见出价方之方案， 报价， 清单及所有文件">
+                                半暗询价
+                            </option>
+                            <option value="5"
+                                    title="&nbsp;&nbsp;&nbsp;&nbsp;&#13;&#13;当询价方勾选半暗询价选项后，&#10;仅询价方可看见出价方之方案，及所有不涉及价格之文件，&#10; 而清单及报价均储存于本网站服务器上， 待截止时间后1小时—72小时（用户自行定义）之内发送至询价方">
+                                暗询价
+                            </option>
+                            <option value="6"
+                                    title="&nbsp;&nbsp;&nbsp;&nbsp;&#13;&#13;当询价方勾选全暗询价选项后，&#10;所有出价方可之方案， 报价， 清单及所有文件均储存于本网站服务器上， 待截止时间后1小时—480小时（用户自行定义）之内发送至询价方">
+                                全暗询价
+                            </option>
+                        </select>
+                        <em>
+                            <span title="&nbsp;&nbsp;&nbsp;&nbsp;&#13;&#13;当询价方勾选全明询价选项后，&#10;即所有在本网站注册用户均可在该询价截止时间前看见所有出价方之方案， 报价， 清单及所有文件">全明询价</span>
+                            <span title="&nbsp;&nbsp;&nbsp;&nbsp;&#13;&#13;当询价方勾选明询价选项后，&#10;即所有被授权出价方均可在该询价截止时间前看见对手之方案， 报价， 清单及所有文件。并可多次修改方案和出价">明询价</span>
+                            <span title="&nbsp;&nbsp;&nbsp;&nbsp;&#13;&#13;当询价方勾选半明询价选项后，&#10;即所有出价方可在该询价截止时间前仅看见对手之报价。&#10;并可多次出价">半明询价</span>
+                            <span title="&nbsp;&nbsp;&nbsp;&nbsp;&#13;&#13;当询价方勾选暗询价选项后，&#10;仅询价方可看见出价方之方案， 报价， 清单及所有文件">半暗询价</span>
+                            <span title="&nbsp;&nbsp;&nbsp;&nbsp;&#13;&#13;当询价方勾选半暗询价选项后，&#10;仅询价方可看见出价方之方案，及所有不涉及价格之文件，&#10; 而清单及报价均储存于本网站服务器上， 待截止时间后1小时—72小时（用户自行定义）之内发送至询价方">暗询价</span>
+                            <span title="&nbsp;&nbsp;&nbsp;&nbsp;&#13;&#13;当询价方勾选全暗询价选项后，&#10;所有出价方可之方案， 报价， 清单及所有文件均储存于本网站服务器上， 待截止时间后1小时—480小时（用户自行定义）之内发送至询价方">全暗询价</span>
+                        </em>
+                    </li>
+                    <li>
+                        <label>项目相关备注内容:</label>
+                        <textarea id="remarks" name="remark" rows="10" cols="33" class="ui-textarea"
+                                  placeholder="请输入项目备注内容:(字数限制在500个字以内)" data-errmsg="备注内容超出500字"
+                                  data-pos="692"></textarea>
+                        <select id="remarksOpen" name="remarkOpen" class="ui-isopen">
+                            <option value="0">公开</option>
+                            <option value="2">授权后公开</option>
+                        </select>
+                    </li>
+                    <li>
+
+                        <label>出价限制:</label>
+                        <select id="biddingLimit" name="userLimit">
+                            <option value="0">不限</option>
+                            <option value="1">仅接受个人出价</option>
+                            <option value="2">仅接受企业出价</option>
+                        </select>
+                    </li>
+                </ul>
+            </div>
+            <div class="ui-create" id="div_step2" style="display:none;">
+                <ul class="ui-items">
+                    <li>
+                        <label><span class="ui-valid">*</span>&nbsp;联系人姓名:</label>
+                        <input id="contactName" name="contactName" type="text" placeholder="请输入联系人姓名"
+                               data-valid="require" data-pos="226">
+                        <select id="contactNameOpen" name="contactNameOpen" class="ui-isopen">
+                            <option value="0">公开</option>
+                            <option value="1">不公开</option>
+                            <option value="2">授权后公开</option>
+                        </select>
+
+                    </li>
+                    <li>
+
+                        <label><span class="ui-valid">*</span>&nbsp;联系人电子邮件:</label>
+                        <input id="contactMail" name="contactEmail" type="text" placeholder="请输入联系人电子邮件"
+                               data-valid="require" data-pos="277" data-errmsg="邮件格式不正确">
+                        <select id="contactMailOpen" name="contactEmailOpen" class="ui-isopen">
+                            <option value="0">公开</option>
+                            <option value="1">不公开</option>
+                            <option value="2">授权后公开</option>
+                        </select>
+
+                    </li>
+                    <li>
+
+                        <label><span class="ui-valid">*</span>&nbsp;联系人手机号:</label>
+                        <input id="contactTelephone" name="contactPhone" type="text" placeholder="请输入联系人手机号"
+                               data-valid="require" data-pos="330" data-errmsg="手机格式不正确">
+                        <select id="contactTelephoneOpen" name="contactPhoneOpen" class="ui-isopen">
+                            <option value="0">公开</option>
+                            <option value="1">不公开</option>
+                            <option value="2">授权后公开</option>
+                        </select>
+                    </li>
+                    <li>
+
+                        <label>联系人电话:</label>
+                        <input id="contactTel" name="contactTel" type="text" placeholder="请输入联系人电话">
+                        <select id="contactTelOpen" name="contactTelOpen" class="ui-isopen">
+                            <option value="0">公开</option>
+                            <option value="1">不公开</option>
+                            <option value="2">授权后公开</option>
+                        </select>
+
+                    </li>
+                    <li>
+                        <label>联系人传真:</label>
+                        <input id="contactFax" name="contactFax" type="text" placeholder="请输入联系人传真">
+                        <select id="contactFaxOpen" name="contactFaxOpen" class="ui-isopen">
+                            <option value="0">公开</option>
+                            <option value="1">不公开</option>
+                            <option value="2">授权后公开</option>
+                        </select>
+                    </li>
+                    <li>
+
+                        <label>联系人微博:</label>
+                        <input id="contactWeiBo" name="contactWeiBo" type="text" placeholder="请输入联系人微博">
+                        <select id="contactWeiBoOpen" name="contactWeiBoOpen" class="ui-isopen">
+                            <option value="0">公开</option>
+                            <option value="1">不公开</option>
+                            <option value="2">授权后公开</option>
+                        </select>
+
+                    </li>
+                    <li>
+                        <label>联系人微信号:</label>
+                        <input id="contactWeiXin" name="contactWeiXin" type="text" placeholder="请输入联系人微信号">
+                        <select id="contactWeiXinOpen" name="contactWeiXinOpen" class="ui-isopen">
+                            <option value="0">公开</option>
+                            <option value="1">不公开</option>
+                            <option value="2">授权后公开</option>
+                        </select>
+                    </li>
+                </ul>
+            </div>
+            <div class="ui-create" id="div_step3" style="display: none;">
+                <ul class="ui-items">
+                    <li>
+                        <label>具体要求上传(文档、清单、图纸等):</label>
+                        <select id="filesOpen" name="filesOpen" class="ui-isopen">
+                            <option value="0">公开</option>
+                            <option value="2">授权后公开</option>
+                        </select>
+                    </li>
+                    <li>
+                        <!--<form method="post" enctype="multipart/form-data" accept-charset="utf-8" target="inquiryNewIframe" id="fileForm">-->
+                        <input class="file_input" type="file" id="file1" name="file1" value=""
+                               placeholder="请选择要上传的附件">
+                        <input class="file_input" type="file" id="file2" name="file2" value="" placeholder="请选择要上传的附件">
+                        <input class="file_input" type="file" id="file3" name="file3" value="" placeholder="请选择要上传的附件">
+                        <!--</form>-->
+                    </li>
+                </ul>
+            </div>
+            <div class="ui-create" id="div_step4" style="display:none">
+                <ul class="ui-infoUl">
+                    <li>
+                        <label>项目开始流程:</label>
+                        <span field="round" data-from="attrTitle"></span>
+                    </li>
+                    <li>
+                        <label>项目询价标题:</label><span field="title"></span>
+                    </li>
+                    <li>
+                        <label>项目所处行业:
+                        </label><span field="industryCode"></span>
+                    </li>
+                    <li>
+
+                        <label>项目实施地点:
+                        </label><span field="provinceCode"></span>
+                    </li>
+                    <li>
+                        <label>项目截止时间:
+                        </label><span field="hd_purchaseCloseDate"></span>
+                    </li>
+                    <li>
+                        <label>项目总标的:</label>
+                        <span field="totalPrice"></span>
+                    </li>
+                    <li>
+                        <label>项目的询价方式:</label>
+                        <span field="inquiryMode" data-from="selectedText"></span>
+                    </li>
+                    <li>
+                        <label>项目相关备注内容:</label>
+                        <span field="remarks"></span>
+                        (<span field="remarksOpen" data-from="selectedText"></span>)
+                    </li>
+                    <li>
+                        <label>出价限制:</label>
+                        <span field="biddingLimit" data-from="selectedText"></span>
+                    </li>
+                </ul>
+                <ul class="ui-infoUl">
+                    <li>
+                        <label>联系人姓名:</label>
+                        <span field="contactName"></span>
+                        (<span field="contactNameOpen" data-from="selectedText"></span>)
+                    </li>
+                    <li>
+                        <label>联系人电子邮件:</label>
+                        <span field="contactMail"></span>
+                        (<span field="contactMailOpen" data-from="selectedText"></span>)
+                    </li>
+                    <li>
+                        <label>联系人手机号:</label>
+                        <span field="contactTelephone"></span>
+                        (<span field="contactTelephoneOpen" data-from="selectedText"></span>)
+                    </li>
+                    <li>
+                        <label>联系人电话:</label>
+                        <span field="contactTel"></span>
+                        (<span field="contactTelOpen" data-from="selectedText"></span>)
+                    </li>
+                    <li>
+                        <label>联系人传真:</label>
+                        <span field="contactFax"></span>
+                        (<span field="contactFaxOpen" data-from="selectedText"></span>)
+                    </li>
+                    <li>
+                        <label>联系人微博:</label>
+                        <span field="contactWeiBo"></span>
+                        (<span field="contactWeiBoOpen" data-from="selectedText"></span>)
+                    </li>
+                    <li>
+                        <label>联系人微信号:</label>
+                        <span field="contactWeiXin"></span>
+                        (<span field="contactWeiXinOpen" data-from="selectedText"></span>)
+                    </li>
+                </ul>
+                <ul class="ui-infoUl">
+                    <li>
+                        <label>项目文档:</label>
+                        <span field="file1"></span>
+                        <span field="file2"></span>
+                        <span field="file3"></span>
+                    </li>
+                </ul>
+            </div>
+            <div class="ui-create" id="div_step5" style="display: none;text-align: center;font-size: 20px;line-height: 50px;">
+                发布成功，您的标号为<span id="biaohao"></span>
+            </div>
+            <div class="ui-operate">
+                <button id="btn_pre" type="button" data-pre="1" data-current="1" style="display:none;">上一步</button>
+                <button id="btn_next" type="button" data-next="2" data-current="1">下一步</button>
+                <button id="btn_confirm" type="submit" data-next="5" data-current="4" style="display: none">确认提交
+                </button>
+            </div>
+        </form>
     </div>
-    <iframe name="inquiryNewIframe" id="inquiryNewIframe" style="display: none;" iframeborder="0"></iframe>
+    <div id="footer">
+    </div>
+</div>
+<iframe name="inquiryNewIframe" id="inquiryNewIframe" style="display: none;" iframeborder="0"></iframe>
 </body>
 <script src="../dest/js/lib/jquery.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="../dest/js/lib/sea.js" type="text/javascript" charset="utf-8"></script>
 <script src="../dest/js/app-data/app-data.js" charset="utf-8"></script>
-<script src="../dest/js/plugins/plugins.js" charset="utf-8"></script>
+<!--<script src="../dest/js/plugins/plugins.js" charset="utf-8"></script>-->
+<script src="../src/js/plugins/jquery.cookie.js" charset="utf-8"></script>
+<script src="../src/js/plugins/jquery.fixtop.js" charset="utf-8"></script>
+<script src="../src/js/plugins/jquery.form.js" charset="utf-8"></script>
+<script src="../src/js/plugins/json.js" charset="utf-8"></script>
+<script src="../src/js/plugins/pure-calendar.js" charset="utf-8"></script>
+<script src="../src/js/plugins/pure-dialog.js" charset="utf-8"></script>
+<script src="../src/js/plugins/pure-grid.js" charset="utf-8"></script>
+<script src="../src/js/plugins/pure-lib.js" charset="utf-8"></script>
+<script src="../src/js/plugins/pure-url.js" charset="utf-8"></script>
+<script src="../src/js/plugins/pure-validator.js" charset="utf-8"></script>
 
 <script src="../src/js/app/main.js" charset="utf-8"></script>
+<script src="../src/js/bootstrap/bootstrap.min.js"></script>
+<script src="../src/js/plugins/jquery.form.js" charset="utf-8"></script>
 <script src="../src/js/app/inquiry/create-logic.js" charset="utf-8"></script>
 <!-- <script src="../dest/js/app/inquiry.publish.logic.js" type="text/javascript" charset="utf-8"></script> -->
 
 <script type="text/javascript">
-    define("jquery",function(){
+    define("jquery", function () {
         return $;
     });
-    seajs.use(["main","create-logic"],function(mod,mod2){
+    seajs.use(["main", "create-logic"], function (mod, mod2) {
         mod.load().setActiveNav("createinquiry").closeTopFixed();
         mod2.load();
     });

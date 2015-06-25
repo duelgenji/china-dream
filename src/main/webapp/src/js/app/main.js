@@ -42,8 +42,8 @@ function clearAccount() {
 
 define("main", ["systemDefine-repos", "pure-dialog"], function (require, exports) {
     var
-        base = ((location.origin || (location.protocol + "//" + location.hostname + ":" + (location.port || "80"))) + "/ChinaDream"),
-
+        //base = ((location.origin || (location.protocol + "//" + location.hostname + ":" + (location.port || "80"))) + "/ChinaDream"),
+        base = ((location.origin || (location.protocol + "//" + location.hostname + ":" + (location.port || "80")))),
         headerHtml =
             '  <div id="site_nav" role="navigation">' + '    <div class="ui-sn-container">' + '      <p class="ui-welcome">' + '        <em>Hello Dreamer! 您好:<span id="loginTitle"></span></em>' + '        <div class="scroll_div">' + '          <ul class="scroll_ul" id="scrollarea">' + '          </ul>' + '         </div>' + '      </p>' + '      <ul class="ui-quick-menu" id="quick_menu" style="display:none;">' + '        <li class="ui-sn_login">' + '          <a target="_self" href="login.html" title="登录">登录</a>' + '        </li>' + '        <li class="ui-sn_reg">' + '          <a href="register.html" title="还等什么亲，赶快去注册吧！">注册</a>' + '        </li></ul>' + '      <ul class="ui-quick-menu" id="loginout_menu" style="display:none;">' + '        <li class="ui-sn_reg" >' + '          <a href="modifyUserInfo.html">设置</a>' + '        </li>' + '        <li class="ui-sn_reg" >' + '          <a id="a_loginOut">退出</a>' + '        </li>' + '      </ul>' + '    </div>' + '  </div>' + '  <div style="position: absolute;width: 100%;"></div>' + '  <div class="ui-header">' + '    <h1 id="logo">' + '      <span class="mlogo">' + '        <div id="J_FpLogo">' + '          <a class="" href="index.html" title="我的中国梦">' + '            <img src="%1/image/logo.png" height="124" width="290" alt="我的中国梦">' + '          </a>' + '        </div>' + '      </span>' + '    </h1>' + '    <div class="ui-query">' + '      <div id="search">' + '        <div class="ui-search-combox">' + '          <input id="mq" type="text" name="search" value="" placeholder="请输入关键字">' + '        </div>' + '        <button type="button" title="查找对应询价名称" id="btn_search">搜索</button>' + '      </div>' + '    </div>' + '    <div class="ui-nav clearfloat">' + '        <ul id="nav">' + '          <li data-mod="index" data-link="index.html">' + '            <a title="询价大厅">询价大厅</a>' + '          </li>' + '          <li data-mod="usercenter" data-link="userRoom.html">' + '            <a title="用户大厅" >用户大厅</a>' + '          </li>' + '          <li data-mod="selfcenter" data-link="myZone.html">' + '            <a title="我的主页">我的主页</a>' + '          </li>' + '          <li data-mod="createinquiry" data-link="inquiryNew.html">' + '            <a title="询价发布" >发布询价/梦想</a>' + '          </li>' + '          <li data-mod="help">' + '            <a title="新手上路">新手上路</a>' + '          </li>' + '        </ul>' + '      </div>' + '  </div>',
 
@@ -211,7 +211,7 @@ define("main", ["systemDefine-repos", "pure-dialog"], function (require, exports
      * 登录信息
      * @type {[type]}
      */
-    var loginInfo = exports.loginInfo = {};
+    var loginInfo = exports.loginInfo = loadUserInfo();
     /**
      * 判断当前是否登录 登录用户的角色和身份
      * @return {[type]} [description]

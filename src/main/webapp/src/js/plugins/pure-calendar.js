@@ -25,7 +25,7 @@ function FreeCalendar(sDate) {
     var c__calendarTitleBackgroundColor = "#e0e0e0"; //星期标题栏背景色
     var c__currentDayColor = "darkred"; //当前日期颜色
     var c__todayColor = "black"; //今天颜色
-
+    var c__disableDayColor = "lightgray"; //不可选择日期的颜色
 
 
     var c__beginYear = 1989; //最小年份
@@ -190,7 +190,7 @@ function FreeCalendar(sDate) {
         for (var i = 0; i < 6; ++i) {
             s += "<tr>";
             for (var r = 0; r < c__weekDays.length; ++r) {
-                s += "<td align=\"center\" valign=\"middle\" height=\"20\"  style=\"color:" + dayColor + ";cursor:pointer;\" onclick=\"parent.c__getDate(this.innerText)\" onmouseover=\"this.style.textDecoration='underline';\" onmouseout=\"this.style.textDecoration='';\"></td>";
+                s += "<td align=\"center\" valign=\"middle\" height=\"20\"  style=\"color:" + dayColor + ";cursor:pointer;\" onclick=\"parent.c__getDate(this.innerText,this)\" onmouseover=\"parent.c__underline(this)\" onmouseout=\"parent.c__deunderline(this)\"></td>";
             }
             s += "</tr>";
         }
@@ -216,6 +216,11 @@ function FreeCalendar(sDate) {
 
     //显示日期
     this.showDate = function () {
+        //限制日期
+        var today = new Date(), // 获取今天时间
+            limitDate = new Date();
+        today.setDate(today.getDate() - 1);
+        limitDate.setDate(limitDate.getDate() + 60);
 
         //填充日期值
         var date = 0;
@@ -225,6 +230,7 @@ function FreeCalendar(sDate) {
             for (var r = 0; r < c__weekDays.length; ++r) {
                 //日期颜色
                 var dayColor = "";
+
                 switch (r) {
                     case 0:
                         dayColor = c__sundayColor;
@@ -236,17 +242,24 @@ function FreeCalendar(sDate) {
                         dayColor = c__normalDayColor;
                         break;
                 }
+
                 var sDate = "";
                 var j = i * c__weekDays.length + r;
                 if (j >= fistWeekDayOfMonth && j < fistWeekDayOfMonth + this.getLastDayOfMonth()) {
                     date++;
                     sDate = date;
+
+                    var cDate = c__stringToDate(this.getYear() + "-" + (this.getMonth() + 1) + "-" + sDate);
+                    if (Date.parse(cDate) > Date.parse(limitDate) || Date.parse(cDate) < Date.parse(today)) {
+                        dayColor = c__disableDayColor;
+                        document.getElementById("c__dateGrid").rows[i + 1].cells[r].setAttribute("disable","disable");
+                    }
+
                     if (this.getYear() == c__currentDate.getFullYear() && this.getMonth() == c__currentDate.getMonth() && date == c__currentDate.getDate()) {
                         //当天日期样式
                         document.getElementById("c__dateGrid").rows[i + 1].cells[r].style.border = "1px solid " + c__currentDayColor;
                     } else {
                         document.getElementById("c__dateGrid").rows[i + 1].cells[r].style.border = "1px solid white";
-
                     }
                 } else {
                     document.getElementById("c__dateGrid").rows[i + 1].cells[r].style.border = "1px solid white";
@@ -356,12 +369,25 @@ function c__getPosition(obj) {
 }
 
 //获取日期
-function c__getDate(day) {
-    if (day != "") {
+function c__getDate(day,e) {
+    console.log(e);
+    console.log(e.getAttribute("disable"));
+
+    if (day != "" && e.getAttribute("disable") != "disable") {
         var date = c__stringToDate(document.getElementById("c__yearSelector").value + "-" + eval(document.getElementById("c__monthSelector").value + "+1") + "-" + day);
         c__input.value = c__dateToString(date);
         c__hideCalendar();
     }
+}
+
+function c__underline(e){
+    if (e.getAttribute("disable") != "disable") {
+        e.style.textDecoration = 'underline';
+    }
+}
+
+function c__deunderline(e){
+    e.style.textDecoration = '';
 }
 
 //改变日期
