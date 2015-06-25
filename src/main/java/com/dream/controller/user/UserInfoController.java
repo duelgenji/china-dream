@@ -13,6 +13,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,8 +63,10 @@ public class UserInfoController {
     }
 
     @RequestMapping("modifyInfo")
-    public Map<String, Object> modifyInfo(@ModelAttribute("currentUser") User user,
-                                          HttpServletRequest request) {
+    public Map<String, Object> modifyInfo(HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("currentUser");
         Map<String, Object> res = new HashMap<>();
 
         if(user.getId()!=null){
