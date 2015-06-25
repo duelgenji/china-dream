@@ -71,6 +71,14 @@ function pwdStrength(pwd) {
     return strength;
 }
 
+function pwdCheck () {
+    if ($("#input_psw").val() == $("#input_psw2").val()) {
+        $("#psw_dif").css("display", "none");
+    } else {
+        $("#psw_dif").css("display", "");
+    }
+}
+
 define("register-logic", ["user-repos", "jquery", "pure-dialog", "pure-validator"], function (require, exports) {
 
     var

@@ -23,7 +23,7 @@ define("modifyUserInfo-logic", ["user-repos", "jquery", "pure-dialog", "pure-val
 
         regErrorHtml = '<div class="ui-regTip"><span><img class="ui-tipErrorIcon"/>对不起,注册出现异常!</span></div>',
 
-        type = 'c',
+        type = 1,
 
         serviceDg = {
             id: "serviceDg",
@@ -91,24 +91,24 @@ define("modifyUserInfo-logic", ["user-repos", "jquery", "pure-dialog", "pure-val
     }
 
     function modifyUserInfoParams() {
-        var typeCode = 1;
+        var typeCode = "p";
         switch (type) {
-            case "p":
-                typeCode = 1;
+            case 1:
+                typeCode = "p";
                 break;
-            case "c":
-                typeCode = 2;
+            case 2:
+                typeCode = "c";
                 break;
-            case "g":
-                typeCode = 3;
+            case 3:
+                typeCode = "g";
                 break;
         }
 
 
         var params = {};
-        params.type = typeCode;
+        params.type = type;
 
-        var li = $("#form").find("[data-type=" + type + "], [data-type='pcg']");
+        var li = $("#form").find("[data-type=" + typeCode + "], [data-type='pcg']");
         var inputs = li.find("input, select, textarea");
 
         inputs.each(function () {
@@ -124,7 +124,7 @@ define("modifyUserInfo-logic", ["user-repos", "jquery", "pure-dialog", "pure-val
 
         var isError = false,
 
-            //doms = $("#input_nickName,#input_email,#input_psw,#input_psw2");
+        //doms = $("#input_nickName,#input_email,#input_psw,#input_psw2");
             doms = $("#input_nickName");
 
         for (var i = 0, l = doms.length, dom, val, psw; i < l; i++) {
@@ -168,7 +168,7 @@ define("modifyUserInfo-logic", ["user-repos", "jquery", "pure-dialog", "pure-val
         return !isError;
     }
 
-    function showMessage (message) {
+    function showMessage(message) {
         $("#messageModalLabel").empty().append(message);
         $("#messageModal").modal('toggle');
     }
@@ -176,7 +176,7 @@ define("modifyUserInfo-logic", ["user-repos", "jquery", "pure-dialog", "pure-val
     function fn_submitForm() {
 
         var params = modifyUserInfoParams();
-        //console.log(params);
+        console.log(params);
 
         if (fn_checkSubmit()) {
 
@@ -184,11 +184,12 @@ define("modifyUserInfo-logic", ["user-repos", "jquery", "pure-dialog", "pure-val
                 .showModal()
                 .content('<div><img src="../image/loading.gif" alt="" />正在提交中,请耐心等候!</div>');
 
-            ajaxmodify(params, function () {
-                dialog.content(regOkHtml).title("注册成功");
+            ajaxmodifyInfo(params, function () {
+                dialog.content(regOkHtml).title("修改成功");
                 dialog.close();
 
-                location.href = "index.html";
+                console.log("success");
+                //location.href = "index.html";
             }, function (result) {
                 var message = result.message;
                 if (validMod.isEmptyOrNull(message)) {
@@ -225,13 +226,28 @@ define("modifyUserInfo-logic", ["user-repos", "jquery", "pure-dialog", "pure-val
         }
     }
 
-    function showOriginInfo (type,params) {
+    function showOriginInfo(type, params) {
         $("#form").css("display", "");
-        var li = $("ul.ui-items li[data-type=" + type + "], ul.ui-items li[data-type='pcg']");
+        var typeCode = "p";
+        switch (type) {
+            case 1:
+                typeCode = "p";
+                break;
+            case 2:
+                typeCode = "c";
+                break;
+            case 3:
+                typeCode = "g";
+                break;
+        }
+
+        $("#tab-"+typeCode).addClass("active");
+
+        var li = $("ul.ui-items li[data-type=" + typeCode + "], ul.ui-items li[data-type='pcg']");
 
         var inputs = li.find("input, select, textarea");
 
-        inputs.each(function() {
+        inputs.each(function () {
             var value = params[$(this).attr('name')];
             if (!validMod.isEmptyOrNull(value)) {
                 $(this).val(value);
@@ -247,7 +263,15 @@ define("modifyUserInfo-logic", ["user-repos", "jquery", "pure-dialog", "pure-val
      */
     function fn_initEvent() {
 
-        showOriginInfo(type,{realNameOpen:"1",email:"123123@123.com"});
+        var userInfo = loadUserInfo();
+        if (validMod.isEmptyOrNull(userInfo)) {
+            location.href = "index.html";
+            return;
+        }
+
+        type = userInfo.type;
+
+        showOriginInfo(type, userInfo);
 
         $("#chk_xieyi").click(function () {
 
@@ -266,7 +290,7 @@ define("modifyUserInfo-logic", ["user-repos", "jquery", "pure-dialog", "pure-val
             //dialogMod(serviceDg).showModal().iframe("serviceAgreement.html");
         });
 
-        $("input, select, textarea").on("focus", function() {
+        $("input, select, textarea").on("focus", function () {
             $("#mainMask").css("display", "none");
             $("#bubbleLayer").removeClass("bubbleLayer-show");
         });
