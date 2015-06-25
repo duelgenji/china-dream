@@ -9,6 +9,7 @@ import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.URI;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -174,7 +175,7 @@ public class DreamWordController extends AbstractBaseController<DreamWord, Long>
             JSONObject jsonObject = new JSONObject(post.getResponseBodyAsString());
 
             res.put("jsonObject",jsonObject.getJSONArray("i").toString());
-        } catch (IOException e) {
+        } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
 

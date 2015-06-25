@@ -2,7 +2,7 @@ package com.dream.controller.user;
 
 import com.dream.entity.user.User;
 import com.dream.repository.user.UserRepository;
-import com.dream.service.CommonEmail;
+import com.dream.utils.CommonEmail;
 import com.dream.service.user.UserService;
 import com.wonders.xlab.framework.controller.AbstractBaseController;
 import com.wonders.xlab.framework.repository.MyRepository;

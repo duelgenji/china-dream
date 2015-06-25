@@ -1,4 +1,4 @@
-package com.dream.service;
+package com.dream.utils;
 
 import com.dream.entity.user.User;
 import org.apache.commons.lang3.time.DateFormatUtils;

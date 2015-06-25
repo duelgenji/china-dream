@@ -29,7 +29,6 @@ public class UserCompanyInfo  implements Serializable {
     /**
      * 公司所在地
      */
-
     @ManyToOne(fetch = FetchType.EAGER)
     private CompanyProvince companyProvince;
 
