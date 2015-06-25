@@ -22,7 +22,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -73,7 +74,7 @@ public class InquiryController {
             @RequestParam(required = false) int round,
             @RequestParam(required = false) long provinceCode,
             @RequestParam(required = false) long industryCode,
-            @RequestParam(required = false) Date limitDate,
+            @RequestParam(required = false) String limitDate,
             @RequestParam(required = false) double totalPrice,
             @RequestParam(required = false) long inquiryModeCode,
             @RequestParam(required = false) String remark,
@@ -121,7 +122,11 @@ public class InquiryController {
         CompanyIndustry companyIndustry = companyIndustryRepository.findOne(industryCode);
         inquiry.setCompanyIndustry(companyIndustry);
 
-        inquiry.setLimitDate(limitDate);
+        try {
+            inquiry.setLimitDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(limitDate));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         inquiry.setTotalPrice(totalPrice);
 
         InquiryMode inquiryMode=inquiryModeRepository.findOne(inquiryModeCode);
