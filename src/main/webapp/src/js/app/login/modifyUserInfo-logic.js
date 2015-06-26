@@ -188,7 +188,8 @@ define("modifyUserInfo-logic", ["user-repos", "jquery", "pure-dialog", "pure-val
                 dialog.content(regOkHtml).title("修改成功");
                 dialog.close();
 
-                console.log("success");
+                clearUserInfo();
+
                 //location.href = "index.html";
             }, function (result) {
                 var message = result.message;

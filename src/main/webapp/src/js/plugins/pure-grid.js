@@ -1178,7 +1178,7 @@
 
                     gTmpl = require("pure-grid.template").init(g.tmplRenderTo, !!g._LHead, isShowHead, g.cfgs.emptyText);
 
-                    jDom.css(obj, "display", "none")
+                    jDom.css(obj, "display", "")
                         .html(obj, '' + gTmpl.getTemplate());
 
                     if (isShowHead) {

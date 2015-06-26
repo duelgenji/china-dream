@@ -317,6 +317,20 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
         }
     });
 
+    //预览图片
+    $("#projectImage").on("change",function(e){
+        var file = e.target.files || e.dataTransfer.files;
+        if(file && file[0]){
+            var reader = new FileReader();
+            reader.onload = function() {
+                $("#image").attr("src",this.result).show();
+            }
+            reader.readAsDataURL(file[0]);
+        } else {
+            $("#image").attr("src","").show();
+        }
+    });
+
     $("#inquiryForm").ajaxForm();
     $('#inquiryForm').submit(function () {
         var options = {
@@ -333,11 +347,16 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
 
                 if (result == 1) {
 
-                    $("#biaohao").text("123123213123");
+                    $("#inquiryNo").text("苏2301301300130");
 
                     $("#div_steps li:eq(4)").removeClass("active").addClass("active").siblings('li').removeClass("active");
                     $("#div_step4").css("display", "none");
                     $("#div_step5").css("display", "");
+
+                    $("#btn_pre").css("display", "none");
+                    $("#btn_next").css("display", "none");
+                    $("#btn_confirm").css("display", "none");
+                    $("#btn_back").css("display", "none");
 
                 }
             }

@@ -32,7 +32,7 @@ define("list-config",[],function(require,exports){
                     },
                     body: {
                         align: "left",
-                        fields: "title,biaoHao,userName,id",
+                        fields: "title,inquiryNo,userName,id",
                         renderFn: "renderPopularity"
                     }
                 }, {
@@ -44,7 +44,7 @@ define("list-config",[],function(require,exports){
                     },
                     body: {
                         align: "center",
-                        fields: "biaoDi,countOfZan",
+                        fields: "totalPrice,good",
                         renderFn: "renderBiaoDi"
                     }
                 }, {
@@ -56,7 +56,7 @@ define("list-config",[],function(require,exports){
                     },
                     body: {
                         align: "center",
-                        fields: "provinceName,percent",
+                        fields: "provinceCode,successRate",
                         renderFn: "renderBidSuccessRate"
                     }
                 }, {
@@ -68,7 +68,7 @@ define("list-config",[],function(require,exports){
                     },
                     body: {
                         align: "center",
-                        fields: "industryName,countOfInquiry",
+                        fields: "industryCode,inquiryTimes",
                         renderFn: "renderBidCount"
                     }
                 }, {
@@ -80,7 +80,7 @@ define("list-config",[],function(require,exports){
                     },
                     body: {
                         align: "center",
-                        fields: "purchaseCloseDate,round,inquiryMode,status,winnerName,isOpenBid",
+                        fields: "limitDate,round,inquiryMode,status",
                         renderFn: "renderEndDate"
                     }
                 }],

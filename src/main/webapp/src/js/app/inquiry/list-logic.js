@@ -1,266 +1,399 @@
-define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pure-dialog"], function(require, exports) {
+define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pure-dialog"], function (require, exports) {
 
-	var
-		$ = require("jquery"),
+    var
+        $ = require("jquery"),
 
-		ajaxMod = require("ajax"),
+        ajaxMod = require("ajax"),
 
-		configMod = require("list-config"),
+        configMod = require("list-config"),
 
-		gridMod,
+        gridMod,
 
-		dialogMod = require("pure-dialog"),
+        dialogMod = require("pure-dialog"),
 
-		urlMod = require("pure-url"),
+        urlMod = require("pure-url"),
 
-		currentGrid,
+        currentGrid,
 
-		inquiryRepos = require("inquiry-repos"),
-		/**
-		 * 当前已选择的筛选项的键值对
-		 * @type {Object}
-		 */
-		currentQuery = {
-			pageno: 1,
-			pagesize: 15
-		};
-	/**
-	 * 询价logo的数据显示回调
-	 * @param  {[type]} vals   [description]
-	 * @param  {[type]} ri     [description]
-	 * @param  {[type]} objval [description]
-	 * @return {[type]}        [description]
-	 */
-	function renderInquiryLogo(vals, ri, objval) {
-		objval.title = "询价标logo";
-		return '<a href="inquiryDetail.html?key=' + vals[1] + '"><img class="ui-inner-logo" src="' + vals[0] + '" alt="询价标logo"/></a>';
-	}
+        inquiryRepos = require("inquiry-repos"),
+        /**
+         * 当前已选择的筛选项的键值对
+         * @type {Object}
+         */
 
-	/**
-	 * 人气列数据显示的回调
-	 * @param  {[type]} vals   [description]
-	 * @param  {[type]} ri     [description]
-	 * @param  {[type]} objval [description]
-	 * @return {[type]}        [description]
-	 */
-	function renderPopularity(vals, ri, objval) {
+        size = 3,
 
-		objval.title = vals[0] + "\n" + vals[1] + "\n" + (vals[2]||"");
+        currentQuery = {
+            page: 0,
+            size: size
+        },
+        currentPage = 0;
+        maxPage = 0;
 
-		var html =
-			'<p class="ui-inquiryTitle">' + '<a href="inquiryDetail.html?key=' + vals[3] + '" name="detail">' + vals[0] + '</a>' + '</p>' + '<p class="ui-biaohao">' + vals[1] + '</p>' + '<p class="ui-userName">' + vals[2] + '</p>';
 
-		return html;
-	}
+    function setPage (targetPage) {
+        currentQuery.page = targetPage - 1;
+    }
 
-	/**
-	 * 标的列数据显示的回调
-	 * @param  {[type]} vals   [description]
-	 * @param  {[type]} ri     [description]
-	 * @param  {[type]} objval [description]
-	 * @return {[type]}        [description]
-	 */
-	function renderBiaoDi(vals, ri, objval) {
-		objval.title = "标的(元):" + vals[0];
-		return "￥" + vals[0] + '元<br /><span style="color:red;">赞:' + (vals[1]||0) + "</span>";
-	}
+    function getCurrentPage () {
+        return currentQuery.page + 1;
+    }
 
-	/**
-	 * 询价成功率的数据显示回调
-	 * @param  {[type]} vals   [description]
-	 * @param  {[type]} ri     [description]
-	 * @param  {[type]} objval [description]
-	 * @return {[type]}        [description]
-	 */
-	function renderBidSuccessRate(vals, ri, objval) {
-		objval.title = "成功率：" + vals[1];
+    function setMaxPage (page) {
+        maxPage = page;
+        $(".maxPage").text(maxPage);
+    }
 
-		return vals[0] + "<br />询价成功率：" + (vals[1] ? (vals[1].indexOf("%") > -1 ? vals[1] : (vals[1] + "%")) : "0%");
-	}
+    function getMaxPage () {
+        return maxPage;
+    }
 
-	/**
-	 * 询价总数的数据显示回调
-	 * @param  {[type]} vals   [description]
-	 * @param  {[type]} ri     [description]
-	 * @param  {[type]} objval [description]
-	 * @return {[type]}        [description]
-	 */
-	function renderBidCount(vals, ri, objval) {
-		objval.title = "总数：" + vals[1];
-		return vals[0] + "<br />询价总数：" + (vals[1]||0);
-	}
+    /**
+     * 询价logo的数据显示回调
+     * @param  {[type]} vals   [description]
+     * @param  {[type]} ri     [description]
+     * @param  {[type]} objval [description]
+     * @return {[type]}        [description]
+     */
+    function renderInquiryLogo(vals, ri, objval) {
+        objval.title = "询价标logo";
+        return '<a href="inquiryDetail.html?key=' + vals[1] + '"><img class="ui-inner-logo" src="' + vals[0] + '" alt="询价标logo"/></a>';
+    }
 
-	/**
-	 * 截止时间的数据显示回调
-	 * @param  {[type]} vals   [description]
-	 * @param  {[type]} ri     [description]
-	 * @param  {[type]} objval [description]
-	 * @return {[type]}        [description]
-	 */
-	function renderEndDate(vals, ri, objval) {
+    /**
+     * 人气列数据显示的回调
+     * @param  {[type]} vals   [description]
+     * @param  {[type]} ri     [description]
+     * @param  {[type]} objval [description]
+     * @return {[type]}        [description]
+     */
+    function renderPopularity(vals, ri, objval) {
 
-		if (vals[3] == "1") {
-			return (objval.title = "中标方:" + (vals[5] == "0" ? vals[4] : "*******"));
-		}
+        objval.title = vals[0] + "\n" + vals[1] + "\n" + (vals[2] || "");
 
-		objval.title = "第" + vals[1] + "轮";
+        var html =
+            '<p class="ui-inquiryTitle">' + '<a href="inquiryDetail.html?key=' + vals[3] + '" name="detail">' + vals[0] + '</a>' + '</p>' + '<p class="ui-biaohao">' + vals[1] + '</p>' + '<p class="ui-userName">' + vals[2] + '</p>';
 
-		return vals[0] + "<br />第" + vals[1] + "轮<br />" + vals[2];
-	}
+        return html;
+    }
 
-	/**
-	 * 绑定数据
-	 * @return {[type]} [description]
-	 */
-	function fn_bind() {
-		fn_initGrid();
+    /**
+     * 标的列数据显示的回调
+     * @param  {[type]} vals   [description]
+     * @param  {[type]} ri     [description]
+     * @param  {[type]} objval [description]
+     * @return {[type]}        [description]
+     */
+    function renderBiaoDi(vals, ri, objval) {
+        objval.title = "标的(元):" + vals[0];
+        return "￥" + vals[0] + '元<br /><span style="color:red;">赞:' + (vals[1] || 0) + "</span>";
+    }
 
-		dialogMod.mask.show();
+    /**
+     * 询价成功率的数据显示回调
+     * @param  {[type]} vals   [description]
+     * @param  {[type]} ri     [description]
+     * @param  {[type]} objval [description]
+     * @return {[type]}        [description]
+     */
+    function renderBidSuccessRate(vals, ri, objval) {
+        objval.title = "成功率：" + vals[1];
 
-		inquiryRepos.getList(currentQuery, function(data) {
-			currentGrid.reBind(data);
-			setTimeout(function() {
-				dialogMod.mask.hide();
-			}, 800);
-		}, call_fail, call_fail);
-	}
+        return vals[0] + "<br />询价成功率：" + (vals[1] ? (vals[1].indexOf("%") > -1 ? vals[1] : (vals[1] + "%")) : "0%");
+    }
 
-	/**
-	 * 数据绑定失败后的回调
-	 * @return {[type]} [description]
-	 */
-	function call_fail() {
+    /**
+     * 询价总数的数据显示回调
+     * @param  {[type]} vals   [description]
+     * @param  {[type]} ri     [description]
+     * @param  {[type]} objval [description]
+     * @return {[type]}        [description]
+     */
+    function renderBidCount(vals, ri, objval) {
+        objval.title = "总数：" + vals[1];
+        return vals[0] + "<br />询价总数：" + (vals[1] || 0);
+    }
 
-		currentGrid.reBind(null);
+    /**
+     * 截止时间的数据显示回调
+     * @param  {[type]} vals   [description]
+     * @param  {[type]} ri     [description]
+     * @param  {[type]} objval [description]
+     * @return {[type]}        [description]
+     */
+    function renderEndDate(vals, ri, objval) {
 
-		setTimeout(function() {
-			dialogMod.mask.hide();
-		}, 300);
-	}
+        if (vals[3] == "1") {
+            return (objval.title = "中标方:" + (vals[5] == "0" ? vals[4] : "*******"));
+        }
 
-	/**
-	 * 初始化grid组件
-	 * @return {[type]} [description]
-	 */
-	function fn_initGrid() {
-		/**
-		 * 初始化DataGrid，并订阅相关的消息与事件
-		 */
-		if (!gridMod) {
-			gridMod = require("pure-grid");
-			currentGrid = gridMod(configMod.gridConfig);
+        objval.title = "第" + vals[1] + "轮";
 
-			currentGrid.pubSub()
-				.override("renderInquiryLogo", renderInquiryLogo)
-				.override("renderPopularity", renderPopularity)
-				.override("renderBiaoDi", renderBiaoDi)
-				.override("renderBidCount", renderBidCount)
-				.override("renderBidSuccessRate", renderBidSuccessRate)
-				.override("renderEndDate", renderEndDate);
-			gridMod.basePubSub
-				.override("grid.getDataLength", function(data) {
-					return data && data.datas ? data.datas.length : 0;
-				})
-				.override("grid.getRowColsValues", function(data, ri, cols) {
-					var colArr = cols.split(','),
-						dataSource = data.datas;
-					for (var i = colArr.length; i;) {
-						colArr[(i -= 1)] = dataSource[ri][data.index[colArr[i]]];
-					}
-					return colArr.length > 0 ? colArr : colArr[0]
-				});
-		}
-	}
+        var mode = vals[2];
+        var modeDetail = "";
+        switch (mode) {
+            case "全明询价":
+                modeDetail = "当询价方勾选全明询价选项后，即所有在本网站注册用户均可在该询价截止时间前看见所有出价方之方案，报价，清单及所有文件。";
+                break;
+            case "明询价":
+                modeDetail = "当询价方勾选明询价选项后，即所有被授权出价方均可在该询价截止时间前看见对手之方案，报价，清单及所有文件。并可多次修改方案，出价。";
+                break;
+            case "半明询价":
+                modeDetail = "当询价方勾选半明询价选项后，即所有出价方可在该询价截止时间前仅看见对手之报价。";
+                break;
+            case "半暗询价":
+                modeDetail = "当询价方勾选暗询价选项后，仅询价方可看见出价方之方案，报价，清单及所有文件。";
+                break;
+            case "暗询价":
+                modeDetail = "当询价方勾选半暗询价选项后，仅询价方可看见出价方之方案，及所有不涉及价格之文件，而清单及报价均储存于本网站服务器上，待截止时间后1小时—72小时(用户自行定义)之内发送至询价方。";
+                break;
+            case "全暗询价":
+                modeDetail = "当询价方勾选全暗询价选项后，所有出价方可之方案，报价，清单及所有文件均储存于本网站服务器上，待截止时间后1小时—72小时(用户自行定义)之内询价方可以看到出价方的报价和文件。";
+                break;
+        }
 
-	/**
-	 * 执行搜索
-	 * @return {[type]} [description]
-	 */
-	function evt_doSearch() {
-		if (currentQuery.keyword = $("#mq").val().trim()) {
-			fn_bind();
-		}
-	}
+        return vals[0] + "<br />第" + vals[1] + "轮<br /><span title=" + modeDetail + ">" + mode + "</span>";
+    }
 
-	/**
-	 * 初始化元素事件绑定
-	 * @return {[type]} [description]
-	 */
-	function fn_initEvent() {
+    /**
+     * 绑定数据
+     * @return {[type]} [description]
+     */
+    function fn_bind() {
+        fn_initGrid();
 
-		$("#btn_search").click(evt_doSearch);
+        dialogMod.mask.show();
 
-		/*
-		更多
-		 */
-		$("a[name=a_More]").click(function() {
-			var state = parseInt($(this).data("state"));
-			$(this)
-				.data("state", 1 - state)
-				.text(state == 1 ? "更多" : "收起")
-				.parent()
-				.siblings('ul').attr("class", state == 1 ? "ui-normal" : "ui-expand");
-		});
-		/*
-		更多选项
-		 */
-		$("#a_extraMore").click(function() {
-			var text = $(this).text();
-			if (text == "精简选项") {
-				$("div.ui-morePropAttr").css("display", "none");
-				$(this).text("更多选项");
-			} else {
-				$("div.ui-morePropAttr").css("display", "");
-				$(this).text("精简选项");
-			}
-		});
-		/*
-		筛选项
-		 */
-		$(".ui-attr li").click(function(e) {
+        console.log(currentQuery);
 
-			var that = $(this),
-				state = that.data("state"),
-				a = $(this).data("state", 1).children("a"),
-				val = a.data("value");
+        ajaxretriveList(currentQuery, function (data) {
+            var testData = data.data,
+                count = data.count;
+            $(".changePage").val(getCurrentPage());
+            if (count%size == 0) {
+                setMaxPage(parseInt(data.count/size));
+            } else {
+                setMaxPage(parseInt(data.count/size) + 1);
+            }
 
-			if (state != 1) {
+            currentPage = currentQuery.page;
+            if (currentPage == 0) {
+                $(".btn1").addClass("disable");
+                $(".btn2").addClass("disable");
+            } else {
+                $(".btn1").removeClass("disable");
+                $(".btn2").removeClass("disable");
+            }
 
-				$("#link").append('<span class="link"><a data-value="' + val + '">' + a.text() + '</a><span data-index="' + that.attr("index") + '" data-target="' + $(this).parent().attr("id") + '" class="ui-close" title="去除当前筛选项">x</span>')
+            if (currentPage == getMaxPage() - 1) {
+                $(".btn3").addClass("disable");
+                $(".btn4").addClass("disable");
+            } else {
+                $(".btn3").removeClass("disable");
+                $(".btn4").removeClass("disable");
+            }
 
-				var query = that.parent().data("query");
+            currentGrid.reBind(testData);
+            setTimeout(function () {
+                dialogMod.mask.hide();
+            }, 800);
+        }, call_fail, call_fail);
+    }
 
-				currentQuery[query] = (currentQuery[query] || "") + val + ",";
+    /**
+     * 数据绑定失败后的回调
+     * @return {[type]} [description]
+     */
+    function call_fail() {
+        console.log("fail");
 
-				setTimeout(fn_bind, 200);
-			}
-		});
-		
-		/*
-		删除筛选项
-		 */
-		$("#link").click(function(e) {
-			var dom;
-			if (e.target.className == "ui-close") {
-				dom = $(e.target);
-				var index = dom.data("index"),
-					target = dom.data("target");
+        currentQuery.page = currentPage;
 
-				var query = $("#" + target).children("li").eq(parseInt(index)).data("state", 0).end().end().data("query");
+        currentGrid.reBind(null);
 
-				currentQuery[query] = currentQuery[query].replace(dom.siblings('a').data("value") + ",", "");
+        setTimeout(function () {
+            dialogMod.mask.hide();
+        }, 300);
+    }
 
-				dom.parent().remove();
+    /**
+     * 初始化grid组件
+     * @return {[type]} [description]
+     */
+    function fn_initGrid() {
+        /**
+         * 初始化DataGrid，并订阅相关的消息与事件
+         */
+        if (!gridMod) {
+            gridMod = require("pure-grid");
+            currentGrid = gridMod(configMod.gridConfig);
 
-				setTimeout(fn_bind, 200);
-			}
-		});
-	}
+            currentGrid.pubSub()
+                .override("renderInquiryLogo", renderInquiryLogo)
+                .override("renderPopularity", renderPopularity)
+                .override("renderBiaoDi", renderBiaoDi)
+                .override("renderBidCount", renderBidCount)
+                .override("renderBidSuccessRate", renderBidSuccessRate)
+                .override("renderEndDate", renderEndDate);
+            gridMod.basePubSub
+                .override("grid.getDataLength", function (data) {
+                    return data ? data.length : 0;
+                    //return data && data.datas ? data.datas.length : 0;
+                })
+                .override("grid.getRowColsValues", function (data, ri, cols) {
+                    var colArr = cols.split(','),
+                        dataSource = data;
+                    for (var i = colArr.length; i;) {
+                        colArr[(i -= 1)] = dataSource[ri][colArr[i]];
 
-	exports.load = function() {
+                    }
+                    return colArr.length > 0 ? colArr : colArr[0]
+                });
+        }
+    }
 
-		fn_initEvent();
+    /**
+     * 执行搜索
+     * @return {[type]} [description]
+     */
+    function evt_doSearch() {
+        if (currentQuery.keyword = $("#mq").val().trim()) {
+            fn_bind();
+        }
+    }
 
-		fn_bind();
-	};
+    /**
+     * 初始化元素事件绑定
+     * @return {[type]} [description]
+     */
+    function fn_initEvent() {
+
+        $("head").append("<style>a.disable {color: lightgray;cursor: default;} </style>");
+
+        $(".pagination").append('<a href="javascript:void(0);" class="btn1">首页</a> <a href="javascript:void(0);" class="btn2">上一页</a> <a  href="javascript:void(0);" class="btn3">下一页</a> <a  href="javascript:void(0);" class="btn4">尾页</a> 转到 <input class="changePage" type="text" size="1" maxlength="4"/>/<span class="maxPage"></span> 页 <a href="javascript:void(0);" class="btn5">GO</a>')
+
+        $(".btn1").click(function firstPage(){    // 首页
+            if ($(this).hasClass("disable")) return;
+            setPage(0);
+            fn_bind();
+        });
+        $(".btn2").click(function frontPage(){    // 上一页
+            if ($(this).hasClass("disable")) return;
+            setPage(getCurrentPage() - 1);
+            fn_bind();
+        });
+        $(".btn3").click(function nextPage(){    // 下一页
+            if ($(this).hasClass("disable")) return;
+            setPage(getCurrentPage() + 1);
+            fn_bind();
+        });
+        $(".btn4").click(function lastPage(){    // 尾页
+            if ($(this).hasClass("disable")) return;
+            setPage(getMaxPage());
+            fn_bind();
+        });
+        $(".btn5").click(function changePage(){    // 转页
+            curPage = $(this).siblings("input").val() * 1;
+            if (!/^[1-9]\d*$/.test(curPage)) {
+                alert("请输入正整数");
+                return ;
+            }
+            if (curPage > getMaxPage()) {
+                alert("超出数据页面");
+                return ;
+            }
+            setPage(curPage);
+            fn_bind();
+        });
+        $(".changePage").on("input", function(e) {
+            if (isNaN(String.fromCharCode(e.keyCode))) {
+                $(this).val($(this).val().replace(/\D/gi, ""));
+            }
+        });
+
+        $("#btn_search").click(evt_doSearch);
+
+        /*
+         更多
+         */
+        $("a[name=a_More]").click(function () {
+            var state = parseInt($(this).data("state"));
+            $(this)
+                .data("state", 1 - state)
+                .text(state == 1 ? "更多" : "收起")
+                .parent()
+                .siblings('ul').attr("class", state == 1 ? "ui-normal" : "ui-expand");
+        });
+        /*
+         更多选项
+         */
+        $("#a_extraMore").click(function () {
+            var text = $(this).text();
+            if (text == "精简选项") {
+                $("div.ui-morePropAttr").css("display", "none");
+                $(this).text("更多选项");
+            } else {
+                $("div.ui-morePropAttr").css("display", "");
+                $(this).text("精简选项");
+            }
+        });
+        /*
+         筛选项
+         */
+        $(".ui-attr li").click(function (e) {
+
+            var that = $(this),
+                state = that.data("state"),
+                a = $(this).data("state", 1).children("a"),
+                val = a.data("value");
+
+            if (state != 1) {
+
+                $("#link").append('<span class="link"><a data-value="' + val + '">' + a.text() + '</a><span data-index="' + that.attr("index") + '" data-target="' + $(this).parent().attr("id") + '" class="ui-close" title="去除当前筛选项">x</span>')
+
+                var query = that.parent().data("query");
+
+                currentQuery[query] = (currentQuery[query] || "") + val + ",";
+
+                if (that.parent().attr("data-query") == "bidprice") {
+                    that.closest(".ui-targetAttr").hide();
+                }
+
+                setTimeout(fn_bind, 200);
+            }
+        });
+
+        /*
+         删除筛选项
+         */
+        $("#link").click(function (e) {
+            var dom;
+            if (e.target.className == "ui-close") {
+                dom = $(e.target);
+                var index = dom.data("index"),
+                    target = dom.data("target");
+
+                var query = $("#" + target).children("li").eq(parseInt(index)).data("state", 0).end().end().data("query");
+
+                currentQuery[query] = currentQuery[query].replace(dom.siblings('a').data("value") + ",", "");
+
+                dom.parent().remove();
+
+                if (target == "ul_biaoDi") {
+                    $("#ul_biaoDi").closest(".ui-targetAttr").show();
+                }
+
+                $("#" + target)
+
+                setTimeout(fn_bind, 200);
+            }
+        });
+    }
+
+    exports.load = function () {
+
+        fn_initEvent();
+
+        fn_bind();
+    };
 })

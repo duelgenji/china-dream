@@ -393,14 +393,20 @@
                         </select>
                     </li>
                     <li>
-
                         <label>出价限制:</label>
                         <select id="biddingLimit" name="userLimit">
                             <option value="0">不限</option>
-                            <option value="1">仅接受个人出价</option>
+                            <option value="1">仅接受个人/群出价</option>
                             <option value="2">仅接受企业出价</option>
                         </select>
                     </li>
+                    <li>
+                        <label>
+                            项目图片:
+                        </label>
+                        <input type="file" accept="image/jpeg,image/png" id="projectImage" name="logoFile" value="" placeholder="请上传项目图片" style="margin-left: 20px;"/>
+                    </li>
+                    <img id="image" src="" style="margin-left: 230px;max-width: 300px;max-height: 200px;"/>
                 </ul>
             </div>
             <div class="ui-create" id="div_step2" style="display:none;">
@@ -491,12 +497,9 @@
                         </select>
                     </li>
                     <li>
-                        <!--<form method="post" enctype="multipart/form-data" accept-charset="utf-8" target="inquiryNewIframe" id="fileForm">-->
-                        <input class="file_input" type="file" id="file1" name="file1" value=""
-                               placeholder="请选择要上传的附件">
+                        <input class="file_input" type="file" id="file1" name="file1" value="" placeholder="请选择要上传的附件">
                         <input class="file_input" type="file" id="file2" name="file2" value="" placeholder="请选择要上传的附件">
                         <input class="file_input" type="file" id="file3" name="file3" value="" placeholder="请选择要上传的附件">
-                        <!--</form>-->
                     </li>
                 </ul>
             </div>
@@ -586,14 +589,14 @@
                     </li>
                 </ul>
             </div>
-            <div class="ui-create" id="div_step5" style="display: none;text-align: center;font-size: 20px;line-height: 50px;">
-                发布成功，您的标号为<span id="biaohao"></span>
+            <div class="ui-create" id="div_step5" style="display: none;text-align: center;font-size: 24px;line-height: 350px;">
+                发布成功，您的标号为<span id="inquiryNo"></span>
             </div>
             <div class="ui-operate">
                 <button id="btn_pre" type="button" data-pre="1" data-current="1" style="display:none;">上一步</button>
                 <button id="btn_next" type="button" data-next="2" data-current="1">下一步</button>
-                <button id="btn_confirm" type="submit" data-next="5" data-current="4" style="display: none">确认提交
-                </button>
+                <button id="btn_confirm" type="submit" data-next="5" data-current="4" style="display: none">确认提交</button>
+                <button id="btn_back" type="button" onclick="location.href='index.html" style="display: none">返回首页</button>
             </div>
         </form>
     </div>

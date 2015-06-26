@@ -84,24 +84,35 @@ define("main", ["systemDefine-repos", "pure-dialog"], function (require, exports
             url = "";
 
         switch (mod) {
-            case "help":
+            case "usercenter":
+                url = that.data("link");
                 alert("此功能尚在构建，请耐心等候!");
                 return;
-            case "createinquiry":
+                break;
             case "selfcenter":
+                alert("此功能尚在构建，请耐心等候!");;
+                return;
+
                 if (!fn_isLogin()) {
                     alert("你还未登录!");
                     return;
                 }
-                url = base + "/html/" + that.data("link");
+                url = that.data("link");
                 break;
+            case "createinquiry":
+                url = that.data("link");
+                break;
+            case "help":
+                alert("此功能尚在构建，请耐心等候!");
+                return;
             default:
                 //        url = base;
-                url = base + "/html/" + that.data("link");
+                url = that.data("link");
                 break;
         }
 
-        window.open(url, that.data("target") || $("base").attr("target"));
+        window.open(url, "_self");
+        //window.open(url, that.data("target") || $("base").attr("target"));
     }
 
     /**
@@ -230,6 +241,7 @@ define("main", ["systemDefine-repos", "pure-dialog"], function (require, exports
                 dataType: "json",
                 success: function (result) {
                     if (result.success == 1) {
+                        console.log(result);
                         isLogin = true;
                         saveUserInfo(result);
 
