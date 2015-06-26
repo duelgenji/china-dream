@@ -155,6 +155,15 @@ public class UserService {
                 if(request.getParameter("weixin")!=null){
                     userPersonalInfo.setWeixin(request.getParameter("weixin"));
                 }
+                if(request.getParameter("companyIndustry")!=null){
+                    Long iid=Long.parseLong(request.getParameter("companyIndustry"));
+                    CompanyIndustry companyIndustry= companyIndustryRepository.findOne(iid);
+                    if(companyIndustry!=null){
+                        userPersonalInfo.setCompanyIndustry(companyIndustry);
+                    }else{
+                        return "行业编号错误";
+                    }
+                }
 
                 userRepository.save(user);
                 userPersonalInfo.setId(user.getId());

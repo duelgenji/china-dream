@@ -17,15 +17,18 @@ import com.dream.repository.user.UserGroupInfoRepository;
 import com.dream.repository.user.UserPersonalInfoRepository;
 import com.dream.repository.user.UserRepository;
 import com.dream.utils.UploadUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 标 接口
@@ -68,13 +71,19 @@ public class InquiryController {
     @Value("${file_url}")
     private String file_url;
 
+    @Value("${inquiry_url}")
+    private String inquiry_url;
+
+    /**
+     * 发布询价/梦想
+     */
     @RequestMapping("generateInquiry")
     public Map<String, Object> generateInquiry(
-            @RequestParam(required = false) String title,
+            @RequestParam(required = true) String title,
             @RequestParam(required = false) int round,
             @RequestParam(required = false) long provinceCode,
             @RequestParam(required = false) long industryCode,
-            @RequestParam(required = false) String limitDate,
+            @RequestParam(required = true) String limitDate,
             @RequestParam(required = false) double totalPrice,
             @RequestParam(required = false) long inquiryModeCode,
             @RequestParam(required = false) String remark,
@@ -98,6 +107,7 @@ public class InquiryController {
             @RequestParam(required = false) MultipartFile file1,
             @RequestParam(required = false) MultipartFile file2,
             @RequestParam(required = false) MultipartFile file3,
+            @RequestParam(required = false) MultipartFile logoFile,
             @ModelAttribute("currentUser") User user) {
 
         Map<String, Object> res = new HashMap<>();
@@ -150,6 +160,33 @@ public class InquiryController {
         inquiry.setContactWeiBo(contactWeiBo);
         inquiry.setContactWeiBoOpen(OpenStatus.values()[contactWeiBoOpen]);
         inquiry.setFilesOpen(OpenStatus.values()[filesOpen]);
+
+        Date date = new Date();
+        inquiry.setCreateDate(date);
+
+        if(companyProvince!=null){
+            inquiry.setInquiryNo(companyProvince.getAlias()+DateFormatUtils.format(date, "yyyyMMddHHmmssssss"));
+        }else{
+            res.put("success",0);
+            res.put("message","行业编号错误");
+            return res;
+        }
+
+
+        if (null != logoFile) {
+            String uname;
+            if (null == inquiry.getId()) {
+                uname = inquiry_url + "u" + user.getId();
+            } else {
+                uname = inquiry_url + inquiry.getId() + "u" + user.getId();
+            }
+
+            String fileUrl;
+            fileUrl = UploadUtils.uploadTo7niu(0, uname, logoFile);
+
+            inquiry.setLogoUrl(fileUrl);
+
+        }
 
         inquiryRepository.save(inquiry);
 
@@ -208,9 +245,106 @@ public class InquiryController {
 
         }
 
+
+
         res.put("success",1);
+        res.put("inquiryNo",inquiry.getInquiryNo());
         return res;
 
     }
 
+
+    /**
+     * 获取询价列表
+     */
+    @RequestMapping("retrieveInquiryList")
+    public Map<String, Object> retrieveInquiryList(
+            @PageableDefault(page = 0, size = 20) Pageable pageable) {
+        Map<String, Object> res = new HashMap<>();
+
+
+        Page<Inquiry> inquiryList= inquiryRepository.findAll(pageable);
+        int count = inquiryRepository.countAll();
+
+        List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
+        for (Inquiry inquiry : inquiryList) {
+
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("id", inquiry.getId());
+            map.put("userName", inquiry.getUser().getNickName());
+            map.put("title", inquiry.getTitle());
+            map.put("inquiryNo", inquiry.getInquiryNo());
+            map.put("status", inquiry.getStatus());
+            map.put("totalPrice", inquiry.getTotalPrice());
+            map.put("round", inquiry.getRound());
+            map.put("limitDate", DateFormatUtils.format(inquiry.getLimitDate(), "yyyy-MM-dd HH:mm:ss"));
+            map.put("inquiryMode", inquiry.getInquiryMode().getName());
+            map.put("industryCode", inquiry.getCompanyIndustry().getName());
+            map.put("provinceCode", inquiry.getCompanyProvince().getName());
+            map.put("good", 0);
+            map.put("successRate", 0);
+            map.put("inquiryTimes", 0);
+            if(inquiry.getLogoUrl()==null || "".equals(inquiry.getLogoUrl())){
+                map.put("logoUrl",inquiry.getCompanyIndustry().getLogoUrl());
+            }else{
+                map.put("logoUrl",inquiry.getLogoUrl() );
+            }
+            list.add(map);
+        }
+
+        res.put("success",1);
+        res.put("data",list);
+        res.put("count",count);
+        return res;
+    }
+
+
+    /**
+     * 获取询价 详细信息
+     */
+    @RequestMapping("retrieveInquiryInfo")
+    public Map<String, Object> retrieveInquiryInfo(
+            @RequestParam(required = false) long inquiryId,
+            @ModelAttribute("currentUser") User user) {
+        Map<String, Object> res = new HashMap<>();
+
+        if(user.getId()==null){
+            res.put("success",0);
+            res.put("message","请先登录");
+            return res;
+        }
+
+
+        Inquiry inquiry = inquiryRepository.findOne(inquiryId);
+        if(inquiry==null){
+            res.put("success",0);
+            res.put("message","查询错误");
+            return res;
+        }
+        res.put("id", inquiry.getId());
+        res.put("userName", inquiry.getUser().getNickName());
+        res.put("title", inquiry.getTitle());
+        res.put("inquiryNo", inquiry.getInquiryNo());
+        res.put("status", inquiry.getStatus());
+        res.put("totalPrice", inquiry.getTotalPrice());
+        res.put("round", inquiry.getRound());
+        res.put("limitDate", DateFormatUtils.format(inquiry.getLimitDate(), "yyyy-MM-dd HH:mm:ss"));
+        res.put("inquiryMode", inquiry.getInquiryMode().getName());
+        res.put("industryCode", inquiry.getCompanyIndustry().getName());
+        res.put("provinceCode", inquiry.getCompanyProvince().getName());
+//
+//        if(inquiry.getRemarkOpen()==OpenStatus.OPEN){
+//            res.put("remark", inquiry.getRemark());
+//        }
+//        if(inquiry.getFilesOpen()==OpenStatus.OPEN){
+//            res.put("remark", inquiry.getRemark());
+//        }
+//        if(inquiry.getFilesOpen()==OpenStatus.OPEN){
+//        }
+
+
+
+        res.put("success",1);
+        return res;
+    }
 }

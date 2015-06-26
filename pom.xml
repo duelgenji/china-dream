@@ -24,7 +24,6 @@
   </parent>
 
   <dependencies>
-
     <dependency>
       <groupId>com.wonders.xlab</groupId>
       <artifactId>xlab-framework</artifactId>
@@ -93,5 +92,6 @@
     </dependency>
 
   </dependencies>
+
 
 </project>

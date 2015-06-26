@@ -1,5 +1,6 @@
 package com.dream.entity.user;
 
+import com.dream.entity.company.CompanyIndustry;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -65,6 +66,10 @@ public class UserPersonalInfo implements Serializable {
      * 个人微信号
      */
     private String weixin;
+
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private CompanyIndustry companyIndustry;
 
     public Long getId() {
         return id;
@@ -176,5 +181,13 @@ public class UserPersonalInfo implements Serializable {
 
     public void setWeixin(String weixin) {
         this.weixin = weixin;
+    }
+
+    public CompanyIndustry getCompanyIndustry() {
+        return companyIndustry;
+    }
+
+    public void setCompanyIndustry(CompanyIndustry companyIndustry) {
+        this.companyIndustry = companyIndustry;
     }
 }

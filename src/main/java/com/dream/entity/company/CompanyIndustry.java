@@ -20,6 +20,8 @@ public class CompanyIndustry extends AbstractPersistable<Long> {
     @Column(unique = true)
     private String name;
 
+    private String logoUrl;
+
     public String getCode() {
         return code;
     }
@@ -34,5 +36,13 @@ public class CompanyIndustry extends AbstractPersistable<Long> {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getLogoUrl() {
+        return logoUrl;
+    }
+
+    public void setLogoUrl(String logoUrl) {
+        this.logoUrl = logoUrl;
     }
 }

@@ -47,8 +47,10 @@ public class UserInfoController {
 
         Map<String, Object> res = new HashMap<>();
 
+
+
         if(user.getId()!=null){
-            res = userService.User2Map(user);
+            res = userService.User2Map(userRepository.findOne(user.getId()));
             //res.put("info",info);
 
         }else{

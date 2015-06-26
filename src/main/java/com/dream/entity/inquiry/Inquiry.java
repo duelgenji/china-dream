@@ -67,7 +67,7 @@ public class Inquiry  extends AbstractPersistable<Long> {
     private Date modifyDate = new Date();
 
     /**
-     * 总价格 单位（万元）
+     * 总价格 单位（元）
      */
     private Double totalPrice;
 
@@ -80,7 +80,7 @@ public class Inquiry  extends AbstractPersistable<Long> {
     private int hotLevel;
 
     /**
-     * 用户限制  1不限 2 个人/群  3 企业
+     * 用户限制  0不限  1个人/群  2企业
      */
     private int userLimit;
 
@@ -130,8 +130,13 @@ public class Inquiry  extends AbstractPersistable<Long> {
     private OpenStatus contactWeiXinOpen = OpenStatus.OPEN;
 
     private String contactWeiBo;
+
     @Enumerated
     private OpenStatus contactWeiBoOpen = OpenStatus.OPEN;
+
+    private String inquiryNo;
+
+    private String logoUrl;
 
 
     public User getUser() {
@@ -380,5 +385,21 @@ public class Inquiry  extends AbstractPersistable<Long> {
 
     public void setContactWeiBoOpen(OpenStatus contactWeiBoOpen) {
         this.contactWeiBoOpen = contactWeiBoOpen;
+    }
+
+    public String getInquiryNo() {
+        return inquiryNo;
+    }
+
+    public void setInquiryNo(String inquiryNo) {
+        this.inquiryNo = inquiryNo;
+    }
+
+    public String getLogoUrl() {
+        return logoUrl;
+    }
+
+    public void setLogoUrl(String logoUrl) {
+        this.logoUrl = logoUrl;
     }
 }
