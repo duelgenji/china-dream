@@ -16,12 +16,14 @@ import com.dream.repository.user.UserCompanyInfoRepository;
 import com.dream.repository.user.UserGroupInfoRepository;
 import com.dream.repository.user.UserPersonalInfoRepository;
 import com.dream.repository.user.UserRepository;
+import com.dream.service.inquiry.InquiryService;
 import com.dream.utils.UploadUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -66,6 +68,9 @@ public class InquiryController {
 
     @Autowired
     InquiryModeRepository inquiryModeRepository;
+
+    @Autowired
+    InquiryService inquiryService;
 
 
     @Value("${file_url}")
@@ -259,9 +264,8 @@ public class InquiryController {
      */
     @RequestMapping("retrieveInquiryList")
     public Map<String, Object> retrieveInquiryList(
-            @PageableDefault(page = 0, size = 20) Pageable pageable) {
+            @PageableDefault(page = 0, size = 20,sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         Map<String, Object> res = new HashMap<>();
-
 
         Page<Inquiry> inquiryList= inquiryRepository.findAll(pageable);
         int count = inquiryRepository.countAll();
@@ -302,17 +306,17 @@ public class InquiryController {
     /**
      * 获取询价 详细信息
      */
-    @RequestMapping("retrieveInquiryInfo")
-    public Map<String, Object> retrieveInquiryInfo(
+    @RequestMapping("retrieveInquiryDetail")
+    public Map<String, Object> retrieveInquiryDetail(
             @RequestParam(required = false) long inquiryId,
             @ModelAttribute("currentUser") User user) {
         Map<String, Object> res = new HashMap<>();
-
-        if(user.getId()==null){
-            res.put("success",0);
-            res.put("message","请先登录");
-            return res;
-        }
+//
+//        if(user.getId()==null){
+//            res.put("success",0);
+//            res.put("message","请先登录");
+//            return res;
+//        }
 
 
         Inquiry inquiry = inquiryRepository.findOne(inquiryId);
@@ -332,16 +336,16 @@ public class InquiryController {
         res.put("inquiryMode", inquiry.getInquiryMode().getName());
         res.put("industryCode", inquiry.getCompanyIndustry().getName());
         res.put("provinceCode", inquiry.getCompanyProvince().getName());
-//
-//        if(inquiry.getRemarkOpen()==OpenStatus.OPEN){
-//            res.put("remark", inquiry.getRemark());
-//        }
-//        if(inquiry.getFilesOpen()==OpenStatus.OPEN){
-//            res.put("remark", inquiry.getRemark());
-//        }
-//        if(inquiry.getFilesOpen()==OpenStatus.OPEN){
-//        }
+        res.put("userLimit", inquiry.getUserLimit());
 
+        if(inquiry.getUser().getId().equals(user.getId())){
+            res.put("isMe", 1);
+        }else{
+            res.put("isMe", 0);
+        }
+
+
+        inquiryService.putPrivateInfo(res,user,inquiry);
 
 
         res.put("success",1);

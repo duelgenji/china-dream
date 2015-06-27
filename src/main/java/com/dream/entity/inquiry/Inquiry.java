@@ -402,4 +402,44 @@ public class Inquiry  extends AbstractPersistable<Long> {
     public void setLogoUrl(String logoUrl) {
         this.logoUrl = logoUrl;
     }
+
+
+    public Object getProperties(String name){
+        switch (name){
+            case "remark":
+                return this.getRemark();
+            case "remarkOpen":
+                return this.getRemarkOpen();
+            case "contactName":
+                return this.getContactName();
+            case "contactNameOpen":
+                return this.getRemarkOpen();
+            case "contactEmail":
+                return this.getContactEmail();
+            case "contactEmailOpen":
+                return this.getContactEmailOpen();
+            case "contactPhone":
+                return this.getContactPhone();
+            case "contactPhoneOpen":
+                return this.getContactPhoneOpen();
+            case "contactTel":
+                return this.getContactTel();
+            case "contactTelOpen":
+                return this.getContactTelOpen();
+            case "contactFax":
+                return this.getContactFax();
+            case "contactFaxOpen":
+                return this.getContactFaxOpen();
+            case "contactWeiBo":
+                return this.getContactWeiBo();
+            case "contactWeiBoOpen":
+                return this.getContactWeiBoOpen();
+            case "contactWeiXin":
+                return this.getContactWeiXin();
+            case "contactWeiXinOpen":
+                return this.getContactWeiXinOpen();
+            default:
+                return null;
+        }
+    }
 }
