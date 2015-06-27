@@ -5,7 +5,7 @@ function ajaxlogin(email, password, ok, fail, error) {
     data.password = password;
 
     $.ajax({
-        url: "../user/login",
+        url: baseUrl + "/user/login",
         type : "post",
         dataType: "json",
         data : data,

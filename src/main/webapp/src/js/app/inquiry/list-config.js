@@ -84,6 +84,6 @@ define("list-config",[],function(require,exports){
                         renderFn: "renderEndDate"
                     }
                 }],
-                sortCss: sortCss
+        sortCss: sortCss
 	};
 });

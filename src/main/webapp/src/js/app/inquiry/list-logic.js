@@ -21,13 +21,13 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
          * @type {Object}
          */
 
-        size = 3,
+        size = 20,
 
         currentQuery = {
             page: 0,
             size: size
         },
-        currentPage = 0;
+        currentPage = 0,
         maxPage = 0;
 
 
@@ -162,11 +162,25 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
     function fn_bind() {
         fn_initGrid();
 
+        var params = {};
+
+        for (var key in currentQuery) {
+            var value = currentQuery[key],
+                lenth = value.length;
+
+            if (lenth > 0 && value.charAt(lenth - 1) == ',') {
+                value = value.substr(0,lenth - 1);
+            }
+
+            params[key] = value;
+
+        }
+
+        console.log(JSON.stringify(params));
+
         dialogMod.mask.show();
 
-        console.log(currentQuery);
-
-        ajaxretriveList(currentQuery, function (data) {
+        ajaxretriveList(params, function (data) {
             var testData = data.data,
                 count = data.count;
             $(".changePage").val(getCurrentPage());
@@ -351,16 +365,68 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
 
                 $("#link").append('<span class="link"><a data-value="' + val + '">' + a.text() + '</a><span data-index="' + that.attr("index") + '" data-target="' + $(this).parent().attr("id") + '" class="ui-close" title="去除当前筛选项">x</span>')
 
-                var query = that.parent().data("query");
-
-                currentQuery[query] = (currentQuery[query] || "") + val + ",";
-
+                //隐藏价格筛选
                 if (that.parent().attr("data-query") == "bidprice") {
                     that.closest(".ui-targetAttr").hide();
+                    var min = a.data("minPrice"),
+                        max = a.data("maxPrice");
+                    if (min != "") {
+                        currentQuery.minPrice = min;
+                    }
+                    if (max != "") {
+                        currentQuery.maxPrice = max;
+                    }
+
+                } else {
+                    var query = that.parent().data("query");
+
+                    currentQuery[query] = (currentQuery[query] || "") + val + ",";
                 }
 
                 setTimeout(fn_bind, 200);
             }
+        });
+
+        $("#customPrice").click(function() {
+            var min = $("#minPrice").val(),
+                max = $("#maxPrice").val(),
+                text = "";
+
+            if (min == "" && max == "") {
+                return;
+            }
+
+            if (max == "") {
+                text = min + "以上";
+            } else if (min == "") {
+                text = max + "以下";
+            } else if (min == max) {
+                text = min;
+            } else {
+                if (min > max) {
+                    var temp = max;
+                    max = min;
+                    min = temp;
+                    $("#minPrice").val(min);
+                    $("#maxPrice").val(max);
+                }
+                text = min + "-" + max;
+            }
+
+            $("#link").append('<span class="link"><a>' + text + '</a><span data-index="' + $(this).attr("index") + '" data-target="' + $(this).parent().attr("id") + '" class="ui-close" title="去除当前筛选项">x</span>')
+
+            //隐藏价格筛选
+            $(this).closest(".ui-targetAttr").hide();
+
+            if (min != "") {
+                currentQuery.minPrice = min;
+            }
+            if (max != "") {
+                currentQuery.maxPrice = max;
+            }
+
+            setTimeout(fn_bind, 200);
+
         });
 
         /*
@@ -373,17 +439,17 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
                 var index = dom.data("index"),
                     target = dom.data("target");
 
-                var query = $("#" + target).children("li").eq(parseInt(index)).data("state", 0).end().end().data("query");
-
-                currentQuery[query] = currentQuery[query].replace(dom.siblings('a').data("value") + ",", "");
-
-                dom.parent().remove();
-
                 if (target == "ul_biaoDi") {
                     $("#ul_biaoDi").closest(".ui-targetAttr").show();
+                    delete currentQuery.minPrice;
+                    delete currentQuery.maxPrice;
+                } else {
+                    var query = $("#" + target).children("li").eq(parseInt(index)).data("state", 0).end().end().data("query");
+
+                    currentQuery[query] = currentQuery[query].replace(dom.siblings('a').data("value") + ",", "");
                 }
 
-                $("#" + target)
+                dom.parent().remove();
 
                 setTimeout(fn_bind, 200);
             }

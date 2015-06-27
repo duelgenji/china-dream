@@ -41,12 +41,11 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
 
 	}
 
-
 	function renderRound(val, ri, objVal) {
 		return (objVal.title = "第" + val + "轮");
 	}
 
-	function renderAttachments(val, ri, objVal) {
+	function renderAttachments(vals, ri, objVal) {
 		var urls = (vals[1] || "").split(','),
 			names = (vals[0] || "").split(',');
 		var html = [];
@@ -85,90 +84,31 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
 	 * @return {[type]} [description]
 	 */
 	function fn_getDetail() {
-		inquiryRepos.getDetail(currentQueryObj.inquiryID, call_detailOk, call_detailFail, call_detailFail);
-	}
-
-	/**
-	 * 辅助方法-映射询标类型
-	 * @return {[type]} [description]
-	 */
-	function util_mapInquiryMode(val) {
-		var reslt = "";
-		switch (val) {
-			case 1:
-				reslt = "全明询价";
-				break;
-			case 2:
-				reslt = "明询价";
-				break;
-			case 3:
-				reslt = "半明询价";
-				break;
-			case 4:
-				reslt = "半暗询价";
-				break;
-			case 5:
-				reslt = "暗询价";
-				break;
-			case 6:
-				reslt = "全暗询价";
-				break;
-		}
-		return reslt;
-	}
-
-	function util_mapBidLimit(val) {
-		var reslt = "";
-		switch (val) {
-			case 0:
-				reslt = "不限";
-				break;
-			case 1:
-				reslt = "仅接受个人出价";
-				break;
-			case 2:
-				reslt = "仅接受企业出价";
-				break;
-		}
-		return reslt;
+		console.log(JSON.stringify(currentQueryObj));
+		ajaxretriveDetail(currentQueryObj,call_detailOk,call_detailFail,call_detailFail);
 	}
 
 	function call_detailOk(data) {
+		console.log(JSON.stringify(data));
+
 		var span, inquiryMode,
 
-			dataSource = data.datas,
+			dataSource = data;
 
-			username = dataSource[data.index["userName"]];
-
-		$("#detailbiaohao").text(dataSource[data.index["biaohao"]]);
+		$("#detailbiaohao").text(dataSource["inquiryNo"]);
 
 		$("span.ui-value").each(function(i, span) {
 			span = $(span);
 			var col = span.data("col"),
-				val = dataSource[data.index[col]],
-				isOpen = dataSource[data.index[col + "Open"]];
-			if (span.data("access") && isOpen == "0" && username != mainMod.loginInfo.name) {
-				span.text("").addClass("ui-noOpen");
-			} else {
-				if (col == "inquiryMode") {
-					val = util_mapInquiryMode(inquiryMode = val);
-				}
-				if (username == mainMod.loginInfo.name) {
-					val = val + "(" + (isOpen == "1" ? "公开" : (isOpen == "2" ? "授权后公开" : "")) + ")";
-				}
-				span.text(val).attr("title", val);
-			}
+				val = dataSource[col];
+			span.text(val).attr("title", val);
 		});
 
 		/**
 		 * 如果当前询价是全明询价,那么才显示对手出价
 		 * @return {[type]} [description]
 		 */
-		if (inquiryMode == 1) {
-			fn_getOpponentBidList();
-		} else {
-			$("#data2").html('<h3>抱歉,此标非全明询价标,无法查看对手出价!</h3>');
-		}
+		fn_getOpponentBidList();
 
 		/**
 		 * 不是本人的询价 则需要显示我的出价
@@ -177,7 +117,9 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
 		 * @return {[type]}                        [description]
 		 */
 
-		if (!mainMod.loginInfo.name) {
+		var info = mainMod.loginInfo;
+
+		if (!info) {
 			$("#btn_biddingApply").click(function() {
 				alert("对不起,此部分功能需要登录后才能操作,请先登录!");
 			});
@@ -187,74 +129,89 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
 			return;
 		}
 
-		if (dataSource[data.index["userName"]] != mainMod.loginInfo.name) {
+		if (!dataSource.isMe) {
 			fn_getMyBidList();
 			$("#div_self").css("display", "none");
 			$("#div_other").css("display", "");
 
-			$("#btn_biddingApply").click(function() {
+			$("#btn_biddingApply").click(function () {
+				var canApply = true,
+					selfType = info.type,
+					userLimitType = dataSource.type,
+					limitReason = "";
+				if (userLimitType == 1 && selfType == 2) {
+					canApply = false;
+					limitReason = '对不起,当前询标的出价限制为"仅接受个人/群出价"!';
+				} else if (userLimitType == 2 && selfType != 2) {
+					canApply = false;
+					limitReason = '对不起,当前询标的出价限制为"仅接受企业出价"!';
+				}
+
+				if (!canApply) {
+					alert(limitReason);
+					return;
+				}
+
 				var that = $(this);
 				if (that.attr("status") == "working") {
 					return;
 				}
+
 				var cmd = that.attr("status", "working").data("cmd");
 
 				if (cmd == "apply") {
 					/*
-					判断当前询价标的出价限制的用户类型 是否与当前登录的用户类型一致
-				 */
-					var bidLimit = dataSource[data.index["biddingLimit"]];
-					if (bidLimit != 0 && bidLimit != loginInfo.type) {
-						alert("对不起,当前询标的出价限制为" + util_mapBidLimit(bidLimit) + "!");
-						return;
-					}
-					bidRepos.sendBidRequest(mainMod.loginInfo.name, currentQueryObj.inquiryID, function() {
-						alert("申请发送成功,请耐心等待对方的回复!");
-						that.data("cmd", "addBid").attr("status", "done").text("正式出价");
-					}, function() {
-						alert("申请发送失败!");
-					}, function() {
-						alert("申请发送异常!");
-					});
+					 判断当前询价标的出价限制的用户类型 是否与当前登录的用户类型一致
+					 */
+
+					//bidRepos.sendBidRequest(mainMod.loginInfo.name, currentQueryObj.inquiryID, function () {
+					//	alert("申请发送成功,请耐心等待对方的回复!");
+					//	that.data("cmd", "addBid").attr("status", "done").text("正式出价");
+					//}, function () {
+					//	alert("申请发送失败!");
+					//}, function () {
+					//	alert("申请发送异常!");
+					//});
 				} else if (cmd == "addBid") {
 
 				}
 			});
 
-			$("#btn_addCollect").click(function() {
+			$("#btn_addCollect").click(function () {
 				var that = $(this);
 				if (that.attr("status") == "working") {
 					return;
 				}
+
 				var cmd = that.attr("status", "working").data("cmd");
 
 				if (cmd == "add") {
-					collectRepos.add(currentQueryObj.userName, 4, currentQueryObj.inquiryID, function(data) {
-						that.data("cmd", "cancel").attr("status", "done").text("取消收藏");
-					}, function() {
-						alert("添加收藏失败!");
-						that.removeAttr("status");
-					}, function() {
-						alert("添加收藏异常!");
-						that.removeAttr("status");
-					});
+					//collectRepos.add(currentQueryObj.userName, 4, currentQueryObj.inquiryID, function (data) {
+					//	that.data("cmd", "cancel").attr("status", "done").text("取消收藏");
+					//}, function () {
+					//	alert("添加收藏失败!");
+					//	that.removeAttr("status");
+					//}, function () {
+					//	alert("添加收藏异常!");
+					//	that.removeAttr("status");
+					//});
 				} else {
-					collectRepos.cancel(currentQueryObj.userName, currentQueryObj.inquiryID, function(data) {
-						that.data("cmd", "add").attr("status", "done").text("添加收藏");
-					}, function() {
-						alert("取消收藏失败!");
-						that.removeAttr("status");
-					}, function() {
-						alert("取消收藏异常!");
-						that.removeAttr("status");
-					})
+					//collectRepos.cancel(currentQueryObj.userName, currentQueryObj.inquiryID, function (data) {
+					//	that.data("cmd", "add").attr("status", "done").text("添加收藏");
+					//}, function () {
+					//	alert("取消收藏失败!");
+					//	that.removeAttr("status");
+					//}, function () {
+					//	alert("取消收藏异常!");
+					//	that.removeAttr("status");
+					//})
 				}
 			});
 		} else {
 			$("#div_self").css("display", "");
 			$("#div_other").css("display", "none");
 
-			$("#btn_sucending").click(function() {
+			$("#btn_sucending").click(function () {
 
 				!dialogMod && (dialogMod = require("pure-dialog"));
 
@@ -262,29 +219,33 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
 					.showModal()
 					.height(200)
 					.content("<div>出价人员</div>")
-					.onCmd("ok", function() {
-						inquiryRepos.pass(mainMod.loginInfo.name, currentQueryObj.inquiryID, function() {
-
-						}, function() {
-
-						}, function() {
-
-						});
+					.onCmd("ok", function () {
+						//inquiryRepos.pass(mainMod.loginInfo.name, currentQueryObj.inquiryID, function () {
+                        //
+						//}, function () {
+                        //
+						//}, function () {
+                        //
+						//});
 					});
 			});
 
-			$("#btn_failending").click(function() {
+			$("#btn_failending").click(function () {
 
 				if (confirm("是否确认将此标执行流标操作?")) {
 
-					inquiryRepos.flow(mainMod.loginInfo.name, currentQueryObj.inquiryID, function() {
-
-					}, function() {
-
-					}, function() {
-
-					});
+					//inquiryRepos.flow(mainMod.loginInfo.name, currentQueryObj.inquiryID, function () {
+                    //
+					//}, function () {
+                    //
+					//}, function () {
+                    //
+					//});
 				}
+			});
+
+			$("#btn_next").click(function () {
+
 			});
 		}
 	}
@@ -300,7 +261,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
 
 		currentGrid1 = fn_initGrid();
 
-		bidRepos.getListOfMy(currentQueryObj.userName, currentQueryObj.inquiryID, currentQueryObj.pageno, currentQueryObj.pagesize, call_mybidok, call_mybidfail, call_mybidfail);
+		//bidRepos.getListOfMy(currentQueryObj.userName, currentQueryObj.inquiryID, currentQueryObj.pageno, currentQueryObj.pagesize, call_mybidok, call_mybidfail, call_mybidfail);
 	}
 
 	function call_mybidok(data) {
@@ -358,15 +319,10 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
 		id: 2
 	}];
 
-	var currentQueryObj = {
-		pageno: 1,
-		pagesize: 8,
-	};
+	var currentQueryObj = {};
 
 	exports.load = function() {
-		var arr = urlMod.getSearch("key,isself");
-		currentQueryObj.inquiryID = arr[0];
-		currentQueryObj.isSelf = arr[1];
+		currentQueryObj.inquiryId = getParam("key");
 		fn_getDetail();
 	};
 });

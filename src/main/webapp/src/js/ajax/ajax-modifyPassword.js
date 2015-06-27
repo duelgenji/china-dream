@@ -1,6 +1,6 @@
 function ajaxmodifypsw (params, ok, fail, error) {
     $.ajax({
-        url: "../userInfo/modifyPassword",
+        url: baseUrl + "/userInfo/modifyPassword",
         type : "post",
         dataType: "json",
         data : params,

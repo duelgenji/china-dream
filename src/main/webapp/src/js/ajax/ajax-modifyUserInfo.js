@@ -1,6 +1,6 @@
 function ajaxmodifyInfo(params, ok, fail, error) {
     $.ajax({
-        url: "../userInfo/modifyInfo",
+        url: baseUrl + "/userInfo/modifyInfo",
         type : "post",
         dataType: "json",
         data : params,

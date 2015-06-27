@@ -1,4 +1,7 @@
-﻿/**
+﻿//baseUrl = "http://10.0.0.98:8080"
+baseUrl = "http://121.40.143.120:8080/dream"
+
+/**
  * 保存登陆信息
  */
 function saveUserInfo(userInfo) {
@@ -39,6 +42,21 @@ function loadAccount() {
 function clearAccount() {
     localStorage.removeItem("chinaDream_account");
 }
+
+/**
+ * 获取url
+ */
+function getParam(param){
+    var SearchString = window.location.search.substring(1);
+    var VariableArray = SearchString.split('&');
+    for(var i = 0; i < VariableArray.length; i++){
+        var KeyValuePair = VariableArray[i].split('=');
+        if(KeyValuePair[0] == param){
+            return KeyValuePair[1];
+        }
+    }
+}
+
 
 define("main", ["systemDefine-repos", "pure-dialog"], function (require, exports) {
     var
@@ -273,9 +291,21 @@ define("main", ["systemDefine-repos", "pure-dialog"], function (require, exports
             }
         }
 
-        // 未邮箱认证 跳转邮箱认证界面
+        // 未邮箱认证
         if (status == 0) {
-            location.href = "";
+            $.ajax({
+                url: "../user/logout",
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    if (result.success == 1) {
+                        clearUserInfo();
+                        clearAccount();
+
+                        location.href = "emailSent.html";
+                    }
+                }
+            })
         }
 
         return isLogin;
@@ -299,15 +329,15 @@ define("main", ["systemDefine-repos", "pure-dialog"], function (require, exports
             expires: -1
         }); // 删除 cookie
 
-        clearUserInfo();
-        clearAccount();
-
         $.ajax({
             url: "../user/logout",
             type: "post",
             dataType: "json",
             success: function (result) {
                 if (result.success == 1) {
+                    clearUserInfo();
+                    clearAccount();
+
                     location.href = "index.html";
                 }
             }

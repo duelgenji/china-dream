@@ -1,6 +1,6 @@
-function ajaxretriveList(params, ok, fail, error) {
+function ajaxretriveUserRoomList(params, ok, fail, error) {
     $.ajax({
-        url: "http://10.0.0.98:8080/inquiry/retrieveInquiryList",
+        url: baseUrl + "/user/register",
         type : "post",
         dataType: "json",
         data : params,

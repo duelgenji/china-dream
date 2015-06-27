@@ -1,6 +1,6 @@
 function ajaxregister(params, ok, fail, error) {
     $.ajax({
-        url: "../user/register",
+        url: baseUrl + "/user/register",
         type : "post",
         dataType: "json",
         data : params,

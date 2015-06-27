@@ -1,13 +1,9 @@
-function ajaxforgetpassword(email, ok, fail, error) {
-
-    var data = {}
-    data.email = email;
-
+function ajaxretriveList(params, ok, fail, error) {
     $.ajax({
-        url: baseUrl + "/user/forgetPassword",
+        url: baseUrl + "/inquiry/retrieveInquiryList",
         type : "post",
         dataType: "json",
-        data : data,
+        data : params,
         success: function (result) {
             if (result.success == 1) {
                 ok(result);
