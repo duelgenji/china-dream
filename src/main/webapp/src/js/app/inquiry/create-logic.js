@@ -19,11 +19,11 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
 
         publishErrorHtml = '<div class="ui-publishTip"><span><img class="ui-tipErrorIcon"/>对不起,询价发布出现异常!</span></div>',
 
-        industries = ["梦幻梦想", "奇思妙想"],
+        industries = ["梦幻梦想","奇思妙想","公益梦想","行业梦想","企业服务","股权融资","IT产业","房产租售","广告文案","工程建筑","医药卫生","文化艺术","服装纺织","专业服务","安全防护","环保绿化","旅游休闲","办公文教","电子电工","玩具礼品","风险投资","冶金矿产","石油化工","水利水电","交通运输","信息产业","机械机电","轻工食品","农林牧渔","家居用品","物流包装","体育用品","文教办公","软件开发","强电弱电","债券清算","反向团购","其他"],
 
         industryList = $("#industry-list"),
 
-        provinces = ["北京", "天津"],
+        provinces = ["北京","天津","上海","重庆","河北","河南","云南","辽宁","黑龙江","湖南","安徽","山东","新疆","江苏","浙江","江西","湖北","广西","甘肃","山西","内蒙","陕西","吉林","福建","贵州","广东","青海","西藏","四川","宁夏","海南","台湾","香港","澳门","钓鱼岛","国外"],
 
         provinceList = $("#province-list"),
 
@@ -347,7 +347,7 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
 
                 if (result == 1) {
 
-                    $("#inquiryNo").text("苏2301301300130");
+                    $("#inquiryNo").text(data.inquiryNo);
 
                     $("#div_steps li:eq(4)").removeClass("active").addClass("active").siblings('li').removeClass("active");
                     $("#div_step4").css("display", "none");
@@ -356,7 +356,7 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
                     $("#btn_pre").css("display", "none");
                     $("#btn_next").css("display", "none");
                     $("#btn_confirm").css("display", "none");
-                    $("#btn_back").css("display", "none");
+                    $("#btn_back").css("display", "");
 
                 }
             }
@@ -371,6 +371,11 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
             $(this).val("");
         }
     })
+
+    $("input, select, textarea").on("focus", function() {
+        $("#mainMask").css("display", "none");
+        $("#bubbleLayer").removeClass("bubbleLayer-show");
+    });
 
     exports.load = function () {
         fn_init();
