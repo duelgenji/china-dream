@@ -38,7 +38,7 @@ public class CommonEmail {
             buffer.append("<div style='font-size:18px;color:#999;'>(此链接1天内有效，超时需要重新获取验证邮件)</div>");
             buffer.append("<br>");
             buffer.append("<div style='font-size:18px;'>如果该链接无法点击，请将其复制粘贴到你的浏览器地址栏中访问。</div>");
-            buffer.append("<div style='font-size:18px;'>验证邮箱会增加帐号的安全性，也会享受更多的优酷服务。</div>");
+            buffer.append("<div style='font-size:18px;'>验证邮箱会增加帐号的安全性，也会享受更多的中梦国网服务。</div>");
             buffer.append("<br>");
             buffer.append("<div style='font-size:18px;'>祝使用愉快！</div>");
             buffer.append("<div style='font-size:18px;'>中梦国网 "+ DateFormatUtils.format(new Date(), "yyyy-MM-dd hh:mm:ss")+"</div>");

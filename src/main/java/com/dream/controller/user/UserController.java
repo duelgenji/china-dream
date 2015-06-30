@@ -116,6 +116,9 @@ public  class UserController extends AbstractBaseController<User, Long> {
             res.put("message", "用户名密码错误");
             return res;
         }
+
+        //TODO 增加是否激活判断
+
         model.addAttribute("currentUser", user);
 
         res = userService.User2Map(user);

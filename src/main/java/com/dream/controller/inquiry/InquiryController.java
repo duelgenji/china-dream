@@ -5,6 +5,7 @@ import com.dream.entity.company.CompanyProvince;
 import com.dream.entity.inquiry.Inquiry;
 import com.dream.entity.inquiry.InquiryFile;
 import com.dream.entity.inquiry.InquiryMode;
+import com.dream.entity.message.Message;
 import com.dream.entity.user.OpenStatus;
 import com.dream.entity.user.User;
 import com.dream.repository.company.CompanyIndustryRepository;
@@ -12,6 +13,7 @@ import com.dream.repository.company.CompanyProvinceRepository;
 import com.dream.repository.inquiry.InquiryFileRepository;
 import com.dream.repository.inquiry.InquiryModeRepository;
 import com.dream.repository.inquiry.InquiryRepository;
+import com.dream.repository.message.MessageRepository;
 import com.dream.repository.user.UserCompanyInfoRepository;
 import com.dream.repository.user.UserGroupInfoRepository;
 import com.dream.repository.user.UserPersonalInfoRepository;
@@ -71,6 +73,9 @@ public class InquiryController {
 
     @Autowired
     InquiryService inquiryService;
+
+    @Autowired
+    MessageRepository messageRepository;
 
 
     @Value("${file_url}")
@@ -350,5 +355,53 @@ public class InquiryController {
 
         res.put("success",1);
         return res;
+    }
+
+
+
+    /**
+     * 获取询价 详细信息
+     */
+    @RequestMapping("sendInquiryMessage")
+    public Map<String, Object> sendInquiryMessage(
+            @RequestParam(required = false) long inquiryId,
+            @ModelAttribute("currentUser") User user) {
+        Map<String, Object> res = new HashMap<>();
+
+        if(user.getId()==null){
+            res.put("success",0);
+            res.put("message","请先登录");
+            return res;
+        }
+
+
+        Inquiry inquiry = inquiryRepository.findOne(inquiryId);
+        if(inquiry==null){
+            res.put("success",0);
+            res.put("message","查询错误");
+            return res;
+        }
+
+        List<Inquiry> list=messageRepository.findAllUserAndInquiryAndStatus(user,inquiry,0);
+        if(list.size()>=1){
+            res.put("success",0);
+            res.put("message","已经发送过了");
+            return res;
+        }
+
+
+        Message message =new Message();
+        message.setInquiry(inquiry);
+        message.setUser(user);
+        message.setInquiryUser(inquiry.getUser());
+        message.setContent("申请出价"+"'"+inquiry.getTitle()+"'");
+
+        messageRepository.save(message);
+
+
+
+        res.put("success",1);
+        return res;
+
     }
 }
