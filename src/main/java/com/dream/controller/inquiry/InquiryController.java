@@ -378,7 +378,7 @@ public class InquiryController {
         Inquiry inquiry = inquiryRepository.findOne(inquiryId);
         if(inquiry==null){
             res.put("success",0);
-            res.put("message","查询错误");
+            res.put("message","数据未查到");
             return res;
         }
 
