@@ -184,7 +184,7 @@ define("modifyUserInfo-logic", ["user-repos", "jquery", "pure-dialog", "pure-val
                 .showModal()
                 .content('<div><img src="../image/loading.gif" alt="" />正在提交中,请耐心等候!</div>');
 
-            ajaxmodifyInfo(params, function () {
+            ajaxModifyUserInfo(params, function () {
                 dialog.content(regOkHtml).title("修改成功");
                 dialog.close();
 

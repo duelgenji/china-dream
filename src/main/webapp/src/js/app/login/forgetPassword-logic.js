@@ -26,12 +26,17 @@ define("forgetPassword-logic", ["jquery", "user-repos"], function(require, expor
                 $("#hd_username").val(val);
             }
 
-            ajaxforgetpassword(val,function(data) {
+            ajaxForgetPassword(val,function(data) {
                 location.href = "emailSent.html";
-            }, function() {
+            }, function(result) {
+                var message = result.message;
+                if (validMod.isEmptyOrNull(message)) {
+                    message = "对不起,服务端异常,您目前无法重置密码!";
+                }
+
                 $("#mainMask").css("display", "block");
                 $("#bubbleLayer").addClass("bubbleLayer-show").css("top", 150);
-                $("#bubbleLayerWrap .error-tt p").text("您的邮箱不正确!");
+                $("#bubbleLayerWrap .error-tt p").text(message);
             },function(){
                 $("#mainMask").css("display", "block");
                 $("#bubbleLayer").addClass("bubbleLayer-show").css("top", 150);

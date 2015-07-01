@@ -1,371 +1,406 @@
-define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-repos", "inquiry-repos", "collect-repos", "lettermsg-repos", "pure-grid", "pure-dialog"], function(require, exports) {
+define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-repos", "inquiry-repos", "collect-repos", "lettermsg-repos", "pure-grid", "pure-dialog"], function (require, exports) {
 
-	var
-		$ = require("jquery"),
+    var
+        $ = require("jquery"),
 
-		configMod = require("myzone-config"),
+        configMod = require("myzone-config"),
 
-		gridMod,
+        gridMod,
 
-		dialogMod = require("pure-dialog"),
+        dialogMod = require("pure-dialog"),
 
-		userRepos = require("user-repos"),
+        userRepos = require("user-repos"),
 
-		bidRepos = require("bid-repos"),
+        bidRepos = require("bid-repos"),
 
-		inquiryRepos = require("inquiry-repos"),
+        inquiryRepos = require("inquiry-repos"),
 
-		collectRepos = require("collect-repos"),
+        collectRepos = require("collect-repos"),
 
-		letterMsgRepos = require("lettermsg-repos"),
+        letterMsgRepos = require("lettermsg-repos"),
 
-		mainMod = require("main"),
+        mainMod = require("main"),
 
-		currentGrid,
+        currentGrid,
 
-		currentQueryObj = {
-			pageno: 1,
-			pagesize: 8
-		};
+        currentQueryObj = {
+            page: 0
+        },
 
-	function renderInquiryMode(vals, ri, objval) {
-		return (objval.title = util_mapInquiryMode(vals));
-	}
+        dataSource;
 
-	function renderState(vals, ri, objval) {
-		var result;
-		switch (vals) {
-			case 1:
-				result = "成功";
-				break;
-			case 2:
-				result = "流标";
-				break;
-			default:
-				result = "进行中";
-				break;
-		}
+    function renderInquiryMode(vals, ri, objval) {
+        return (objval.title = util_mapInquiryMode(vals));
+    }
 
-		return (objval.title = result);
-	}
+    function renderState(vals, ri, objval) {
+        var result;
+        switch (vals) {
+            case 1:
+                result = "成功";
+                break;
+            case 2:
+                result = "流标";
+                break;
+            default:
+                result = "进行中";
+                break;
+        }
 
-	function renderOptOfBid(vals, ri, objval) {
-		objval.title = "";
-		return '<div class="ui-optDiv"><a href="inquiryDetail.html?id=' + vals + '&isself=1" title="查看">查看</a></div>';
-	}
+        return (objval.title = result);
+    }
 
-	function renderOptOfInquiry(vals, ri, objval) {
-		objval.title = "";
-		return '<div class="ui-optDiv"><a href="inquiryDetail.html?id=' + vals + '&isself=1" title="查看">查看</a></div>';
-	}
+    function renderOptOfBid(vals, ri, objval) {
+        objval.title = "";
+        return '<div class="ui-optDiv"><a href="inquiryDetail.html?id=' + vals + '&isself=1" title="查看">查看</a></div>';
+    }
 
-	function renderOptOfCollect(vals, ri, objval) {
-		objval.title = "";
-		return '<div class="ui-optDiv"><button type="button" data-cmd="cancelCollect" data-ri="' + ri + '">取消收藏</button></div>';
-	}
+    function renderOptOfInquiry(vals, ri, objval) {
+        objval.title = "";
+        return '<div class="ui-optDiv"><a href="inquiryDetail.html?id=' + vals + '&isself=1" title="查看">查看</a></div>';
+    }
 
-	function renderOptOfMessage(vals, ri, objval) {
-		objval.title = "";
-		return '<div class="ui-optDiv"><button type="button" data-cmd="pass" data-ri="' + ri + '">同意</button><button type="button" data-cmd="refuse" data-ri="' + ri + '">拒绝</button></div>'
-	}
+    function renderOptOfCollect(vals, ri, objval) {
+        objval.title = "";
+        return '<div class="ui-optDiv"><button type="button" data-cmd="cancelCollect" data-ri="' + ri + '">取消收藏</button></div>';
+    }
 
-	/**
-	 * 辅助方法-映射询标类型
-	 * @return {[type]} [description]
-	 */
-	function util_mapInquiryMode(val) {
-		var reslt = "";
-		switch (val) {
-			case 1:
-				reslt = "全明询价";
-				break;
-			case 2:
-				reslt = "明询价";
-				break;
-			case 3:
-				reslt = "半明询价";
-				break;
-			case 4:
-				reslt = "半暗询价";
-				break;
-			case 5:
-				reslt = "暗询价";
-				break;
-			case 6:
-				reslt = "全暗询价";
-				break;
-		}
-		return reslt;
-	}
+    function renderOptOfMessage(vals, ri, objval) {
+        objval.title = "";
+        return '<div class="ui-optDiv"><button type="button" data-cmd="pass" data-ri="' + ri + '">同意</button><button type="button" data-cmd="refuse" data-ri="' + ri + '">拒绝</button></div>'
+    }
 
-	function fn_getMyInfo() {
-		userRepos.getDetail(mainMod.loginInfo.name, call_myInfoOk, call_myInfoFail, call_myInfoFail);
-	}
+    /**
+     * 辅助方法-映射询标类型
+     * @return {[type]} [description]
+     */
+    function util_mapInquiryMode(val) {
+        var reslt = "";
+        switch (val) {
+            case 1:
+                reslt = "全明询价";
+                break;
+            case 2:
+                reslt = "明询价";
+                break;
+            case 3:
+                reslt = "半明询价";
+                break;
+            case 4:
+                reslt = "半暗询价";
+                break;
+            case 5:
+                reslt = "暗询价";
+                break;
+            case 6:
+                reslt = "全暗询价";
+                break;
+        }
+        return reslt;
+    }
 
-	function call_myInfoOk() {
+    function fn_getMyInfo() {
+        userRepos.getDetail(mainMod.loginInfo.name, call_myInfoOk, call_myInfoFail, call_myInfoFail);
+    }
 
-	}
+    function call_myInfoOk() {
 
-	function call_myInfoFail() {
+    }
 
-	}
+    function call_myInfoFail() {
 
-	/**
-	 * 绑定数据
-	 * @return {[type]} [description]
-	 */
-	function fn_getMyBidList(gridCfg) {
+    }
 
-		fn_initGrid(gridCfg);
+    /**
+     * 绑定数据
+     * @return {[type]} [description]
+     */
+    function fn_getMyBidList(gridCfg) {
 
-		dialogMod.mask.show();
+        fn_initGrid(gridCfg);
 
-		bidRepos.getListOfMy(mainMod.loginInfo.name, currentQueryObj.inquiryID, currentQueryObj.pageno, currentQueryObj.pagesize, (function(g) {
-			return function(data) {
-				g.reBind(data);
-			};
-		}(currentGrid)), (function(g) {
-			return function() {
-				call_fail(g);
-			}
-		}(currentGrid)), (function(g) {
-			return function() {
-				call_fail(g);
-			}
-		}(currentGrid)));
+        dialogMod.mask.show();
 
-		setTimeout(dialogMod.mask.hide, 500);
-	}
+        bidRepos.getListOfMy(mainMod.loginInfo.name, currentQueryObj.inquiryID, currentQueryObj.pageno, currentQueryObj.pagesize, (function (g) {
+            return function (data) {
+                g.reBind(data);
+            };
+        }(currentGrid)), (function (g) {
+            return function () {
+                call_fail(g);
+            }
+        }(currentGrid)), (function (g) {
+            return function () {
+                call_fail(g);
+            }
+        }(currentGrid)));
 
-	function fn_getMyInquiryList(gridCfg) {
+        setTimeout(dialogMod.mask.hide, 500);
+    }
 
-		fn_initGrid(gridCfg);
+    function fn_getMyInquiryList(gridCfg) {
 
-		dialogMod.mask.show();
+        fn_initGrid(gridCfg);
 
-		inquiryRepos.getListOfMy(mainMod.loginInfo.name, $("#select_inquiry").val(), currentQueryObj.pageno, currentQueryObj.pagesize, (function(g) {
-			return function(data) {
-				g.reBind(data);
-			};
-		}(currentGrid)), (function(g) {
-			return function() {
-				call_fail(g);
-			}
-		}(currentGrid)), (function(g) {
-			return function() {
-				call_fail(g);
-			}
-		}(currentGrid)));
+        dialogMod.mask.show();
 
-		setTimeout(dialogMod.mask.hide, 800);
-	}
+        inquiryRepos.getListOfMy(mainMod.loginInfo.name, $("#select_inquiry").val(), currentQueryObj.pageno, currentQueryObj.pagesize, (function (g) {
+            return function (data) {
+                g.reBind(data);
+            };
+        }(currentGrid)), (function (g) {
+            return function () {
+                call_fail(g);
+            }
+        }(currentGrid)), (function (g) {
+            return function () {
+                call_fail(g);
+            }
+        }(currentGrid)));
 
-	function fn_getMyCollectList(gridCfg) {
+        setTimeout(dialogMod.mask.hide, 800);
+    }
 
-		fn_initGrid(gridCfg);
+    function fn_getMyCollectList() {
 
-		dialogMod.mask.show();
+        dialogMod.mask.show();
+        var params = {};
+        params.page = 0;
 
-		collectRepos.getListOfMy(mainMod.loginInfo.name, $("#select_collect").val(), currentQueryObj.pageno, currentQueryObj.pagesize, (function(g) {
-			return function(data) {
-				g.reBind(data);
-			};
-		}(currentGrid)), (function(g) {
-			return function() {
-				call_fail(g);
-			}
-		}(currentGrid)), (function(g) {
-			return function() {
-				call_fail(g);
-			}
-		}(currentGrid)));
+        ajaxRetrieveCollectionList(params, function (data) {
+            dataSource = data.data;
+            currentGrid.reBind(dataSource);
+        }, function (result) {
+            alert(result.message);
+        }, function () {
+            alert("请求失败");
+        });
 
-		setTimeout(dialogMod.mask.hide, 800);
-	}
+        setTimeout(dialogMod.mask.hide, 800);
+    }
 
-	function fn_getMyLettermsgList(gridCfg) {
-		fn_initGrid(gridCfg);
+    function fn_getMyLettermsgList() {
+        dialogMod.mask.show();
 
-		dialogMod.mask.show();
+        var params = {};
+        params.page = 0;
+        params.type = 0;
 
-		letterMsgRepos.getListOfMy(mainMod.loginInfo.name, $("#select_msg").val(), currentQueryObj.pageno, currentQueryObj.pagesize, (function(g) {
-			return function(data) {
-				g.reBind(data);
-			};
-		}(currentGrid)), (function(g) {
-			return function() {
-				call_fail(g);
-			}
-		}(currentGrid)), (function(g) {
-			return function() {
-				call_fail(g);
-			}
-		}(currentGrid)));
+        ajaxRetrieveMessageList(params, function (data) {
+            dataSource = data.data;
+            console.log(dataSource);
+            currentGrid.reBind(dataSource);
+        }, function (result) {
+            alert(result.message);
+        }, function () {
+            alert("请求失败");
+        });
 
-		setTimeout(dialogMod.mask.hide());
-	}
+        //letterMsgRepos.getListOfMy(mainMod.loginInfo.name, $("#select_msg").val(), currentQueryObj.pageno, currentQueryObj.pagesize, (function (g) {
+        //    return function (data) {
+        //        g.reBind(data);
+        //    };
+        //}(currentGrid)), (function (g) {
+        //    return function () {
+        //        call_fail(g);
+        //    }
+        //}(currentGrid)), (function (g) {
+        //    return function () {
+        //        call_fail(g);
+        //    }
+        //}(currentGrid)));
 
-	function call_fail(g) {
-		var testData = [{
-			biaohao: "沪A201502050001",
-			state: 0,
-			title: "企业员工工作服采购",
-			round: 1,
-			inquiryMode: 1,
-			province: "上海",
-			userName: "上海无忧公司",
-			industry: "服装",
-			biaoDi: 5,
-			purchaseCloseDate: "2015/3/31 10:00",
-			money: 5000,
-			id: 2
-		}, {
-			biaohao: "沪A201502050001",
-			state: 0,
-			title: "企业员工工作服采购",
-			round: 1,
-			inquiryMode: 1,
-			province: "上海",
-			userName: "上海无忧公司",
-			industry: "服装",
-			biaoDi: 5,
-			purchaseCloseDate: "2015/3/31 10:00",
-			money: 5000,
-			id: 2
-		}, {
-			biaohao: "沪A201502050001",
-			state: 1,
-			title: "企业员工工作服采购",
-			round: 1,
-			inquiryMode: 1,
-			province: "上海",
-			userName: "上海无忧公司",
-			industry: "服装",
-			biaoDi: 5,
-			purchaseCloseDate: "2015/3/31 10:00",
-			money: 5000,
-			id: 2
-		}, {
-			biaohao: "沪A201502050001",
-			state: 2,
-			title: "企业员工工作服采购",
-			round: 1,
-			inquiryMode: 6,
-			province: "上海",
-			userName: "上海无忧公司",
-			industry: "服装",
-			biaoDi: 5,
-			purchaseCloseDate: "2015/3/31 10:00",
-			money: 5000,
-			id: 2
-		}, {
-			biaohao: "沪A201502050001",
-			state: 1,
-			title: "企业员工工作服采购",
-			round: 1,
-			inquiryMode: 5,
-			province: "上海",
-			userName: "上海无忧公司",
-			industry: "服装",
-			biaoDi: 5,
-			purchaseCloseDate: "2015/3/31 10:00",
-			money: 5000,
-			id: 2
-		}, {
-			biaohao: "沪A201502050001",
-			state: 1,
-			title: "企业员工工作服采购",
-			round: 1,
-			inquiryMode: 4,
-			province: "上海",
-			userName: "上海无忧公司",
-			industry: "服装",
-			biaoDi: 5,
-			purchaseCloseDate: "2015/3/31 10:00",
-			money: 5000,
-			id: 2
-		}, {
-			biaohao: "沪A201502050001",
-			state: 1,
-			title: "企业员工工作服采购",
-			round: 1,
-			inquiryMode: 2,
-			province: "上海",
-			userName: "上海无忧公司",
-			industry: "服装",
-			biaoDi: 5,
-			purchaseCloseDate: "2015/3/31 10:00",
-			money: 5000,
-			id: 2
-		}, {
-			biaohao: "沪A201502050001",
-			state: 2,
-			title: "企业员工工作服采购",
-			round: 1,
-			inquiryMode: 3,
-			province: "上海",
-			userName: "上海无忧公司",
-			industry: "服装",
-			biaoDi: 5,
-			purchaseCloseDate: "2015/3/31 10:00",
-			money: 5000,
-			id: 2
-		}];
-		g.reBind(testData);
-	}
+        setTimeout(dialogMod.mask.hide(), 800);
+    }
 
-	function fn_initGrid(gridCfg) {
-		/**
-		 * 初始化DataGrid，并订阅相关的消息与事件
-		 */
-		!gridMod && (gridMod = require("pure-grid"));
+    function call_fail(g) {
+        var testData = [{
+            biaohao: "沪A201502050001",
+            state: 0,
+            title: "企业员工工作服采购",
+            round: 1,
+            inquiryMode: 1,
+            province: "上海",
+            userName: "上海无忧公司",
+            industry: "服装",
+            biaoDi: 5,
+            purchaseCloseDate: "2015/3/31 10:00",
+            money: 5000,
+            id: 2
+        }, {
+            biaohao: "沪A201502050001",
+            state: 0,
+            title: "企业员工工作服采购",
+            round: 1,
+            inquiryMode: 1,
+            province: "上海",
+            userName: "上海无忧公司",
+            industry: "服装",
+            biaoDi: 5,
+            purchaseCloseDate: "2015/3/31 10:00",
+            money: 5000,
+            id: 2
+        }, {
+            biaohao: "沪A201502050001",
+            state: 1,
+            title: "企业员工工作服采购",
+            round: 1,
+            inquiryMode: 1,
+            province: "上海",
+            userName: "上海无忧公司",
+            industry: "服装",
+            biaoDi: 5,
+            purchaseCloseDate: "2015/3/31 10:00",
+            money: 5000,
+            id: 2
+        }, {
+            biaohao: "沪A201502050001",
+            state: 2,
+            title: "企业员工工作服采购",
+            round: 1,
+            inquiryMode: 6,
+            province: "上海",
+            userName: "上海无忧公司",
+            industry: "服装",
+            biaoDi: 5,
+            purchaseCloseDate: "2015/3/31 10:00",
+            money: 5000,
+            id: 2
+        }, {
+            biaohao: "沪A201502050001",
+            state: 1,
+            title: "企业员工工作服采购",
+            round: 1,
+            inquiryMode: 5,
+            province: "上海",
+            userName: "上海无忧公司",
+            industry: "服装",
+            biaoDi: 5,
+            purchaseCloseDate: "2015/3/31 10:00",
+            money: 5000,
+            id: 2
+        }, {
+            biaohao: "沪A201502050001",
+            state: 1,
+            title: "企业员工工作服采购",
+            round: 1,
+            inquiryMode: 4,
+            province: "上海",
+            userName: "上海无忧公司",
+            industry: "服装",
+            biaoDi: 5,
+            purchaseCloseDate: "2015/3/31 10:00",
+            money: 5000,
+            id: 2
+        }, {
+            biaohao: "沪A201502050001",
+            state: 1,
+            title: "企业员工工作服采购",
+            round: 1,
+            inquiryMode: 2,
+            province: "上海",
+            userName: "上海无忧公司",
+            industry: "服装",
+            biaoDi: 5,
+            purchaseCloseDate: "2015/3/31 10:00",
+            money: 5000,
+            id: 2
+        }, {
+            biaohao: "沪A201502050001",
+            state: 2,
+            title: "企业员工工作服采购",
+            round: 1,
+            inquiryMode: 3,
+            province: "上海",
+            userName: "上海无忧公司",
+            industry: "服装",
+            biaoDi: 5,
+            purchaseCloseDate: "2015/3/31 10:00",
+            money: 5000,
+            id: 2
+        }];
+        g.reBind(testData);
+    }
 
-		(currentGrid = gridMod(gridCfg || configMod.gridCfg1))
-		.pubSub()
-			.override("renderInquiryMode", renderInquiryMode)
-			.override("renderState", renderState)
-			.override("renderOptOfBid", renderOptOfBid)
-			.override("renderOptOfInquiry", renderOptOfInquiry)
-			.override("renderOptOfCollect", renderOptOfCollect)
-			.override("renderOptOfPersonCollect", renderOptOfCollect)
-			.override("renderOptOfMessage", renderOptOfMessage)
-			.override("grid.databound", function() {
-			});
-	}
+    function fn_initGrid(gridCfg) {
+        /**
+         * 初始化DataGrid，并订阅相关的消息与事件
+         */
+        !gridMod && (gridMod = require("pure-grid"));
 
-	/**
-	 * 初始化相关HTMLElement的事件操作
-	 * @return {[type]} [description]
-	 */
-	function fn_initEvent() {
+        (currentGrid = gridMod(gridCfg || configMod.gridCfg1))
+            .pubSub()
+            .override("renderInquiryMode", renderInquiryMode)
+            .override("renderState", renderState)
+            .override("renderOptOfBid", renderOptOfBid)
+            .override("renderOptOfInquiry", renderOptOfInquiry)
+            .override("renderOptOfCollect", renderOptOfCollect)
+            .override("renderOptOfPersonCollect", renderOptOfCollect)
+            .override("renderOptOfMessage", renderOptOfMessage)
+            .override("grid.databound", function () {
+            });
+    }
 
-		$("#myTab li").click(function() {
-			var gridNo = $(this).siblings().removeClass("active")
-				.end().removeClass("active").addClass("active")
-				.data("grid");
+    /**
+     * 初始化相关HTMLElement的事件操作
+     * @return {[type]} [description]
+     */
+    function fn_initEvent() {
 
-			$("#contentPanel").children().css("display", "none")
-				.eq(parseInt(gridNo) - 1).css("display", "");
+        $("#myTab li").click(function () {
+            var gridNo = $(this).siblings().removeClass("active")
+                .end().removeClass("active").addClass("active")
+                .data("grid");
 
-			var mod = $(this).data("mod");
-			switch (mod) {
-				case "bid":
-					fn_getMyBidList(configMod["gridCfg" + gridNo]);
-					break;
-				case "inquiry":
-					fn_getMyInquiryList(configMod["gridCfg" + gridNo]);
-					break;
-				case "collect":
-					fn_getMyCollectList(configMod["gridCfg" + gridNo]);
-					break;
-				case "message":
-					fn_getMyLettermsgList(configMod["gridCfg" + gridNo]);
-					break;
-			}
-		})[0].click();
-	};
+            $("#contentPanel").children().css("display", "none")
+                .eq(parseInt(gridNo) - 1).css("display", "");
 
-	exports.load = function() {
-		fn_initEvent();
-	};
+            var mod = $(this).data("mod");
+            switch (mod) {
+                case "bid":
+                    fn_getMyBidList(configMod["gridCfg" + gridNo]);
+                    break;
+                case "inquiry":
+                    fn_getMyInquiryList(configMod["gridCfg" + gridNo]);
+                    break;
+                case "collect":
+                    fn_initGrid(configMod["gridCfg" + gridNo]);
+                    fn_getMyCollectList();
+                    break;
+                case "message":
+                    fn_initGrid(configMod["gridCfg" + gridNo]);
+                    fn_getMyLettermsgList();
+                    break;
+            }
+        })[0].click();
+
+        $(document).on("click", ".ui-optDiv button", function () {
+            var that = $(this),
+                cmd = that.data("cmd"),
+                data = dataSource[that.data("ri")];
+
+            if (cmd == "cancelCollect") {
+                var params = {};
+                params.collectionId = data.collectionId;
+                ajaxCancelCollection(params, function () {
+                    alert("取消收藏成功");
+                    fn_initGrid(configMod["gridCfg3"]);
+                    fn_getMyCollectList();
+                }, function (result) {
+                    alert(result.message);
+                }, function () {
+                    alert("请求失败");
+                });
+
+            } else if (cmd == "pass") {
+
+            } else if (cmd == "refuse") {
+
+            }
+        });
+    };
+
+    exports.load = function () {
+        fn_initEvent();
+    };
 });

@@ -12,6 +12,174 @@
     <link rel="stylesheet" type="text/css" href="../dest/css/base.css">
     <link rel="stylesheet" type="text/css" href="../dest/css/plugins.css">
     <link rel="stylesheet" type="text/css" href="../dest/css/inquiry.css">
+
+    <style>
+        .ui-items li label {
+            width: 100px;
+            line-height: 30px;
+        }
+
+        .ui-items li input[type=file] {
+            padding-left: 20px;
+            padding-top: 6px;
+        }
+
+        .modal-open {
+            overflow: hidden;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1040;
+            display: none;
+            overflow: hidden;
+            -webkit-overflow-scrolling: touch;
+            outline: 0;
+        }
+
+        .modal.fade .modal-dialog {
+            -webkit-transition: -webkit-transform .3s ease-out;
+            -o-transition: -o-transform .3s ease-out;
+            transition: transform .3s ease-out;
+            -webkit-transform: translate(0, -25%);
+            -ms-transform: translate(0, -25%);
+            -o-transform: translate(0, -25%);
+            transform: translate(0, -25%);
+        }
+
+        .modal.in .modal-dialog {
+            -webkit-transform: translate(0, 0);
+            -ms-transform: translate(0, 0);
+            -o-transform: translate(0, 0);
+            transform: translate(0, 0);
+        }
+
+        .modal-open .modal {
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        .modal-dialog {
+            position: relative;
+            width: auto;
+            margin: 10px;
+        }
+
+        .modal-content {
+            position: relative;
+            background-color: #fff;
+            -webkit-background-clip: padding-box;
+            background-clip: padding-box;
+            border: 1px solid #999;
+            border: 1px solid rgba(0, 0, 0, .2);
+            border-radius: 6px;
+            outline: 0;
+            -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+            box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+        }
+
+        .modal-backdrop {
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            background-color: #000;
+        }
+
+        .modal-backdrop.fade {
+            filter: alpha(opacity=0);
+            opacity: 0;
+        }
+
+        .modal-backdrop.in {
+            filter: alpha(opacity=50);
+            opacity: .5;
+        }
+
+        .modal-header {
+            min-height: 16.42857143px;
+            padding: 15px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .modal-header .close {
+            margin-top: -2px;
+        }
+
+        .modal-title {
+            margin: 0;
+            line-height: 1.42857143;
+        }
+
+        .modal-body {
+            position: relative;
+            padding: 15px;
+        }
+
+        .modal-footer {
+            padding: 15px;
+            text-align: right;
+            border-top: 1px solid #e5e5e5;
+        }
+
+        .modal-footer .btn + .btn {
+            margin-bottom: 0;
+            margin-left: 5px;
+        }
+
+        .modal-footer .btn-group .btn + .btn {
+            margin-left: -1px;
+        }
+
+        .modal-footer .btn-block + .btn-block {
+            margin-left: 0;
+        }
+
+        .modal-scrollbar-measure {
+            position: absolute;
+            top: -9999px;
+            width: 50px;
+            height: 50px;
+            overflow: scroll;
+        }
+
+        @media (min-width: 768px) {
+            .modal-dialog {
+                width: 600px;
+                margin: 30px auto;
+            }
+
+            .modal-content {
+                -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+            }
+
+            .modal-sm {
+                width: 300px;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .modal-lg {
+                width: 900px;
+            }
+        }
+
+        .modal-footer:before,
+        .modal-footer:after {
+            display: table;
+            content: " ";
+        }
+
+        .modal-footer:after {
+            clear: both;
+        }
+    </style>
+
 </head>
 <body>
 <div id="header"></div>
@@ -106,7 +274,7 @@
                 </div>
                 <div class="ui-footer">
                     <div id="div_self" style="display:none;">
-                        <button type="button" id="btn_sucending" daa-cmd="pass">成功</button>
+                        <button type="button" id="btn_sucending" data-cmd="pass">成功</button>
                         <button type="button" id="btn_next" data-cmd="next">下一轮</button>
                         <button type="button" id="btn_failending" data-cmd="next">流标</button>
                     </div>
@@ -136,6 +304,31 @@
     </form>
 </div>
 <div id="footer"></div>
+
+<div class="modal fade" id="cmdModal" tabindex="-1" role="dialog"
+     aria-labelledby="cmdModalTitle" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="cmdModalTitle">
+                </h2>
+            </div>
+            <div class="modal-body" id="cmdModalBody">
+            </div>
+            <div class="modal-footer" id="cmdModalFooter">
+                <button type="button" class="btn btn-primary" id="submitModal">
+                    确定
+                </button>
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">关闭
+                </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+
 <script src="../dest/js/lib/jquery.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="../dest/js/lib/sea.js" type="text/javascript" charset="utf-8"></script>
 <script src="../dest/js/app-data/app-data.js" type="text/javascript" charset="utf-8"></script>
@@ -144,6 +337,10 @@
 <script src="../src/js/app/inquiry/detail-config.js" charset="utf-8"></script>
 <script src="../src/js/app/inquiry/detail-logic.js" charset="utf-8"></script>
 <script src="../src/js/ajax/ajax-retrieveInquiryDetail.js" charset="utf-8"></script>
+<script src="../src/js/bootstrap/bootstrap.min.js" charset="utf-8"></script>
+<script src="../src/js/plugins/jquery.form.js" charset="utf-8"></script>
+<script src="../src/js/ajax/ajax-collection.js" charset="utf-8"></script>
+<script src="../src/js/ajax/ajax-message.js" charset="utf-8"></script>
 
 <!--<script src="../dest/js/app/inquiry.detail.logic.js" type="text/javascript" charset="utf-8"></script>-->
 

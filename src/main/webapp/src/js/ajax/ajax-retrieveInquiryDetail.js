@@ -1,4 +1,4 @@
-function ajaxretriveDetail(params, ok, fail, error) {
+function ajaxRetriveDetail(params, ok, fail, error) {
     $.ajax({
         url: baseUrl + "/inquiry/retrieveInquiryDetail",
         type : "post",

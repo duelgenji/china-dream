@@ -1,4 +1,4 @@
-function ajaxforgetpassword(email, ok, fail, error) {
+function ajaxForgetPassword(email, ok, fail, error) {
 
     var data = {}
     data.email = email;
@@ -12,7 +12,11 @@ function ajaxforgetpassword(email, ok, fail, error) {
             if (result.success == 1) {
                 ok(result);
             } else {
-                fail(result);
+                if (fail) {
+                    fail(result);
+                } else {
+                    alert(result.message);
+                }
             }
         },
         error: error

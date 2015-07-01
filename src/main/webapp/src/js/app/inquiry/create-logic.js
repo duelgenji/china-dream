@@ -336,15 +336,10 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
         var options = {
             url: "../inquiry/generateInquiry",
             type: 'post',
-            beforeSubmit: function (data) {
-                console.log(data);
-            },
             dataType: null,
             clearForm: false,
             success: function (data, textStatus, jqXHR) {
                 var result = data.success;
-                console.log(data);
-
                 if (result == 1) {
 
                     $("#inquiryNo").text(data.inquiryNo);

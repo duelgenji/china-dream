@@ -1,4 +1,4 @@
-function ajaxmodifypsw (params, ok, fail, error) {
+function ajaxModifyPassword (params, ok, fail, error) {
     $.ajax({
         url: baseUrl + "/userInfo/modifyPassword",
         type : "post",
@@ -8,7 +8,11 @@ function ajaxmodifypsw (params, ok, fail, error) {
             if (result.success == 1) {
                 ok(result);
             } else {
-                fail(result);
+                if (fail) {
+                    fail(result);
+                } else {
+                    alert(result.message);
+                }
             }
         },
         error: error

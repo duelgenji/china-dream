@@ -1,4 +1,4 @@
-function ajaxretriveList(params, ok, fail, error) {
+function ajaxRetriveIndexList(params, ok, fail, error) {
     $.ajax({
         url: baseUrl + "/inquiry/retrieveInquiryList",
         type : "post",
@@ -8,7 +8,11 @@ function ajaxretriveList(params, ok, fail, error) {
             if (result.success == 1) {
                 ok(result);
             } else {
-                fail(result);
+                if (fail) {
+                    fail(result);
+                } else {
+                    alert(result.message);
+                }
             }
         },
         error: error

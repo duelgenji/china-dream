@@ -180,7 +180,7 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
 
         dialogMod.mask.show();
 
-        ajaxretriveList(params, function (data) {
+        ajaxRetriveIndexList(params, function (data) {
             var testData = data.data,
                 count = data.count;
             $(".changePage").val(getCurrentPage());
@@ -223,7 +223,8 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
 
         currentQuery.page = currentPage;
 
-        currentGrid.reBind(null);
+        //currentGrid.reBind(null);
+        alert("数据加载失败");
 
         setTimeout(function () {
             dialogMod.mask.hide();
@@ -284,7 +285,7 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
 
         $("head").append("<style>a.disable {color: lightgray;cursor: default;} </style>");
 
-        $(".pagination").append('<a href="javascript:void(0);" class="btn1">首页</a> <a href="javascript:void(0);" class="btn2">上一页</a> <a  href="javascript:void(0);" class="btn3">下一页</a> <a  href="javascript:void(0);" class="btn4">尾页</a> 转到 <input class="changePage" type="text" size="1" maxlength="4"/>/<span class="maxPage"></span> 页 <a href="javascript:void(0);" class="btn5">GO</a>')
+        $(".pagination").append('<a href="javascript:void(0);" class="btn1">首页</a> <a href="javascript:void(0);" class="btn2">上一页</a> <a  href="javascript:void(0);" class="btn3">下一页</a> <a href="javascript:void(0);" class="btn4">尾页</a> 转到 <input class="changePage" type="text" size="1" maxlength="4"/>/<span class="maxPage"></span> 页 <a href="javascript:void(0);" class="btn5">GO</a>')
 
         $(".btn1").click(function firstPage(){    // 首页
             if ($(this).hasClass("disable")) return;

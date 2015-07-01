@@ -28,6 +28,7 @@ define("list-config",[],function(require,exports){
                     head: {
                         text: "人气",
                         width: 300,
+                        issort: false,
                         align: "center"
                     },
                     body: {
@@ -40,6 +41,7 @@ define("list-config",[],function(require,exports){
                     head: {
                         text: "标的",
                         width: 150,
+                        issort: false,
                         align: "center"
                     },
                     body: {
@@ -52,6 +54,7 @@ define("list-config",[],function(require,exports){
                     head: {
                         text: "询价成功率",
                         width: 150,
+                        issort: false,
                         align: "center"
                     },
                     body: {
@@ -64,6 +67,7 @@ define("list-config",[],function(require,exports){
                     head: {
                         text: "询价总数",
                         width: 150,
+                        issort: false,
                         align: "center"
                     },
                     body: {
@@ -76,6 +80,7 @@ define("list-config",[],function(require,exports){
                     head: {
                         text: "截止时间",
                         width: 170,
+                        issort: false,
                         align: "center"
                     },
                     body: {

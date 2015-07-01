@@ -1,4 +1,4 @@
-function ajaxlogin(email, password, ok, fail, error) {
+function ajaxLogin(email, password, ok, fail, error) {
 
     var data = {}
     data.email = email;
@@ -13,7 +13,11 @@ function ajaxlogin(email, password, ok, fail, error) {
             if (result.success == 1) {
                 ok(result);
             } else {
-                fail(result);
+                if (fail) {
+                    fail(result);
+                } else {
+                    alert(result.message);
+                }
             }
         },
         error: error

@@ -38,7 +38,7 @@ define("login-logic", ["jquery", "user-repos"], function(require, exports) {
 				return;
 			}
 
-			ajaxlogin(val,psw,function(data) {
+			ajaxLogin(val,psw,function(data) {
 				var account = {}
 				account.email = val;
 				account.password = psw;
@@ -47,10 +47,15 @@ define("login-logic", ["jquery", "user-repos"], function(require, exports) {
 				saveUserInfo(data);
 
 				location.href = "index.html";
-			}, function() {
+			}, function(result) {
+				var message = result.message;
+				if (message!=null && message != "") {
+					message = "对不起,服务端异常,您目前无法登录!";
+				}
+
 				$("#mainMask").css("display", "block");
 				$("#bubbleLayer").addClass("bubbleLayer-show").css("top", 160);
-				$("#bubbleLayerWrap .error-tt p").text("您的用戶名或密码不正确!");
+				$("#bubbleLayerWrap .error-tt p").text(message);
 			},function(){
 				$("#mainMask").css("display", "block");
 				$("#bubbleLayer").addClass("bubbleLayer-show").css("top", 180);

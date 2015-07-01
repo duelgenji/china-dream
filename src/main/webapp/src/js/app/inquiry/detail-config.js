@@ -24,6 +24,7 @@ define("detail-config", [], function(require, exports) {
             head: {
                 text: "投标方名称",
                 width: 172,
+                issort: false,
                 align: "center"
             },
             body: {
@@ -35,6 +36,7 @@ define("detail-config", [], function(require, exports) {
             head: {
                 text: "所在地",
                 width: 169,
+                issort: false,
                 align: "center"
             },
             body: {
@@ -46,6 +48,7 @@ define("detail-config", [], function(require, exports) {
             head: {
                 text: "报价日期",
                 width: 169,
+                issort: false,
                 align: "center"
             },
             body: {
@@ -57,6 +60,7 @@ define("detail-config", [], function(require, exports) {
             head: {
                 text: "报价金额(万)",
                 width: 169,
+                issort: false,
                 align: "center"
             },
             body: {
@@ -68,6 +72,7 @@ define("detail-config", [], function(require, exports) {
             head: {
                 text: "附件信息",
                 width: 180,
+                issort: false,
                 align: "center"
             },
             body: {
@@ -80,11 +85,13 @@ define("detail-config", [], function(require, exports) {
             head: {
                 text: "操作",
                 width: 160,
+                issort: false,
                 align: "center"
             },
             body: {
                 align: "center",
                 // fields: "id",
+                issort: false,
                 renderFn: "renderOpt"
             }
         }];

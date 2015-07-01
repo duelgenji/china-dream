@@ -202,7 +202,7 @@ define("register-logic", ["user-repos", "jquery", "pure-dialog", "pure-validator
                 .showModal()
                 .content('<div><img src="../image/loading.gif" alt="" />正在提交中,请耐心等候!</div>');
 
-            ajaxmodifypsw(params, function () {
+            ajaxModifyPassword(params, function () {
                 dialog.content(regOkHtml).title("修改成功");
                 dialog.close();
 

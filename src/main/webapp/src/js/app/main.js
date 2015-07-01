@@ -1,5 +1,6 @@
-﻿//baseUrl = "http://10.0.0.98:8080"
-baseUrl = "http://121.40.143.120:8080/dream"
+﻿baseUrl = ".."
+//baseUrl = "http://10.0.0.98:8080"
+//baseUrl = "http://121.40.143.120:8080/dream"
 
 /**
  * 保存登陆信息
@@ -108,9 +109,6 @@ define("main", ["systemDefine-repos", "pure-dialog"], function (require, exports
                 return;
                 break;
             case "selfcenter":
-                alert("此功能尚在构建，请耐心等候!");;
-                return;
-
                 if (!fn_isLogin()) {
                     alert("你还未登录!");
                     return;

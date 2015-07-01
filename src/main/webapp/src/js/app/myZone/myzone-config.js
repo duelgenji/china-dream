@@ -273,17 +273,19 @@ define("myzone-config", [], function(require, exports) {
 			head: {
 				text: "标题",
 				width: 120,
+				issort: false,
 				align: "center"
 			},
 			body: {
 				align: "left",
-				fields: "title"
+				fields: "inquiryTitle"
 			}
 		}, {
 			index: 3,
 			head: {
 				text: "轮次",
 				width: 83,
+				issort: false,
 				align: "center"
 			},
 			body: {
@@ -295,6 +297,7 @@ define("myzone-config", [], function(require, exports) {
 			head: {
 				text: "询价方式",
 				width: 120,
+				issort: false,
 				align: "center"
 			},
 			body: {
@@ -307,6 +310,7 @@ define("myzone-config", [], function(require, exports) {
 			head: {
 				text: "状态",
 				width: 120,
+				issort: false,
 				align: "center"
 			},
 			body: {
@@ -319,6 +323,7 @@ define("myzone-config", [], function(require, exports) {
 			head: {
 				text: "地区",
 				width: 120,
+				issort: false,
 				align: "center"
 			},
 			body: {
@@ -330,17 +335,19 @@ define("myzone-config", [], function(require, exports) {
 			head: {
 				text: "标的",
 				width: 120,
+				issort: false,
 				align: "center"
 			},
 			body: {
 				align: "center",
-				fields: "biaoDi"
+				fields: "totalPrice"
 			}
 		}, {
 			index: 8,
 			head: {
 				text: "截止时间",
 				width: 120,
+				issort: false,
 				align: "center"
 			},
 			body: {
@@ -352,11 +359,12 @@ define("myzone-config", [], function(require, exports) {
 			head: {
 				text: "操作",
 				width: 89,
+				issort: false,
 				align: "center"
 			},
 			body: {
 				align: "center",
-				fields: "id",
+				fields: "collectionId",
 				renderFn: "renderOptOfCollect"
 			}
 		}]
@@ -368,30 +376,32 @@ define("myzone-config", [], function(require, exports) {
 		columns:[{
 			index: 1,
 			head: {
-				width: 130,
+				width: 150,
 				issort: false,
 				text: "标号"
 			},
 			body: {
 				align: "center",
-				fields: "biaohao"
+				fields: "inquiryNo"
 			}
 		}, {
 			index: 2,
 			head: {
 				text: "标题",
 				width: 120,
+				issort: false,
 				align: "center"
 			},
 			body: {
 				align: "left",
-				fields: "title"
+				fields: "inquiryTitle"
 			}
 		}, {
 			index: 3,
 			head: {
 				text: "轮次",
 				width: 83,
+				issort: false,
 				align: "center"
 			},
 			body: {
@@ -403,6 +413,7 @@ define("myzone-config", [], function(require, exports) {
 			head: {
 				text: "询价方式",
 				width: 120,
+				issort: false,
 				align: "center"
 			},
 			body: {
@@ -415,18 +426,20 @@ define("myzone-config", [], function(require, exports) {
 			head: {
 				text: "状态",
 				width: 120,
+				issort: false,
 				align: "center"
 			},
 			body: {
 				align: "center",
-				fields: "state",
+				fields: "inquiryStatus",
 				renderFn: "renderState"
 			}
 		}, {
 			index: 6,
 			head: {
 				text: "地区",
-				width: 120,
+				width: 100,
+				issort: false,
 				align: "center"
 			},
 			body: {
@@ -438,33 +451,36 @@ define("myzone-config", [], function(require, exports) {
 			head: {
 				text: "标的",
 				width: 120,
+				issort: false,
 				align: "center"
 			},
 			body: {
 				align: "center",
-				fields: "biaoDi"
+				fields: "totalPrice"
 			}
 		}, {
 			index: 8,
 			head: {
 				text: "截止时间",
 				width: 120,
+				issort: false,
 				align: "center"
 			},
 			body: {
 				align: "left",
-				fields: "purchaseCloseDate"
+				fields: "limitDate"
 			}
 		}, {
 			index: 9,
 			head: {
 				text: "操作",
 				width: 89,
+				issort: false,
 				align: "center"
 			},
 			body: {
 				align: "center",
-				fields: "id",
+				fields: "messageId",
 				renderFn: "renderOptOfMessage"
 			}
 		}]

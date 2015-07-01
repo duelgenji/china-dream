@@ -1,4 +1,4 @@
-function ajaxmodifyInfo(params, ok, fail, error) {
+function ajaxModifyUserInfo(params, ok, fail, error) {
     $.ajax({
         url: baseUrl + "/userInfo/modifyInfo",
         type : "post",
@@ -8,7 +8,11 @@ function ajaxmodifyInfo(params, ok, fail, error) {
             if (result.success == 1) {
                 ok(result);
             } else {
-                fail(result);
+                if (fail) {
+                    fail(result);
+                } else {
+                    alert(result.message);
+                }
             }
         },
         error: error
