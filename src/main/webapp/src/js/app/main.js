@@ -245,7 +245,8 @@ define("main", ["systemDefine-repos", "pure-dialog"], function (require, exports
      */
     var fn_isLogin = exports.isLogin = function () {
         //return (loginInfo.nickname = $.cookie("nickname")) && (loginInfo.name = $.cookie("username")) && (loginInfo.type = $.cookie("usertype"));
-        var isLogin = !!loadUserInfo();
+        //var isLogin = !!loadUserInfo();
+        var isLogin = false;
         var status = 1;
 
         if (!isLogin) {
@@ -304,6 +305,10 @@ define("main", ["systemDefine-repos", "pure-dialog"], function (require, exports
                     }
                 }
             })
+        }
+
+        if (!isLogin) {
+            clearUserInfo();
         }
 
         return isLogin;

@@ -67,7 +67,33 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
 
     function renderOptOfMessage(vals, ri, objval) {
         objval.title = "";
-        return '<div class="ui-optDiv"><button type="button" data-cmd="pass" data-ri="' + ri + '">同意</button><button type="button" data-cmd="refuse" data-ri="' + ri + '">拒绝</button></div>'
+        if ($("#select_msg").val() == 1) {
+
+            switch (dataSource[ri].messageStatus) {
+                case 0:
+                    return '<div class="ui-optDiv"><button type="button" data-cmd="pass" data-ri="' + ri + '">同意</button><button type="button" data-cmd="refuse" data-ri="' + ri + '">拒绝</button></div>';
+                    break;
+                case 1:
+                    return "已授权";
+                    break;
+                case 2:
+                    return "已拒绝";
+                    break;
+            }
+        } else {
+            switch (dataSource[ri].messageStatus) {
+                case 0:
+                    return "待授权";
+                    break;
+                case 1:
+                    return "已授权";
+                    break;
+                case 2:
+                    return "已拒绝";
+                    break;
+            }
+            return "";
+        }
     }
 
     /**
@@ -184,7 +210,7 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
 
         var params = {};
         params.page = 0;
-        params.type = 0;
+        params.type = $("#select_msg").val();
 
         ajaxRetrieveMessageList(params, function (data) {
             dataSource = data.data;
@@ -347,6 +373,11 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
      */
     function fn_initEvent() {
 
+        $("#select_msg").on("change", function () {
+            fn_initGrid(configMod["gridCfg4"]);
+            fn_getMyLettermsgList();
+        });
+
         $("#myTab li").click(function () {
             var gridNo = $(this).siblings().removeClass("active")
                 .end().removeClass("active").addClass("active")
@@ -393,9 +424,29 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
                 });
 
             } else if (cmd == "pass") {
-
+                var params = {};
+                params.status = 1;
+                params.messageId = data.messageId;
+                console.log(data.messageId);
+                ajaxModifyMessageStatus(params, function () {
+                    that.parent().empty();
+                }, function (result) {
+                    alert(result.message);
+                }, function () {
+                    alert("请求失败");
+                })
             } else if (cmd == "refuse") {
+                var params = {};
+                params.status = 2;
+                params.messageId = data.messageId
 
+                ajaxModifyMessageStatus(params, function () {
+                    that.parent().empty();
+                }, function (result) {
+                    alert(result.message);
+                }, function () {
+                    alert("请求失败");
+                })
             }
         });
     };
