@@ -14,6 +14,15 @@
     <link rel="stylesheet" type="text/css" href="../dest/css/inquiry.css">
 
     <style>
+        #myBid .ui-grid-unlock_bodyDiv, #otherBid .ui-grid-unlock_bodyDiv {
+            max-height: 200px;
+            overflow-y: scroll;
+        }
+
+        span > a:hover {
+            text-decoration: underline;
+        }
+
         .ui-items li label {
             width: 100px;
             line-height: 30px;
@@ -214,7 +223,7 @@
                         </li>
                         <li class="ui-normal">
                             <span class="ui-field">联系人手机:</span>
-                            <span data-access="1" data-col="contactTel" class="ui-value"></span>
+                            <span data-access="1" data-col="contactPhone" class="ui-value"></span>
                         </li>
                     </ul>
                     <ul id="col2">
@@ -236,7 +245,7 @@
                         </li>
                         <li class="ui-normal">
                             <span class="ui-field">联系人电话:</span>
-                            <span data-access="1" data-col="contactPhone" class="ui-value"></span>
+                            <span data-access="1" data-col="contactTel" class="ui-value"></span>
                         </li>
                         <li class="ui-normal">
                             <span class="ui-field">联系人邮箱:</span>

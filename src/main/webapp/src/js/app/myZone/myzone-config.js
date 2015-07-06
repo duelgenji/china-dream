@@ -419,7 +419,7 @@ define("myzone-config", [], function(require, exports) {
 			body: {
 				align: "center",
 				fields: "inquiryMode",
-				renderFn: "renderInquiryMode"
+				//renderFn: "renderInquiryMode"
 			}
 		}, {
 			index: 5,

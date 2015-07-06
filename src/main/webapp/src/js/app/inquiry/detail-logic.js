@@ -46,36 +46,41 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
     }
 
     function renderAttachments(vals, ri, objVal) {
-        var urls = (vals[1] || "").split(','),
-            names = (vals[0] || "").split(',');
+        //var urls = (vals[1] || "").split(','),
+        //    names = (vals[0] || "").split(',');
         var html = [];
-        for (var i = 0, l = urls.length; i < l; i++) {
-            html.push('<a href="' + urls[i] + '" target="_blank">' + names[i] + '</a>');
+        for (var i = 0, l = vals.length; i < l; i++) {
+            var name = vals[i].remark == "" ? "附件" : vals[i].remark;
+            html.push('<div style="float:left;overflow-x: hidden;max-width:'+ (240 / vals.length) +'px;"><a style="padding: 0 5px" href="' + vals[i].fileUrl + '" target="_blank">' + name + '</a></div>');
         }
         return html.join('');
+
     }
 
-    function renderAttachments() {
-        return '<a href="#">技术文件.doc</a>';
-    }
+    //function renderAttachments() {
+    //    return '<a href="#">技术文件.doc</a>';
+    //}
 
     function renderOpt(val, ri, objVal) {
-        return '<button data-cmd="seeAll" data-ri="' + ri + '">全部轮数</button>';
+        //return '<a type="button" data-cmd="seeAll" data-ri="' + ri + '">全部轮数</button>';
+        return '<button type="button" data-cmd="seeAll" data-ri="' + ri + '">全部轮数</button>';
     }
 
     function fn_initGrid(config) {
         var grid = gridMod(config || configMod.gridConfig);
+
         grid.pubSub()
             .override("renderRound", renderRound)
             .override("renderAttachments", renderAttachments)
             .override("renderOpt", renderOpt)
             .override("grid.databound", function () {
-                $("button[data-cmd=seeAll]").click(function () {
+
+                $("a[data-cmd=seeAll]").click(function () {
                     var that = $(this),
                         ri = that.data("ri");
-
                 });
             });
+
         return grid;
     }
 
@@ -85,7 +90,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
      */
     function fn_getDetail() {
         console.log(JSON.stringify(currentQueryObj));
-        ajaxRetriveDetail({inquiryId : currentQueryObj.inquiryId}, call_detailOk, call_detailFail, call_detailFail);
+        ajaxRetriveDetail({inquiryId: currentQueryObj.inquiryId}, call_detailOk, call_detailFail, call_detailFail);
     }
 
     function showCmdModal(title, body, submitFn) {
@@ -99,10 +104,12 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
         $("#cmdModal").modal('hide');
     }
 
-    function call_detailOk(data) {
-        var span, inquiryMode,
+    var dataSource = {};
 
-            dataSource = data;
+    function call_detailOk(data) {
+        var span, inquiryMode;
+
+        dataSource = data;
 
         $("#detailbiaohao").text(dataSource["inquiryNo"]);
 
@@ -110,10 +117,32 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
             span = $(span);
             var col = span.data("col"),
                 val = dataSource[col];
-            span.text(val).attr("title", val);
+            if (col == "files") {
+                var files = dataSource.fileList;
+                for (var i = 0; i < files.length; i++) {
+                    var name = files[i].remark == "" ? "附件" : files[i].remark;
+                    span.append("<a href=" + files[i].fileUrl + ">" + name + "</a>")
+                }
+                span.append(val);
+            } else {
+                span.text(val).attr("title", val);
+            }
+
         });
 
-        currentQueryObj.collectionId = dataSource.collectionId;
+        console.log(dataSource);
+
+        if (dataSource.applyStatus == 1) {
+            $("#btn_biddingApply").attr("status", "working").text("已申请出价");
+        } else if (dataSource.applyStatus == 2) {
+            $("#btn_biddingApply").data("cmd", "addBid").text("正式出价");
+        }
+
+        if (dataSource.isCollection) {
+            $("#btn_addCollect").data("cmd", "cancel").text("取消收藏");
+            currentQueryObj.collectionId = dataSource.collectionId;
+        }
+
 
         /**
          * 如果当前询价是全明询价,那么才显示对手出价
@@ -172,17 +201,17 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
 
                 if (cmd == "apply") {
 
-                    showCmdModal ("申请出价",'<textarea id="modal-description" style="resize: none;width: 96%;height: 100px;font-size: 14px;padding: 2%;" placeholder="请输入内容，点击确定后将发送站内信给询价方，等待授权"></textarea>',function(){
-                    	var params = {};
+                    showCmdModal("申请出价", '<textarea id="modal-description" style="resize: none;width: 96%;height: 100px;font-size: 14px;padding: 2%;" placeholder="请输入内容，点击确定后将发送站内信给询价方，等待授权"></textarea>', function () {
+                        var params = {};
                         params.inquiryId = currentQueryObj.inquiryId;
-                    	params.description = $("#modal-description").val();
-                    	console.log(JSON.stringify(params));
+                        params.description = $("#modal-description").val();
+                        console.log(JSON.stringify(params));
 
-                        ajaxSendInquiryMessage(params,function () {
+                        ajaxSendInquiryMessage(params, function () {
                             alert("申请发送成功,请耐心等待对方的回复!");
 
                             that.attr("status", "working").text("已申请出价");
-                            that.data("cmd", "addBid").attr("status", "done").text("正式出价");
+                            //that.data("cmd", "addBid").attr("status", "done").text("正式出价");
                             dismissCmdModal();
                         }, function (result) {
                             alert(result.message);
@@ -193,14 +222,16 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
 
                     });
                 } else if (cmd == "addBid") {
-                    showCmdModal("正式出价", '<form id="bidForm" method="post" enctype="multipart/form-data" accept-charset="utf-8"><ul class="ui-items"><li><label>出价金额:</label><input name="money" id="modal-money" type="text"/></li><li><label>上传金额报表:</label><div style="padding-left: 110px;"><input class="modal-report" name="report" type="file"/></div></li><li><label>上传其他附件:</label><input class="modal-attachment" name="attachment" type="file"/></li><button id="modal-confirm" type="submit" style="display: none;">333</button></ul></form>', function () {
+                    showCmdModal("正式出价", '<form id="bidForm" method="post" enctype="multipart/form-data" accept-charset="utf-8"><input type="hidden" name="inquiryId" value="' + currentQueryObj.inquiryId + '"/><ul class="ui-items"><li><label>出价金额:</label><input name="totalPrice" id="modal-money" type="text"/></li><li><label>上传商务文件:</label><div style="padding-left: 110px;"><input class="modal-report" name="business" type="file"/></div></li><li><label>上传技术文件:</label><div style="padding-left: 110px;"><input class="modal-attachment" name="tech" type="file"/></div></li><button id="modal-confirm" type="submit" style="display: none;">333</button></ul></form>', function () {
                         $("#modal-confirm").click();
                     });
+
+                    var number = 0;
 
                     $("#bidForm").ajaxForm();
                     $("#bidForm").submit(function () {
                         var options = {
-                            url: "",
+                            url: baseUrl + "/quotation/generateQuotation",
                             type: 'post',
                             beforeSubmit: function (data) {
                                 console.log(data);
@@ -211,6 +242,12 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                                 var result = data.success;
                                 console.log(data);
 
+                            },
+                            fail: function(data){
+                                console.log(data);
+                            },
+                            error:function(data) {
+                                console.log(data);
                             }
                         };
 
@@ -221,29 +258,32 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                         if (file && file[0]) {
                             var doms = $(".modal-report"),
                                 size = 0,
-                                l = doms.length;
+                                l = doms.length,
+                                appendFile = true;
 
                             for (var i = 0; i < l; i++) {
                                 var f = $(doms[i])[0].files[0];
                                 if (f) {
                                     size += f.size;
-                                    console.log(f.name);
-                                    console.log(size);
 
                                     if (size > 30 * 1024 * 1024) {
                                         alert("上传金额报表总容量请控制在30M以下");
                                         $(this).val("");
                                         return;
                                     }
+                                } else {
+                                    appendFile = false;
                                 }
                             }
 
-                            if (l < 3) {
-                                $(this).parent().append('<input class="modal-report" name="report" type="file"/>');
+                            if (l < 3 && appendFile) {
+                                $(this).parent().append('<input class="modal-report" name="business' + ++number + '" type="file"/>');
                             }
 
                         } else {
-                            $(this).parent().append('<input class="modal-report" name="report" type="file"/>');
+                            if ($(".modal-report").length == 3) {
+                                $(this).parent().append('<input class="modal-report" name="business' + ++number + '" type="file"/>');
+                            }
                             $(this).remove();
                         }
                     }).on("change", ".modal-attachment", function (e) {
@@ -251,7 +291,8 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                         if (file && file[0]) {
                             var doms = $(".modal-attachment"),
                                 size = 0,
-                                l = doms.length;
+                                l = doms.length,
+                                appendFile = true;
 
                             for (var i = 0; i < l; i++) {
                                 var f = $(doms[i])[0].files[0];
@@ -265,15 +306,19 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                                         $(this).val("");
                                         return;
                                     }
+                                } else {
+                                    appendFile = false;
                                 }
                             }
 
-                            if (l < 3) {
-                                $(this).parent().append('<input class="modal-attachment" name="attachment" type="file"/>');
+                            if (l < 3 && appendFile) {
+                                $(this).parent().append('<input class="modal-attachment" name="tech' + ++number + '" type="file"/>');
                             }
 
                         } else {
-                            $(this).parent().append('<input class="modal-attachment" name="attachment" type="file"/>');
+                            if ($(".modal-attachment").length == 3) {
+                                $(this).parent().append('<input class="modal-attachment" name="tech' + ++number + '" type="file"/>');
+                            }
                             $(this).remove();
                         }
                     });
@@ -295,7 +340,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                 var cmd = that.attr("status", "working").data("cmd");
 
                 if (cmd == "add") {
-                    ajaxGenerateCollection ({inquiryId : currentQueryObj.inquiryId}, function (data) {
+                    ajaxGenerateCollection({inquiryId: currentQueryObj.inquiryId}, function (data) {
                         alert("收藏成功");
                         currentQueryObj.collectionId = data.collectionId;
                         that.data("cmd", "cancel").attr("status", "done").text("取消收藏");
@@ -307,7 +352,8 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                         that.removeAttr("status");
                     });
                 } else {
-                    ajaxGenerateCollection ({collectionId : currentQueryObj.collectionId}, function (data) {
+                    console.log(currentQueryObj.collectionId);
+                    ajaxCancelCollection({collectionId: currentQueryObj.collectionId}, function (data) {
                         alert("取消收藏成功");
                         that.data("cmd", "add").attr("status", "done").text("添加收藏");
                     }, function () {
@@ -409,7 +455,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
 
                 $(".modal-other-reason").on("change", function () {
                     if ($(this).val().length > 200) {
-                        $(this).val($(this).val().substring(0,200));
+                        $(this).val($(this).val().substring(0, 200));
                     }
                 });
 
@@ -433,6 +479,8 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
         $("#myBid").css("display", "");
 
         currentGrid1 = fn_initGrid();
+        currentGrid1.reBind(dataSource.myList);
+        $("#myBid .ui-grid-contentDiv").attr("title","");
 
         //bidRepos.getListOfMy(currentQueryObj.userName, currentQueryObj.inquiryID, currentQueryObj.pageno, currentQueryObj.pagesize, call_mybidok, call_mybidfail, call_mybidfail);
     }
@@ -454,7 +502,9 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
 
         currentGrid2 = fn_initGrid(configMod.gridConfig2);
 
-        bidRepos.getListOfOther(currentQueryObj.userName, currentQueryObj.inquiryID, currentQueryObj.pageno, currentQueryObj.pagesize, call_opponentbid, call_opponentbidfail, call_opponentbidfail);
+        currentGrid2.reBind(dataSource.hisList);
+        $("#otherBid .ui-grid-contentDiv").attr("title","");
+        //bidRepos.getListOfOther(currentQueryObj.userName, currentQueryObj.inquiryID, currentQueryObj.pageno, currentQueryObj.pagesize, call_opponentbid, call_opponentbidfail, call_opponentbidfail);
     }
 
     function call_opponentbid(data) {

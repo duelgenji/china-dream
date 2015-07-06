@@ -10,7 +10,7 @@ define("detail-config", [], function(require, exports) {
         columns = [{
             index: 1,
             head: {
-                width: 169,
+                width: 139,
                 issort: false,
                 text: "当前轮数"
             },
@@ -29,19 +29,19 @@ define("detail-config", [], function(require, exports) {
             },
             body: {
                 align: "center",
-                fields: "userName",
+                fields: "userNickName",
             }
         }, {
             index: 3,
             head: {
                 text: "所在地",
-                width: 169,
+                width: 139,
                 issort: false,
                 align: "center"
             },
             body: {
                 align: "center",
-                fields: "province"
+                fields: "userProvince"
             }
         }, {
             index: 4,
@@ -65,19 +65,19 @@ define("detail-config", [], function(require, exports) {
             },
             body: {
                 align: "center",
-                fields: "money"
+                fields: "totalPrice"
             }
         }, {
             index: 6,
             head: {
                 text: "附件信息",
-                width: 180,
+                width: 240,
                 issort: false,
                 align: "center"
             },
             body: {
                 align: "left",
-                fields: "attachmentUrls",
+                fields: "fileList",
                 renderFn: "renderAttachments"
             }
         }, {
