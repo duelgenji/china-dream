@@ -242,6 +242,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                                 var result = data.success;
                                 console.log(data);
 
+                                dismissCmdModal();
                             },
                             fail: function(data){
                                 console.log(data);
