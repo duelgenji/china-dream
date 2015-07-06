@@ -138,7 +138,7 @@ public class InquiryService {
         }
 
         res.put("myList",myList);
-        res.put("histList",histList);
+        res.put("hisList",histList);
 
     }
 

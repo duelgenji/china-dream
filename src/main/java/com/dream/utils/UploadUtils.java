@@ -83,12 +83,12 @@ public class UploadUtils {
         String url;
         switch (type) {
             case 0 :
-                bucketName = "dream";
-                url = "http://7xk6tz.com2.z0.glb.qiniucdn.com/" + key ;
+                bucketName = "chinadream";
+                url = "http://7xk71v.dl1.z0.glb.clouddn.com/" + key ;
             break;
             default:
-                bucketName = "dream";
-                url = "http://7xk6tz.com2.z0.glb.qiniucdn.com/" + key ;
+                bucketName = "chinadream";
+                url = "http://7xk71v.dl1.z0.glb.clouddn.com/" + key ;
                 break;
         }
 
