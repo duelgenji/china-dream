@@ -23,7 +23,6 @@ import java.util.Map;
 /**
  * Created by Knight on 2015/7/1 0:12.
  */
-
 @RestController
 @RequestMapping("message")
 @SessionAttributes("currentUser")
@@ -81,7 +80,7 @@ public class MessageController extends AbstractBaseController<Message, Long> {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("messageId", message.getId());
             map.put("messageStatus", message.getStatus());
-//            map.put("content", message.getContent());
+            map.put("content", message.getContent());
             map.put("inquiryNo", message.getInquiry().getInquiryNo());
             map.put("round", message.getInquiry().getRound());
             map.put("inquiryStatus", message.getInquiry().getStatus());
@@ -90,6 +89,7 @@ public class MessageController extends AbstractBaseController<Message, Long> {
             map.put("limitDate",  DateFormatUtils.format(message.getInquiry().getLimitDate(), "yyyy-MM-dd HH:mm:ss"));
             map.put("inquiryTitle", message.getInquiry().getTitle());
             map.put("inquiryId", message.getInquiry().getId());
+            map.put("inquiryMode", message.getInquiry().getInquiryMode().getName());
 
             list.add(map);
         }
@@ -101,6 +101,40 @@ public class MessageController extends AbstractBaseController<Message, Long> {
         return res;
     }
 
+    /**
+     * 修改 站内信状态 （同意 拒绝）
+     */
+    @RequestMapping("modifyMessageStatus")
+    public Map<String, Object> modifyMessageStatus(
+            @RequestParam(required = false) long messageId,
+            @RequestParam(required = false) int status,
+            @ModelAttribute("currentUser") User user) {
 
+        Map<String, Object> res = new HashMap<>();
 
+        if(user.getId()==null){
+            res.put("success",0);
+            res.put("message","请先登录");
+            return res;
+        }
+
+        Message message = messageRepository.findOne(messageId);
+        if(message == null || !message.getInquiryUser().getId().equals(user.getId())){
+            res.put("success",0);
+            res.put("message","没有数据");
+            return res;
+        }
+
+        if(message.getStatus()!=0){
+            res.put("success",0);
+            res.put("message","该条不能修改状态！");
+            return res;
+        }
+
+        message.setStatus(status);
+        messageRepository.save(message);
+
+        res.put("success",1);
+        return res;
+    }
 }

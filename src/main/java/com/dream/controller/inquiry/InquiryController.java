@@ -3,6 +3,7 @@ package com.dream.controller.inquiry;
 import com.dream.entity.company.CompanyIndustry;
 import com.dream.entity.company.CompanyProvince;
 import com.dream.entity.inquiry.Inquiry;
+import com.dream.entity.inquiry.InquiryCollection;
 import com.dream.entity.inquiry.InquiryFile;
 import com.dream.entity.inquiry.InquiryMode;
 import com.dream.entity.message.Message;
@@ -10,6 +11,7 @@ import com.dream.entity.user.OpenStatus;
 import com.dream.entity.user.User;
 import com.dream.repository.company.CompanyIndustryRepository;
 import com.dream.repository.company.CompanyProvinceRepository;
+import com.dream.repository.inquiry.InquiryCollectionRepository;
 import com.dream.repository.inquiry.InquiryFileRepository;
 import com.dream.repository.inquiry.InquiryModeRepository;
 import com.dream.repository.inquiry.InquiryRepository;
@@ -76,6 +78,9 @@ public class InquiryController {
 
     @Autowired
     MessageRepository messageRepository;
+
+    @Autowired
+    InquiryCollectionRepository inquiryCollectionRepository;
 
 
     @Value("${file_url}")
@@ -195,7 +200,6 @@ public class InquiryController {
             fileUrl = UploadUtils.uploadTo7niu(0, uname, logoFile);
 
             inquiry.setLogoUrl(fileUrl);
-
         }
 
         inquiryRepository.save(inquiry);
@@ -214,6 +218,7 @@ public class InquiryController {
             InquiryFile inquiryFile = new InquiryFile();
             inquiryFile.setInquiry(inquiry);
             inquiryFile.setFileUrl(fileUrl);
+            inquiryFile.setRemark(file1.getOriginalFilename());
             inquiryFileRepository.save(inquiryFile);
 
         }
@@ -233,6 +238,7 @@ public class InquiryController {
             InquiryFile inquiryFile = new InquiryFile();
             inquiryFile.setInquiry(inquiry);
             inquiryFile.setFileUrl(fileUrl);
+            inquiryFile.setRemark(file2.getOriginalFilename());
             inquiryFileRepository.save(inquiryFile);
 
         }
@@ -251,6 +257,7 @@ public class InquiryController {
             InquiryFile inquiryFile = new InquiryFile();
             inquiryFile.setInquiry(inquiry);
             inquiryFile.setFileUrl(fileUrl);
+            inquiryFile.setRemark(file3.getOriginalFilename());
             inquiryFileRepository.save(inquiryFile);
 
         }
@@ -342,15 +349,42 @@ public class InquiryController {
         res.put("industryCode", inquiry.getCompanyIndustry().getName());
         res.put("provinceCode", inquiry.getCompanyProvince().getName());
         res.put("userLimit", inquiry.getUserLimit());
+        res.put("logoUrl", inquiry.getLogoUrl());
+
+
+        inquiryService.putPrivateInfo(res,user,inquiry);
+        inquiryService.putQuotationList(res,user,inquiry);
+        if(user.getId()==null){
+            res.put("isCollection", false);
+            res.put("applyStatus", 0);
+            res.put("isMe", 0);
+            res.put("success",1);
+            return res;
+        }
+
+        InquiryCollection ic = inquiryCollectionRepository.findByUserAndInquiry(user, inquiry);
+        if(ic==null){
+            res.put("isCollection", false);
+        }else{
+            res.put("isCollection", true);
+            res.put("collectionId", ic.getId());
+        }
+
+        List<Message> messageList = messageRepository.findAllUserAndInquiry(user, inquiry);
+        if(messageList.size()==0 || messageList.get(0).getStatus()==2){
+            res.put("applyStatus", 0);
+        }else if(messageList.get(0).getStatus()==0) {
+            res.put("applyStatus", 1);
+        }else if(messageList.get(0).getStatus()==1) {
+            res.put("applyStatus", 2);
+        }
+
 
         if(inquiry.getUser().getId().equals(user.getId())){
             res.put("isMe", 1);
         }else{
             res.put("isMe", 0);
         }
-
-
-        inquiryService.putPrivateInfo(res,user,inquiry);
 
 
         res.put("success",1);
@@ -360,11 +394,12 @@ public class InquiryController {
 
 
     /**
-     * 获取询价 详细信息
+     * 申请出价 发送站内信
      */
     @RequestMapping("sendInquiryMessage")
     public Map<String, Object> sendInquiryMessage(
             @RequestParam(required = false) long inquiryId,
+            @RequestParam(required = false) String description,
             @ModelAttribute("currentUser") User user) {
         Map<String, Object> res = new HashMap<>();
 
@@ -382,7 +417,7 @@ public class InquiryController {
             return res;
         }
 
-        List<Inquiry> list=messageRepository.findAllUserAndInquiryAndStatus(user,inquiry,0);
+        List<Message> list=messageRepository.findAllUserAndInquiryAndStatus(user,inquiry,0);
         if(list.size()>=1){
             res.put("success",0);
             res.put("message","已经发送过了");
@@ -394,7 +429,7 @@ public class InquiryController {
         message.setInquiry(inquiry);
         message.setUser(user);
         message.setInquiryUser(inquiry.getUser());
-        message.setContent("申请出价"+"'"+inquiry.getTitle()+"'");
+        message.setContent(description);
 
         messageRepository.save(message);
 

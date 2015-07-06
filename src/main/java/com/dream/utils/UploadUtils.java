@@ -29,8 +29,8 @@ public class UploadUtils {
 
     private static Mac mac;
     static {
-        Config.ACCESS_KEY = "NdVj6TB7C78u0PhPenlU1kzgwWvBV1mazFeBk9ma";
-        Config.SECRET_KEY = "PGgA48fZfELgr-IjpboBjvLXskOp94rgF66ed__X";
+        Config.ACCESS_KEY = "f0c0xY3B9RvWVN0M0sgP7bQBCj6UGVXS8qhz3XAV";
+        Config.SECRET_KEY = "K9cXNHbZKPYWTiBcunh8fA2i0PkpZcglsXi8bNU7";
         mac = new Mac(Config.ACCESS_KEY, Config.SECRET_KEY);
     }
 
@@ -79,20 +79,16 @@ public class UploadUtils {
             e.printStackTrace();
         }
         String bucketName;
-        String key = name + "_" + DateFormatUtils.format(new Date(), "yyyyMMddHHmmssssss")+"."+ file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1);
+        String key = name + file.getOriginalFilename().substring(0,file.getOriginalFilename().lastIndexOf(".")) +  "_" +  DateFormatUtils.format(new Date(), "yyyyMMddHHmmssssss")+"."+ file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1);
         String url;
         switch (type) {
-            case 1 :
-            bucketName = "zhixin-public";
-            url = "http://7xi893.com2.z0.glb.clouddn.com/" + key;
+            case 0 :
+                bucketName = "dream";
+                url = "http://7xk6tz.com2.z0.glb.qiniucdn.com/" + key ;
             break;
-            case 2 :
-                bucketName = "zhixin-private";
-                url = "http://7xi894.com2.z0.glb.clouddn.com/" + key;
-                break;
             default:
-                bucketName = "zhixin";
-                url = "http://7viiw7.com2.z0.glb.clouddn.com/" + key ;
+                bucketName = "dream";
+                url = "http://7xk6tz.com2.z0.glb.qiniucdn.com/" + key ;
                 break;
         }
 

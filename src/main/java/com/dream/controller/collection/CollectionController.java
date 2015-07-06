@@ -1,10 +1,12 @@
-package com.dream.controller.inquiry;
+package com.dream.controller.collection;
 
 import com.dream.entity.inquiry.Inquiry;
 import com.dream.entity.inquiry.InquiryCollection;
 import com.dream.entity.user.User;
+import com.dream.entity.user.UserCollection;
 import com.dream.repository.inquiry.InquiryCollectionRepository;
 import com.dream.repository.inquiry.InquiryRepository;
+import com.dream.repository.user.UserCollectionRepository;
 import com.dream.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,7 +26,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("collection")
 @SessionAttributes("currentUser")
-public class InquiryCollectionController {
+public class CollectionController {
 
     @Autowired
     UserRepository userRepository;
@@ -35,10 +37,13 @@ public class InquiryCollectionController {
     @Autowired
     InquiryCollectionRepository inquiryCollectionRepository;
 
+    @Autowired
+    UserCollectionRepository userCollectionRepository;
+
 
 
     /**
-     * 获取 收藏列表
+     * 获取 收藏列表 询价
      */
     @RequestMapping("retrieveCollectionList")
     public Map<String, Object> retrieveCollectionList(
@@ -87,7 +92,7 @@ public class InquiryCollectionController {
 
 
     /**
-     * 添加收藏
+     * 添加收藏  询价
      */
     @RequestMapping("generateCollection")
     public Map<String, Object> generateCollection(
@@ -114,9 +119,9 @@ public class InquiryCollectionController {
             return res;
         }
 
-        List<InquiryCollection> collectionList= inquiryCollectionRepository.findByUserAndInquiry(user, inquiry);
+        InquiryCollection inquiryCollection= inquiryCollectionRepository.findByUserAndInquiry(user, inquiry);
 
-        if(collectionList.size()==0){
+        if(inquiryCollection==null){
             InquiryCollection collection = new InquiryCollection();
             collection.setUser(user);
             collection.setInquiry(inquiry);
@@ -130,7 +135,7 @@ public class InquiryCollectionController {
     }
 
     /**
-     * 添加收藏
+     * 添加收藏  询价
      */
     @RequestMapping("cancelCollection")
     public Map<String, Object> cancelCollection(
@@ -155,6 +160,123 @@ public class InquiryCollectionController {
         inquiryCollectionRepository.delete(inquiryCollection);
 
 
+
+        res.put("success",1);
+        return res;
+    }
+
+
+    /**
+     * 获取 收藏列表 用户
+     */
+    @RequestMapping("retrieveCollectionListU")
+    public Map<String, Object> retrieveCollectionListU(
+            @ModelAttribute("currentUser") User user,
+            @PageableDefault(page = 0, size = 20,sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        Map<String, Object> res = new HashMap<>();
+
+        if(user.getId()==null){
+            res.put("success",0);
+            res.put("message","请先登录");
+            return res;
+        }
+
+
+
+        Map<String, Object> filters = new HashMap<>();
+
+        filters.put("user_equal", user);
+
+        Page<UserCollection> collectionPage= userCollectionRepository.findAll(filters,pageable);
+
+
+        List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
+        for (UserCollection collection : collectionPage) {
+
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("collectionId", collection.getId());
+            map.put("collectionCreateTime", collection.getCreateTime());
+
+
+            list.add(map);
+        }
+
+
+
+        res.put("success",1);
+        res.put("data",list);
+        return res;
+    }
+
+
+    /**
+     * 添加收藏  用户
+     */
+    @RequestMapping("generateCollectionU")
+    public Map<String, Object> generateCollectionU(
+            @RequestParam long userId,
+            @ModelAttribute("currentUser") User user) {
+
+        Map<String, Object> res = new HashMap<>();
+
+        if(user.getId()==null){
+            res.put("success",0);
+            res.put("message","请先登录");
+            return res;
+        }
+
+        User targetUser = userRepository.findOne(userId);
+        if(targetUser==null){
+            res.put("success",0);
+            res.put("message","数据未查到");
+            return res;
+        }
+        if(targetUser.getId().equals(user.getId())){
+            res.put("success",0);
+            res.put("message","不要收藏自己");
+            return res;
+        }
+
+        List<UserCollection> collectionList= userCollectionRepository.findByUserAndTargetUser(user, targetUser);
+
+        if(collectionList.size()==0){
+            UserCollection collection = new UserCollection();
+            collection.setUser(user);
+            collection.setTargetUser(targetUser);
+            userCollectionRepository.save(collection);
+
+        }
+
+
+        res.put("success",1);
+        return res;
+    }
+
+    /**
+     * 添加收藏  用户
+     */
+    @RequestMapping("cancelCollectionU")
+    public Map<String, Object> cancelCollectionU(
+            @RequestParam long collectionId,
+            @ModelAttribute("currentUser") User user) {
+
+        Map<String, Object> res = new HashMap<>();
+
+        if(user.getId()==null){
+            res.put("success",0);
+            res.put("message","请先登录");
+            return res;
+        }
+
+        UserCollection collection = userCollectionRepository.findByUserAndId(user, collectionId);
+        if(collection==null){
+            res.put("success",0);
+            res.put("message","数据未查到");
+            return res;
+        }
+
+        userCollectionRepository.delete(collection);
 
         res.put("success",1);
         return res;

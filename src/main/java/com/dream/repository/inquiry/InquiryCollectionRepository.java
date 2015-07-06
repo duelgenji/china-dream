@@ -7,8 +7,6 @@ import com.wonders.xlab.framework.repository.MyRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.List;
-
 /**
  *
  * Created by Knight on 2015/7/1 1:00.
@@ -16,7 +14,7 @@ import java.util.List;
 public interface InquiryCollectionRepository extends MyRepository<InquiryCollection,Long> {
 
     @Query("from InquiryCollection ic where ic.user = :user and ic.inquiry = :inquiry ")
-    List<InquiryCollection> findByUserAndInquiry(@Param("user") User user, @Param("inquiry") Inquiry inquiry);
+    InquiryCollection findByUserAndInquiry(@Param("user") User user, @Param("inquiry") Inquiry inquiry);
 
 
     @Query("from InquiryCollection ic where ic.user = :user and ic.id = :id ")

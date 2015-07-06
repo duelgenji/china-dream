@@ -1,6 +1,5 @@
-package com.dream.entity.inquiry;
+package com.dream.entity.quotation;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.Entity;
@@ -8,27 +7,31 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
- * 标的文件
- * Created by Knight on 2015/6/25 17:05.
+ * 正式出价 文件
+ * Created by Knight on 2015/7/6 15:37.
  */
 @Entity
 @Table
-public class InquiryFile extends AbstractPersistable<Long> {
+public class QuotationFile extends AbstractPersistable<Long> {
 
     @ManyToOne
-    @JsonIgnore
-    private Inquiry inquiry;
+    private Quotation quotation;
 
     private String fileUrl;
 
     private String remark;
 
-    public Inquiry getInquiry() {
-        return inquiry;
+    /**
+     * 类型 0 商务文档  1技术文档
+     */
+    private int type;
+
+    public Quotation getQuotation() {
+        return quotation;
     }
 
-    public void setInquiry(Inquiry inquiry) {
-        this.inquiry = inquiry;
+    public void setQuotation(Quotation quotation) {
+        this.quotation = quotation;
     }
 
     public String getFileUrl() {
@@ -45,5 +48,13 @@ public class InquiryFile extends AbstractPersistable<Long> {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

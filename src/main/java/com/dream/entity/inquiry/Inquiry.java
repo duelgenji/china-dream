@@ -438,6 +438,8 @@ public class Inquiry  extends AbstractPersistable<Long> {
                 return this.getContactWeiXin();
             case "contactWeiXinOpen":
                 return this.getContactWeiXinOpen();
+            case "filesOpen":
+                return this.getFilesOpen();
             default:
                 return null;
         }
