@@ -6,11 +6,14 @@ import com.dream.entity.quotation.Quotation;
 import com.dream.entity.quotation.QuotationFile;
 import com.dream.entity.user.OpenStatus;
 import com.dream.entity.user.User;
+import com.dream.entity.user.UserIndex;
 import com.dream.repository.inquiry.InquiryFileRepository;
 import com.dream.repository.inquiry.InquiryRepository;
 import com.dream.repository.message.MessageRepository;
 import com.dream.repository.quotation.QuotationFileRepository;
 import com.dream.repository.quotation.QuotationRepository;
+import com.dream.repository.user.UserIndexRepository;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,24 +47,21 @@ public class InquiryService {
     @Autowired
     MessageRepository messageRepository;
 
+    @Autowired
+    UserIndexRepository userIndexRepository;
+
     private void putPropertiesByName(Map<String, Object> res, User user , Inquiry inquiry,String name,boolean isAuthorize){
         String value="";
-        if(inquiry.getProperties(name)!=null){
-            value=inquiry.getProperties(name).toString();
 
-        }
         OpenStatus openStatus = (OpenStatus) inquiry.getProperties( name + "Open");
 
-        if(openStatus== OPEN || inquiry.getUser().getId().equals(user.getId()) || openStatus==null){
-            res.put(name, value+" (公开)");
-        }else if (openStatus == OpenStatus.CLOSED)  {
-            res.put(name, "(不公开)");
-        }else if (openStatus == OpenStatus.AUTHORIZE){
-            if(isAuthorize)
-                res.put(name, value +  " (授权后公开)");
-            else
-                res.put(name,  "(授权后公开)");
+        if(openStatus== OPEN || inquiry.getUser().getId().equals(user.getId()) || (openStatus == OpenStatus.AUTHORIZE && isAuthorize) || openStatus==null){
+            if(inquiry.getProperties(name)!=null){
+                value=inquiry.getProperties(name).toString();
+            }
         }
+        assert openStatus != null;
+        res.put(name, value + "(" + openStatus.getName() +")");
 
     }
 
@@ -79,20 +79,14 @@ public class InquiryService {
 
         OpenStatus openStatus = (OpenStatus) inquiry.getProperties("filesOpen");
         List<InquiryFile> fileList = new ArrayList<InquiryFile>();
-        if(inquiry.getUser().getId().equals(user.getId()) || openStatus==null || openStatus== OPEN ){
-            res.put("files", " (公开)");
-            fileList = inquiryFileRepository.findByInquiry(inquiry);
-            res.put("fileList", fileList);
-        }else if (openStatus == OpenStatus.CLOSED)  {
-            res.put("files", "(不公开)");
-        }else if (openStatus == OpenStatus.AUTHORIZE){
-            res.put("files",  "(授权后公开)");
-            if(isAuthorize){
-                fileList = inquiryFileRepository.findByInquiry(inquiry);
-            }
-        }
-        res.put("fileList", fileList);
 
+        if(openStatus== OPEN || inquiry.getUser().getId().equals(user.getId()) || (openStatus == OpenStatus.AUTHORIZE && isAuthorize) || openStatus==null){
+            fileList = inquiryFileRepository.findByInquiry(inquiry);
+        }
+        assert openStatus != null;
+        res.put("files",  "(" + openStatus.getName() +")");
+
+        res.put("fileList", fileList);
 
     }
 
@@ -108,10 +102,12 @@ public class InquiryService {
         for( Quotation quotation : quotationList ){
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("quotationId",quotation.getId());
-            map.put("createTime",quotation.getCreateTime());
+            map.put("createTime", DateFormatUtils.format(quotation.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
             map.put("round",quotation.getRound());
             map.put("totalPrice",quotation.getTotalPrice());
             map.put("status",quotation.getStatus());
+            map.put("userId",quotation.getUser().getId());
+            map.put("userNickname",quotation.getUser().getNickName());
             if(quotation.getUser().getUserCompanyInfo()!=null){
                 map.put("userProvince",quotation.getUser().getUserCompanyInfo().getCompanyProvince().getName());
             }else{
@@ -139,8 +135,46 @@ public class InquiryService {
 
         res.put("myList",myList);
         res.put("hisList",histList);
-
     }
 
+
+    public void calcUserIndex(User user){
+
+        UserIndex userIndex = userIndexRepository.findOne(user.getId());
+
+        if(userIndex==null){
+            userIndex = new UserIndex();
+            userIndex.setId(user.getId());
+        }
+
+
+        int quotationDoneTime= quotationRepository.countByInquiryAndUser(user.getId());
+        int quotationSuccessTime= quotationRepository.countByInquiryAndUserAndStatus(user.getId(), 1);
+
+        int inquiryDoneTime = inquiryRepository.countByUser(user);
+        int inquirySuccessTime = inquiryRepository.countByUserAndStatus(user, 1);
+
+
+
+        userIndex.setQuotationDoneTime(quotationDoneTime);
+        userIndex.setQuotationSuccessTime(quotationSuccessTime);
+        userIndex.setInquiryDoneTime(inquiryDoneTime);
+        userIndex.setInquirySuccessTime(inquirySuccessTime);
+
+
+        if(quotationDoneTime == 0 || quotationSuccessTime == 0 ){
+            userIndex.setQuotationSuccessRate(0);
+        }else{
+            userIndex.setQuotationSuccessRate((double)quotationSuccessTime/(double)quotationDoneTime * 100);
+        }
+
+        if(inquiryDoneTime == 0l || inquirySuccessTime == 0l ){
+            userIndex.setInquirySuccessRate(0);
+        }else{
+            userIndex.setInquirySuccessRate((double)inquirySuccessTime/(double)inquiryDoneTime * 100);
+        }
+
+        userIndexRepository.save(userIndex);
+    }
 
 }

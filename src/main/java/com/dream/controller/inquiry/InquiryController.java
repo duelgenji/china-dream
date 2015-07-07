@@ -433,10 +433,52 @@ public class InquiryController {
 
         messageRepository.save(message);
 
-
-
         res.put("success",1);
         return res;
 
     }
+
+    /**
+     * 我的询价列表
+     */
+    @RequestMapping("retrieveMyInquiryList")
+    public Map<String, Object> retrieveMyInquiryList(
+            @ModelAttribute("currentUser") User user) {
+        Map<String, Object> res = new HashMap<>();
+
+        if(user.getId()==null){
+            res.put("success",0);
+            res.put("message","请先登录");
+            return res;
+        }
+
+        List<Inquiry> inquiryList = inquiryRepository.findByUser(user);
+
+        List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
+
+        for ( Inquiry inquiry : inquiryList ){
+
+            Map<String, Object> map = new HashMap<String, Object>();
+
+            map.put("inquiryId", inquiry.getId());
+            map.put("inquiryNo", inquiry.getInquiryNo());
+            map.put("inquiryTitle", inquiry.getTitle());
+            map.put("inquiryRound", inquiry.getRound());
+            map.put("inquiryMode", inquiry.getInquiryMode().getName());
+            map.put("inquiryIndustry", inquiry.getCompanyIndustry().getName());
+            map.put("inquiryProvince", inquiry.getCompanyProvince().getName());
+            map.put("inquiryPrice", inquiry.getTotalPrice());
+
+            map.put("limitDate", DateFormatUtils.format(inquiry.getLimitDate(), "yyyy-MM-dd HH:mm:ss"));
+
+            list.add(map);
+
+        }
+
+        res.put("success",1);
+        res.put("data",list);
+        return res;
+
+    }
+
 }

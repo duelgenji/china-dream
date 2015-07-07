@@ -2,6 +2,7 @@ package com.dream.repository.quotation;
 
 import com.dream.entity.inquiry.Inquiry;
 import com.dream.entity.quotation.Quotation;
+import com.dream.entity.user.User;
 import com.wonders.xlab.framework.repository.MyRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,4 +16,15 @@ public interface QuotationRepository extends MyRepository<Quotation,Long> {
 
     @Query("from Quotation q where q.inquiry = :inquiry ")
     List<Quotation> findByInquiry(@Param("inquiry") Inquiry inquiry);
+
+    @Query("from Quotation q where q.user = :user ")
+    List<Quotation> findByUser(@Param("user") User user);
+
+
+    @Query(value = "select count(*) from ( select * from Quotation q where q.user_id =:user group by q.inquiry_id ) as  ta", nativeQuery = true)
+    int countByInquiryAndUser(@Param("user") long user);
+
+    @Query(value = "select count(*) from ( select * from Quotation q where q.user_id =:user and q.status =:status group by q.inquiry_id ) as  ta " , nativeQuery = true)
+    int countByInquiryAndUserAndStatus(@Param("user") long user,@Param("status") int status);
+
 }

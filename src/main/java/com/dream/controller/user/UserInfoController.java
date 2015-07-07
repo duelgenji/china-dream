@@ -1,21 +1,20 @@
 package com.dream.controller.user;
 
 import com.dream.entity.user.User;
-import com.dream.repository.user.UserCompanyInfoRepository;
-import com.dream.repository.user.UserGroupInfoRepository;
-import com.dream.repository.user.UserPersonalInfoRepository;
 import com.dream.repository.user.UserRepository;
 import com.dream.service.user.UserService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,15 +31,6 @@ public class UserInfoController {
 
     @Autowired
     UserService userService;
-
-    @Autowired
-    UserPersonalInfoRepository userPersonalInfoRepository;
-
-    @Autowired
-    UserCompanyInfoRepository userCompanyInfoRepository;
-
-    @Autowired
-    UserGroupInfoRepository userGroupInfoRepository;
 
     @RequestMapping("retrieveInfo")
     public Map<String, Object> retrieveInfo(@ModelAttribute("currentUser") User user) {
@@ -100,18 +90,17 @@ public class UserInfoController {
      */
     @RequestMapping("retrieveUserList")
     public Map<String, Object> retrieveUserList(
+            @RequestParam int type,
             @PageableDefault(page = 0, size = 20) Pageable pageable,
             @ModelAttribute("currentUser") User user) {
         Map<String, Object> res = new HashMap<>();
 
-        if(user.getId()==null){
-            res.put("success",0);
-            res.put("message","请先登录");
-            return res;
+        if(type==1){
+            pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "userIndex.quotationDoneTime");
+        }  if(type==2){
+            pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "userIndex.quotationSuccessRate");
         }
-
-
-        List<User> userList= userRepository.findByStatus(0,pageable);
+        Page<User> userList= userRepository.findAllUser(pageable);
 
         res.put("success",1);
         res.put("data",userList);
@@ -139,6 +128,5 @@ public class UserInfoController {
         res.put("success",1);
         return res;
     }
-
 
 }

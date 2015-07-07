@@ -1,9 +1,11 @@
 package com.dream.controller.user;
 
 import com.dream.entity.user.User;
+import com.dream.entity.user.UserIndex;
+import com.dream.repository.user.UserIndexRepository;
 import com.dream.repository.user.UserRepository;
-import com.dream.utils.CommonEmail;
 import com.dream.service.user.UserService;
+import com.dream.utils.CommonEmail;
 import com.wonders.xlab.framework.controller.AbstractBaseController;
 import com.wonders.xlab.framework.repository.MyRepository;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -38,6 +40,9 @@ public  class UserController extends AbstractBaseController<User, Long> {
 
     @Autowired
     CommonEmail commonEmail;
+
+    @Autowired
+    UserIndexRepository userIndexRepository;
 
     @Override
     protected MyRepository<User, Long> getRepository() {
@@ -118,6 +123,18 @@ public  class UserController extends AbstractBaseController<User, Long> {
         }
 
         //TODO 增加是否激活判断
+        if(user.getStatus()==1){
+            if(userIndexRepository.findOne(user.getId())==null){
+                UserIndex userIndex = new UserIndex();
+                userIndex.setId(user.getId());
+                userIndexRepository.save(userIndex);
+            }
+        }else{
+            res.put("success", "0");
+            res.put("message", "用户没有激活");
+            return res;
+        }
+
 
         model.addAttribute("currentUser", user);
 
@@ -179,6 +196,11 @@ public  class UserController extends AbstractBaseController<User, Long> {
         user.setStatus(1);
         user.setCaptcha("");
         userRepository.save(user);
+
+        UserIndex userIndex = new UserIndex();
+        userIndex.setId(user.getId());
+        userIndexRepository.save(userIndex);
+
         model.addAttribute("currentUser", user);
         res.put("success", "1");
         try {

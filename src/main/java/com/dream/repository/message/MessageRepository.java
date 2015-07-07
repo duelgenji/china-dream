@@ -20,5 +20,11 @@ public interface MessageRepository  extends MyRepository<Message,Long> {
     @Query("from Message m where m.user = :user and m.inquiry = :inquiry order by id desc ")
     List<Message> findAllUserAndInquiry(@Param("user") User user, @Param("inquiry") Inquiry inquiry);
 
+    @Query("from Message m where m.user = :user  ")
+    List<Message> findByUser(@Param("user") User user);
+
+    @Query("select count(*) from Message m where m.user =:user and m.status =1 and m.inquiry.status=0 ")
+    int countByInquiryAndUser(@Param("user") User user);
+
 
 }

@@ -74,6 +74,9 @@ public class User extends AbstractPersistable<Long> {
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "user")
     private UserGroupInfo userGroupInfo;
 
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user")
+    private UserIndex userIndex;
+
     /**
      * vip 标记位
      */
@@ -299,5 +302,13 @@ public class User extends AbstractPersistable<Long> {
 
     public void setCaptcha(String captcha) {
         this.captcha = captcha;
+    }
+
+    public UserIndex getUserIndex() {
+        return userIndex;
+    }
+
+    public void setUserIndex(UserIndex userIndex) {
+        this.userIndex = userIndex;
     }
 }
