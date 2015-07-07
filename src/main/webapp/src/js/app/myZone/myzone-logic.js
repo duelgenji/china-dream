@@ -23,11 +23,21 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
 
         currentGrid,
 
+        currentGrid2,
+
         currentQueryObj = {
             page: 0
         },
 
         dataSource;
+
+    function renderInquiryNo(vals, ri, objval) {
+        return '<a style="text-decoration: underline;" href="inquiryDetail.html?key=' + vals[1] + '">' + vals[0] + '</a>';
+    }
+
+    function renderInquiryTitle(vals, ri, objval) {
+        return '<a style="text-decoration: underline;" href="inquiryDetail.html?key=' + vals[1] + '">' + vals[0] + '</a>';
+    }
 
     function renderInquiryMode(vals, ri, objval) {
         return (objval.title = util_mapInquiryMode(vals));
@@ -126,15 +136,23 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
     }
 
     function fn_getMyInfo() {
-        userRepos.getDetail(mainMod.loginInfo.name, call_myInfoOk, call_myInfoFail, call_myInfoFail);
+        ajaxRetrieveUserDetail(loadUserInfo().id ,call_myInfoOk, call_myInfoFail, call_myInfoFail);
+        //userRepos.getDetail(mainMod.loginInfo.name, call_myInfoOk, call_myInfoFail, call_myInfoFail);
     }
 
-    function call_myInfoOk() {
+    function call_myInfoOk(data) {
+        console.log(data);
 
+        $("span.ui-val").each(function (i, span) {
+            span = $(span);
+            var col = span.data("col"),
+                val = data[col];
+            span.text(val).attr("title", val);
+        });
     }
 
     function call_myInfoFail() {
-
+        alert("请求失败");
     }
 
     /**
@@ -191,11 +209,12 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
 
         dialogMod.mask.show();
         var params = {};
-        params.page = 0;
+        //params.page = 0;
 
         ajaxRetrieveCollectionList(params, function (data) {
             dataSource = data.data;
             currentGrid.reBind(dataSource);
+            currentGrid2.reBind(dataSource);
         }, function (result) {
             alert(result.message);
         }, function () {
@@ -356,6 +375,29 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
 
         (currentGrid = gridMod(gridCfg || configMod.gridCfg1))
             .pubSub()
+            .override("renderInquiryNo", renderInquiryNo)
+            .override("renderInquiryTitle", renderInquiryTitle)
+            .override("renderInquiryMode", renderInquiryMode)
+            .override("renderState", renderState)
+            .override("renderOptOfBid", renderOptOfBid)
+            .override("renderOptOfInquiry", renderOptOfInquiry)
+            .override("renderOptOfCollect", renderOptOfCollect)
+            .override("renderOptOfPersonCollect", renderOptOfCollect)
+            .override("renderOptOfMessage", renderOptOfMessage)
+            .override("grid.databound", function () {
+            });
+    }
+
+    function fn_initGrid2(gridCfg) {
+        /**
+         * 初始化DataGrid，并订阅相关的消息与事件
+         */
+        !gridMod && (gridMod = require("pure-grid"));
+
+        (currentGrid2 = gridMod(gridCfg || configMod.gridCfg1))
+            .pubSub()
+            .override("renderInquiryNo", renderInquiryNo)
+            .override("renderInquiryTitle", renderInquiryTitle)
             .override("renderInquiryMode", renderInquiryMode)
             .override("renderState", renderState)
             .override("renderOptOfBid", renderOptOfBid)
@@ -372,6 +414,8 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
      * @return {[type]} [description]
      */
     function fn_initEvent() {
+
+        fn_getMyInfo();
 
         $("#select_msg").on("change", function () {
             fn_initGrid(configMod["gridCfg4"]);
@@ -396,6 +440,7 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
                     break;
                 case "collect":
                     fn_initGrid(configMod["gridCfg" + gridNo]);
+                    fn_initGrid2(configMod["gridCfg" + 5]);
                     fn_getMyCollectList();
                     break;
                 case "message":

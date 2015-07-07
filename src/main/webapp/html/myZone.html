@@ -116,16 +116,16 @@
 						</dt>
 						<dd>
 							<p>
-								<span class="ui-title">出价次数:</span><span class="ui-val">100</span>
+								<span class="ui-title">出价次数:</span><span class="ui-val" data-col="quotationDoneTime"></span>
 							</p>
 							<p>
-								<span class="ui-title">出价成功数:</span><span class="ui-val">100</span>
+								<span class="ui-title">出价成功数:</span><span class="ui-val" data-col="quotationSuccessTime"></span>
 							</p>
 							<p>
-								<span class="ui-title">出价成功率:</span><span class="ui-val">100</span>
+								<span class="ui-title">出价成功率:</span><span class="ui-val" data-col="quotationSuccessRate"></span>
 							</p>
 							<p>
-								<span class="ui-title">出价进行中总数:</span><span class="ui-val">100</span>
+								<span class="ui-title">出价进行中总数:</span><span class="ui-val" data-col="quotationDoingTime"></span>
 							</p>
 						</dd>
 					</dl>
@@ -135,17 +135,16 @@
 						</dt>
 						<dd>
 							<p>
-								<span class="ui-title">询价次数:</span>
-								<span class="ui-val">100</span>
+								<span class="ui-title">询价次数:</span><span class="ui-val" data-col="inquiryDoneTime"></span>
 							</p>
 							<p>
-								<span class="ui-title">询价成功数:</span><span class="ui-val">100</span>
+								<span class="ui-title">询价成功数:</span><span class="ui-val" data-col="inquirySuccessTime"></span>
 							</p>
 							<p>
-								<span class="ui-title">询价成功率:</span><span class="ui-val">100</span>
+								<span class="ui-title">询价成功率:</span><span class="ui-val" data-col="inquirySuccessRate"></span>
 							</p>
 							<p>
-								<span class="ui-title">询价进行中总数:</span><span class="ui-val">100</span>
+								<span class="ui-title">询价进行中总数:</span><span class="ui-val" data-col="inquiryDoingTime"></span>
 							</p>
 						</dd>
 					</dl>
@@ -154,7 +153,7 @@
 							<h3>流标指数</h3></dt>
 						<dd>
 							<p>
-								<span class="ui-title">流标次数:</span><span class="ui-val">100</span>
+								<span class="ui-title">流标次数:</span><span class="ui-val" data-col="inquiryFailTime"></span>
 							</p>
 						</dd>
 					</dl>
@@ -201,15 +200,14 @@
 							<div id="data2"></div>
 						</div>
 						<div style="display:none">
-							<div class="ui-querySelect">
-								<select id="select_collect" data-grid="data3" data-mod="collect">
-									<option value="0">企业</option>
-									<option value="1">个人</option>
-									<option value="2">群</option>
-									<option value="3">询价</option>
-								</select>
+							<div class="ui-toptitle" style="text-align: center;border-radius: 5px;background-color: #d3eaef;margin-bottom: 8px;">
+								<h2>询价收藏</h2>
 							</div>
 							<div id="data3"></div>
+							<div class="ui-toptitle" style="text-align: center;border-radius: 5px;background-color: #d3eaef;margin-bottom: 8px;">
+								<h2>用户收藏</h2>
+							</div>
+							<div id="data5"></div>
 						</div>
 						<div style="display:none">
 							<div class="ui-querySelect">
@@ -239,6 +237,7 @@
 <!--<script src="../dest/js/app/user.zone.logic.js" type="text/javascript" charset="utf-8"></script>-->
 <script src="../src/js/ajax/ajax-collection.js" charset="utf-8"></script>
 <script src="../src/js/ajax/ajax-message.js" charset="utf-8"></script>
+<script src="../src/js/ajax/ajax-retrieveUserDetail.js" charset="utf-8"></script>
 
 <script type="text/javascript">
 	define("jquery",function(){

@@ -13,6 +13,8 @@ define("userroom-logic", ["userroom-config", "jquery", "user-repos", "pure-grid"
 
 		currentGrid,
 
+		mainMod = require("main"),
+
 		/**
 		 * 当前已选择的筛选项的键值对
 		 * @type {Object}
@@ -66,8 +68,12 @@ define("userroom-logic", ["userroom-config", "jquery", "user-repos", "pure-grid"
 
 		dialogMod.mask.show();
 
-		userRepos.getList(currentQuery, function(data) {
-			currentGrid.bindData(data);
+		var params = {};
+		params.type =0;
+
+		ajaxRetriveUserRoomList(params,function(data) {
+			console.log(data);
+			currentGrid.bindData(data.data.content);
 			setTimeout(dialogMod.mask.hide, 500);
 		}, call_fail, call_fail);
 	}
@@ -170,7 +176,7 @@ define("userroom-logic", ["userroom-config", "jquery", "user-repos", "pure-grid"
 	 * @return {[type]} [description]
 	 */
 	function util_isLogin() {
-
+		return mainMod.isLogin();
 	}
 
 	/**
@@ -192,7 +198,8 @@ define("userroom-logic", ["userroom-config", "jquery", "user-repos", "pure-grid"
 				.override("grid.databound", function() {
 					$("a[name=cmd-seeUserDetail]").click(function() {
 						if (util_isLogin()) {
-							location.href = "inquiry/detail.html?key=" + currentGrid.dataSource[$(this).data("i")]["id"];
+							alert("敬请期待");
+							//location.href = "inquiry/detail.html?key=" + currentGrid.dataSource[$(this).data("i")]["id"];
 						} else {
 							alert("您好,如需查看此用户信息,请您先登录!");
 						}

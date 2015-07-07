@@ -382,7 +382,8 @@ define("myzone-config", [], function(require, exports) {
 			},
 			body: {
 				align: "center",
-				fields: "inquiryNo"
+				fields: "inquiryNo,inquiryId",
+				renderFn: "renderInquiryNo"
 			}
 		}, {
 			index: 2,
@@ -394,7 +395,8 @@ define("myzone-config", [], function(require, exports) {
 			},
 			body: {
 				align: "left",
-				fields: "inquiryTitle"
+				fields: "inquiryTitle,inquiryId",
+				renderFn: "renderInquiryTitle"
 			}
 		}, {
 			index: 3,
@@ -488,7 +490,7 @@ define("myzone-config", [], function(require, exports) {
 
 	exports.gridCfg5={
 		key:"collectGrid2",
-		renderTo: "data3",
+		renderTo: "data5",
 		columns:[
 			{
 				index:1,

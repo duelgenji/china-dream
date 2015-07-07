@@ -1,6 +1,6 @@
-function ajaxretriveUserRoomList(params, ok, fail, error) {
+function ajaxRetriveUserRoomList(params, ok, fail, error) {
     $.ajax({
-        url: baseUrl + "/user/register",
+        url: baseUrl + "/userInfo/retrieveUserList",
         type : "post",
         dataType: "json",
         data : params,

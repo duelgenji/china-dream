@@ -222,8 +222,24 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
 
                     });
                 } else if (cmd == "addBid") {
-                    showCmdModal("正式出价", '<form id="bidForm" method="post" enctype="multipart/form-data" accept-charset="utf-8"><input type="hidden" name="inquiryId" value="' + currentQueryObj.inquiryId + '"/><ul class="ui-items"><li><label>出价金额:</label><input name="totalPrice" id="modal-money" type="text"/></li><li><label>上传商务文件:</label><div style="padding-left: 110px;"><input class="modal-report" name="business" type="file"/></div></li><li><label>上传技术文件:</label><div style="padding-left: 110px;"><input class="modal-attachment" name="tech" type="file"/></div></li><button id="modal-confirm" type="submit" style="display: none;">333</button></ul></form>', function () {
+                    showCmdModal("正式出价", '<form id="bidForm" method="post" enctype="multipart/form-data" accept-charset="utf-8">' +
+                        '<input type="hidden" name="inquiryId" value="' + currentQueryObj.inquiryId + '"/>' +
+                        '<ul class="ui-items"><li><label>出价金额:</label><input name="totalPrice" id="modal-money" type="text"/></li>' +
+                        '<li><label>上传商务文件:</label><div style="padding-left: 110px;">' +
+                        '<input class="modal-report" name="business1" type="file"/><span id="modal-delete-business1" class="delete-file">删除</span>' +
+                        '<input class="modal-report" name="business2" type="file"/><span id="modal-delete-business2" class="delete-file">删除</span>' +
+                        '<input class="modal-report" name="business3" type="file"/><span id="modal-delete-business3" class="delete-file">删除</span></div></li>' +
+                        '<li><label>上传技术文件:</label><div style="padding-left: 110px;">' +
+                        '<input class="modal-attachment" name="tech1" type="file"/><span id="modal-delete-tech1" class="delete-file">删除</span>' +
+                        '<input class="modal-attachment" name="tech2" type="file"/><span id="modal-delete-tech2" class="delete-file">删除</span>' +
+                        '<input class="modal-attachment" name="tech3" type="file"/><span id="modal-delete-tech3" class="delete-file">删除</span></div></li>' +
+                        '<button id="modal-confirm" type="submit" style="display: none;">333</button></ul></form>', function () {
                         $("#modal-confirm").click();
+                    });
+
+                    $(".delete-file").hide().on("click", function () {
+                        $(this).prev().val("");
+                        $(this).hide();
                     });
 
                     var number = 0;
@@ -267,8 +283,14 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                                 if (f) {
                                     size += f.size;
 
+                                    if (f.size > 5 * 1024 * 1024) {
+                                        alert("上传商务文件大小请控制在5M以下");
+                                        $(this).val("");
+                                        return;
+                                    }
+
                                     if (size > 30 * 1024 * 1024) {
-                                        alert("上传金额报表总容量请控制在30M以下");
+                                        alert("上传商务文件总容量请控制在30M以下");
                                         $(this).val("");
                                         return;
                                     }
@@ -277,15 +299,9 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                                 }
                             }
 
-                            if (l < 3 && appendFile) {
-                                $(this).parent().append('<input class="modal-report" name="business' + ++number + '" type="file"/>');
-                            }
-
+                            $("#modal-delete-" + $(this).attr("name")).show();
                         } else {
-                            if ($(".modal-report").length == 3) {
-                                $(this).parent().append('<input class="modal-report" name="business' + ++number + '" type="file"/>');
-                            }
-                            $(this).remove();
+                            $("#modal-delete-" + $(this).attr("name")).hide();
                         }
                     }).on("change", ".modal-attachment", function (e) {
                         var file = e.target.files || e.dataTransfer.files;
@@ -299,11 +315,15 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                                 var f = $(doms[i])[0].files[0];
                                 if (f) {
                                     size += f.size;
-                                    console.log(f.name);
-                                    console.log(size);
+
+                                    if (f.size > 5 * 1024 * 1024) {
+                                        alert("上传技术文件大小请控制在5M以下");
+                                        $(this).val("");
+                                        return;
+                                    }
 
                                     if (size > 30 * 1024 * 1024) {
-                                        alert("上传其他附件总容量请控制在30M以下");
+                                        alert("上传技术文件总容量请控制在30M以下");
                                         $(this).val("");
                                         return;
                                     }
@@ -312,15 +332,10 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                                 }
                             }
 
-                            if (l < 3 && appendFile) {
-                                $(this).parent().append('<input class="modal-attachment" name="tech' + ++number + '" type="file"/>');
-                            }
+                            $("#modal-delete-" + $(this).attr("name")).show();
 
                         } else {
-                            if ($(".modal-attachment").length == 3) {
-                                $(this).parent().append('<input class="modal-attachment" name="tech' + ++number + '" type="file"/>');
-                            }
-                            $(this).remove();
+                            $("#modal-delete-" + $(this).attr("name")).hide();
                         }
                     });
 

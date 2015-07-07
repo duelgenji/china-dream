@@ -105,8 +105,6 @@ define("main", ["systemDefine-repos", "pure-dialog"], function (require, exports
         switch (mod) {
             case "usercenter":
                 url = that.data("link");
-                alert("此功能尚在构建，请耐心等候!");
-                return;
                 break;
             case "selfcenter":
                 if (!fn_isLogin()) {

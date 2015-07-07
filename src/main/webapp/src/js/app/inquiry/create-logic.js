@@ -156,8 +156,11 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
             var f = $(doms[i])[0].files[0];
             if (!validMod.isEmptyOrNull(f)) {
                 size += f.size;
-                console.log(f.name);
-                console.log(size);
+
+                if (f.size > 5 * 1024 * 1024) {
+                    alert("上传文件大小请控制在5M以下");
+                    return false;
+                }
 
                 if (size > 30 * 1024 * 1024) {
                     alert("上传文件总容量请控制在30M以下");
