@@ -52,10 +52,10 @@ define("userroom-logic", ["userroom-config", "jquery", "user-repos", "pure-grid"
 	 * @param  {[type]} vals   [description]
 	 * @param  {[type]} ri     [description]
 	 * @param  {[type]} objval [description]
-	 * @return {[type]}        [description]
+	 * @return {string}        [description]
 	 */
 	function renderBidSuccessRate(vals, ri, objval) {
-		return !vals ? "--" : (vals + "%");
+		return vals + "%";
 	}
 
 	/**
@@ -73,7 +73,7 @@ define("userroom-logic", ["userroom-config", "jquery", "user-repos", "pure-grid"
 
 		ajaxRetriveUserRoomList(params,function(data) {
 			console.log(data);
-			currentGrid.bindData(data.data.content);
+			currentGrid.bindData(data.data);
 			setTimeout(dialogMod.mask.hide, 500);
 		}, call_fail, call_fail);
 	}

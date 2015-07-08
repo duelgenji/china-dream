@@ -14,10 +14,10 @@ import java.util.List;
  */
 public interface MessageRepository  extends MyRepository<Message,Long> {
 
-    @Query("from Message m where m.user = :user and m.inquiry = :inquiry and m.status = :status order by m.id desc ")
+    @Query("from Message m where m.user = :user and m.inquiry = :inquiry and m.status = :status and m.inquiry.round=m.round order by m.id desc ")
     List<Message> findAllUserAndInquiryAndStatus(@Param("user") User user, @Param("inquiry") Inquiry inquiry, @Param("status") int status );
 
-    @Query("from Message m where m.user = :user and m.inquiry = :inquiry order by id desc ")
+    @Query("from Message m where m.user = :user and m.inquiry = :inquiry and m.inquiry.round=m.round order by id desc ")
     List<Message> findAllUserAndInquiry(@Param("user") User user, @Param("inquiry") Inquiry inquiry);
 
     @Query("from Message m where m.user = :user  ")

@@ -81,8 +81,9 @@ public class MessageController extends AbstractBaseController<Message, Long> {
             map.put("messageId", message.getId());
             map.put("messageStatus", message.getStatus());
             map.put("content", message.getContent());
+            map.put("createTime", DateFormatUtils.format(message.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
             map.put("inquiryNo", message.getInquiry().getInquiryNo());
-            map.put("round", message.getInquiry().getRound());
+            map.put("round", message.getRound());
             map.put("inquiryStatus", message.getInquiry().getStatus());
             map.put("province", message.getInquiry().getCompanyProvince().getName());
             map.put("totalPrice", message.getInquiry().getTotalPrice());
@@ -90,6 +91,7 @@ public class MessageController extends AbstractBaseController<Message, Long> {
             map.put("inquiryTitle", message.getInquiry().getTitle());
             map.put("inquiryId", message.getInquiry().getId());
             map.put("inquiryMode", message.getInquiry().getInquiryMode().getName());
+            map.put("inquiryRound", message.getInquiry().getRound());
 
             list.add(map);
         }
@@ -125,7 +127,7 @@ public class MessageController extends AbstractBaseController<Message, Long> {
             return res;
         }
 
-        if(message.getStatus()!=0){
+        if(message.getStatus()!=0 || message.getRound()!=message.getInquiry().getRound()){
             res.put("success",0);
             res.put("message","该条不能修改状态！");
             return res;

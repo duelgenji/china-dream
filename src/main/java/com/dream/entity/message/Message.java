@@ -27,6 +27,11 @@ public class Message extends AbstractPersistable<Long> {
 
     private String content;
 
+    /**
+     * 申请轮次
+     */
+    private int round;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime = new Date();
 
@@ -83,5 +88,13 @@ public class Message extends AbstractPersistable<Long> {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public int getRound() {
+        return round;
+    }
+
+    public void setRound(int round) {
+        this.round = round;
     }
 }

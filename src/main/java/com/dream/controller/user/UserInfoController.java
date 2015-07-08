@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -100,10 +102,37 @@ public class UserInfoController {
         }  if(type==2){
             pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "userIndex.quotationSuccessRate");
         }
-        Page<User> userList= userRepository.findAllUser(pageable);
+        Page<User> userPage= userRepository.findAllUser(pageable);
+        List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
+
+        String industry="",province="";
+
+        for (User u : userPage) {
+
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("userId",u.getId());
+            map.put("nickname",u.getNickName());
+            map.put("logoUrl",u.getLogoUrl());
+            map.put("quotationDoneTime",u.getUserIndex().getQuotationDoneTime());
+            map.put("quotationSuccessRate",u.getUserIndex().getQuotationSuccessRate());
+            if(u.getType()==1){
+                if( u.getUserPersonalInfo().getCompanyIndustry()!=null)
+                    industry = u.getUserPersonalInfo().getCompanyIndustry().getName();
+            }else if(u.getType()==2){
+                if( u.getUserCompanyInfo().getCompanyIndustry()!=null)
+                    industry = u.getUserCompanyInfo().getCompanyIndustry().getName();
+                if( u.getUserCompanyInfo().getCompanyProvince() !=null)
+                    province = u.getUserCompanyInfo().getCompanyProvince().getName();
+            }
+
+            map.put("industry", industry);
+            map.put("province", province);
+            list.add(map);
+        }
+
 
         res.put("success",1);
-        res.put("data",userList);
+        res.put("data",list);
         return res;
     }
 

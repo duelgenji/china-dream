@@ -427,6 +427,7 @@ public class InquiryController {
 
         Message message =new Message();
         message.setInquiry(inquiry);
+        message.setRound(inquiry.getRound());
         message.setUser(user);
         message.setInquiryUser(inquiry.getUser());
         message.setContent(description);
@@ -464,11 +465,11 @@ public class InquiryController {
             map.put("inquiryNo", inquiry.getInquiryNo());
             map.put("inquiryTitle", inquiry.getTitle());
             map.put("inquiryRound", inquiry.getRound());
+            map.put("inquiryStatus", inquiry.getStatus());
             map.put("inquiryMode", inquiry.getInquiryMode().getName());
             map.put("inquiryIndustry", inquiry.getCompanyIndustry().getName());
             map.put("inquiryProvince", inquiry.getCompanyProvince().getName());
             map.put("inquiryPrice", inquiry.getTotalPrice());
-
             map.put("limitDate", DateFormatUtils.format(inquiry.getLimitDate(), "yyyy-MM-dd HH:mm:ss"));
 
             list.add(map);

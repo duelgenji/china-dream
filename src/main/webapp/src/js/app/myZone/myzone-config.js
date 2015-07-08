@@ -19,7 +19,7 @@ define("myzone-config", [], function(require, exports) {
 			},
 			body: {
 				align: "center",
-				fields: "biaohao"
+				fields: "inquiryNo"
 			}
 		}, {
 			index: 2,
@@ -30,8 +30,8 @@ define("myzone-config", [], function(require, exports) {
 				align: "center"
 			},
 			body: {
-				align: "left",
-				fields: "title"
+				align: "center",
+				fields: "inquiryTitle"
 			}
 		}, {
 			index: 3,
@@ -54,9 +54,9 @@ define("myzone-config", [], function(require, exports) {
 				align: "center"
 			},
 			body: {
-				align: "left",
-				fields: "inquiryMode",
-				renderFn: "renderInquiryMode"
+				align: "center",
+				fields: "inquiryMode"
+				//renderFn: "renderInquiryMode"
 			}
 		}, {
 			index: 5,
@@ -68,7 +68,7 @@ define("myzone-config", [], function(require, exports) {
 			},
 			body: {
 				align: "center",
-				fields: "province"
+				fields: "inquiryProvince"
 			}
 		}, {
 			index: 6,
@@ -79,8 +79,8 @@ define("myzone-config", [], function(require, exports) {
 				align: "center"
 			},
 			body: {
-				align: "left",
-				fields: "userName"
+				align: "center",
+				fields: "inquiryNickname"
 			}
 		}, {
 			index: 7,
@@ -91,8 +91,8 @@ define("myzone-config", [], function(require, exports) {
 				align: "center"
 			},
 			body: {
-				align: "left",
-				fields: "industry"
+				align: "center",
+				fields: "inquiryIndustry"
 			}
 		}, {
 			index: 8,
@@ -104,7 +104,7 @@ define("myzone-config", [], function(require, exports) {
 			},
 			body: {
 				align: "center",
-				fields: "biaoDi"
+				fields: "inquiryPrice"
 			}
 		}, {
 			index: 9,
@@ -115,8 +115,8 @@ define("myzone-config", [], function(require, exports) {
 				align: "center"
 			},
 			body: {
-				align: "left",
-				fields: "purchaseCloseDate"
+				align: "center",
+				fields: "limitDate"
 			}
 		}, {
 			index: 10,
@@ -128,7 +128,7 @@ define("myzone-config", [], function(require, exports) {
 			},
 			body: {
 				align: "center",
-				fields: "money"
+				fields: "quotationPrice"
 			}
 		}, {
 			index: 11,
@@ -140,7 +140,7 @@ define("myzone-config", [], function(require, exports) {
 			},
 			body: {
 				align: "center",
-				fields: "id",
+				fields: "inquiryId",
 				renderFn: "renderOptOfBid"
 			}
 		}]
@@ -158,7 +158,7 @@ define("myzone-config", [], function(require, exports) {
 			},
 			body: {
 				align: "center",
-				fields: "biaohao"
+				fields: "inquiryNo"
 			}
 		}, {
 			index: 2,
@@ -168,8 +168,8 @@ define("myzone-config", [], function(require, exports) {
 				align: "center"
 			},
 			body: {
-				align: "left",
-				fields: "title"
+				align: "center",
+				fields: "inquiryTitle"
 			}
 		}, {
 			index: 3,
@@ -180,7 +180,7 @@ define("myzone-config", [], function(require, exports) {
 			},
 			body: {
 				align: "center",
-				fields: "round"
+				fields: "inquiryRound"
 			}
 		}, {
 			index: 4,
@@ -191,8 +191,8 @@ define("myzone-config", [], function(require, exports) {
 			},
 			body: {
 				align: "center",
-				fields: "inquiryMode",
-				renderFn: "renderInquiryMode"
+				fields: "inquiryMode"
+				//renderFn: "renderInquiryMode"
 			}
 		}, {
 			index: 5,
@@ -203,7 +203,7 @@ define("myzone-config", [], function(require, exports) {
 			},
 			body: {
 				align: "center",
-				fields: "state",
+				fields: "inquiryStatus",
 				renderFn: "renderState"
 			}
 		}, {
@@ -215,7 +215,7 @@ define("myzone-config", [], function(require, exports) {
 			},
 			body: {
 				align: "center",
-				fields: "province"
+				fields: "inquiryProvince"
 			}
 		}, {
 			index: 7,
@@ -226,7 +226,7 @@ define("myzone-config", [], function(require, exports) {
 			},
 			body: {
 				align: "center",
-				fields: "biaoDi"
+				fields: "inquiryPrice"
 			}
 		}, {
 			index: 8,
@@ -236,8 +236,8 @@ define("myzone-config", [], function(require, exports) {
 				align: "center"
 			},
 			body: {
-				align: "left",
-				fields: "purchaseCloseDate"
+				align: "center",
+				fields: "limitDate"
 			}
 		}, {
 			index: 9,
@@ -248,7 +248,7 @@ define("myzone-config", [], function(require, exports) {
 			},
 			body: {
 				align: "center",
-				fields: "id",
+				fields: "inquiryId",
 				renderFn: "renderOptOfInquiry"
 			}
 		}]
@@ -260,13 +260,13 @@ define("myzone-config", [], function(require, exports) {
 		columns:[{
 			index: 1,
 			head: {
-				width: 130,
+				width: 150,
 				issort: false,
 				text: "标号"
 			},
 			body: {
 				align: "center",
-				fields: "biaohao"
+				fields: "inquiryNo"
 			}
 		}, {
 			index: 2,
@@ -277,7 +277,7 @@ define("myzone-config", [], function(require, exports) {
 				align: "center"
 			},
 			body: {
-				align: "left",
+				align: "center",
 				fields: "inquiryTitle"
 			}
 		}, {
@@ -302,8 +302,7 @@ define("myzone-config", [], function(require, exports) {
 			},
 			body: {
 				align: "center",
-				fields: "inquiryMode",
-				renderFn: "renderInquiryMode"
+				fields: "inquiryMode"
 			}
 		}, {
 			index: 5,
@@ -351,7 +350,7 @@ define("myzone-config", [], function(require, exports) {
 				align: "center"
 			},
 			body: {
-				align: "left",
+				align: "center",
 				fields: "purchaseCloseDate"
 			}
 		}, {
@@ -394,7 +393,7 @@ define("myzone-config", [], function(require, exports) {
 				align: "center"
 			},
 			body: {
-				align: "left",
+				align: "center",
 				fields: "inquiryTitle,inquiryId",
 				renderFn: "renderInquiryTitle"
 			}
@@ -402,7 +401,7 @@ define("myzone-config", [], function(require, exports) {
 			index: 3,
 			head: {
 				text: "轮次",
-				width: 83,
+				width: 53,
 				issort: false,
 				align: "center"
 			},
@@ -420,14 +419,14 @@ define("myzone-config", [], function(require, exports) {
 			},
 			body: {
 				align: "center",
-				fields: "inquiryMode",
+				fields: "inquiryMode"
 				//renderFn: "renderInquiryMode"
 			}
 		}, {
 			index: 5,
 			head: {
 				text: "状态",
-				width: 120,
+				width: 100,
 				issort: false,
 				align: "center"
 			},
@@ -452,7 +451,7 @@ define("myzone-config", [], function(require, exports) {
 			index: 7,
 			head: {
 				text: "标的",
-				width: 120,
+				width: 110,
 				issort: false,
 				align: "center"
 			},
@@ -469,14 +468,14 @@ define("myzone-config", [], function(require, exports) {
 				align: "center"
 			},
 			body: {
-				align: "left",
+				align: "center",
 				fields: "limitDate"
 			}
 		}, {
 			index: 9,
 			head: {
 				text: "操作",
-				width: 89,
+				width: 149,
 				issort: false,
 				align: "center"
 			},
@@ -501,7 +500,7 @@ define("myzone-config", [], function(require, exports) {
 				},
 				body:{
 					align:"center",
-					fields:"title"
+					fields:"userNickname"
 				}
 			},
 			{
@@ -537,7 +536,7 @@ define("myzone-config", [], function(require, exports) {
 				},
 				body:{
 					align:"center",
-					fields:"percent"
+					fields:"quotationSuccessRate"
 				}
 			},
 			{
@@ -549,7 +548,7 @@ define("myzone-config", [], function(require, exports) {
 				},
 				body:{
 					align:"center",
-					fields:"countOfBid"
+					fields:"quotationDoneTime"
 				}
 			},
 			{
@@ -573,7 +572,7 @@ define("myzone-config", [], function(require, exports) {
 				},
 				body:{
 					align:"center",
-					fields:"id",
+					fields:"userId",
 					renderFn:"renderOptOfPersonCollect"
 				}
 			}

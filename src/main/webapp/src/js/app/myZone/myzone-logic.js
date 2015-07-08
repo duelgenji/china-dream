@@ -40,7 +40,7 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
     }
 
     function renderInquiryMode(vals, ri, objval) {
-        return (objval.title = util_mapInquiryMode(vals));
+        return (objval.title = util_mapInquiryMode(vals[0]));
     }
 
     function renderState(vals, ri, objval) {
@@ -62,17 +62,22 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
 
     function renderOptOfBid(vals, ri, objval) {
         objval.title = "";
-        return '<div class="ui-optDiv"><a href="inquiryDetail.html?id=' + vals + '&isself=1" title="查看">查看</a></div>';
+        return '<div class="ui-optDiv"><a href="inquiryDetail.html?key=' + vals + '" title="查看">查看</a></div>';
     }
 
     function renderOptOfInquiry(vals, ri, objval) {
         objval.title = "";
-        return '<div class="ui-optDiv"><a href="inquiryDetail.html?id=' + vals + '&isself=1" title="查看">查看</a></div>';
+        return '<div class="ui-optDiv"><a href="inquiryDetail.html?key=' + vals + '" title="查看">查看</a></div>';
     }
 
     function renderOptOfCollect(vals, ri, objval) {
         objval.title = "";
         return '<div class="ui-optDiv"><button type="button" data-cmd="cancelCollect" data-ri="' + ri + '">取消收藏</button></div>';
+    }
+
+    function renderOptOfPersonCollect(vals, ri, objval) {
+        objval.title = "";
+        return '<div class="ui-optDiv"><button type="button" data-cmd="cancelCollectU" data-ri="' + ri + '">取消收藏</button></div>';
     }
 
     function renderOptOfMessage(vals, ri, objval) {
@@ -81,25 +86,25 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
 
             switch (dataSource[ri].messageStatus) {
                 case 0:
-                    return '<div class="ui-optDiv"><button type="button" data-cmd="pass" data-ri="' + ri + '">同意</button><button type="button" data-cmd="refuse" data-ri="' + ri + '">拒绝</button></div>';
+                    return '<div class="ui-optDiv"><button type="button" data-cmd="pass" data-ri="' + ri + '">同意</button><button type="button" data-cmd="refuse" data-ri="' + ri + '">拒绝</button><button type="button" data-cmd="check" data-ri="' + ri + '">查看</button></div>';
                     break;
                 case 1:
-                    return "已授权";
+                    return '<div class="ui-optDiv">已授权 <button type="button" data-cmd="check" data-ri="' + ri + '">查看</button></div>';
                     break;
                 case 2:
-                    return "已拒绝";
+                    return '<div class="ui-optDiv">已拒绝 <button type="button" data-cmd="check" data-ri="' + ri + '">查看</button></div>';
                     break;
             }
         } else {
             switch (dataSource[ri].messageStatus) {
                 case 0:
-                    return "待授权";
+                    return '<div class="ui-optDiv">待授权 <button type="button" data-cmd="check" data-ri="' + ri + '">查看</button></div>';
                     break;
                 case 1:
-                    return "已授权";
+                    return '<div class="ui-optDiv">已授权 <button type="button" data-cmd="check" data-ri="' + ri + '">查看</button></div>';
                     break;
                 case 2:
-                    return "已拒绝";
+                    return '<div class="ui-optDiv">已拒绝 <button type="button" data-cmd="check" data-ri="' + ri + '">查看</button></div>';
                     break;
             }
             return "";
@@ -140,6 +145,17 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
         //userRepos.getDetail(mainMod.loginInfo.name, call_myInfoOk, call_myInfoFail, call_myInfoFail);
     }
 
+    function showCmdModal(title, body, submitFn) {
+        $("#cmdModalTitle").text(title);
+        $("#cmdModalBody").empty().append(body);
+        $("#submitModal").unbind("click").bind("click", submitFn);
+        $("#cmdModal").modal('show');
+    }
+
+    function dismissCmdModal() {
+        $("#cmdModal").modal('hide');
+    }
+
     function call_myInfoOk(data) {
         console.log(data);
 
@@ -162,22 +178,21 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
     function fn_getMyBidList(gridCfg) {
 
         fn_initGrid(gridCfg);
-
+        //alert(document.body.scrollWidth);
         dialogMod.mask.show();
 
-        bidRepos.getListOfMy(mainMod.loginInfo.name, currentQueryObj.inquiryID, currentQueryObj.pageno, currentQueryObj.pagesize, (function (g) {
-            return function (data) {
-                g.reBind(data);
-            };
-        }(currentGrid)), (function (g) {
-            return function () {
-                call_fail(g);
-            }
-        }(currentGrid)), (function (g) {
-            return function () {
-                call_fail(g);
-            }
-        }(currentGrid)));
+        var params = {};
+        params.type= $("#select_bid").val();
+
+        ajaxRetrieveMyQuotationList(params, function (data) {
+            dataSource = data.data;
+            currentGrid.reBind(dataSource);
+        }, function (result) {
+            alert(result.message);
+        }, function () {
+            alert("请求失败");
+        });
+
 
         setTimeout(dialogMod.mask.hide, 500);
     }
@@ -188,19 +203,16 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
 
         dialogMod.mask.show();
 
-        inquiryRepos.getListOfMy(mainMod.loginInfo.name, $("#select_inquiry").val(), currentQueryObj.pageno, currentQueryObj.pagesize, (function (g) {
-            return function (data) {
-                g.reBind(data);
-            };
-        }(currentGrid)), (function (g) {
-            return function () {
-                call_fail(g);
-            }
-        }(currentGrid)), (function (g) {
-            return function () {
-                call_fail(g);
-            }
-        }(currentGrid)));
+        var params = {};
+        ajaxRetrieveMyInquiryList(params, function (data) {
+            dataSource = data.data;
+            currentGrid.reBind(dataSource);
+        }, function (result) {
+            alert(result.message);
+        }, function () {
+            alert("请求失败");
+        });
+
 
         setTimeout(dialogMod.mask.hide, 800);
     }
@@ -214,6 +226,14 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
         ajaxRetrieveCollectionList(params, function (data) {
             dataSource = data.data;
             currentGrid.reBind(dataSource);
+        }, function (result) {
+            alert(result.message);
+        }, function () {
+            alert("请求失败");
+        });
+
+        ajaxRetrieveCollectionListU(params, function (data) {
+            dataSource = data.data;
             currentGrid2.reBind(dataSource);
         }, function (result) {
             alert(result.message);
@@ -403,7 +423,7 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
             .override("renderOptOfBid", renderOptOfBid)
             .override("renderOptOfInquiry", renderOptOfInquiry)
             .override("renderOptOfCollect", renderOptOfCollect)
-            .override("renderOptOfPersonCollect", renderOptOfCollect)
+            .override("renderOptOfPersonCollect", renderOptOfPersonCollect)
             .override("renderOptOfMessage", renderOptOfMessage)
             .override("grid.databound", function () {
             });
@@ -416,6 +436,12 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
     function fn_initEvent() {
 
         fn_getMyInfo();
+
+
+        $("#select_bid").on("change", function () {
+            fn_initGrid(configMod["gridCfg1"]);
+            fn_getMyBidList();
+        });
 
         $("#select_msg").on("change", function () {
             fn_initGrid(configMod["gridCfg4"]);
@@ -460,7 +486,8 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
                 params.collectionId = data.collectionId;
                 ajaxCancelCollection(params, function () {
                     alert("取消收藏成功");
-                    fn_initGrid(configMod["gridCfg3"]);
+                    fn_initGrid(configMod["gridCfg" + 3]);
+                    fn_initGrid2(configMod["gridCfg" + 5]);
                     fn_getMyCollectList();
                 }, function (result) {
                     alert(result.message);
@@ -468,7 +495,21 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
                     alert("请求失败");
                 });
 
-            } else if (cmd == "pass") {
+            }else if (cmd == "cancelCollectU") {
+                var params = {};
+                params.collectionId = data.collectionId;
+                ajaxCancelCollectionU(params, function () {
+                    alert("取消收藏成功");
+                    fn_initGrid(configMod["gridCfg" + 3]);
+                    fn_initGrid2(configMod["gridCfg" + 5]);
+                    fn_getMyCollectList();
+                }, function (result) {
+                    alert(result.message);
+                }, function () {
+                    alert("请求失败");
+                });
+
+            }else if (cmd == "pass") {
                 var params = {};
                 params.status = 1;
                 params.messageId = data.messageId;
@@ -492,6 +533,13 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
                 }, function () {
                     alert("请求失败");
                 })
+            }else if (cmd == "check") {
+                showCmdModal("查看详情", '<ul class="ui-items">' +
+                '<li><label>申请日期:</label><div style="padding-left: 110px;">' +
+                '<p class="modal-date">'+data.createTime+'</p></div>' +
+                '<li><label>申请留言:</label><div style="padding-left: 110px;">' +
+                '<p class="modal-date">'+data.content+'</p></div>' +
+                '</ul>',null);
             }
         });
     };

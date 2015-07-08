@@ -11,6 +11,7 @@
 	<link rel="stylesheet" href="../dest/css/base.css">
 	<link rel="stylesheet" href="../dest/css/plugins.css">
 	<link rel="stylesheet" href="../dest/css/zone.css">
+	<link rel="stylesheet" type="text/css" href="../src/css/bootstrapModal.css">
 
 	<style>
 
@@ -22,6 +23,18 @@
 			overflow-y: scroll;
 		}
 
+		.ui-items li label {
+			width: 100px;
+		}
+
+		.ui-items li {
+			display: list-item;
+			padding: 0 0 20px;
+		}
+
+		.ui-items li label{
+			float: left;
+		}
 	</style>
 
 </head>
@@ -182,9 +195,8 @@
 						<div style="display:none">
 							<div class="ui-querySelect">
 								<select id="select_bid" data-grid="data1" data-mod="bid">
-									<option value="-1">全部</option>
-									<option value="0">未报价</option>
-									<option value="1">已报价</option>
+									<option value="0">已报价</option>
+									<option value="1">未报价</option>
 								</select>
 							</div>
 							<div id="data1"></div>
@@ -224,12 +236,34 @@
 		</div>
 		<div id="footer">
 		</div>
+
+		<div class="modal fade" id="cmdModal" tabindex="-1" role="dialog"
+			 aria-labelledby="cmdModalTitle" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h2 class="modal-title" id="cmdModalTitle">
+						</h2>
+					</div>
+					<div class="modal-body" id="cmdModalBody">
+					</div>
+					<div class="modal-footer" id="cmdModalFooter">
+						<button type="button" class="btn btn-default"
+								data-dismiss="modal">确定
+						</button>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal -->
+		</div>
 	</div>
 </body>
 <script src="../dest/js/lib/jquery.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="../dest/js/lib/sea.js" type="text/javascript" charset="utf-8"></script>
 <script src="../dest/js/app-data/app-data.js" charset="utf-8"></script>
 <script src="../dest/js/plugins/plugins.js" charset="utf-8"></script>
+<script src="../src/js/bootstrap/bootstrap.min.js" charset="utf-8"></script>
 
 <script src="../src/js/app/main.js" charset="utf-8"></script>
 <script src="../src/js/app/myZone/myzone-config.js" charset="utf-8"></script>
@@ -238,6 +272,9 @@
 <script src="../src/js/ajax/ajax-collection.js" charset="utf-8"></script>
 <script src="../src/js/ajax/ajax-message.js" charset="utf-8"></script>
 <script src="../src/js/ajax/ajax-retrieveUserDetail.js" charset="utf-8"></script>
+<script src="../src/js/ajax/ajax-myzone.js" charset="utf-8"></script>
+<script src="../src/js/plugins/pure-dialog.js" charset="utf-8"></script>
+
 
 <script type="text/javascript">
 	define("jquery",function(){

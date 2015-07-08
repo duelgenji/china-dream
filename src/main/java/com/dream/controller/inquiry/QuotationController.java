@@ -210,7 +210,7 @@ public class QuotationController {
                 map.put("quotationId", quotation.getId());
                 map.put("quotationStatus", quotation.getStatus());
                 map.put("quotationArchived", quotation.getArchived());
-                map.put("quotationRound", quotation.getRound());
+                map.put("round", quotation.getRound());
                 map.put("quotationPrice", quotation.getTotalPrice());
 
                 map.put("inquiryNo", quotation.getInquiry().getInquiryNo());
@@ -228,11 +228,29 @@ public class QuotationController {
         }else if(type==1){
             List<Message> messageList = messageRepository.findByUser(user);
 
+            Inquiry inquiry;
             for ( Message message : messageList ){
 
                 Map<String, Object> map = new HashMap<String, Object>();
 
-                //TODO 未报价
+                inquiry= message.getInquiry();
+
+                map.put("quotationId", "");
+                map.put("quotationStatus", "");
+                map.put("quotationArchived", "");
+                map.put("quotationPrice","待报价");
+
+                map.put("round", inquiry.getRound());
+                map.put("inquiryNo", inquiry.getInquiryNo());
+                map.put("inquiryTitle", inquiry.getTitle());
+                map.put("inquiryId", inquiry.getId());
+                map.put("inquiryMode",inquiry.getInquiryMode().getName());
+                map.put("inquiryIndustry", inquiry.getCompanyIndustry().getName());
+                map.put("inquiryProvince", inquiry.getCompanyProvince().getName());
+                map.put("inquiryNickname",inquiry.getUser().getNickName());
+                map.put("inquiryPrice",inquiry.getTotalPrice());
+                map.put("limitDate", DateFormatUtils.format(inquiry.getLimitDate(), "yyyy-MM-dd HH:mm:ss"));
+
 
                 list.add(map);
             }

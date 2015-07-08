@@ -32,7 +32,7 @@ define("userroom-config",[],function(require,exports){
                     },
                     body: {
                         align: "center",
-                        fields: "nickName",
+                        fields: "nickname",
                         renderFn:"renderUser"
                     }
                 }, {
@@ -66,7 +66,7 @@ define("userroom-config",[],function(require,exports){
                     },
                     body: {
                         align: "center",
-                        fields: "percent",
+                        fields: "quotationSuccessRate",
                         renderFn:"renderBidSuccessRate"
                     }
                 }, {
@@ -78,7 +78,7 @@ define("userroom-config",[],function(require,exports){
                     },
                     body: {
                         align: "center",
-                        fields: "countOfBid"
+                        fields: "quotationDoneTime"
                     }
                 }, {
                     index: 7,

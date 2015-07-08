@@ -63,3 +63,70 @@ function ajaxRetrieveCollectionList (params, ok, fail, error) {
         //complete
     })
 }
+
+
+function ajaxGenerateCollectionU (params, ok, fail, error) {
+    $.ajax({
+        url: baseUrl + "/collection/generateCollectionU",
+        type : "post",
+        dataType: "json",
+        data : params,
+        success: function (result) {
+            if (result.success == 1) {
+                ok(result);
+            } else {
+                if (fail) {
+                    fail(result);
+                } else {
+                    alert(result.message);
+                }
+            }
+        },
+        error: error
+        //complete
+    })
+}
+
+function ajaxCancelCollectionU (params, ok, fail, error) {
+    $.ajax({
+        url: baseUrl + "/collection/cancelCollectionU",
+        type : "post",
+        dataType: "json",
+        data : params,
+        success: function (result) {
+            if (result.success == 1) {
+                ok(result);
+            } else {
+                if (fail) {
+                    fail(result);
+                } else {
+                    alert(result.message);
+                }
+            }
+        },
+        error: error
+        //complete
+    })
+}
+
+function ajaxRetrieveCollectionListU (params, ok, fail, error) {
+    $.ajax({
+        url: baseUrl + "/collection/retrieveCollectionListU",
+        type : "post",
+        dataType: "json",
+        data : params,
+        success: function (result) {
+            if (result.success == 1) {
+                ok(result);
+            } else {
+                if (fail) {
+                    fail(result);
+                } else {
+                    alert(result.message);
+                }
+            }
+        },
+        error: error
+        //complete
+    })
+}

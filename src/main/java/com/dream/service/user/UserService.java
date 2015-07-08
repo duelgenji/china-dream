@@ -163,6 +163,8 @@ public class UserService {
                     }else{
                         return "行业编号错误";
                     }
+                }else if (userPersonalInfo.getCompanyIndustry()==null ){
+                    return "行业不能为空";
                 }
 
                 userRepository.save(user);
@@ -197,6 +199,7 @@ public class UserService {
                 }else if (userCompanyInfo.getCompanyName()==null ){
                     return "公司名称不能为空";
                 }
+
                 if(request.getParameter("companyProvince")!=null){
                     Long pid=Long.parseLong(request.getParameter("companyProvince"));
                     CompanyProvince companyProvince= companyProvinceRepository.findOne(pid);

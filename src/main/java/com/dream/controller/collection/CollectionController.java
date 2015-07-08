@@ -8,6 +8,7 @@ import com.dream.repository.inquiry.InquiryCollectionRepository;
 import com.dream.repository.inquiry.InquiryRepository;
 import com.dream.repository.user.UserCollectionRepository;
 import com.dream.repository.user.UserRepository;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -72,9 +73,12 @@ public class CollectionController {
 
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("collectionId", collection.getId());
-            map.put("collectionCreateTime", collection.getCreateTime());
+            map.put("collectionCreateTime",  DateFormatUtils.format(collection.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
             map.put("inquiryTitle", collection.getInquiry().getTitle());
             map.put("inquiryId", collection.getInquiry().getId());
+            map.put("round", collection.getInquiry().getRound());
+            map.put("inquiryMode", collection.getInquiry().getInquiryMode().getName());
+            map.put("inquiryNo", collection.getInquiry().getInquiryNo());
             map.put("province", collection.getInquiry().getCompanyProvince().getName());
             map.put("industry", collection.getInquiry().getCompanyIndustry().getName());
             map.put("totalPrice", collection.getInquiry().getTotalPrice());
@@ -192,13 +196,31 @@ public class CollectionController {
 
 
         List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
+        String industry="",province="";
         for (UserCollection collection : collectionPage) {
 
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("collectionId", collection.getId());
-            map.put("collectionCreateTime", collection.getCreateTime());
+            map.put("collectionCreateTime",  DateFormatUtils.format(collection.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
 
+            map.put("userId", collection.getTargetUser().getId());
+            map.put("userNickname", collection.getTargetUser().getNickName());
+            map.put("userType", collection.getTargetUser().getType());
+            map.put("quotationDoneTime", collection.getTargetUser().getUserIndex().getQuotationDoneTime());
+            map.put("quotationSuccessRate", collection.getTargetUser().getUserIndex().getQuotationSuccessRate());
 
+            if(collection.getTargetUser().getType()==1){
+                if( collection.getTargetUser().getUserPersonalInfo().getCompanyIndustry()!=null)
+                    industry = collection.getTargetUser().getUserPersonalInfo().getCompanyIndustry().getName();
+            }else if(collection.getTargetUser().getType()==2){
+                if( collection.getTargetUser().getUserCompanyInfo().getCompanyIndustry()!=null)
+                    industry = collection.getTargetUser().getUserCompanyInfo().getCompanyIndustry().getName();
+                if( collection.getTargetUser().getUserCompanyInfo().getCompanyProvince() !=null)
+                    province = collection.getTargetUser().getUserCompanyInfo().getCompanyProvince().getName();
+            }
+
+            map.put("industry", industry);
+            map.put("province", province);
             list.add(map);
         }
 
