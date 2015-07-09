@@ -32,7 +32,15 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
         dataSource;
 
     function renderInquiryNo(vals, ri, objval) {
-        return '<a style="text-decoration: underline;" href="inquiryDetail.html?key=' + vals[1] + '">' + vals[0] + '</a>';
+        return '<a title="" style="text-decoration: underline;" href="inquiryDetail.html?key=' + vals[1] + '">' + vals[0] + '</a>';
+    }
+
+    function renderUserId(vals, ri, objval) {
+        return '<a title="" style="text-decoration: underline;" href="userDetail.html?key=' + vals[1] + '">' + vals[0] + '</a>';
+    }
+
+    function renderNickname(vals, ri, objval) {
+        return '<a title="" style="text-decoration: underline;" href="userDetail.html?key=' + vals[1] + '">' + vals[0] + '</a>';
     }
 
     function renderInquiryTitle(vals, ri, objval) {
@@ -157,14 +165,42 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
     }
 
     function call_myInfoOk(data) {
-        console.log(data);
-
+        //console.log(data);
+        showUserInfo(data);
         $("span.ui-val").each(function (i, span) {
             span = $(span);
             var col = span.data("col"),
                 val = data[col];
             span.text(val).attr("title", val);
         });
+    }
+
+    function showUserInfo(data){
+
+
+        $("#ul_basic").hide();
+
+        switch(data.userType){
+            case 1:
+                $("#ul_person").show();
+                $("img#logo").attr("src","/image/pic/personalDefaultLogo.jpg");
+                break;
+            case 2:
+                $("#ul_company").show();
+                $("img#logo").attr("src","/image/pic/companyDefaultLogo.jpg");
+                break;
+            case 3:
+                $("#ul_group").show();
+                $("img#logo").attr("src","/image/pic/groupDefaultLogo.jpg");
+                break;
+            default :
+                break;
+        }
+
+        if(data.logoUrl){
+            $("img#logo").attr("src",data.logoUrl)
+        }
+
     }
 
     function call_myInfoFail() {
@@ -404,6 +440,8 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
             .override("renderOptOfCollect", renderOptOfCollect)
             .override("renderOptOfPersonCollect", renderOptOfCollect)
             .override("renderOptOfMessage", renderOptOfMessage)
+            .override("renderNickname", renderNickname)
+
             .override("grid.databound", function () {
             });
     }
@@ -417,6 +455,7 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
         (currentGrid2 = gridMod(gridCfg || configMod.gridCfg1))
             .pubSub()
             .override("renderInquiryNo", renderInquiryNo)
+            .override("renderUserId", renderUserId)
             .override("renderInquiryTitle", renderInquiryTitle)
             .override("renderInquiryMode", renderInquiryMode)
             .override("renderState", renderState)

@@ -5,11 +5,15 @@ import com.dream.entity.message.Message;
 import com.dream.entity.quotation.Quotation;
 import com.dream.entity.quotation.QuotationFile;
 import com.dream.entity.user.User;
+import com.dream.entity.user.UserIndex;
 import com.dream.repository.inquiry.InquiryRepository;
 import com.dream.repository.message.MessageRepository;
 import com.dream.repository.quotation.QuotationFileRepository;
 import com.dream.repository.quotation.QuotationRepository;
+import com.dream.repository.user.UserCollectionRepository;
+import com.dream.repository.user.UserIndexRepository;
 import com.dream.repository.user.UserRepository;
+import com.dream.service.user.UserService;
 import com.dream.utils.UploadUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +49,16 @@ public class QuotationController {
 
     @Autowired
     QuotationFileRepository quotationFileRepository;
+
+    @Autowired
+    UserIndexRepository userIndexRepository;
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    UserCollectionRepository userCollectionRepository;
+
 
     @Value("${file_url}")
     private String file_url;
@@ -138,12 +152,13 @@ public class QuotationController {
 
         //TODO 改为从数据库读取
 
+
         int quotationDoneTime= quotationRepository.countByInquiryAndUser(user.getId());
         int quotationSuccessTime= quotationRepository.countByInquiryAndUserAndStatus(user.getId(), 1);
         int quotationDoingTime= messageRepository.countByInquiryAndUser(user);
 
-        long inquiryDoneTime = inquiryRepository.countByUser(user);
-        long inquirySuccessTime = inquiryRepository.countByUserAndStatus(user, 1);
+        int inquiryDoneTime = inquiryRepository.countByUser(user);
+        int inquirySuccessTime = inquiryRepository.countByUserAndStatus(user, 1);
         long inquiryDoingTime = inquiryRepository.countByUserAndStatus(user, 0);
         long inquiryFailTime = inquiryRepository.countByUserAndStatus(user, 2);
 
@@ -162,6 +177,22 @@ public class QuotationController {
             iRate =String.format("%.2f", (double)inquirySuccessTime/(double)inquiryDoneTime * 100);
         }
 
+
+        UserIndex userIndex = userIndexRepository.findOne(user.getId());
+
+        if(userIndex==null){
+            userIndex = new UserIndex();
+            userIndex.setId(user.getId());
+        }
+        userIndex.setQuotationDoneTime(quotationDoneTime);
+        userIndex.setQuotationSuccessTime(quotationSuccessTime);
+        userIndex.setInquiryDoneTime(inquiryDoneTime);
+        userIndex.setInquirySuccessTime(inquirySuccessTime);
+        userIndex.setQuotationSuccessRate(Double.valueOf(qRate));
+        userIndex.setInquirySuccessRate(Double.valueOf(iRate));
+
+        userIndexRepository.save(userIndex);
+
         res.put("quotationDoneTime",quotationDoneTime);
         res.put("quotationSuccessTime",quotationSuccessTime);
         res.put("quotationSuccessRate", qRate+"%");
@@ -178,6 +209,25 @@ public class QuotationController {
         res.put("logoUrl",user.getLogoUrl());
         res.put("nickname",user.getNickName());
         res.put("userType",user.getType());
+
+        if(currentUser.getId()!=null){
+            if(currentUser.getId().equals(user.getId())){
+                res.put("isCollection",-1);
+            }else{
+                boolean isCollected = userCollectionRepository.findByUserAndTargetUser(currentUser,user).size()!=0;
+                if(isCollected){
+                    res.put("isCollection",1);
+                    res.put("collectionId",userCollectionRepository.findByUserAndTargetUser(currentUser,user).get(0).getId());
+                }
+                else
+                    res.put("isCollection",0);
+            }
+        }else{
+            res.put("isCollection",0);
+        }
+
+        userService.putUserDetailInfo(res,user);
+
 
         res.put("success",1);
         return res;

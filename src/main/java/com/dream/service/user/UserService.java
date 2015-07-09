@@ -376,4 +376,32 @@ public class UserService {
         return res;
     }
 
+
+    public void putUserDetailInfo(Map<String, Object> res, User user ){
+
+        int type = user.getType();
+        switch (type){
+            case 1 :
+                res.put("personalIndustry",user.getUserPersonalInfo().getCompanyIndustry().getName());
+                res.put("personalWeiBo",user.getUserPersonalInfo().getWeiboUrl());
+                res.put("personalWeiXin",user.getUserPersonalInfo().getWeixin());
+                break;
+            case 2:
+                res.put("companyName",user.getUserCompanyInfo().getCompanyName());
+                res.put("companyOwnership",user.getUserCompanyInfo().getCompanyOwnership().getName());
+                res.put("companyIndustry",user.getUserCompanyInfo().getCompanyIndustry().getName());
+                res.put("companyWebsite", user.getUserCompanyInfo().getWebsite());
+
+                break;
+            case 3:
+                res.put("groupDescription",user.getUserGroupInfo().getDescription());
+                res.put("groupSize", user.getUserGroupInfo().getGroupSize());
+                res.put("groupNumber",user.getUserGroupInfo().getGroupNumber());
+
+                break;
+            default:
+                break;
+        }
+    }
+
 }

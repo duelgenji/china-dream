@@ -176,6 +176,10 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
 
         }
 
+        if(currentQuery.keyword){
+            params.key=currentQuery.keyword
+        }
+
         console.log(JSON.stringify(params));
 
         dialogMod.mask.show();
@@ -272,9 +276,10 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
      * @return {[type]} [description]
      */
     function evt_doSearch() {
-        if (currentQuery.keyword = $("#mq").val().trim()) {
-            fn_bind();
-        }
+        setPage(1);
+        currentQuery.keyword = $("#mq").val().trim();
+        fn_bind();
+
     }
 
     /**
@@ -289,7 +294,7 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
 
         $(".btn1").click(function firstPage(){    // 首页
             if ($(this).hasClass("disable")) return;
-            setPage(0);
+            setPage(1);
             fn_bind();
         });
         $(".btn2").click(function frontPage(){    // 上一页
@@ -327,6 +332,12 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
         });
 
         $("#btn_search").click(evt_doSearch);
+
+        $('#mq').keydown(function(e){
+            if(e.keyCode==13){
+                evt_doSearch();
+            }
+        });
 
         /*
          更多

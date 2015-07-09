@@ -49,7 +49,7 @@ define("login-logic", ["jquery", "user-repos"], function(require, exports) {
 				location.href = "index.html";
 			}, function(result) {
 				var message = result.message;
-				if (message!=null && message != "") {
+				if (message==null || message == "") {
 					message = "对不起,服务端异常,您目前无法登录!";
 				}
 

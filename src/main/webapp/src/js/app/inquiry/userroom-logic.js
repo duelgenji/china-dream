@@ -19,10 +19,31 @@ define("userroom-logic", ["userroom-config", "jquery", "user-repos", "pure-grid"
 		 * 当前已选择的筛选项的键值对
 		 * @type {Object}
 		 */
+		size = 20,
+
 		currentQuery = {
-			pageno: 1,
-			pagesize: 15
-		};
+			page: 0,
+			size: size
+		},
+		currentPage = 0,
+		maxPage = 0;
+
+	function setPage (targetPage) {
+		currentQuery.page = targetPage - 1;
+	}
+
+	function getCurrentPage () {
+		return currentQuery.page + 1;
+	}
+
+	function setMaxPage (page) {
+		maxPage = page;
+		$(".maxPage").text(maxPage);
+	}
+
+	function getMaxPage () {
+		return maxPage;
+	}
 
 	/**
 	 * 用户logoUrl
@@ -33,7 +54,24 @@ define("userroom-logic", ["userroom-config", "jquery", "user-repos", "pure-grid"
 	 */
 	function renderLogo(vals, ri, objval) {
 		objval.title = "";
-		return '<a name="cmd-seeUserDetail" data-i="' + ri + '"><img class="ui-inner-logo" src="' + vals + '" alt="用户logo"/></a>';
+		var url = vals[0];
+		var type = vals[1];
+		if(url==""){
+			switch(type){
+				case 1:
+					url = "/image/pic/personalDefaultLogo.jpg";
+					break;
+				case 2:
+					url = "/image/pic/companyDefaultLogo.jpg";
+					break;
+				case 3:
+					url = "/image/pic/groupDefaultLogo.jpg";
+					break;
+				default :
+					break;
+			}
+		}
+		return '<a name="cmd-seeUserDetail" data-i="' + ri + '"><img class="ui-inner-logo" src="' + url + '" alt="用户logo"/></a>';
 	}
 
 	/**
@@ -66,13 +104,56 @@ define("userroom-logic", ["userroom-config", "jquery", "user-repos", "pure-grid"
 
 		fn_initGridMod();
 
+		var params = {};
+		params.type=0;
+
+		for (var key in currentQuery) {
+			var value = currentQuery[key],
+				lenth = value.length;
+
+			if (lenth > 0 && value.charAt(lenth - 1) == ',') {
+				value = value.substr(0,lenth - 1);
+			}
+
+			params[key] = value;
+
+		}
+
+		if(currentQuery.keyword){
+			params.key=currentQuery.keyword
+		}
+
+		console.log(JSON.stringify(params));
+
 		dialogMod.mask.show();
 
-		var params = {};
-		params.type =0;
-
 		ajaxRetriveUserRoomList(params,function(data) {
-			console.log(data);
+			var testData = data.data,
+				count = data.count;
+			$(".changePage").val(getCurrentPage());
+			if (count%size == 0) {
+				setMaxPage(parseInt(data.count/size));
+			} else {
+				setMaxPage(parseInt(data.count/size) + 1);
+			}
+
+			currentPage = currentQuery.page;
+			if (currentPage == 0) {
+				$(".btn1").addClass("disable");
+				$(".btn2").addClass("disable");
+			} else {
+				$(".btn1").removeClass("disable");
+				$(".btn2").removeClass("disable");
+			}
+
+			if (currentPage == getMaxPage() - 1) {
+				$(".btn3").addClass("disable");
+				$(".btn4").addClass("disable");
+			} else {
+				$(".btn3").removeClass("disable");
+				$(".btn4").removeClass("disable");
+			}
+			//console.log(data);
 			currentGrid.bindData(data.data);
 			setTimeout(dialogMod.mask.hide, 500);
 		}, call_fail, call_fail);
@@ -198,8 +279,7 @@ define("userroom-logic", ["userroom-config", "jquery", "user-repos", "pure-grid"
 				.override("grid.databound", function() {
 					$("a[name=cmd-seeUserDetail]").click(function() {
 						if (util_isLogin()) {
-							alert("敬请期待");
-							//location.href = "inquiry/detail.html?key=" + currentGrid.dataSource[$(this).data("i")]["id"];
+							location.href = "userDetail.html?key=" + currentGrid.dataSource[$(this).data("i")]["userId"];
 						} else {
 							alert("您好,如需查看此用户信息,请您先登录!");
 						}
@@ -213,9 +293,9 @@ define("userroom-logic", ["userroom-config", "jquery", "user-repos", "pure-grid"
 	 * @return {[type]} [description]
 	 */
 	function evt_doSearch() {
-		if (currentQuery.keyword = $("#mq").val().trim()) {
-			fn_bind();
-		}
+		currentQuery.keyword = $("#mq").val().trim();
+		fn_bind();
+
 	}
 
 	/**
@@ -224,8 +304,56 @@ define("userroom-logic", ["userroom-config", "jquery", "user-repos", "pure-grid"
 	 */
 	function fn_initEvent() {
 
+		$(".pagination").append('<a href="javascript:void(0);" class="btn1">首页</a> <a href="javascript:void(0);" class="btn2">上一页</a> <a  href="javascript:void(0);" class="btn3">下一页</a> <a href="javascript:void(0);" class="btn4">尾页</a> 转到 <input class="changePage" type="text" size="1" maxlength="4"/>/<span class="maxPage"></span> 页 <a href="javascript:void(0);" class="btn5">GO</a>')
+
+		$(".btn1").click(function firstPage(){    // 首页
+			if ($(this).hasClass("disable")) return;
+			setPage(1);
+			fn_bind();
+		});
+		$(".btn2").click(function frontPage(){    // 上一页
+			if ($(this).hasClass("disable")) return;
+			setPage(getCurrentPage() - 1);
+			fn_bind();
+		});
+		$(".btn3").click(function nextPage(){    // 下一页
+			if ($(this).hasClass("disable")) return;
+			setPage(getCurrentPage() + 1);
+			fn_bind();
+		});
+		$(".btn4").click(function lastPage(){    // 尾页
+			if ($(this).hasClass("disable")) return;
+			setPage(getMaxPage());
+			fn_bind();
+		});
+		$(".btn5").click(function changePage(){    // 转页
+			curPage = $(this).siblings("input").val() * 1;
+			if (!/^[1-9]\d*$/.test(curPage)) {
+				alert("请输入正整数");
+				return ;
+			}
+			if (curPage > getMaxPage()) {
+				alert("超出数据页面");
+				return ;
+			}
+			setPage(curPage);
+			fn_bind();
+		});
+		$(".changePage").on("input", function(e) {
+			if (isNaN(String.fromCharCode(e.keyCode))) {
+				$(this).val($(this).val().replace(/\D/gi, ""));
+			}
+		});
+
+
 		$("#btn_search").click(evt_doSearch);
 
+
+		$('#mq').keydown(function(e){
+			if(e.keyCode==13){
+				evt_doSearch();
+			}
+		});
 		/*
 		更多
 		 */

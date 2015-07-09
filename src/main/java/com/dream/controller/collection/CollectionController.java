@@ -130,9 +130,8 @@ public class CollectionController {
             collection.setUser(user);
             collection.setInquiry(inquiry);
             inquiryCollectionRepository.save(collection);
-
+            res.put("collectionId", collection.getId());
         }
-
 
         res.put("success",1);
         return res;
@@ -267,10 +266,8 @@ public class CollectionController {
             collection.setUser(user);
             collection.setTargetUser(targetUser);
             userCollectionRepository.save(collection);
-
+            res.put("collectionId", collection.getId());
         }
-
-
         res.put("success",1);
         return res;
     }

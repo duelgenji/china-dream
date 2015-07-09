@@ -21,4 +21,7 @@ public interface UserRepository extends MyRepository<User,Long>{
 
     @Query("from User u where u.status=1 ")
     Page<User> findAllUser(Pageable pageable);
+
+    Page<User> findByNickNameLike(String key,Pageable pageable);
+
 }

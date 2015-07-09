@@ -266,7 +266,8 @@ define("myzone-config", [], function(require, exports) {
 			},
 			body: {
 				align: "center",
-				fields: "inquiryNo"
+				fields: "inquiryNo,inquiryId",
+				renderFn: "renderInquiryNo"
 			}
 		}, {
 			index: 2,
@@ -412,6 +413,19 @@ define("myzone-config", [], function(require, exports) {
 		}, {
 			index: 4,
 			head: {
+				text: "询价方",
+				width: 53,
+				issort: false,
+				align: "center"
+			},
+			body: {
+				align: "center",
+				fields: "userNickname,userId",
+				renderFn: "renderNickname"
+			}
+		}, {
+			index: 5,
+			head: {
 				text: "询价方式",
 				width: 120,
 				issort: false,
@@ -423,10 +437,10 @@ define("myzone-config", [], function(require, exports) {
 				//renderFn: "renderInquiryMode"
 			}
 		}, {
-			index: 5,
+			index: 6,
 			head: {
 				text: "状态",
-				width: 100,
+				width: 80,
 				issort: false,
 				align: "center"
 			},
@@ -436,10 +450,10 @@ define("myzone-config", [], function(require, exports) {
 				renderFn: "renderState"
 			}
 		}, {
-			index: 6,
+			index: 7,
 			head: {
 				text: "地区",
-				width: 100,
+				width: 80,
 				issort: false,
 				align: "center"
 			},
@@ -448,7 +462,7 @@ define("myzone-config", [], function(require, exports) {
 				fields: "province"
 			}
 		}, {
-			index: 7,
+			index: 8,
 			head: {
 				text: "标的",
 				width: 110,
@@ -460,7 +474,7 @@ define("myzone-config", [], function(require, exports) {
 				fields: "totalPrice"
 			}
 		}, {
-			index: 8,
+			index: 9,
 			head: {
 				text: "截止时间",
 				width: 120,
@@ -472,7 +486,7 @@ define("myzone-config", [], function(require, exports) {
 				fields: "limitDate"
 			}
 		}, {
-			index: 9,
+			index: 10,
 			head: {
 				text: "操作",
 				width: 149,
@@ -500,7 +514,8 @@ define("myzone-config", [], function(require, exports) {
 				},
 				body:{
 					align:"center",
-					fields:"userNickname"
+					fields:"userNickname,userId",
+					renderFn:"renderUserId"
 				}
 			},
 			{

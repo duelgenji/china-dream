@@ -80,6 +80,8 @@ public class MessageController extends AbstractBaseController<Message, Long> {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("messageId", message.getId());
             map.put("messageStatus", message.getStatus());
+            map.put("userNickname", message.getInquiryUser().getNickName());
+            map.put("userId", message.getInquiryUser().getId());
             map.put("content", message.getContent());
             map.put("createTime", DateFormatUtils.format(message.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
             map.put("inquiryNo", message.getInquiry().getInquiryNo());

@@ -113,6 +113,7 @@ public class UserInfoController {
             map.put("userId",u.getId());
             map.put("nickname",u.getNickName());
             map.put("logoUrl",u.getLogoUrl());
+            map.put("userType",u.getType());
             map.put("quotationDoneTime",u.getUserIndex().getQuotationDoneTime());
             map.put("quotationSuccessRate",u.getUserIndex().getQuotationSuccessRate());
             if(u.getType()==1){
@@ -133,6 +134,62 @@ public class UserInfoController {
 
         res.put("success",1);
         res.put("data",list);
+        res.put("count",userPage.getTotalElements());
+        return res;
+    }
+
+    /**
+     * 获取用户列表
+     */
+    @RequestMapping("searchUserList")
+    public Map<String, Object> searchUserList(
+            @RequestParam int type,
+            @RequestParam String key,
+            @PageableDefault(page = 0, size = 20) Pageable pageable,
+            @ModelAttribute("currentUser") User user) {
+        Map<String, Object> res = new HashMap<>();
+
+        if(type==1){
+            pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "userIndex.quotationDoneTime");
+        }  if(type==2){
+            pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "userIndex.quotationSuccessRate");
+        }
+
+        key =  "%"+key+"%";
+
+        Page<User> userPage= userRepository.findByNickNameLike(key,pageable);
+        List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
+
+        String industry="",province="";
+
+        for (User u : userPage) {
+
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("userId",u.getId());
+            map.put("nickname",u.getNickName());
+            map.put("logoUrl",u.getLogoUrl());
+            map.put("userType",u.getType());
+            map.put("quotationDoneTime",u.getUserIndex().getQuotationDoneTime());
+            map.put("quotationSuccessRate",u.getUserIndex().getQuotationSuccessRate());
+            if(u.getType()==1){
+                if( u.getUserPersonalInfo().getCompanyIndustry()!=null)
+                    industry = u.getUserPersonalInfo().getCompanyIndustry().getName();
+            }else if(u.getType()==2){
+                if( u.getUserCompanyInfo().getCompanyIndustry()!=null)
+                    industry = u.getUserCompanyInfo().getCompanyIndustry().getName();
+                if( u.getUserCompanyInfo().getCompanyProvince() !=null)
+                    province = u.getUserCompanyInfo().getCompanyProvince().getName();
+            }
+
+            map.put("industry", industry);
+            map.put("province", province);
+            list.add(map);
+        }
+
+
+        res.put("success",1);
+        res.put("data",list);
+        res.put("count",userPage.getTotalElements());
         return res;
     }
 

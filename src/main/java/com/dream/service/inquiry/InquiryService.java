@@ -90,6 +90,9 @@ public class InquiryService {
 
     }
 
+    /**
+     * 他人出价 我的出价
+     */
     public void putQuotationList(Map<String, Object> res, User user , Inquiry inquiry){
 
         List<Quotation> quotationList=quotationRepository.findByInquiry(inquiry);

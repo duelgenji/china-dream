@@ -460,7 +460,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
 
                 });
 
-                var testList = ["原因1", "原因2", "原因3", "原因4", "原因5"];
+                var testList = ["询价方资质条件要求过高。", "项目的方案和型号，配置要求不合理。", "预算价格过低。", "付款方式过于苛刻。", "询价要求过高。","废标条款过多过滥。","梦想过于天马行空。","其他"];
                 console.log(JSON.stringify(testList));
 
                 for (var i = 0; i < testList.length; i++) {

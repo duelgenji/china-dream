@@ -314,6 +314,49 @@ public class InquiryController {
         return res;
     }
 
+    /**
+     * 获取询价列表
+     */
+    @RequestMapping("searchInquiryList")
+    public Map<String, Object> searchInquiryList(
+            @RequestParam(required = false) String key,
+            @PageableDefault(page = 0, size = 20,sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        Map<String, Object> res = new HashMap<>();
+
+        key =  "%"+key+"%";
+        Page<Inquiry> inquiryList= inquiryRepository.findByInquiryNoLikeOrTitleLike(key, key,pageable);
+
+        List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
+        for (Inquiry inquiry : inquiryList) {
+
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("id", inquiry.getId());
+            map.put("userName", inquiry.getUser().getNickName());
+            map.put("title", inquiry.getTitle());
+            map.put("inquiryNo", inquiry.getInquiryNo());
+            map.put("status", inquiry.getStatus());
+            map.put("totalPrice", inquiry.getTotalPrice());
+            map.put("round", inquiry.getRound());
+            map.put("limitDate", DateFormatUtils.format(inquiry.getLimitDate(), "yyyy-MM-dd HH:mm:ss"));
+            map.put("inquiryMode", inquiry.getInquiryMode().getName());
+            map.put("industryCode", inquiry.getCompanyIndustry().getName());
+            map.put("provinceCode", inquiry.getCompanyProvince().getName());
+            map.put("good", 0);
+            map.put("successRate", 0);
+            map.put("inquiryTimes", 0);
+            if(inquiry.getLogoUrl()==null || "".equals(inquiry.getLogoUrl())){
+                map.put("logoUrl",inquiry.getCompanyIndustry().getLogoUrl());
+            }else{
+                map.put("logoUrl",inquiry.getLogoUrl() );
+            }
+            list.add(map);
+        }
+
+        res.put("success",1);
+        res.put("data",list);
+        res.put("count", inquiryList.getTotalElements());
+        return res;
+    }
 
     /**
      * 获取询价 详细信息

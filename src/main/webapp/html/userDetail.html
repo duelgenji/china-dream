@@ -7,7 +7,7 @@
 	<meta name="description" content="中国梦-一个让你实现自己梦想的舞台！">
 	<meta name="Keywords" content="撮合平台，项目招投标">	
     <link rel="icon" href="../image/icon/icon.jpg" mce_href="../image/icon/icon.jpg" type="image/x-icon">
-	<title>我的中国梦-我的主页</title>
+	<title>我的中国梦-用户详情</title>
 	<link rel="stylesheet" href="../dest/css/base.css">
 	<link rel="stylesheet" href="../dest/css/plugins.css">
 	<link rel="stylesheet" href="../dest/css/zone.css">
@@ -15,12 +15,9 @@
 
 	<style>
 
-		#data1 .ui-grid-unlock_bodyDiv,
-		#data2 .ui-grid-unlock_bodyDiv,
-		#data3 .ui-grid-unlock_bodyDiv,
-		#data4 .ui-grid-unlock_bodyDiv {
-			max-height: 200px;
-			overflow-y: scroll;
+		#container{
+			min-height: 500px;
+			margin-top: 100px;
 		}
 
 		.ui-detail li{
@@ -33,18 +30,6 @@
 			display: none;
 		}
 
-		.ui-items li label {
-			width: 100px;
-		}
-
-		.ui-items li {
-			display: list-item;
-			padding: 0 0 20px;
-		}
-
-		.ui-items li label{
-			float: left;
-		}
 	</style>
 
 </head>
@@ -54,15 +39,14 @@
 		</div>
 		<div id="container">
 			<div class="ui-mainPage">
-
 				<div class="ui-logo">
 					<img id="logo" src="" alt="" style="width:186px;height:186px;">
 				</div>
 				<div class="ui-detail">
 					<p>
-					<h2 id="nickName">
-						<span class="ui-val" data-col="nickname"></span>
-					</h2>
+						<h2 id="nickName">
+							<span class="ui-val" data-col="nickname"></span>
+						</h2>
 					</p>
 					<ul id="ul_basic">
 						<li>
@@ -165,92 +149,15 @@
 						</dd>
 					</dl>
 				</div>
-				<div class="clearfloat"></div>
-				<div id="content">
-					<div class="ui-tabContainer">
-						<ul id="myTab" role="tab">
-							<li data-grid="1" class="active" data-mod="bid">
-								<a>我的出价</a>
-							</li>
-							<li data-grid="2" data-mod="inquiry">
-								<a>我的询价</a>
-							</li>
-							<li data-grid="3" data-mod="collect">
-								<a>我的收藏</a>
-							</li>
-							<li data-grid="4" data-mod="message">
-								<a>站内信息</a>
-							</li>
-						</ul>
-						<span class="ui-bold ui-tabTitle">资料库</span>
-						<div class="clearfloat"></div>
-					</div>
-					<div id="contentPanel">
-						<div style="display:none">
-							<div class="ui-querySelect">
-								<select id="select_bid" data-grid="data1" data-mod="bid">
-									<option value="0">已报价</option>
-									<option value="1">未报价</option>
-								</select>
-							</div>
-							<div id="data1"></div>
-						</div>
-						<div style="display:none">
-							<div class="ui-querySelect">
-								<select id="select_inquiry" data-grid="data2" data-mod="inquiry">
-									<option value="-1">全部</option>
-									<option value="0">进行中</option>
-									<option value="1">完成</option>
-								</select>
-							</div>
-							<div id="data2"></div>
-						</div>
-						<div style="display:none">
-							<div class="ui-toptitle" style="text-align: center;border-radius: 5px;background-color: #d3eaef;margin-bottom: 8px;">
-								<h2>询价收藏</h2>
-							</div>
-							<div id="data3"></div>
-							<div class="ui-toptitle" style="text-align: center;border-radius: 5px;background-color: #d3eaef;margin-bottom: 8px;">
-								<h2>用户收藏</h2>
-							</div>
-							<div id="data5"></div>
-						</div>
-						<div style="display:none">
-							<div class="ui-querySelect">
-								<select id="select_msg" data-grid="data4" data-mod="message">
-									<option value="0">我申请的</option>
-									<option value="1">需我回复的</option>
-								</select>
-							</div>
-							<div id="data4"></div>
-						</div>
-					</div>
+				<div class="clearfloat" style="text-align: right">
+					<button type="button" id="btn_addCollect" data-cmd="add">加至收藏</button>
 				</div>
+
 			</div>
 		</div>
 		<div id="footer">
 		</div>
 
-		<div class="modal fade" id="cmdModal" tabindex="-1" role="dialog"
-			 aria-labelledby="cmdModalTitle" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h2 class="modal-title" id="cmdModalTitle">
-						</h2>
-					</div>
-					<div class="modal-body" id="cmdModalBody">
-					</div>
-					<div class="modal-footer" id="cmdModalFooter">
-						<button type="button" class="btn btn-default"
-								data-dismiss="modal">确定
-						</button>
-					</div>
-				</div>
-				<!-- /.modal-content -->
-			</div>
-			<!-- /.modal -->
-		</div>
 	</div>
 </body>
 <script src="../dest/js/lib/jquery.min.js" type="text/javascript" charset="utf-8"></script>
@@ -260,13 +167,11 @@
 <script src="../src/js/bootstrap/bootstrap.min.js" charset="utf-8"></script>
 
 <script src="../src/js/app/main.js" charset="utf-8"></script>
-<script src="../src/js/app/myZone/myzone-config.js" charset="utf-8"></script>
-<script src="../src/js/app/myZone/myzone-logic.js" charset="utf-8"></script>
+<script src="../src/js/app/myZone/userdetail-logic.js" charset="utf-8"></script>
 <!--<script src="../dest/js/app/user.zone.logic.js" type="text/javascript" charset="utf-8"></script>-->
-<script src="../src/js/ajax/ajax-collection.js" charset="utf-8"></script>
-<script src="../src/js/ajax/ajax-message.js" charset="utf-8"></script>
 <script src="../src/js/ajax/ajax-retrieveUserDetail.js" charset="utf-8"></script>
 <script src="../src/js/ajax/ajax-myzone.js" charset="utf-8"></script>
+<script src="../src/js/ajax/ajax-collection.js" charset="utf-8"></script>
 
 
 <script type="text/javascript">
@@ -274,7 +179,7 @@
 		return $;
 	});
 	seajs.use(["main","myzone-logic"],function(mod,mod2){
-		mod.load().setActiveNav("selfcenter");
+		mod.load().setActiveNav("usercenter");
 		mod2.load();
 	});
 </script>

@@ -20,7 +20,7 @@ define("userroom-config",[],function(require,exports){
                     },
                     body: {
                         align: "center",
-                        fields:"logoUrl",
+                        fields:"logoUrl,userType",
                         renderFn: "renderLogo"
                     }
                 }, {
