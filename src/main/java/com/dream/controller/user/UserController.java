@@ -6,18 +6,22 @@ import com.dream.repository.user.UserIndexRepository;
 import com.dream.repository.user.UserRepository;
 import com.dream.service.user.UserService;
 import com.dream.utils.CommonEmail;
+import com.dream.utils.UploadUtils;
 import com.wonders.xlab.framework.controller.AbstractBaseController;
 import com.wonders.xlab.framework.repository.MyRepository;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -49,6 +53,9 @@ public  class UserController extends AbstractBaseController<User, Long> {
         return userRepository;
     }
 
+    @Value("${avatar_url}")
+    private String avatar_url;
+
     /**
      * 注册
      */
@@ -57,6 +64,7 @@ public  class UserController extends AbstractBaseController<User, Long> {
             @RequestParam(required = true) String email,
             @RequestParam(required = true) String password,
             @RequestParam(required = true) String nickName,
+            @RequestParam(required = false) MultipartFile logoImage,
             @RequestParam int type,
             HttpServletRequest request) {
 
@@ -77,16 +85,44 @@ public  class UserController extends AbstractBaseController<User, Long> {
 
         user = new User();
         String captcha = DateFormatUtils.format(new Date(), "yyyyMMdd") + RandomStringUtils.random(22, "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-
+        if(!email.matches("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*")){
+            res.put("success", "0");
+            res.put("message", "邮箱不符合格式");
+            return res;
+        }
+        if(type==2 && Arrays.asList(new String[]{"126.com", "163.com", "139.com", "gmail.com", "hotmail.com",
+                "sohu.com", "sina.com", "sina.cn", "yeah.net", "qq.com", "189.cn", "263.net", "outlook.com",
+                "21cn.com", "188.com", "wo.cn", "sogou.com"}).contains(email.split("@")[1])){
+            res.put("success", "0");
+            res.put("message", "请不要使用个人邮箱");
+            return res;
+        }
         user.setEmail(email);
         user.setPassword(DigestUtils.md5Hex(password));
         user.setNickName(nickName);
         user.setType(type);
         user.setCaptcha(captcha);
+
+
+
         user = userService.generateOptionalInfo(user, request);
 
+        if (null != logoImage) {
+            String uname;
+            if (null == user.getId()) {
+                uname = avatar_url + "u" + user.getId();
+            } else {
+                uname = avatar_url + user.getId() + "u" + user.getId();
+            }
+
+            String fileUrl;
+            fileUrl = UploadUtils.uploadTo7niu(0, uname, logoImage);
+
+            user.setLogoUrl(fileUrl);
+        }
 
         String message=userService.generateUserByType(user,type,request);
+
 
 
         if(!message.equals("")){

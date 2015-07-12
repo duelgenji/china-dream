@@ -252,7 +252,9 @@ function FreeCalendar(sDate) {
                     var cDate = c__stringToDate(this.getYear() + "-" + (this.getMonth() + 1) + "-" + sDate);
                     if (Date.parse(cDate) > Date.parse(limitDate) || Date.parse(cDate) < Date.parse(today)) {
                         dayColor = c__disableDayColor;
-                        document.getElementById("c__dateGrid").rows[i + 1].cells[r].setAttribute("disable","disable");
+                        document.getElementById("c__dateGrid").rows[i + 1].cells[r].setAttribute("disabled","disabled");
+                    }else{
+                        document.getElementById("c__dateGrid").rows[i + 1].cells[r].removeAttribute("disabled");
                     }
 
                     if (this.getYear() == c__currentDate.getFullYear() && this.getMonth() == c__currentDate.getMonth() && date == c__currentDate.getDate()) {
@@ -371,9 +373,9 @@ function c__getPosition(obj) {
 //获取日期
 function c__getDate(day,e) {
     console.log(e);
-    console.log(e.getAttribute("disable"));
+    console.log(e.getAttribute("disabled"));
 
-    if (day != "" && e.getAttribute("disable") != "disable") {
+    if (day != "" && e.getAttribute("disabled") != "disabled") {
         var date = c__stringToDate(document.getElementById("c__yearSelector").value + "-" + eval(document.getElementById("c__monthSelector").value + "+1") + "-" + day);
         c__input.value = c__dateToString(date);
         c__hideCalendar();
@@ -381,7 +383,7 @@ function c__getDate(day,e) {
 }
 
 function c__underline(e){
-    if (e.getAttribute("disable") != "disable") {
+    if (e.getAttribute("disabled") != "disabled") {
         e.style.textDecoration = 'underline';
     }
 }

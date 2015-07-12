@@ -315,19 +315,25 @@ define("register-logic", ["user-repos", "jquery", "pure-dialog", "pure-validator
 
             var type = $(this).removeClass("active").addClass('active').siblings().removeClass('active').end().data("type");
 
-            var currentLi = $("ul.ui-items li[data-type=" + type + "]");
+            var currentLi ;
 
             var hideLi;
 
             switch (type) {
                 case "p":
                     hideLi = $("ul.ui-items li[data-type=c], ul.ui-items li[data-type=g]");
+                    currentLi = $("ul.ui-items li[data-type=p],ul.ui-items li[data-type=pc]");
+                    $("#input_type").val(1);
                     break;
                 case "c":
                     hideLi = $("ul.ui-items li[data-type=p], ul.ui-items li[data-type=g]");
+                    currentLi = $("ul.ui-items li[data-type=c],ul.ui-items li[data-type=pc]");
+                    $("#input_type").val(2);
                     break;
                 case "g":
-                    hideLi = $("ul.ui-items li[data-type=p], ul.ui-items li[data-type=c]");
+                    hideLi = $("ul.ui-items li[data-type=p], ul.ui-items li[data-type=c], ul.ui-items li[data-type=pc]");
+                    currentLi = $("ul.ui-items li[data-type=g]");
+                    $("#input_type").val(3);
                     break;
             }
 
@@ -345,7 +351,7 @@ define("register-logic", ["user-repos", "jquery", "pure-dialog", "pure-validator
             $("#status").val(1 - status);
         })
 
-        $("#btn_confirm").click(fn_submitForm);
+        //$("#btn_confirm").click(fn_submitForm);
 
         $("#serviceAgreement").click(function () {
             //$("#myModal").modal('toggle');
@@ -363,6 +369,61 @@ define("register-logic", ["user-repos", "jquery", "pure-dialog", "pure-validator
             event.stopPropagation();
             __showCalendar(event, "birthday");
         });
+
+        //预览图片
+        $("#logoImage").on("change",function(e){
+            var file = e.target.files || e.dataTransfer.files;
+            if(file && file[0]){
+                var reader = new FileReader();
+                reader.onload = function() {
+                    $("#image").attr("src",this.result).show();
+                }
+                reader.readAsDataURL(file[0]);
+            } else {
+                $("#image").attr("src","").hide();
+            }
+        });
+
+        $("#form").ajaxForm();
+        $('#form').submit(function () {
+            var dialog = dialogMod(regCallDg)
+                .showModal()
+                .content('<div><img src="../image/loading.gif" alt="" />正在提交中,请耐心等候!</div>');
+
+            $("#btn_confirm").attr("disabled","");
+            var options = {
+                url: baseUrl + "/user/register",
+                type: 'post',
+                dataType: null,
+                clearForm: false,
+                beforeSubmit:function(data){
+                   if(!fn_checkSubmit()){
+                       $("#btn_confirm").removeAttr("disabled");
+                       dialog.close();
+                       return false;
+                   }
+                },
+                success: function (data, textStatus, jqXHR) {
+                    var result = data.success;
+                    if (result == 1) {
+                        location.href = "emailSent.html";
+                    }else{
+                        alert(data.message);
+                    }
+                },
+                complete:function(){
+                    $("#btn_confirm").removeAttr("disabled");
+                    dialog.close();
+                },
+                fail:function(){
+                    alert("注册异常!");
+
+                }
+            };
+            $(this).ajaxSubmit(options);
+            return false;
+        });
+
     }
 
     exports.load = function () {

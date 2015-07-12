@@ -85,7 +85,7 @@ define("list-config",[],function(require,exports){
                     },
                     body: {
                         align: "center",
-                        fields: "limitDate,round,inquiryMode,status,successName",
+                        fields: "limitDate,round,inquiryMode,status,winner",
                         renderFn: "renderEndDate"
                     }
                 }],

@@ -136,12 +136,28 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
             var col = span.data("col"),
                 val = dataSource[col];
             if (col == "files") {
+                span.append(val);
                 var files = dataSource.fileList;
                 for (var i = 0; i < files.length; i++) {
                     var name = files[i].remark == "" ? "附件" : files[i].remark;
-                    span.append("<a href=" + files[i].fileUrl + ">" + name + "</a>")
+                    span.append("<p><a href=" + files[i].fileUrl + ">" + name + "</a></p>")
                 }
-                span.append(val);
+            } else if(col=="status"){
+                var arr= ["进行中","已成功","已流标"];
+                span.text(arr[val]).attr("title", arr[val]).css("font-size","18px");
+                switch (val){
+                    case 0:
+                        span.css("color","green");
+                        break;
+                    case 1:
+                        span.css("color","red");
+                        break;
+                    case 2:
+                        span.css("color","blue");
+                        break;
+                    default :
+                        break;
+                }
             } else {
                 span.text(val).attr("title", val);
             }
@@ -189,8 +205,10 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
 
         if (!dataSource.isMe) {
             fn_getMyBidList();
-            $("#div_self").css("display", "none");
-            $("#div_other").css("display", "");
+            if(dataSource.status=="0"){
+                $("#div_self").css("display", "none");
+                $("#div_other").css("display", "");
+            }
 
             $("#btn_biddingApply").click(function () {
                 var canApply = true,
@@ -264,6 +282,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
 
                     $("#bidForm").ajaxForm();
                     $("#bidForm").submit(function () {
+                        $("#submitModal").attr("disabled","");
                         var options = {
                             url: baseUrl + "/quotation/generateQuotation",
                             type: 'post',
@@ -283,6 +302,8 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                             },
                             error:function(data) {
                                 console.log(data);
+                            },complete:function(){
+                                $("#submitModal").removeAttr("disabled");
                             }
                         };
 
@@ -401,8 +422,11 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
             });
         } else {
             fn_getOpponentBidList();
-            $("#div_self").css("display", "");
-            $("#div_other").css("display", "none");
+
+            if(dataSource.status=="0"){
+                $("#div_self").css("display", "");
+                $("#div_other").css("display", "none");
+            }
 
             $("#btn_sucending").click(function () {
 
@@ -426,15 +450,32 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
 
                     var radio = $(".modal-open:checked"),
                         remark = $(".modal-remark");
+
+                    var re = /^[0-9]+.?[0-9]*$/;
+                    if(remark.val()!="" && !re.test(remark.val())){
+                        alert("请输入数字");
+                        return;
+                    }
                     if (radio.length == 0) {
                         alert("请选择是否公开");
                         return;
                     }
                     params[radio.attr("name")] = radio.val();
                     params[remark.attr("name")] = remark.val();
+                    params["inquiryId"] = dataSource.id;
+                    params["status"] = 1;
 
                     if (confirm("是否确认将此标执行成功操作?")) {
-                        alert(JSON.stringify(params));
+                        //console.log(JSON.stringify(params));
+                        changeInquiryStatus(params, function (data) {
+                            alert("已发送站内信，请等待对方确认!");
+                            location.reload();
+                        }, function (data) {
+                            alert(data.message);
+                        }, function () {
+                            alert("请求异常!");
+                        });
+                        dismissCmdModal();
                     }
 
                 });
@@ -442,11 +483,17 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                 var testList = dataSource.hisList;
                 console.log(JSON.stringify(testList));
 
+                var arr=[];
+
                 for (var i = 0; i < testList.length; i++) {
-                    $(".modal-user-list").append('<li style="padding-bottom: 0;"><input class="modal-successUser" type="radio" name="successUser" id="' + i + '" value="' + testList[i].userId + '" /><label for="' + i + '" style="padding-left: 10px;float:none;font-weight:100;height">' + testList[i].userNickname + '</label></li>');
+                    if(arr.indexOf(testList[i].userId)>=0){
+                        continue;
+                    }
+                    $(".modal-user-list").append('<li style="padding-bottom: 0;"><input class="modal-successUser" type="radio" name="userId" id="' + i + '" value="' + testList[i].userId + '" /><label for="' + i + '" style="padding-left: 10px;float:none;font-weight:100;height">' + testList[i].userNickname + '</label></li>');
+                    arr.push(testList[i].userId);
                 }
 
-                $(".modal-user-list").append('<li style="padding-bottom: 0;"><input class="modal-remark" type="text" name="remark" style="margin-left: 0;margin-right: 10px;"/><input class="modal-open" type="radio" name="open" id="open" value="0"/><label for="open" style="padding-left: 10px;float:none;font-weight:100;height">公开</label><input class="modal-open" type="radio" name="open" id="no-open" value="1"/><label for="no-open" style="padding-left: 10px;float:none;font-weight:100;height">不公开</label></li>')
+                $(".modal-user-list").append('<li style="padding-bottom: 0;"><input class="modal-remark" type="text" name="price" style="margin-left: 0;margin-right: 10px;"/><input class="modal-open" type="radio" name="openWinner" id="open" value="1"/><label for="openWinner" style="padding-left: 10px;float:none;font-weight:100;height">公开</label><input class="modal-open" type="radio" name="openWinner" id="no-open" value="0"/><label for="no-open" style="padding-left: 10px;float:none;font-weight:100;height">不公开</label></li>')
             });
 
             $("#btn_failending").click(function () {
@@ -456,34 +503,48 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                     var params = {},
                         reasonCount = 0;
 
+
                     $(".modal-fail-reason:checked").each(function () {
                         reasonCount++;
                         if (params[$(this).attr("name")] == null) {
+                            if($(this).attr("id")=="failR"+($(".modal-fail-reason").length-1)){
+                                params[$(this).attr("name")] = $(".modal-other-reason").val();
+                                return true;
+                            }
                             params[$(this).attr("name")] = $(this).val();
                         } else {
-                            params[$(this).attr("name")] += "," + $(this).val();
+                            if($(this).attr("id")=="failR"+($(".modal-fail-reason").length-1)){
+                                params[$(this).attr("name")] += ";" +$(".modal-other-reason").val();                                    return true;
+                                return true;
+                            }
+                            params[$(this).attr("name")] += ";" + $(this).val();
                         }
                     });
 
-                    if (reasonCount < 4 || reasonCount > 6) {
-                        alert("请选择4-6条流标原因");
-                        return;
-                    }
 
-                    var otherReason = $(".modal-other-reason");
-                    params[otherReason.attr("name")] = otherReason.val();
+
+                    params["inquiryId"] = dataSource.id;
+                    params["status"] = 2;
 
                     if (confirm("是否确认将此标执行流标操作?")) {
-                        console.log(JSON.stringify(params));
+                        //console.log(JSON.stringify(params));
+                        changeInquiryStatus(params, function (data) {
+                            alert("流标成功!");
+                            location.reload();
+                        }, function (data) {
+                            alert(data.message);
+                        }, function () {
+                            alert("请求异常!");
+                        });
+                        dismissCmdModal();
                     }
-
                 });
 
                 var testList = ["询价方资质条件要求过高。", "项目的方案和型号，配置要求不合理。", "预算价格过低。", "付款方式过于苛刻。", "询价要求过高。","废标条款过多过滥。","梦想过于天马行空。","其他"];
-                console.log(JSON.stringify(testList));
+                //console.log(JSON.stringify(testList));
 
                 for (var i = 0; i < testList.length; i++) {
-                    $(".modal-reason-list").append('<li style="padding-bottom: 0;"><input class="modal-fail-reason" type="checkbox" name="failReason" id="' + i + '" value="' + i + '" /><label for="' + i + '" style="padding-left: 10px;float:none;font-weight:100;height">' + testList[i] + '</label></li>');
+                    $(".modal-reason-list").append('<li style="padding-bottom: 0;"><input class="modal-fail-reason" type="checkbox" name="failReason" id="failR' + i + '" value="' + testList[i] + '" /><label for="failR' + i + '" style="padding-left: 10px;float:none;font-weight:100;height">' + testList[i] + '</label></li>');
                 }
 
                 $(".modal-reason-list").append('<li style="padding-bottom: 0;"><textarea class="modal-other-reason" type="text" name="otherReason" style="margin-left: 0;resize: none;height:100px;width: 96%;padding: 2%;"/></li>')

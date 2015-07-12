@@ -14,17 +14,18 @@ import java.util.List;
  */
 public interface MessageRepository  extends MyRepository<Message,Long> {
 
-    @Query("from Message m where m.user = :user and m.inquiry = :inquiry and m.status = :status and m.inquiry.round=m.round order by m.id desc ")
+    @Query("from Message m where m.user = :user and m.inquiry = :inquiry and m.status = :status and m.inquiry.round=m.round and m.type=0 order by m.id desc ")
     List<Message> findAllUserAndInquiryAndStatus(@Param("user") User user, @Param("inquiry") Inquiry inquiry, @Param("status") int status );
 
-    @Query("from Message m where m.user = :user and m.inquiry = :inquiry and m.inquiry.round=m.round order by id desc ")
+    @Query("from Message m where m.user = :user and m.inquiry = :inquiry and m.inquiry.round=m.round and m.type=0 order by id desc ")
     List<Message> findAllUserAndInquiry(@Param("user") User user, @Param("inquiry") Inquiry inquiry);
 
-    @Query("from Message m where m.user = :user  ")
-    List<Message> findByUser(@Param("user") User user);
+    @Query("from Message m where m.user = :user and m.type=:type  ")
+    List<Message> findByUser(@Param("user") User user,@Param("type") int type);
 
-    @Query("select count(*) from Message m where m.user =:user and m.status =1 and m.inquiry.status=0 ")
+    @Query("select count(*) from Message m where m.user =:user and m.status =1 and m.inquiry.status=0 and m.type=0")
     int countByInquiryAndUser(@Param("user") User user);
 
-    int countByInquiryAndUserAndRoundAndStatus(Inquiry inquiry,User user,int round,int status);
+    int countByInquiryAndUserAndRoundAndStatusAndType(Inquiry inquiry,User user,int round,int status,int type);
+
 }

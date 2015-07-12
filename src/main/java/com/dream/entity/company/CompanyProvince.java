@@ -1,6 +1,5 @@
 package com.dream.entity.company;
 
-import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.Column;
@@ -13,7 +12,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table
-@Audited
 public class CompanyProvince  extends AbstractPersistable<Long>  {
 
     @Column(unique = true)

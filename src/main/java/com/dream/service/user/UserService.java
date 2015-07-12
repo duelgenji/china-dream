@@ -86,12 +86,6 @@ public class UserService {
         if(request.getParameter("keywords")!=null){
             user.setKeywords(request.getParameter("keywords"));
         }
-        if(request.getParameter("logoUrl")!=null){
-            user.setLogoUrl(request.getParameter("logoUrl"));
-        }
-        if(request.getParameter("headImage")!=null){
-            user.setHeadImage(request.getParameter("headImage"));
-        }
         if(request.getParameter("description")!=null){
             user.setDescription(request.getParameter("description"));
         }
@@ -121,7 +115,7 @@ public class UserService {
                 if(request.getParameter("sex")!=null){
                     userPersonalInfo.setSex(Integer.parseInt(request.getParameter("sex")));
                 }
-                if(request.getParameter("birthday")!=null){
+                if(request.getParameter("birthday")!=null && !request.getParameter("birthday").equals("")){
                     try {
                         userPersonalInfo.setBirthday(DateUtils.parseDate(request.getParameter("birthday"), "yyyy-MM-dd"));
                     } catch (ParseException e) {
@@ -330,6 +324,7 @@ public class UserService {
             res.put("telephoneOpen",user.getTelephoneOpen().ordinal());
             res.put("telephone",user.getTelephone());
             res.put("VIP",user.getVIP());
+            res.put("description",user.getDescription());
 
 
             //Map<String, Object> info = new HashMap<>();

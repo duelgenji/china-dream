@@ -13,13 +13,14 @@ define("myzone-config", [], function(require, exports) {
 		columns: [{
 			index: 1,
 			head: {
-				width: 129,
+				width: 150,
 				issort: false,
 				text: "标号"
 			},
 			body: {
 				align: "center",
-				fields: "inquiryNo"
+				fields: "inquiryNo,inquiryId",
+				renderFn: "renderInquiryNo"
 			}
 		}, {
 			index: 2,
@@ -31,14 +32,15 @@ define("myzone-config", [], function(require, exports) {
 			},
 			body: {
 				align: "center",
-				fields: "inquiryTitle"
+				fields: "inquiryTitle,inquiryId",
+				renderFn: "renderInquiryTitle"
 			}
 		}, {
 			index: 3,
 			head: {
 				text: "轮次",
 				issort: false,
-				width: 89,
+				width: 59,
 				align: "center"
 			},
 			body: {
@@ -63,7 +65,7 @@ define("myzone-config", [], function(require, exports) {
 			head: {
 				text: "所在地",
 				issort: false,
-				width: 109,
+				width: 89,
 				align: "center"
 			},
 			body: {
@@ -87,7 +89,7 @@ define("myzone-config", [], function(require, exports) {
 			head: {
 				text: "行业",
 				issort: false,
-				width: 109,
+				width: 89,
 				align: "center"
 			},
 			body: {
@@ -152,13 +154,14 @@ define("myzone-config", [], function(require, exports) {
 		columns:[{
 			index: 1,
 			head: {
-				width: 130,
+				width: 150,
 				issort: false,
 				text: "标号"
 			},
 			body: {
 				align: "center",
-				fields: "inquiryNo"
+				fields: "inquiryNo,inquiryId",
+				renderFn: "renderInquiryNo"
 			}
 		}, {
 			index: 2,
@@ -169,13 +172,14 @@ define("myzone-config", [], function(require, exports) {
 			},
 			body: {
 				align: "center",
-				fields: "inquiryTitle"
+				fields: "inquiryTitle,inquiryId",
+				renderFn: "renderInquiryTitle"
 			}
 		}, {
 			index: 3,
 			head: {
 				text: "轮次",
-				width: 83,
+				width: 53,
 				align: "center"
 			},
 			body: {

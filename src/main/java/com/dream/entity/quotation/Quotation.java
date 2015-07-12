@@ -29,12 +29,6 @@ public class Quotation extends AbstractPersistable<Long> {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime = new Date();
 
-    /**
-     * 询价确认状态
-     * 状态 0-待定；1-同意；2-拒绝
-     */
-    private int status;
-
     private int round;
 
     /**
@@ -72,14 +66,6 @@ public class Quotation extends AbstractPersistable<Long> {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
     }
 
     public int getArchived() {

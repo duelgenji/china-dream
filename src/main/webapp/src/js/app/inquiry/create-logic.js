@@ -330,12 +330,13 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
             }
             reader.readAsDataURL(file[0]);
         } else {
-            $("#image").attr("src","").show();
+            $("#image").attr("src","").hide();
         }
     });
 
     $("#inquiryForm").ajaxForm();
     $('#inquiryForm').submit(function () {
+        $("#btn_confirm").attr("disabled","");
         var options = {
             url: "../inquiry/generateInquiry",
             type: 'post',
@@ -344,7 +345,6 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
             success: function (data, textStatus, jqXHR) {
                 var result = data.success;
                 if (result == 1) {
-
                     $("#inquiryNo").text(data.inquiryNo);
 
                     $("#div_steps li:eq(4)").removeClass("active").addClass("active").siblings('li').removeClass("active");
@@ -357,6 +357,8 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
                     $("#btn_back").css("display", "");
 
                 }
+            },complete:function(){
+                $("#btn_confirm").removeAttr("disabled");
             }
         };
 

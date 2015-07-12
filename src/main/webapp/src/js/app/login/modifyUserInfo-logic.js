@@ -230,21 +230,25 @@ define("modifyUserInfo-logic", ["user-repos", "jquery", "pure-dialog", "pure-val
     function showOriginInfo(type, params) {
         $("#form").css("display", "");
         var typeCode = "p";
+        var li ;
         switch (type) {
             case 1:
                 typeCode = "p";
+                li = $("ul.ui-items li[data-type='p'], ul.ui-items li[data-type='pc'], ul.ui-items li[data-type='pcg']");
                 break;
             case 2:
                 typeCode = "c";
+                li = $("ul.ui-items li[data-type='c'], ul.ui-items li[data-type='pc'], ul.ui-items li[data-type='pcg']");
                 break;
             case 3:
                 typeCode = "g";
+                li = $("ul.ui-items li[data-type='g'], ul.ui-items li[data-type='pcg']");
                 break;
         }
 
         $("#tab-"+typeCode).addClass("active");
 
-        var li = $("ul.ui-items li[data-type=" + typeCode + "], ul.ui-items li[data-type='pcg']");
+
 
         var inputs = li.find("input, select, textarea");
 
@@ -252,6 +256,10 @@ define("modifyUserInfo-logic", ["user-repos", "jquery", "pure-dialog", "pure-val
             var value = params[$(this).attr('name')];
             if (!validMod.isEmptyOrNull(value)) {
                 $(this).val(value);
+            }
+            var arr=["companyName"];
+            if(arr.indexOf($(this).attr("name"))>=0){
+                $(this).attr("name","");
             }
         })
 
@@ -283,7 +291,7 @@ define("modifyUserInfo-logic", ["user-repos", "jquery", "pure-dialog", "pure-val
             $("#status").val(1 - status);
         })
 
-        $("#btn_confirm").click(fn_submitForm);
+        //$("#btn_confirm").click(fn_submitForm);
 
         $("#serviceAgreement").click(function () {
             //$("#myModal").modal('toggle');
@@ -300,6 +308,61 @@ define("modifyUserInfo-logic", ["user-repos", "jquery", "pure-dialog", "pure-val
         $("#calendar_ctrl").click(function (event) {
             event.stopPropagation();
             __showCalendar(event, "birthday");
+        });
+
+        //预览图片
+        $("#logoImage").on("change",function(e){
+            var file = e.target.files || e.dataTransfer.files;
+            if(file && file[0]){
+                var reader = new FileReader();
+                reader.onload = function() {
+                    $("#image").attr("src",this.result).show();
+                }
+                reader.readAsDataURL(file[0]);
+            } else {
+                $("#image").attr("src","").hide();
+            }
+        });
+
+        $("#form").ajaxForm();
+        $('#form').submit(function () {
+            var dialog = dialogMod(regCallDg)
+                .showModal()
+                .content('<div><img src="../image/loading.gif" alt="" />正在提交中,请耐心等候!</div>');
+
+            $("#btn_confirm").attr("disabled","");
+            var options = {
+                url: baseUrl + "/userInfo/modifyInfo",
+                type: 'post',
+                dataType: null,
+                clearForm: false,
+                beforeSubmit:function(){
+                    console.log(arguments[0]);
+                    if(!fn_checkSubmit()){
+                        $("#btn_confirm").removeAttr("disabled");
+                        dialog.close();
+                        return false;
+                    }
+                },
+                success: function (data, textStatus, jqXHR) {
+                    var result = data.success;
+                    if (result == 1) {
+                        alert("修改成功")
+                    }else{
+                        alert(data.message);
+                    }
+                },
+                complete:function(){
+                    $("#btn_confirm").removeAttr("disabled");
+                    dialog.close();
+                },
+                fail:function(){
+                    alert("修改异常!");
+
+                }
+            };
+            $(this).ajaxSubmit(options);
+            return false;
         });
     }
 

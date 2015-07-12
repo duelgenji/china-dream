@@ -15,7 +15,6 @@ import java.io.Serializable;
  */
 @Entity
 @Table
-@Audited
 public class UserCompanyInfo  implements Serializable {
 
     @Id

@@ -12,6 +12,6 @@ import java.util.List;
  */
 public interface InquiryFileRepository extends MyRepository<InquiryFile,Long> {
 
-    List<InquiryFile> findByInquiry(Inquiry inquiry);
+    List<InquiryFile> findByInquiryAndRound(Inquiry inquiry,int round);
 
 }

@@ -14,8 +14,7 @@ import java.util.List;
  */
 public interface QuotationRepository extends MyRepository<Quotation,Long> {
 
-    @Query("from Quotation q where q.inquiry = :inquiry ")
-    List<Quotation> findByInquiry(@Param("inquiry") Inquiry inquiry);
+    List<Quotation> findByInquiryAndRound(Inquiry inquiry,int round);
 
     @Query("from Quotation q where q.user = :user ")
     List<Quotation> findByUser(@Param("user") User user);

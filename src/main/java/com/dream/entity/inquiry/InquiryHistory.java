@@ -10,12 +10,15 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- * 标
- * Created by Knight on 2015/6/25 11:08.
+ * 标  历史记录 (前几轮)
+ * Created by Knight on 2015/7/12 18:01.
  */
 @Entity
 @Table
-public class Inquiry  extends AbstractPersistable<Long> {
+public class InquiryHistory extends AbstractPersistable<Long> {
+
+    @ManyToOne
+    private Inquiry inquiry;
 
     @ManyToOne
     private User user;
@@ -140,14 +143,13 @@ public class Inquiry  extends AbstractPersistable<Long> {
 
     private int test;
 
-    @ManyToOne
-    private User winner;
+    public Inquiry getInquiry() {
+        return inquiry;
+    }
 
-    private boolean openWinner;
-
-    private Long winnerPrice;
-
-    private String failReason;
+    public void setInquiry(Inquiry inquiry) {
+        this.inquiry = inquiry;
+    }
 
     public User getUser() {
         return user;
@@ -415,38 +417,6 @@ public class Inquiry  extends AbstractPersistable<Long> {
 
     public int getTest() {
         return test;
-    }
-
-    public User getWinner() {
-        return winner;
-    }
-
-    public void setWinner(User winner) {
-        this.winner = winner;
-    }
-
-    public boolean isOpenWinner() {
-        return openWinner;
-    }
-
-    public void setOpenWinner(boolean openWinner) {
-        this.openWinner = openWinner;
-    }
-
-    public Long getWinnerPrice() {
-        return winnerPrice;
-    }
-
-    public void setWinnerPrice(Long winnerPrice) {
-        this.winnerPrice = winnerPrice;
-    }
-
-    public String getFailReason() {
-        return failReason;
-    }
-
-    public void setFailReason(String failReason) {
-        this.failReason = failReason;
     }
 
     public Object getProperties(String name){

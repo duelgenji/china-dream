@@ -1,6 +1,5 @@
 package com.dream.entity.inquiry;
 
-import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.Entity;
@@ -12,7 +11,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table
-@Audited
 public class InquiryMode extends AbstractPersistable<Long> {
 
     private String name;

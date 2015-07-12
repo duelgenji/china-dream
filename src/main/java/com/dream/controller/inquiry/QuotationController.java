@@ -154,7 +154,7 @@ public class QuotationController {
 
 
         int quotationDoneTime= quotationRepository.countByInquiryAndUser(user.getId());
-        int quotationSuccessTime= quotationRepository.countByInquiryAndUserAndStatus(user.getId(), 1);
+        int quotationSuccessTime= inquiryRepository.countByWinner(user);
         int quotationDoingTime= messageRepository.countByInquiryAndUser(user);
 
         int inquiryDoneTime = inquiryRepository.countByUser(user);
@@ -259,7 +259,6 @@ public class QuotationController {
 
                 Map<String, Object> map = new HashMap<String, Object>();
                 map.put("quotationId", quotation.getId());
-                map.put("quotationStatus", quotation.getStatus());
                 map.put("quotationArchived", quotation.getArchived());
                 map.put("round", quotation.getRound());
                 map.put("quotationPrice", quotation.getTotalPrice());
@@ -277,7 +276,7 @@ public class QuotationController {
                 list.add(map);
             }
         }else if(type==1){
-            List<Message> messageList = messageRepository.findByUser(user);
+            List<Message> messageList = messageRepository.findByUser(user,0);
 
             Inquiry inquiry;
             for ( Message message : messageList ){

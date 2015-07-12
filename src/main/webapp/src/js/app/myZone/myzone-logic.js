@@ -94,32 +94,32 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
 
     function renderOptOfMessage(vals, ri, objval) {
         objval.title = "";
-        if ($("#select_msg").val() == 1) {
-
-            switch (dataSource[ri].messageStatus) {
-                case 0:
-                    return '<div class="ui-optDiv"><button type="button" data-cmd="pass" data-ri="' + ri + '">同意</button><button type="button" data-cmd="refuse" data-ri="' + ri + '">拒绝</button><button type="button" data-cmd="check" data-ri="' + ri + '">查看</button></div>';
-                    break;
-                case 1:
-                    return '<div class="ui-optDiv">已授权 <button type="button" data-cmd="check" data-ri="' + ri + '">查看</button></div>';
-                    break;
-                case 2:
-                    return '<div class="ui-optDiv">已拒绝 <button type="button" data-cmd="check" data-ri="' + ri + '">查看</button></div>';
-                    break;
-            }
-        } else {
+        if ($("#select_msg").val() == 0) {
             switch (dataSource[ri].messageStatus) {
                 case 0:
                     return '<div class="ui-optDiv">待授权 <button type="button" data-cmd="check" data-ri="' + ri + '">查看</button></div>';
                     break;
                 case 1:
-                    return '<div class="ui-optDiv">已授权 <button type="button" data-cmd="check" data-ri="' + ri + '">查看</button></div>';
+                    return '<div class="ui-optDiv">已确认 <button type="button" data-cmd="check" data-ri="' + ri + '">查看</button></div>';
                     break;
                 case 2:
                     return '<div class="ui-optDiv">已拒绝 <button type="button" data-cmd="check" data-ri="' + ri + '">查看</button></div>';
                     break;
             }
             return "";
+        } else {
+            switch (dataSource[ri].messageStatus) {
+                case 0:
+                    return '<div class="ui-optDiv"><button type="button" data-cmd="pass" data-ri="' + ri + '">同意</button><button type="button" data-cmd="refuse" data-ri="' + ri + '">拒绝</button><button type="button" data-cmd="check" data-ri="' + ri + '">查看</button></div>';
+                    break;
+                case 1:
+                    return '<div class="ui-optDiv">已确认 <button type="button" data-cmd="check" data-ri="' + ri + '">查看</button></div>';
+                    break;
+                case 2:
+                    return '<div class="ui-optDiv">已拒绝 <button type="button" data-cmd="check" data-ri="' + ri + '">查看</button></div>';
+                    break;
+            }
+
         }
     }
 
@@ -175,6 +175,14 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
             span = $(span);
             var col = span.data("col"),
                 val = data[col];
+            if(col=="companyWebsite"){
+                var website=val;
+                if(val.substring(0,4)!="http"){
+                    website =  "http://"+val;
+                }
+                span.append('<a target="_blank" href="'+website+'">'+val+'</a>');
+                return true;
+            }
             span.text(val).attr("title", val);
         });
     }

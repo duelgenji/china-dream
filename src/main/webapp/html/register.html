@@ -192,14 +192,14 @@
             <div class="ui-pure-dialog-arrowA"></div>
             <div class="ui-pure-dialog-arrowB"></div>
         </div>
-        <form id="form" method="post">
+        <form id="form" method="post" enctype="multipart/form-data" accept-charset="utf-8" >
             <div class="ui-reg">
                 <ul class="ui-tab">
                     <li class="active" data-type="p"><a>个人注册</a></li>
                     <li data-type="c"><a>企业注册</a></li>
                     <li data-type="g"><a>群注册</a></li>
                 </ul>
-
+                <input type="hidden" id="input_type" name="type" value="1">
                 <ul class="ui-items ui-items-register">
                     <li data-type="pcg">
                         <label for="">
@@ -312,93 +312,11 @@
                                                                                          data-valid="require"
                                                                                          data-pos="414">
                     </li>
-                    <li data-type="p">
-                        <label for=""><span class="ui-valid">*</span>所在行业:</label>
-                        <select name="companyIndustry">
-                            <option value="0">请选择所在行业</option>
-
-                            <option value="1">梦幻梦想</option>
-
-                            <option value="2">奇思妙想</option>
-
-                            <option value="3">公益梦想</option>
-
-                            <option value="4">行业梦想</option>
-
-                            <option value="5">企业服务</option>
-
-                            <option value="6">股权融资</option>
-
-                            <option value="7">IT产业</option>
-
-                            <option value="8">房产租售</option>
-
-                            <option value="9">广告文案</option>
-
-                            <option value="10">工程建筑</option>
-
-                            <option value="11">医药卫生</option>
-
-                            <option value="12">文化艺术</option>
-
-                            <option value="13">服装纺织</option>
-
-                            <option value="14">专业服务</option>
-
-                            <option value="15">安全防护</option>
-
-                            <option value="16">环保绿化</option>
-
-                            <option value="17">旅游休闲</option>
-
-                            <option value="18">办公文教</option>
-
-                            <option value="19">电子电工</option>
-
-                            <option value="20">玩具礼品</option>
-
-                            <option value="21">风险投资</option>
-
-                            <option value="22">冶金矿产</option>
-
-                            <option value="23">石油化工</option>
-
-                            <option value="24">水利水电</option>
-
-                            <option value="25">交通运输</option>
-
-                            <option value="26">信息产业</option>
-
-                            <option value="27">机械机电</option>
-
-                            <option value="28">轻工食品</option>
-
-                            <option value="29">农林牧渔</option>
-
-                            <option value="30">家居用品</option>
-
-                            <option value="31">物流包装</option>
-
-                            <option value="32">体育用品</option>
-
-                            <option value="33">互联网+</option>
-
-                            <option value="34">软件游戏</option>
-
-                            <option value="35">强电弱电</option>
-
-                            <option value="36">债券清算</option>
-
-                            <option value="37">反向团购</option>
-
-                            <option value="38">其他</option>
-                        </select>
-                    </li>
-                    <li data-type="c" style="display: none;">
-                        <label for=""><span class="ui-valid">*</span>企业所属行业:</label>
+                    <li data-type="pc">
+                        <label for=""><span class="ui-valid">*</span>所属行业:</label>
                         <select name="companyIndustry" id="industryCode" class="form-control input-sm"
-                                style="width:250px;" data-valid="require" data-pos="455" data-errmsg="请选择企业所属行业">
-                            <option value="0">请选择企业所属行业</option>
+                                style="width:250px;" data-valid="require" data-pos="455" data-errmsg="请选择所属行业">
+                            <option value="0">请选择所属行业</option>
 
                             <option value="1">梦幻梦想</option>
 
@@ -641,16 +559,10 @@
                         </select>
 
                     </li>
-                    <li data-type="p">
+                    <li data-type="pc">
                         <label for="">微博:</label><input type="text" name="weiboUrl" placeholder="请输入微博">
                     </li>
-                    <li data-type="c" style="display: none;">
-                        <label for="">微博:</label><input type="text" name="weiboUrl" placeholder="请输入微博">
-                    </li>
-                    <li data-type="p">
-                        <label for="">微信:</label><input type="text" name="weixin" placeholder="请输入微信">
-                    </li>
-                    <li data-type="c" style="display: none;">
+                    <li data-type="pc">
                         <label for="">微信:</label><input type="text" name="weixin" placeholder="请输入微信">
                     </li>
                     <li data-type="pcg">
@@ -659,6 +571,10 @@
                     <li data-type="pcg" style="height: 80px">
                         <label>简介:</label><textarea style="height: 80px" name="description"  placeholder="请输入用户简介(如自我介绍、博客、主页等信息"></textarea>
                     </li>
+                    <li data-type="pcg">
+                        <label>logo:</label><input id="logoImage" style="margin-left: 20px"  type="file" name="logoImage"/>
+                    </li>
+                    <img id="image" src="" style="margin-left: 230px;max-width: 100px;max-height: 100px;"/>
                     <li>
                         <div class="person" style="">
                             <div class="checkbox" style="margin-left:70px;">
@@ -674,7 +590,7 @@
                         </div>
                     </li>
                     <li class="ui-operate">
-                        <button id="btn_confirm" type="button">确保信息无误并提交</button>
+                        <button id="btn_confirm" type="submit">确保信息无误并提交</button>
                         <button id="btn_cancel" type="cancel"><a href="index.html" target="_self">取消</a></button>
                     </li>
                 </ul>
@@ -908,7 +824,7 @@
 <script src="../src/js/app-data/systemDefine-repos.js" charset="utf-8"></script>
 <script src="../src/js/app-data/user-repos.js" charset="utf-8"></script>
 
-
+<script src="../src/js/plugins/jquery.form.js" charset="utf-8"></script>
 <script src="../src/js/bootstrap/bootstrap.min.js" charset="utf-8"></script>
 <script src="../src/js/app/main.js" charset="utf-8"></script>
 <script src="../src/js/app/login/register-logic.js" charset="utf-8"></script>

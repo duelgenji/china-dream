@@ -14,7 +14,6 @@ import java.util.Date;
  */
 @Entity
 @Table
-@Audited
 public class UserPersonalInfo implements Serializable {
 
     @Id

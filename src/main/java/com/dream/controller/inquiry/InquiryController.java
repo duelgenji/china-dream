@@ -7,7 +7,6 @@ import com.dream.entity.inquiry.InquiryCollection;
 import com.dream.entity.inquiry.InquiryFile;
 import com.dream.entity.inquiry.InquiryMode;
 import com.dream.entity.message.Message;
-import com.dream.entity.quotation.Quotation;
 import com.dream.entity.user.OpenStatus;
 import com.dream.entity.user.User;
 import com.dream.repository.company.CompanyIndustryRepository;
@@ -182,7 +181,6 @@ public class InquiryController {
         inquiry.setFilesOpen(OpenStatus.values()[filesOpen]);
 
         Date date = new Date();
-        inquiry.setCreateDate(date);
 
         if(companyProvince!=null){
             inquiry.setInquiryNo(companyProvince.getAlias()+DateFormatUtils.format(date, "yyyyMMddHHmmssssss"));
@@ -288,7 +286,6 @@ public class InquiryController {
         Map<String, Object> res = new HashMap<>();
 
         Page<Inquiry> inquiryList= inquiryRepository.findAll(pageable);
-        int count = inquiryRepository.countAll();
 
         List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
         for (Inquiry inquiry : inquiryList) {
@@ -314,12 +311,16 @@ public class InquiryController {
             }else{
                 map.put("logoUrl",inquiry.getLogoUrl() );
             }
+            if(inquiry.getStatus()==1 && inquiry.isOpenWinner()){
+                map.put("winner",inquiry.getWinner()!=null?inquiry.getWinner().getNickName():"");
+            }
+
             list.add(map);
         }
 
         res.put("success",1);
         res.put("data",list);
-        res.put("count",count);
+        res.put("count",inquiryList.getTotalElements());
         return res;
     }
 
@@ -358,6 +359,9 @@ public class InquiryController {
                 map.put("logoUrl",inquiry.getCompanyIndustry().getLogoUrl());
             }else{
                 map.put("logoUrl",inquiry.getLogoUrl() );
+            }
+            if(inquiry.getStatus()==1 && inquiry.isOpenWinner()){
+                map.put("winner",inquiry.getWinner()!=null?inquiry.getWinner().getNickName():"");
             }
             list.add(map);
         }
@@ -436,6 +440,7 @@ public class InquiryController {
 
         if(inquiry.getUser().getId().equals(user.getId())){
             res.put("isMe", 1);
+            inquiryService.putExRoundInfo(res,inquiry);
         }else{
             res.put("isMe", 0);
         }
@@ -478,7 +483,7 @@ public class InquiryController {
             return res;
         }
 
-        int count = messageRepository.countByInquiryAndUserAndRoundAndStatus(inquiry, user, inquiry.getRound(),2);
+        int count = messageRepository.countByInquiryAndUserAndRoundAndStatusAndType(inquiry, user, inquiry.getRound(), 2, 0);
         if(count>=2){
             res.put("success",0);
             res.put("message","您已经被拒绝2次，此标该轮不可再申请！");
@@ -490,6 +495,7 @@ public class InquiryController {
         message.setInquiry(inquiry);
         message.setRound(inquiry.getRound());
         message.setUser(user);
+        message.setType(0);
         message.setInquiryUser(inquiry.getUser());
         message.setContent(description);
 
@@ -548,6 +554,34 @@ public class InquiryController {
     @RequestMapping("inquiryNextRound")
     public Map<String, Object> inquiryNextRound(
             @RequestParam(required = false) long inquiryId,
+            @RequestParam(required = true) String title,
+            @RequestParam(required = false) long provinceCode,
+            @RequestParam(required = false) long industryCode,
+            @RequestParam(required = true) String limitDate,
+            @RequestParam(required = false) double totalPrice,
+            @RequestParam(required = false) long inquiryModeCode,
+            @RequestParam(required = false) String remark,
+            @RequestParam(required = false) int remarkOpen,
+            @RequestParam(required = false) int userLimit,
+            @RequestParam(required = false) String contactName,
+            @RequestParam(required = false) int contactNameOpen,
+            @RequestParam(required = false) String contactEmail,
+            @RequestParam(required = false) int contactEmailOpen,
+            @RequestParam(required = false) String contactPhone,
+            @RequestParam(required = false) int contactPhoneOpen,
+            @RequestParam(required = false) String contactTel,
+            @RequestParam(required = false) int contactTelOpen,
+            @RequestParam(required = false) String contactFax,
+            @RequestParam(required = false) int contactFaxOpen,
+            @RequestParam(required = false) String contactWeiXin,
+            @RequestParam(required = false) int contactWeiXinOpen,
+            @RequestParam(required = false) String contactWeiBo,
+            @RequestParam(required = false) int contactWeiBoOpen,
+            @RequestParam(required = false) int filesOpen,
+            @RequestParam(required = false) MultipartFile file1,
+            @RequestParam(required = false) MultipartFile file2,
+            @RequestParam(required = false) MultipartFile file3,
+            @RequestParam(required = false) MultipartFile logoFile,
             @ModelAttribute("currentUser") User user) {
         Map<String, Object> res = new HashMap<>();
 
@@ -564,8 +598,15 @@ public class InquiryController {
             return res;
         }
 
+        if(inquiry.getStatus()!=0){
+            res.put("success",0);
+            res.put("message","此标已经结束，请重新申请新标！");
+            return res;
+        }
+
         int round =inquiry.getRound();
         if(round<3){
+            inquiryService.saveInquiryHistory(inquiry);
             inquiry.setRound(round+1);
         }else{
             res.put("success",0);
@@ -573,9 +614,126 @@ public class InquiryController {
             return res;
         }
 
+
+        inquiry.setTitle(title);
+        CompanyProvince companyProvince = companyProvinceRepository.findOne(provinceCode);
+        inquiry.setCompanyProvince(companyProvince);
+        CompanyIndustry companyIndustry = companyIndustryRepository.findOne(industryCode);
+        inquiry.setCompanyIndustry(companyIndustry);
+
+        try {
+            inquiry.setLimitDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(limitDate));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        inquiry.setTotalPrice(totalPrice);
+
+        InquiryMode inquiryMode=inquiryModeRepository.findOne(inquiryModeCode);
+        inquiry.setInquiryMode(inquiryMode);
+        inquiry.setRemark(remark);
+        inquiry.setRemarkOpen(OpenStatus.values()[remarkOpen]);
+        inquiry.setUserLimit(userLimit);
+
+        inquiry.setContactName(contactName);
+        inquiry.setContactNameOpen(OpenStatus.values()[contactNameOpen]);
+        inquiry.setContactEmail(contactEmail);
+        inquiry.setContactEmailOpen(OpenStatus.values()[contactEmailOpen]);
+        inquiry.setContactPhone(contactPhone);
+        inquiry.setContactPhoneOpen(OpenStatus.values()[contactPhoneOpen]);
+        inquiry.setContactTel(contactTel);
+        inquiry.setContactTelOpen(OpenStatus.values()[contactTelOpen]);
+        inquiry.setContactFax(contactFax);
+        inquiry.setContactFaxOpen(OpenStatus.values()[contactFaxOpen]);
+        inquiry.setContactWeiXin(contactWeiXin);
+        inquiry.setContactWeiXinOpen(OpenStatus.values()[contactWeiXinOpen]);
+        inquiry.setContactWeiBo(contactWeiBo);
+        inquiry.setContactWeiBoOpen(OpenStatus.values()[contactWeiBoOpen]);
+        inquiry.setFilesOpen(OpenStatus.values()[filesOpen]);
+
+        inquiry.setModifyDate(new Date());
+
+        if (null != logoFile) {
+            String uname;
+            if (null == inquiry.getId()) {
+                uname = inquiry_url + "u" + user.getId();
+            } else {
+                uname = inquiry_url + inquiry.getId() + "u" + user.getId();
+            }
+
+            String fileUrl;
+            fileUrl = UploadUtils.uploadTo7niu(0, uname, logoFile);
+
+            inquiry.setLogoUrl(fileUrl);
+        }
+
         inquiryRepository.save(inquiry);
 
+
+        if (null != file1) {
+            String uname;
+            if (null == inquiry.getId()) {
+                uname = file_url + "u" + user.getId();
+            } else {
+                uname = file_url + inquiry.getId() + "u" + user.getId();
+            }
+
+            String fileUrl;
+            fileUrl = UploadUtils.uploadTo7niu(0, uname, file1);
+            InquiryFile inquiryFile = new InquiryFile();
+            inquiryFile.setInquiry(inquiry);
+            inquiryFile.setRound(inquiry.getRound());
+            inquiryFile.setFileUrl(fileUrl);
+            inquiryFile.setRemark(file1.getOriginalFilename());
+            inquiryFileRepository.save(inquiryFile);
+
+        }
+
+        if (null != file2) {
+            String uname;
+            if (null == inquiry.getId()) {
+                uname = file_url + "u" + user.getId();
+            } else {
+                uname = file_url + inquiry.getId() + "u" + user.getId();
+            }
+
+            String fileUrl;
+            fileUrl = UploadUtils.uploadTo7niu(0, uname, file2);
+
+
+            InquiryFile inquiryFile = new InquiryFile();
+            inquiryFile.setInquiry(inquiry);
+            inquiryFile.setRound(inquiry.getRound());
+            inquiryFile.setFileUrl(fileUrl);
+            inquiryFile.setRemark(file2.getOriginalFilename());
+            inquiryFileRepository.save(inquiryFile);
+
+        }
+
+        if (null != file3) {
+            String uname;
+            if (null == inquiry.getId()) {
+                uname = file_url + "u" + user.getId();
+            } else {
+                uname = file_url + inquiry.getId() + "u" + user.getId();
+            }
+
+            String fileUrl;
+            fileUrl = UploadUtils.uploadTo7niu(0, uname, file3);
+
+            InquiryFile inquiryFile = new InquiryFile();
+            inquiryFile.setInquiry(inquiry);
+            inquiryFile.setRound(inquiry.getRound());
+            inquiryFile.setFileUrl(fileUrl);
+            inquiryFile.setRemark(file3.getOriginalFilename());
+            inquiryFileRepository.save(inquiryFile);
+
+        }
+
+
+
         res.put("success",1);
+        res.put("inquiryNo",inquiry.getInquiryNo());
+
         return res;
     }
 
@@ -583,7 +741,10 @@ public class InquiryController {
     public Map<String, Object> changeInquiryStatus(
             @RequestParam(required = false) long inquiryId,
             @RequestParam(required = false) int status,
-            @RequestParam(required = false) long quotationId,
+            @RequestParam(required = false) String failReason,
+            @RequestParam(required = false) Boolean openWinner,
+            @RequestParam(required = false) Long price,
+            @RequestParam(required = false) Long userId,
             @ModelAttribute("currentUser") User user) {
         Map<String, Object> res = new HashMap<>();
 
@@ -606,22 +767,35 @@ public class InquiryController {
             res.put("message","当前状态不能更改");
             return res;
         }else{
+            /* status 1 完成  2流标 */
             if(status==1){
-                Quotation quotation = quotationRepository.findByInquiryIdAndId(inquiry.getId(),quotationId);
-                if(quotation==null){
-                    res.put("success",0);
-                    res.put("message","没有找到出标数据");
-                    return res;
+                if(userId!=null && userRepository.findOne(userId)!=null){
+                    if(messageRepository.countByInquiryAndUserAndRoundAndStatusAndType(inquiry,userRepository.findOne(userId),inquiry.getRound(),0,1)>=1){
+                        res.put("success",0);
+                        res.put("message","已经发送过,请等待对方确认！");
+                        return res;
+                    }
+                    Message message = new Message();
+                    message.setUser(userRepository.findOne(userId));
+                    message.setType(1);
+                    message.setContent(price.toString());
+                    message.setRound(inquiry.getRound());
+                    message.setInquiry(inquiry);
+                    message.setInquiryUser(user);
+                    messageRepository.save(message);
+                    inquiry.setOpenWinner(openWinner);
+
                 }
-                inquiry.setStatus(status);
-                quotation.setStatus(status);
-                quotationRepository.save(quotation);
             }else if(status==2){
+                /* 流标流程 */
                 inquiry.setStatus(status);
+                inquiry.setFailReason(failReason);
+
             }
+            inquiryRepository.save(inquiry);
+
         }
 
-        inquiryRepository.save(inquiry);
 
         res.put("success",1);
         return res;

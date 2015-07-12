@@ -1,5 +1,6 @@
 package com.dream.controller.inquiry;
 
+import com.dream.entity.inquiry.Inquiry;
 import com.dream.entity.message.Message;
 import com.dream.entity.user.User;
 import com.dream.repository.inquiry.InquiryRepository;
@@ -15,10 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Knight on 2015/7/1 0:12.
@@ -45,7 +43,7 @@ public class MessageController extends AbstractBaseController<Message, Long> {
 
     /**
      * 获取 站内信列表
-     * @param type 0自己发的   1别人发给我的标的
+     * @param type 0自己发的   1别人发给我的标的  2 出价成功确认
      */
     @RequestMapping("retrieveMessageList")
     public Map<String, Object> retrieveMessageList(
@@ -66,9 +64,13 @@ public class MessageController extends AbstractBaseController<Message, Long> {
 
         if(type==0){
             filters.put("user_equal", user);
+            filters.put("type_equal", 0);
         }else if(type==1){
             filters.put("inquiryUser_equal", user);
-
+            filters.put("type_equal", 0);
+        }else if(type==2){
+            filters.put("user_equal", user);
+            filters.put("type_equal", 1);
         }
 
         Page<Message> messagePage= messageRepository.findAll(filters,pageable);
@@ -81,7 +83,7 @@ public class MessageController extends AbstractBaseController<Message, Long> {
             map.put("messageId", message.getId());
             map.put("messageStatus", message.getStatus());
             /* 0自己发的 用户显示询价方  1别人发我 显示出价方  */
-            if(type==0){
+            if(type==0 || type==2){
                 map.put("userNickname", message.getInquiryUser().getNickName());
                 map.put("userId", message.getInquiryUser().getId());
             }else if(type==1){
@@ -129,7 +131,8 @@ public class MessageController extends AbstractBaseController<Message, Long> {
         }
 
         Message message = messageRepository.findOne(messageId);
-        if(message == null || !message.getInquiryUser().getId().equals(user.getId())){
+        if(message == null || (message.getType()==0  && !message.getInquiryUser().getId().equals(user.getId()))
+                ||  (message.getType()==1  && !message.getUser().getId().equals(user.getId()))){
             res.put("success",0);
             res.put("message","没有数据");
             return res;
@@ -141,7 +144,20 @@ public class MessageController extends AbstractBaseController<Message, Long> {
             return res;
         }
 
+        /* type 0 询价申请站内信 1 出价成功站内信
+        *  status 1 成功 2拒绝
+        * */
+
         message.setStatus(status);
+         if(status==1 && message.getType()==1){
+             Inquiry inquiry =  message.getInquiry();
+             inquiry.setStatus(1);
+             inquiry.setWinner(user);
+             inquiry.setWinnerPrice(Long.parseLong(message.getContent()));
+             inquiry.setPurchaseCloseDate(new Date());
+             inquiryRepository.save(inquiry);
+
+        }
         messageRepository.save(message);
 
         res.put("success",1);

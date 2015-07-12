@@ -1,7 +1,6 @@
 package com.dream.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.*;
@@ -13,7 +12,6 @@ import java.util.Date;
  */
 @Entity
 @Table
-@Audited
 public class User extends AbstractPersistable<Long> {
 
     private String email;

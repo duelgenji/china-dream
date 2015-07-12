@@ -41,6 +41,11 @@ public class Message extends AbstractPersistable<Long> {
      */
     private int status;
 
+    /**
+     * 站内信类型 0 申请出价  1 确认成功
+     */
+    private int type;
+
 
     public int getStatus() {
         return status;
@@ -96,5 +101,13 @@ public class Message extends AbstractPersistable<Long> {
 
     public void setRound(int round) {
         this.round = round;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

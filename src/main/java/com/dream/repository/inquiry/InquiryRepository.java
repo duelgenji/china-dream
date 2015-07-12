@@ -15,9 +15,6 @@ import java.util.List;
  */
 public interface InquiryRepository extends MyRepository<Inquiry,Long> {
 
-    @Query("select count(*) from Inquiry")
-    int countAll();
-
     @Query("from Inquiry i where i.user = :user ")
     List<Inquiry> findByUser(@Param("user") User user);
 
@@ -30,4 +27,5 @@ public interface InquiryRepository extends MyRepository<Inquiry,Long> {
 
     Inquiry findByUserAndId(User user ,long id);
 
+    int countByWinner(User winner);
 }

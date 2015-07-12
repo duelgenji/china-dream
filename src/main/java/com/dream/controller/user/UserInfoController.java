@@ -3,14 +3,17 @@ package com.dream.controller.user;
 import com.dream.entity.user.User;
 import com.dream.repository.user.UserRepository;
 import com.dream.service.user.UserService;
+import com.dream.utils.UploadUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -33,6 +36,9 @@ public class UserInfoController {
 
     @Autowired
     UserService userService;
+
+    @Value("${avatar_url}")
+    private String avatar_url;
 
     @RequestMapping("retrieveInfo")
     public Map<String, Object> retrieveInfo(@ModelAttribute("currentUser") User user) {
@@ -57,15 +63,31 @@ public class UserInfoController {
     }
 
     @RequestMapping("modifyInfo")
-    public Map<String, Object> modifyInfo(HttpServletRequest request) {
+    public Map<String, Object> modifyInfo(
+            @RequestParam(required = false) MultipartFile logoImage,
+            HttpServletRequest request) {
 
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("currentUser");
         Map<String, Object> res = new HashMap<>();
 
         if(user.getId()!=null){
-
+            user = userRepository.findOne(user.getId());
             user = userService.generateOptionalInfo(user,request);
+
+            if (null != logoImage) {
+                String uname;
+                if (null == user.getId()) {
+                    uname = avatar_url + "u" + user.getId();
+                } else {
+                    uname = avatar_url + user.getId() + "u" + user.getId();
+                }
+
+                String fileUrl;
+                fileUrl = UploadUtils.uploadTo7niu(0, uname, logoImage);
+
+                user.setLogoUrl(fileUrl);
+            }
 
             String message= userService.generateUserByType(user, user.getType(), request);
 
