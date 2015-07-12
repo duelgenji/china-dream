@@ -33,7 +33,7 @@ define("list-config",[],function(require,exports){
                     },
                     body: {
                         align: "left",
-                        fields: "title,inquiryNo,userName,id",
+                        fields: "title,inquiryNo,userName,id,test,status",
                         renderFn: "renderPopularity"
                     }
                 }, {
@@ -85,7 +85,7 @@ define("list-config",[],function(require,exports){
                     },
                     body: {
                         align: "center",
-                        fields: "limitDate,round,inquiryMode,status",
+                        fields: "limitDate,round,inquiryMode,status,successName",
                         renderFn: "renderEndDate"
                     }
                 }],

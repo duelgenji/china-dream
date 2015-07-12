@@ -59,13 +59,13 @@ define("userroom-logic", ["userroom-config", "jquery", "user-repos", "pure-grid"
 		if(url==""){
 			switch(type){
 				case 1:
-					url = "/image/pic/personalDefaultLogo.jpg";
+					url = "../image/pic/personalDefaultLogo.jpg";
 					break;
 				case 2:
-					url = "/image/pic/companyDefaultLogo.jpg";
+					url = "../image/pic/companyDefaultLogo.jpg";
 					break;
 				case 3:
-					url = "/image/pic/groupDefaultLogo.jpg";
+					url = "../image/pic/groupDefaultLogo.jpg";
 					break;
 				default :
 					break;
@@ -161,91 +161,7 @@ define("userroom-logic", ["userroom-config", "jquery", "user-repos", "pure-grid"
 
 	function call_fail() {
 
-		var testData = [{
-			logoUrl: "../../../image/1.png",
-			userName: "上海诣新信息技术股份有限公司",
-			industry: "互联网+",
-			province: "上海",
-			percent: 5,
-			countOfBid: 9
-		}, {
-			logoUrl: "../../../image/1.png",
-			userName: "上海诣新信息技术股份有限公司",
-			industry: "互联网+",
-			province: "上海",
-			percent: 6,
-			countOfBid: 10
-		}, {
-			logoUrl: "../../../image/1.png",
-			userName: "上海诣新信息技术股份有限公司",
-			industry: "互联网+",
-			province: "上海",
-			percent: 7,
-			countOfBid: 21
-		}, {
-			logoUrl: "../../../image/1.png",
-			userName: "上海诣新信息技术股份有限公司",
-			industry: "互联网+",
-			province: "上海",
-			percent: 1,
-			countOfBid: 20
-		}, {
-			logoUrl: "../../../image/1.png",
-			userName: "上海诣新信息技术股份有限公司",
-			industry: "互联网+",
-			province: "上海",
-			percent: 2,
-			countOfBid: 12
-		}, {
-			logoUrl: "../../../image/1.png",
-			userName: "上海诣新信息技术股份有限公司",
-			industry: "互联网+",
-			province: "上海",
-			percent: 3,
-			countOfBid: 13
-		}, {
-			logoUrl: "../../../image/1.png",
-			userName: "上海诣新信息技术股份有限公司",
-			industry: "互联网+",
-			province: "上海",
-			percent: 4,
-			countOfBid: 14
-		}, {
-			logoUrl: "../../../image/1.png",
-			userName: "上海诣新信息技术股份有限公司",
-			industry: "互联网+",
-			province: "上海",
-			percent: 5,
-			countOfBid: 15
-		}, {
-			logoUrl: "../../../image/1.png",
-			userName: "上海诣新信息技术股份有限公司",
-			industry: "互联网+",
-			province: "上海",
-			percent: 8,
-			countOfBid: 11
-		}, {
-			logoUrl: "../../../image/1.png",
-			userName: "上海诣新信息技术股份有限公司",
-			industry: "互联网+",
-			province: "上海",
-			percent: 7,
-			countOfBid: 13
-		}, {
-			logoUrl: "../../../image/1.png",
-			userName: "上海诣新信息技术股份有限公司",
-			industry: "互联网+",
-			province: "上海",
-			percent: 2,
-			countOfBid: 12
-		}, {
-			logoUrl: "../../../image/1.png",
-			userName: "上海诣新信息技术股份有限公司",
-			industry: "互联网+",
-			province: "上海",
-			percent: 3,
-			countOfBid: 20
-		}];
+		var testData = [];
 
 		currentGrid.bindData(testData);
 

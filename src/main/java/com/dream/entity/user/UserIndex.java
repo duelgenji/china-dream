@@ -1,6 +1,7 @@
 package com.dream.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,6 +11,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table
+@Audited
 public class UserIndex implements Serializable {
 
     @Id

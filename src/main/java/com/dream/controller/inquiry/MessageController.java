@@ -80,8 +80,14 @@ public class MessageController extends AbstractBaseController<Message, Long> {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("messageId", message.getId());
             map.put("messageStatus", message.getStatus());
-            map.put("userNickname", message.getInquiryUser().getNickName());
-            map.put("userId", message.getInquiryUser().getId());
+            /* 0自己发的 用户显示询价方  1别人发我 显示出价方  */
+            if(type==0){
+                map.put("userNickname", message.getInquiryUser().getNickName());
+                map.put("userId", message.getInquiryUser().getId());
+            }else if(type==1){
+                map.put("userNickname", message.getUser().getNickName());
+                map.put("userId", message.getUser().getId());
+            }
             map.put("content", message.getContent());
             map.put("createTime", DateFormatUtils.format(message.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
             map.put("inquiryNo", message.getInquiry().getInquiryNo());

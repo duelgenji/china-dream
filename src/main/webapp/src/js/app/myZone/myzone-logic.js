@@ -32,19 +32,23 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
         dataSource;
 
     function renderInquiryNo(vals, ri, objval) {
+        objval.title= vals[0];
         return '<a title="" style="text-decoration: underline;" href="inquiryDetail.html?key=' + vals[1] + '">' + vals[0] + '</a>';
     }
 
     function renderUserId(vals, ri, objval) {
+        objval.title= "";
         return '<a title="" style="text-decoration: underline;" href="userDetail.html?key=' + vals[1] + '">' + vals[0] + '</a>';
     }
 
     function renderNickname(vals, ri, objval) {
+        objval.title= vals[0];
         return '<a title="" style="text-decoration: underline;" href="userDetail.html?key=' + vals[1] + '">' + vals[0] + '</a>';
     }
 
     function renderInquiryTitle(vals, ri, objval) {
-        return '<a style="text-decoration: underline;" href="inquiryDetail.html?key=' + vals[1] + '">' + vals[0] + '</a>';
+        objval.title= vals[0];
+        return '<a style="text-decoration: underline;" title="'+vals[0]+'" href="inquiryDetail.html?key=' + vals[1] + '">' + vals[0] + '</a>';
     }
 
     function renderInquiryMode(vals, ri, objval) {
@@ -183,15 +187,15 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
         switch(data.userType){
             case 1:
                 $("#ul_person").show();
-                $("img#logo").attr("src","/image/pic/personalDefaultLogo.jpg");
+                $("img#logo").attr("src","../image/pic/personalDefaultLogo.jpg");
                 break;
             case 2:
                 $("#ul_company").show();
-                $("img#logo").attr("src","/image/pic/companyDefaultLogo.jpg");
+                $("img#logo").attr("src","../image/pic/companyDefaultLogo.jpg");
                 break;
             case 3:
                 $("#ul_group").show();
-                $("img#logo").attr("src","/image/pic/groupDefaultLogo.jpg");
+                $("img#logo").attr("src","../image/pic/groupDefaultLogo.jpg");
                 break;
             default :
                 break;

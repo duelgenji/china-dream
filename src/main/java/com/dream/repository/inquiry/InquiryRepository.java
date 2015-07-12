@@ -28,4 +28,6 @@ public interface InquiryRepository extends MyRepository<Inquiry,Long> {
 
     Page<Inquiry> findByInquiryNoLikeOrTitleLike(String key,String key2,Pageable pageable);
 
+    Inquiry findByUserAndId(User user ,long id);
+
 }

@@ -7,6 +7,7 @@ import com.dream.entity.inquiry.InquiryCollection;
 import com.dream.entity.inquiry.InquiryFile;
 import com.dream.entity.inquiry.InquiryMode;
 import com.dream.entity.message.Message;
+import com.dream.entity.quotation.Quotation;
 import com.dream.entity.user.OpenStatus;
 import com.dream.entity.user.User;
 import com.dream.repository.company.CompanyIndustryRepository;
@@ -16,6 +17,7 @@ import com.dream.repository.inquiry.InquiryFileRepository;
 import com.dream.repository.inquiry.InquiryModeRepository;
 import com.dream.repository.inquiry.InquiryRepository;
 import com.dream.repository.message.MessageRepository;
+import com.dream.repository.quotation.QuotationRepository;
 import com.dream.repository.user.UserCompanyInfoRepository;
 import com.dream.repository.user.UserGroupInfoRepository;
 import com.dream.repository.user.UserPersonalInfoRepository;
@@ -78,6 +80,9 @@ public class InquiryController {
 
     @Autowired
     MessageRepository messageRepository;
+
+    @Autowired
+    QuotationRepository quotationRepository;
 
     @Autowired
     InquiryCollectionRepository inquiryCollectionRepository;
@@ -217,6 +222,7 @@ public class InquiryController {
             fileUrl = UploadUtils.uploadTo7niu(0, uname, file1);
             InquiryFile inquiryFile = new InquiryFile();
             inquiryFile.setInquiry(inquiry);
+            inquiryFile.setRound(inquiry.getRound());
             inquiryFile.setFileUrl(fileUrl);
             inquiryFile.setRemark(file1.getOriginalFilename());
             inquiryFileRepository.save(inquiryFile);
@@ -237,6 +243,7 @@ public class InquiryController {
 
             InquiryFile inquiryFile = new InquiryFile();
             inquiryFile.setInquiry(inquiry);
+            inquiryFile.setRound(inquiry.getRound());
             inquiryFile.setFileUrl(fileUrl);
             inquiryFile.setRemark(file2.getOriginalFilename());
             inquiryFileRepository.save(inquiryFile);
@@ -256,6 +263,7 @@ public class InquiryController {
 
             InquiryFile inquiryFile = new InquiryFile();
             inquiryFile.setInquiry(inquiry);
+            inquiryFile.setRound(inquiry.getRound());
             inquiryFile.setFileUrl(fileUrl);
             inquiryFile.setRemark(file3.getOriginalFilename());
             inquiryFileRepository.save(inquiryFile);
@@ -297,6 +305,7 @@ public class InquiryController {
             map.put("inquiryMode", inquiry.getInquiryMode().getName());
             map.put("industryCode", inquiry.getCompanyIndustry().getName());
             map.put("provinceCode", inquiry.getCompanyProvince().getName());
+            map.put("test", inquiry.getTest());
             map.put("good", 0);
             map.put("successRate", 0);
             map.put("inquiryTimes", 0);
@@ -315,7 +324,7 @@ public class InquiryController {
     }
 
     /**
-     * 获取询价列表
+     * 搜索询价列表
      */
     @RequestMapping("searchInquiryList")
     public Map<String, Object> searchInquiryList(
@@ -341,6 +350,7 @@ public class InquiryController {
             map.put("inquiryMode", inquiry.getInquiryMode().getName());
             map.put("industryCode", inquiry.getCompanyIndustry().getName());
             map.put("provinceCode", inquiry.getCompanyProvince().getName());
+            map.put("test", inquiry.getTest());
             map.put("good", 0);
             map.put("successRate", 0);
             map.put("inquiryTimes", 0);
@@ -393,6 +403,7 @@ public class InquiryController {
         res.put("provinceCode", inquiry.getCompanyProvince().getName());
         res.put("userLimit", inquiry.getUserLimit());
         res.put("logoUrl", inquiry.getLogoUrl());
+        res.put("test", inquiry.getTest());
 
 
         inquiryService.putPrivateInfo(res,user,inquiry);
@@ -463,7 +474,14 @@ public class InquiryController {
         List<Message> list=messageRepository.findAllUserAndInquiryAndStatus(user,inquiry,0);
         if(list.size()>=1){
             res.put("success",0);
-            res.put("message","已经发送过了");
+            res.put("message","已经发送过,请等待对方确认");
+            return res;
+        }
+
+        int count = messageRepository.countByInquiryAndUserAndRoundAndStatus(inquiry, user, inquiry.getRound(),2);
+        if(count>=2){
+            res.put("success",0);
+            res.put("message","您已经被拒绝2次，此标该轮不可再申请！");
             return res;
         }
 
@@ -518,11 +536,95 @@ public class InquiryController {
             list.add(map);
 
         }
-
         res.put("success",1);
         res.put("data",list);
         return res;
+    }
 
+
+    /**
+     * 进入下一轮
+     */
+    @RequestMapping("inquiryNextRound")
+    public Map<String, Object> inquiryNextRound(
+            @RequestParam(required = false) long inquiryId,
+            @ModelAttribute("currentUser") User user) {
+        Map<String, Object> res = new HashMap<>();
+
+        if(user.getId()==null){
+            res.put("success",0);
+            res.put("message","请先登录");
+            return res;
+        }
+
+        Inquiry inquiry = inquiryRepository.findByUserAndId(user, inquiryId);
+        if(inquiry==null){
+            res.put("success",0);
+            res.put("message","查询错误");
+            return res;
+        }
+
+        int round =inquiry.getRound();
+        if(round<3){
+            inquiry.setRound(round+1);
+        }else{
+            res.put("success",0);
+            res.put("message","已经最后一轮");
+            return res;
+        }
+
+        inquiryRepository.save(inquiry);
+
+        res.put("success",1);
+        return res;
+    }
+
+    @RequestMapping("changeInquiryStatus")
+    public Map<String, Object> changeInquiryStatus(
+            @RequestParam(required = false) long inquiryId,
+            @RequestParam(required = false) int status,
+            @RequestParam(required = false) long quotationId,
+            @ModelAttribute("currentUser") User user) {
+        Map<String, Object> res = new HashMap<>();
+
+        if(user.getId()==null){
+            res.put("success",0);
+            res.put("message","请先登录");
+            return res;
+        }
+
+        Inquiry inquiry = inquiryRepository.findByUserAndId(user, inquiryId);
+        if(inquiry==null){
+            res.put("success",0);
+            res.put("message","查询错误");
+            return res;
+        }
+
+        int curStatus =inquiry.getStatus();
+        if(curStatus!=0){
+            res.put("success",0);
+            res.put("message","当前状态不能更改");
+            return res;
+        }else{
+            if(status==1){
+                Quotation quotation = quotationRepository.findByInquiryIdAndId(inquiry.getId(),quotationId);
+                if(quotation==null){
+                    res.put("success",0);
+                    res.put("message","没有找到出标数据");
+                    return res;
+                }
+                inquiry.setStatus(status);
+                quotation.setStatus(status);
+                quotationRepository.save(quotation);
+            }else if(status==2){
+                inquiry.setStatus(status);
+            }
+        }
+
+        inquiryRepository.save(inquiry);
+
+        res.put("success",1);
+        return res;
     }
 
 }

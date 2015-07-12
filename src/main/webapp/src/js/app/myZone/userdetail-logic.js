@@ -93,15 +93,15 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
         switch(data.userType){
             case 1:
                 $("#ul_person").show();
-                $("img#logo").attr("src","/image/pic/personalDefaultLogo.jpg");
+                $("img#logo").attr("src","../image/pic/personalDefaultLogo.jpg");
                 break;
             case 2:
                 $("#ul_company").show();
-                $("img#logo").attr("src","/image/pic/companyDefaultLogo.jpg");
+                $("img#logo").attr("src","../image/pic/companyDefaultLogo.jpg");
                 break;
             case 3:
                 $("#ul_group").show();
-                $("img#logo").attr("src","/image/pic/groupDefaultLogo.jpg");
+                $("img#logo").attr("src","../image/pic/groupDefaultLogo.jpg");
                 break;
             default :
                 break;

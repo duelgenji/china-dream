@@ -51,7 +51,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
         var html = [];
         for (var i = 0, l = vals.length; i < l; i++) {
             var name = vals[i].remark == "" ? "附件" : vals[i].remark;
-            html.push('<div style="float:left;overflow-x: hidden;max-width:'+ (240 / vals.length) +'px;"><a style="padding: 0 5px" href="' + vals[i].fileUrl + '" target="_blank">' + name + '</a></div>');
+            html.push('<div style="float:left;overflow-x: hidden;max-width:'+ (200 / vals.length) +'px;"><a style="padding: 0 5px" href="' + vals[i].fileUrl + '" target="_blank">' + name + '</a></div>');
         }
         return html.join('');
 
@@ -68,6 +68,24 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
 
     function fn_initGrid(config) {
         var grid = gridMod(config || configMod.gridConfig);
+
+        grid.pubSub()
+            .override("renderRound", renderRound)
+            .override("renderAttachments", renderAttachments)
+            .override("renderOpt", renderOpt)
+            .override("grid.databound", function () {
+
+                $("a[data-cmd=seeAll]").click(function () {
+                    var that = $(this),
+                        ri = that.data("ri");
+                });
+            });
+
+        return grid;
+    }
+
+    function fn_initGrid2(config) {
+        var grid = gridMod(config || configMod.gridConfig2);
 
         grid.pubSub()
             .override("renderRound", renderRound)
@@ -382,6 +400,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                 }
             });
         } else {
+            fn_getOpponentBidList();
             $("#div_self").css("display", "");
             $("#div_other").css("display", "none");
 
@@ -415,16 +434,16 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                     params[remark.attr("name")] = remark.val();
 
                     if (confirm("是否确认将此标执行成功操作?")) {
-                        console.log(JSON.stringify(params));
+                        alert(JSON.stringify(params));
                     }
 
                 });
 
-                var testList = ["111", "222", "333", "444", "555"];
+                var testList = dataSource.hisList;
                 console.log(JSON.stringify(testList));
 
                 for (var i = 0; i < testList.length; i++) {
-                    $(".modal-user-list").append('<li style="padding-bottom: 0;"><input class="modal-successUser" type="checkbox" name="successUser" id="' + i + '" value="' + i + '" /><label for="' + i + '" style="padding-left: 10px;float:none;font-weight:100;height">' + testList[i] + '</label></li>');
+                    $(".modal-user-list").append('<li style="padding-bottom: 0;"><input class="modal-successUser" type="radio" name="successUser" id="' + i + '" value="' + testList[i].userId + '" /><label for="' + i + '" style="padding-left: 10px;float:none;font-weight:100;height">' + testList[i].userNickname + '</label></li>');
                 }
 
                 $(".modal-user-list").append('<li style="padding-bottom: 0;"><input class="modal-remark" type="text" name="remark" style="margin-left: 0;margin-right: 10px;"/><input class="modal-open" type="radio" name="open" id="open" value="0"/><label for="open" style="padding-left: 10px;float:none;font-weight:100;height">公开</label><input class="modal-open" type="radio" name="open" id="no-open" value="1"/><label for="no-open" style="padding-left: 10px;float:none;font-weight:100;height">不公开</label></li>')
@@ -494,12 +513,13 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
     function fn_getMyBidList() {
         $("#myBid").css("display", "");
 
-        currentGrid1 = fn_initGrid();
+        currentGrid1 = fn_initGrid2();
         currentGrid1.reBind(dataSource.myList);
         $("#myBid .ui-grid-contentDiv").attr("title","");
 
         //bidRepos.getListOfMy(currentQueryObj.userName, currentQueryObj.inquiryID, currentQueryObj.pageno, currentQueryObj.pagesize, call_mybidok, call_mybidfail, call_mybidfail);
     }
+
 
     function call_mybidok(data) {
         currentGrid1.reBind(data);

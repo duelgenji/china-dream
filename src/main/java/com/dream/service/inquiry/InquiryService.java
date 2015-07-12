@@ -100,7 +100,8 @@ public class InquiryService {
 
         List<Map<String, Object>> myList = new ArrayList<Map<String,Object>>();
         List<Map<String, Object>> histList = new ArrayList<Map<String,Object>>();
-        List<Map<String, Object>> fileList = new ArrayList<Map<String,Object>>();
+        List<Map<String, Object>> techFileList = new ArrayList<Map<String,Object>>();
+        List<Map<String, Object>> businessFileList = new ArrayList<Map<String,Object>>();
 
         for( Quotation quotation : quotationList ){
             Map<String, Object> map = new HashMap<String, Object>();
@@ -124,16 +125,22 @@ public class InquiryService {
                 histList.add(map);
             }
             quotationFileList=quotationFileRepository.findByQuotation(quotation);
-            fileList = new ArrayList<Map<String,Object>>();
+            businessFileList = new ArrayList<Map<String,Object>>();
+            techFileList = new ArrayList<Map<String,Object>>();
             for(QuotationFile quotationFile : quotationFileList){
                 Map<String, Object> fileMap = new HashMap<String, Object>();
                 fileMap.put("id",quotationFile.getId());
                 fileMap.put("type",quotationFile.getType());
                 fileMap.put("fileUrl",quotationFile.getFileUrl());
                 fileMap.put("remark",quotationFile.getRemark());
-                fileList.add(fileMap);
+                if(quotationFile.getType()==0){
+                    businessFileList.add(fileMap);
+                }else if(quotationFile.getType()==1){
+                    techFileList.add(fileMap);
+                }
             }
-            map.put("fileList",fileList);
+            map.put("businessFileList",businessFileList);
+            map.put("techFileList",techFileList);
         }
 
         res.put("myList",myList);

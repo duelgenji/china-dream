@@ -4,6 +4,7 @@ import com.dream.entity.company.CompanyIndustry;
 import com.dream.entity.company.CompanyProvince;
 import com.dream.entity.user.OpenStatus;
 import com.dream.entity.user.User;
+import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ import java.util.Date;
  */
 @Entity
 @Table
+@Audited
 public class Inquiry  extends AbstractPersistable<Long> {
 
     @ManyToOne
@@ -89,6 +91,8 @@ public class Inquiry  extends AbstractPersistable<Long> {
      */
     private String remark;
 
+    private int test;
+
     @Enumerated
     private OpenStatus remarkOpen = OpenStatus.OPEN;
 
@@ -137,6 +141,8 @@ public class Inquiry  extends AbstractPersistable<Long> {
     private String inquiryNo;
 
     private String logoUrl;
+
+    private String winner;
 
 
     public User getUser() {
@@ -403,6 +409,17 @@ public class Inquiry  extends AbstractPersistable<Long> {
         this.logoUrl = logoUrl;
     }
 
+    public int getTest() {
+        return test;
+    }
+
+    public String getWinner() {
+        return winner;
+    }
+
+    public void setWinner(String winner) {
+        this.winner = winner;
+    }
 
     public Object getProperties(String name){
         switch (name){

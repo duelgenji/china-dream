@@ -26,5 +26,5 @@ public interface MessageRepository  extends MyRepository<Message,Long> {
     @Query("select count(*) from Message m where m.user =:user and m.status =1 and m.inquiry.status=0 ")
     int countByInquiryAndUser(@Param("user") User user);
 
-
+    int countByInquiryAndUserAndRoundAndStatus(Inquiry inquiry,User user,int round,int status);
 }

@@ -23,6 +23,8 @@ public class InquiryFile extends AbstractPersistable<Long> {
 
     private String remark;
 
+    private int round;
+
     public Inquiry getInquiry() {
         return inquiry;
     }
@@ -45,5 +47,13 @@ public class InquiryFile extends AbstractPersistable<Long> {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public int getRound() {
+        return round;
+    }
+
+    public void setRound(int round) {
+        this.round = round;
     }
 }

@@ -10,7 +10,7 @@ define("detail-config", [], function(require, exports) {
         columns = [{
             index: 1,
             head: {
-                width: 139,
+                width: 99,
                 issort: false,
                 text: "当前轮数"
             },
@@ -23,7 +23,7 @@ define("detail-config", [], function(require, exports) {
             index: 2,
             head: {
                 text: "投标方名称",
-                width: 172,
+                width: 132,
                 issort: false,
                 align: "center"
             },
@@ -35,7 +35,7 @@ define("detail-config", [], function(require, exports) {
             index: 3,
             head: {
                 text: "所在地",
-                width: 139,
+                width: 99,
                 issort: false,
                 align: "center"
             },
@@ -52,7 +52,7 @@ define("detail-config", [], function(require, exports) {
                 align: "center"
             },
             body: {
-                align: "left",
+                align: "center",
                 fields: "createTime"
             }
         }, {
@@ -70,21 +70,34 @@ define("detail-config", [], function(require, exports) {
         }, {
             index: 6,
             head: {
-                text: "附件信息",
-                width: 240,
+                text: "商务附件",
+                width: 200,
                 issort: false,
                 align: "center"
             },
             body: {
-                align: "left",
-                fields: "fileList",
+                align: "center",
+                fields: "businessFileList",
+                renderFn: "renderAttachments"
+            }
+        },  {
+            index: 7,
+            head: {
+                text: "技术附件",
+                width: 200,
+                issort: false,
+                align: "center"
+            },
+            body: {
+                align: "center",
+                fields: "techFileList",
                 renderFn: "renderAttachments"
             }
         }, {
-            index: 7,
+            index: 8,
             head: {
                 text: "操作",
-                width: 160,
+                width: 120,
                 issort: false,
                 align: "center"
             },

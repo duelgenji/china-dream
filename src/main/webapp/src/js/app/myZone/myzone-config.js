@@ -413,8 +413,8 @@ define("myzone-config", [], function(require, exports) {
 		}, {
 			index: 4,
 			head: {
-				text: "询价方",
-				width: 53,
+				text: "出价/询价方",
+				width: 103,
 				issort: false,
 				align: "center"
 			},
@@ -427,7 +427,7 @@ define("myzone-config", [], function(require, exports) {
 			index: 5,
 			head: {
 				text: "询价方式",
-				width: 120,
+				width: 100,
 				issort: false,
 				align: "center"
 			},
@@ -440,7 +440,7 @@ define("myzone-config", [], function(require, exports) {
 			index: 6,
 			head: {
 				text: "状态",
-				width: 80,
+				width: 70,
 				issort: false,
 				align: "center"
 			},
@@ -453,7 +453,7 @@ define("myzone-config", [], function(require, exports) {
 			index: 7,
 			head: {
 				text: "地区",
-				width: 80,
+				width: 70,
 				issort: false,
 				align: "center"
 			},
@@ -465,7 +465,7 @@ define("myzone-config", [], function(require, exports) {
 			index: 8,
 			head: {
 				text: "标的",
-				width: 110,
+				width: 100,
 				issort: false,
 				align: "center"
 			},

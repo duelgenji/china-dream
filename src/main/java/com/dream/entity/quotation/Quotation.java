@@ -30,7 +30,7 @@ public class Quotation extends AbstractPersistable<Long> {
     private Date createTime = new Date();
 
     /**
-     * 站内信 询价确认状态
+     * 询价确认状态
      * 状态 0-待定；1-同意；2-拒绝
      */
     private int status;

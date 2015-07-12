@@ -4,6 +4,7 @@ import com.dream.entity.company.CompanyIndustry;
 import com.dream.entity.company.CompanyOwnership;
 import com.dream.entity.company.CompanyProvince;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,6 +15,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table
+@Audited
 public class UserCompanyInfo  implements Serializable {
 
     @Id
@@ -53,7 +55,7 @@ public class UserCompanyInfo  implements Serializable {
     private OpenStatus companyEmailOpen = OpenStatus.OPEN;
 
     /**
-     * 税号
+     * 营业执照号
      */
     private String taxNumber;
 

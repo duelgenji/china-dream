@@ -92,6 +92,9 @@ public class UserService {
         if(request.getParameter("headImage")!=null){
             user.setHeadImage(request.getParameter("headImage"));
         }
+        if(request.getParameter("description")!=null){
+            user.setDescription(request.getParameter("description"));
+        }
 
 
         user.setUpdateTime(new Date());

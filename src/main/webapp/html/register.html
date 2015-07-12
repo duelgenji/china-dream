@@ -253,12 +253,6 @@
                         <input type="number" name="groupNumber" value="" step='1' min=1 placeholder="请输入群号">
 
                     </li>
-                    <li data-type="g" style="display:none;">
-
-                        <label for="">群简介:</label>
-                        <textarea name="description" placeholder="请输入群简介"></textarea>
-
-                    </li>
                     <li data-type="p">
 
                         <label for="">性别:</label>
@@ -611,7 +605,7 @@
                         </select>
                     </li>
                     <li data-type="c" style="display: none;">
-                        <label for="">税号:</label><input name="taxNumber" type="text" placeholder="请填写税号">
+                        <label for="">营业执照号:</label><input name="taxNumber" type="text" placeholder="请填写营业执照号">
                         <select name="taxNumberOpen" class="ui-isopen">
                             <option value="0">公开</option>
                             <option value="1">不公开</option>
@@ -661,6 +655,9 @@
                     </li>
                     <li data-type="pcg">
                         <label for="">关心行业或者地区:</label><input type="text" name="keywords" placeholder="请输入关心的行业或者地区">
+                    </li>
+                    <li data-type="pcg" style="height: 80px">
+                        <label>简介:</label><textarea style="height: 80px" name="description"  placeholder="请输入用户简介(如自我介绍、博客、主页等信息"></textarea>
                     </li>
                     <li>
                         <div class="person" style="">

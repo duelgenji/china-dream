@@ -209,6 +209,7 @@ public class QuotationController {
         res.put("logoUrl",user.getLogoUrl());
         res.put("nickname",user.getNickName());
         res.put("userType",user.getType());
+        res.put("description",user.getDescription());
 
         if(currentUser.getId()!=null){
             if(currentUser.getId().equals(user.getId())){

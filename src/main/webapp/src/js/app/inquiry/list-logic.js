@@ -71,8 +71,18 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
 
         objval.title = vals[0] + "\n" + vals[1] + "\n" + (vals[2] || "");
 
+
+        var css = "";
+        if(vals[4]=="1"){
+            css = " orange ";
+        }else if(vals[5]=="2"){
+            css = " blue ";
+        }else if(vals[5]=="0"){
+            css = " green ";
+        }
+
         var html =
-            '<p class="ui-inquiryTitle">' + '<a href="inquiryDetail.html?key=' + vals[3] + '" name="detail">' + vals[0] + '</a>' + '</p>' + '<p class="ui-biaohao">' + vals[1] + '</p>' + '<p class="ui-userName">' + vals[2] + '</p>';
+            '<p class="ui-inquiryTitle">' + '<a href="inquiryDetail.html?key=' + vals[3] + '" name="detail">' + vals[0] + '</a>' + '</p>' + '<p class="ui-biaohao '+css+'">' + vals[1] + '</p>' + '<p class="ui-userName">' + vals[2] + '</p>';
 
         return html;
     }
@@ -124,7 +134,9 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
     function renderEndDate(vals, ri, objval) {
 
         if (vals[3] == "1") {
-            return (objval.title = "中标方:" + (vals[5] == "0" ? vals[4] : "*******"));
+            return (objval.title = "中标方:" + (vals[4] ? vals[4] : "*******"));
+        }else if (vals[3] == "2") {
+            return "流标";
         }
 
         objval.title = "第" + vals[1] + "轮";

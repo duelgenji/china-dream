@@ -27,4 +27,7 @@ public interface QuotationRepository extends MyRepository<Quotation,Long> {
     @Query(value = "select count(*) from ( select * from Quotation q where q.user_id =:user and q.status =:status group by q.inquiry_id ) as  ta " , nativeQuery = true)
     int countByInquiryAndUserAndStatus(@Param("user") long user,@Param("status") int status);
 
+
+    Quotation findByInquiryIdAndId(long inquiryId,long id);
+
 }

@@ -2,6 +2,7 @@ package com.dream.entity.user;
 
 import com.dream.entity.company.CompanyIndustry;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,6 +14,7 @@ import java.util.Date;
  */
 @Entity
 @Table
+@Audited
 public class UserPersonalInfo implements Serializable {
 
     @Id

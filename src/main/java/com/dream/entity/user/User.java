@@ -1,6 +1,7 @@
 package com.dream.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.util.Date;
  */
 @Entity
 @Table
+@Audited
 public class User extends AbstractPersistable<Long> {
 
     private String email;
@@ -87,6 +89,11 @@ public class User extends AbstractPersistable<Long> {
      */
     @JsonIgnore
     private String captcha;
+
+    /**
+     * 简介
+     */
+    private String description;
 
     public String getEmail() {
         return email;
@@ -310,5 +317,13 @@ public class User extends AbstractPersistable<Long> {
 
     public void setUserIndex(UserIndex userIndex) {
         this.userIndex = userIndex;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
