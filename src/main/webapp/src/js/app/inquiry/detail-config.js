@@ -58,7 +58,7 @@ define("detail-config", [], function(require, exports) {
         }, {
             index: 5,
             head: {
-                text: "报价金额(万)",
+                text: "报价金额",
                 width: 169,
                 issort: false,
                 align: "center"
@@ -119,6 +119,19 @@ define("detail-config", [], function(require, exports) {
     exports.gridConfig2 = {
         key: "otherBidGrid",
         renderTo: "data2",
+        columns: columns,
+        sortCss: sortCss
+    };
+
+    exports.gridConfig3 = {
+        key: "otherBidGrid2",
+        renderTo: "data3",
+        columns: columns,
+        sortCss: sortCss
+    };
+    exports.gridConfig4 = {
+        key: "otherBidGrid3",
+        renderTo: "data4",
         columns: columns,
         sortCss: sortCss
     };

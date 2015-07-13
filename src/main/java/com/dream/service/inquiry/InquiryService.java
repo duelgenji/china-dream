@@ -19,10 +19,7 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.dream.entity.user.OpenStatus.OPEN;
 
@@ -100,9 +97,22 @@ public class InquiryService {
      */
     public void putQuotationList(Map<String, Object> res, User user , Inquiry inquiry){
 
-        List<Quotation> quotationList=quotationRepository.findByInquiryAndRound(inquiry, inquiry.getRound());
-        List<QuotationFile> quotationFileList;
+        List<Quotation> quotationList= new ArrayList<>();
 
+        /*甲方标记*/
+        boolean isOwner=user.getId().equals(inquiry.getUser().getId());
+
+        /*授权标记*/
+        boolean isAuthorize= messageRepository.findAllUserAndInquiryAndStatus(user, inquiry, 1).size() != 0;
+
+        //全明询价 只有注册用户才能看到他人出价
+        if(user.getId()!=null){
+            //除了全明询价 都至少授权才能看到
+            if(inquiry.getInquiryMode().getId()<2 || isAuthorize || isOwner){
+                quotationList  =quotationRepository.findByInquiryAndRound(inquiry, inquiry.getRound());
+            }
+        }
+        List<QuotationFile> quotationFileList = new ArrayList<>();
         List<Map<String, Object>> myList = new ArrayList<Map<String,Object>>();
         List<Map<String, Object>> histList = new ArrayList<Map<String,Object>>();
         List<Map<String, Object>> techFileList = new ArrayList<Map<String,Object>>();
@@ -113,9 +123,12 @@ public class InquiryService {
             map.put("quotationId",quotation.getId());
             map.put("createTime", DateFormatUtils.format(quotation.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
             map.put("round",quotation.getRound());
+
+
             map.put("totalPrice",quotation.getTotalPrice());
             map.put("userId",quotation.getUser().getId());
             map.put("userNickname",quotation.getUser().getNickName());
+
             if(quotation.getUser().getUserCompanyInfo()!=null){
                 map.put("userProvince",quotation.getUser().getUserCompanyInfo().getCompanyProvince().getName());
             }else{
@@ -123,28 +136,69 @@ public class InquiryService {
             }
             map.put("userNickName",quotation.getUser().getNickName());
 
-            if(quotation.getUser().getId().equals(user.getId())){
-                myList.add(map);
-            }else{
-                histList.add(map);
-            }
-            quotationFileList=quotationFileRepository.findByQuotation(quotation);
             businessFileList = new ArrayList<Map<String,Object>>();
             techFileList = new ArrayList<Map<String,Object>>();
-            for(QuotationFile quotationFile : quotationFileList){
-                Map<String, Object> fileMap = new HashMap<String, Object>();
-                fileMap.put("id",quotationFile.getId());
-                fileMap.put("type",quotationFile.getType());
-                fileMap.put("fileUrl",quotationFile.getFileUrl());
-                fileMap.put("remark",quotationFile.getRemark());
-                if(quotationFile.getType()==0){
-                    businessFileList.add(fileMap);
-                }else if(quotationFile.getType()==1){
-                    techFileList.add(fileMap);
+            quotationFileList = new ArrayList<>();
+            if(quotation.getUser().getId().equals(user.getId())){
+                //我的出价
+                quotationFileList=quotationFileRepository.findByQuotation(quotation);
+                for(QuotationFile quotationFile : quotationFileList){
+                    Map<String, Object> fileMap = new HashMap<String, Object>();
+                    fileMap.put("id",quotationFile.getId());
+                    fileMap.put("type",quotationFile.getType());
+                    fileMap.put("fileUrl",quotationFile.getFileUrl());
+                    fileMap.put("remark",quotationFile.getRemark());
+                    if(quotationFile.getType()==0){
+                        businessFileList.add(fileMap);
+                    }else if(quotationFile.getType()==1){
+                        techFileList.add(fileMap);
+                    }
+                }
+                map.put("businessFileList",businessFileList);
+                map.put("techFileList",techFileList);
+                myList.add(map);
+            }else{
+                //他人出价
+                if(!inquiry.getInquiryMode().getId().equals(3l) || isOwner){
+                    /*半明询价 乙方不能看到文件*/
+                    quotationFileList=quotationFileRepository.findByQuotation(quotation);
+                }
+                for(QuotationFile quotationFile : quotationFileList){
+                    Map<String, Object> fileMap = new HashMap<String, Object>();
+                    fileMap.put("id",quotationFile.getId());
+                    fileMap.put("type",quotationFile.getType());
+                    fileMap.put("fileUrl",quotationFile.getFileUrl());
+                    fileMap.put("remark",quotationFile.getRemark());
+                    if(quotationFile.getType()==0){
+                        businessFileList.add(fileMap);
+                    }else if(quotationFile.getType()==1){
+                        techFileList.add(fileMap);
+                    }
+                }
+                map.put("businessFileList",businessFileList);
+                map.put("techFileList",techFileList);
+
+                if(inquiry.getInquiryMode().getId()<=3 ){
+                    /*明询价 或者是甲方 才能看到他人*/
+                    histList.add(map);
+                }else if(isOwner){
+                    if(inquiry.getInquiryMode().getId().equals(4l)){
+                        /* 半暗询价 甲方可以看到*/
+                        histList.add(map);
+                    }else if(inquiry.getInquiryMode().getId().equals(5l) && new Date().compareTo(inquiry.getLimitDate())>=0){
+                        /* 暗询价 截止时间到 甲方可以看到 */
+                        if((new Date().getTime()-inquiry.getLimitDate().getTime())<inquiry.getIntervalHour()*3600*1000){
+                            /* 暗询价 截止时间到 n小时 （2-240小时）之前  甲方是不能看到 商务文件和价格 */
+                            map.put("totalPrice", "--");
+                            map.put("businessFileList",new ArrayList<>());
+                        }
+                        histList.add(map);
+                    }else if(inquiry.getInquiryMode().getId().equals(6l) && (new Date().getTime()-inquiry.getLimitDate().getTime())>=2*3600*1000){
+                        /* 全暗询价 截止时间 2小时后 甲方可以看到 */
+                        histList.add(map);
+                    }
                 }
             }
-            map.put("businessFileList",businessFileList);
-            map.put("techFileList",techFileList);
         }
 
         res.put("myList",myList);
@@ -306,7 +360,7 @@ public class InquiryService {
         }
 
         OpenStatus openStatus = (OpenStatus) inquiry.getProperties("filesOpen");
-        List<InquiryFile> fileList = inquiryFileRepository.findByInquiryAndRound(inquiry.getInquiry(),inquiry.getInquiry().getRound());
+        List<InquiryFile> fileList = inquiryFileRepository.findByInquiryAndRound(inquiry.getInquiry(),inquiry.getRound());
 
         assert openStatus != null;
         res.put("files",  "(" + openStatus.getName() +")");

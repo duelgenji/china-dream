@@ -45,7 +45,7 @@
 <div id="header"></div>
 <div id="container">
     <form accept-charset="utf-8">
-        <div class="ui-main">
+        <div class="ui-main" id="div_round_now">
             <div id="detail" class="ui-content">
                 <div class="ui-toptitle">
                     <h2>询价号_<span data-col="biaohao" id="detailbiaohao"></span>_信息</h2>
@@ -148,7 +148,8 @@
                     </div>
                     <!-- JiaThis Button END -->
                 </div>
-                <div class="ui-footer">
+                <div class="ui-footer" style="min-height: 25px;">
+
                     <div id="div_self" style="display:none;">
                         <button type="button" id="btn_sucending" data-cmd="pass">成功</button>
                         <button type="button" id="btn_next" data-cmd="next">下一轮</button>
@@ -157,6 +158,10 @@
                     <div id="div_other" style="display:none;">
                         <button type="button" id="btn_biddingApply" data-cmd="apply">申请出价</button>
                         <button type="button" id="btn_addCollect" data-cmd="add">加至收藏</button>
+                    </div>
+                    <div id="div_round" style="text-align: right;padding-right: 100px">
+                        <button type="button" id="btn_round1" style="display:none;">第一轮</button>
+                        <button type="button" id="btn_round2" style="display:none;">第二轮</button>
                     </div>
                 </div>
             </div>
@@ -174,6 +179,216 @@
                 </div>
                 <div class="ui-datalist">
                     <div id="data2"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ui-main" id="div_round2" style="display: none;margin-top: 50px">
+            <div id="detail" class="ui-content">
+                <div class="ui-toptitle">
+                    <h2>第二轮</h2>
+                </div>
+                <div class="ui-autoHeight">
+                    <ul id="col1">
+                        <li class="ui-normal">
+                            <span class="ui-field">询价编号:</span>
+                            <span data-col="inquiryNo" class="ui-value"></span>
+                        </li>
+                        <li class="ui-normal">
+                            <span class="ui-field">询价标题:</span>
+                            <span data-col="title" class="ui-value"></span>
+                        </li>
+                        <li class="ui-normal">
+                            <span class="ui-field">所处行业:</span>
+                            <span data-col="industryCode" class="ui-value"></span>
+                        </li>
+                        <li class="ui-normal">
+                            <span class="ui-field">轮数:</span>
+                            <span data-col="round" class="ui-value"></span>
+                        </li>
+                        <li class="ui-normal">
+                            <span class="ui-field">联系人姓名:</span>
+                            <span data-access="1" data-col="contactName" class="ui-value"></span>
+                        </li>
+                        <li class="ui-normal">
+                            <span class="ui-field">联系人手机:</span>
+                            <span data-access="1" data-col="contactPhone" class="ui-value"></span>
+                        </li>
+                        <li class="ui-normal">
+                            <span class="ui-field">微信:</span>
+                            <span data-access="1" data-col="contactWeiXin" class="ui-value"></span>
+                        </li>
+                    </ul>
+                    <ul id="col2">
+                        <li class="ui-normal">
+                            <span class="ui-field">询价方:</span>
+                            <span data-col="userName" class="ui-value"></span>
+                        </li>
+                        <li class="ui-normal">
+                            <span class="ui-field">询价方式:</span>
+                            <span data-col="inquiryMode" class="ui-value"></span>
+                        </li>
+                        <li class="ui-normal">
+                            <span class="ui-field">实施地点:</span>
+                            <span data-col="provinceCode" class="ui-value"></span>
+                        </li>
+                        <li class="ui-normal">
+                            <span class="ui-field">截止时间:</span>
+                            <span data-col="limitDate" class="ui-value"></span>
+                        </li>
+                        <li class="ui-normal">
+                            <span class="ui-field">联系人电话:</span>
+                            <span data-access="1" data-col="contactTel" class="ui-value"></span>
+                        </li>
+                        <li class="ui-normal">
+                            <span class="ui-field">联系人邮箱:</span>
+                            <span data-access="1" data-col="contactEmail" class="ui-value"></span>
+                        </li>
+                        <li class="ui-normal">
+                            <span class="ui-field">微博:</span>
+                            <span data-access="1" data-col="contactWeiBo" class="ui-value"></span>
+                        </li>
+                    </ul>
+                    <ul id="col3">
+                        <li class="ui-normal">
+                            <span class="ui-field">传真:</span>
+                            <span data-access="1" data-col="contactFax" class="ui-value"></span>
+                        </li>
+                        <li class="ui-break">
+                            <span class="ui-field">简要说明:</span>
+                            <span data-access="1" data-col="remark" class="ui-value"></span>
+                        </li>
+                        <li class="ui-break">
+                            <span class="ui-field">附件说明:</span>
+                            <span data-access="1" data-col="files" class="ui-value"></span>
+                        </li>
+                        <li class="ui-break">
+                            <span class="ui-field">当前状态:</span>
+                            <span data-access="1" data-col="status" class="ui-value"></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="clearfloat">
+                    <!-- JiaThis Button BEGIN -->
+                    <!-- JiaThis Button END -->
+                </div>
+                <div class="ui-footer">
+                    <div  style="text-align: right;padding-right: 100px">
+                        <button type="button" id="btn_close2" data-cmd="apply">收起</button>
+                    </div>
+                </div>
+            </div>
+            <div id="otherBid">
+                <div class="ui-toptitle">
+                    <h2>第二轮出价</h2>
+                </div>
+                <div class="ui-datalist">
+                    <div id="data4"></div>
+                </div>
+            </div>
+
+        </div>
+        <div class="ui-main" id="div_round1" style="display: none;margin-top: 50px">
+            <div id="detail" class="ui-content">
+                <div class="ui-toptitle">
+                    <h2>第一轮</h2>
+                </div>
+                <div class="ui-autoHeight">
+                    <ul id="col1">
+                        <li class="ui-normal">
+                            <span class="ui-field">询价编号:</span>
+                            <span data-col="inquiryNo" class="ui-value"></span>
+                        </li>
+                        <li class="ui-normal">
+                            <span class="ui-field">询价标题:</span>
+                            <span data-col="title" class="ui-value"></span>
+                        </li>
+                        <li class="ui-normal">
+                            <span class="ui-field">所处行业:</span>
+                            <span data-col="industryCode" class="ui-value"></span>
+                        </li>
+                        <li class="ui-normal">
+                            <span class="ui-field">轮数:</span>
+                            <span data-col="round" class="ui-value"></span>
+                        </li>
+                        <li class="ui-normal">
+                            <span class="ui-field">联系人姓名:</span>
+                            <span data-access="1" data-col="contactName" class="ui-value"></span>
+                        </li>
+                        <li class="ui-normal">
+                            <span class="ui-field">联系人手机:</span>
+                            <span data-access="1" data-col="contactPhone" class="ui-value"></span>
+                        </li>
+                        <li class="ui-normal">
+                            <span class="ui-field">微信:</span>
+                            <span data-access="1" data-col="contactWeiXin" class="ui-value"></span>
+                        </li>
+                    </ul>
+                    <ul id="col2">
+                        <li class="ui-normal">
+                            <span class="ui-field">询价方:</span>
+                            <span data-col="userName" class="ui-value"></span>
+                        </li>
+                        <li class="ui-normal">
+                            <span class="ui-field">询价方式:</span>
+                            <span data-col="inquiryMode" class="ui-value"></span>
+                        </li>
+                        <li class="ui-normal">
+                            <span class="ui-field">实施地点:</span>
+                            <span data-col="provinceCode" class="ui-value"></span>
+                        </li>
+                        <li class="ui-normal">
+                            <span class="ui-field">截止时间:</span>
+                            <span data-col="limitDate" class="ui-value"></span>
+                        </li>
+                        <li class="ui-normal">
+                            <span class="ui-field">联系人电话:</span>
+                            <span data-access="1" data-col="contactTel" class="ui-value"></span>
+                        </li>
+                        <li class="ui-normal">
+                            <span class="ui-field">联系人邮箱:</span>
+                            <span data-access="1" data-col="contactEmail" class="ui-value"></span>
+                        </li>
+                        <li class="ui-normal">
+                            <span class="ui-field">微博:</span>
+                            <span data-access="1" data-col="contactWeiBo" class="ui-value"></span>
+                        </li>
+                    </ul>
+                    <ul id="col3">
+                        <li class="ui-normal">
+                            <span class="ui-field">传真:</span>
+                            <span data-access="1" data-col="contactFax" class="ui-value"></span>
+                        </li>
+                        <li class="ui-break">
+                            <span class="ui-field">简要说明:</span>
+                            <span data-access="1" data-col="remark" class="ui-value"></span>
+                        </li>
+                        <li class="ui-break">
+                            <span class="ui-field">附件说明:</span>
+                            <span data-access="1" data-col="files" class="ui-value"></span>
+                        </li>
+                        <li class="ui-break">
+                            <span class="ui-field">当前状态:</span>
+                            <span data-access="1" data-col="status" class="ui-value"></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="clearfloat">
+                    <!-- JiaThis Button BEGIN -->
+                    <!-- JiaThis Button END -->
+                </div>
+                <div class="ui-footer">
+                    <div  style="text-align: right;padding-right: 100px">
+                        <button type="button" id="btn_close1" data-cmd="apply">收起</button>
+                    </div>
+                </div>
+            </div>
+            <div id="otherBid">
+                <div class="ui-toptitle">
+                    <h2>第一轮出价</h2>
+                </div>
+                <div class="ui-datalist">
+                    <div id="data3"></div>
                 </div>
             </div>
         </div>

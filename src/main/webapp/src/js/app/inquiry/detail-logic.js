@@ -102,6 +102,42 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
         return grid;
     }
 
+    function fn_initGrid3(config) {
+        var grid = gridMod(config || configMod.gridConfig3);
+
+        grid.pubSub()
+            .override("renderRound", renderRound)
+            .override("renderAttachments", renderAttachments)
+            .override("renderOpt", renderOpt)
+            .override("grid.databound", function () {
+
+                $("a[data-cmd=seeAll]").click(function () {
+                    var that = $(this),
+                        ri = that.data("ri");
+                });
+            });
+
+        return grid;
+    }
+
+    function fn_initGrid4(config) {
+        var grid = gridMod(config || configMod.gridConfig4);
+
+        grid.pubSub()
+            .override("renderRound", renderRound)
+            .override("renderAttachments", renderAttachments)
+            .override("renderOpt", renderOpt)
+            .override("grid.databound", function () {
+
+                $("a[data-cmd=seeAll]").click(function () {
+                    var that = $(this),
+                        ri = that.data("ri");
+                });
+            });
+
+        return grid;
+    }
+
     /**
      * 获取询价标详情
      * @return {[type]} [description]
@@ -131,7 +167,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
 
         $("#detailbiaohao").text(dataSource["inquiryNo"]);
 
-        $("span.ui-value").each(function (i, span) {
+        $("#div_round_now span.ui-value").each(function (i, span) {
             span = $(span);
             var col = span.data("col"),
                 val = dataSource[col];
@@ -163,6 +199,9 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
             }
 
         });
+
+        /*第一轮*/
+
 
         console.log(dataSource);
 
@@ -200,13 +239,14 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
             $("#btn_addCollect").click(function () {
                 alert("对不起,此部分功能需要登录后才能操作,请先登录!");
             });
+            $("#div_self").css("display", "none");
+            $("#div_other").css("display", "");
             return;
         }
 
         if (!dataSource.isMe) {
             fn_getMyBidList();
             if(dataSource.status=="0"){
-                $("#div_self").css("display", "none");
                 $("#div_other").css("display", "");
             }
 
@@ -422,10 +462,12 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
             });
         } else {
             fn_getOpponentBidList();
-
+            addHistory(dataSource);
             if(dataSource.status=="0"){
                 $("#div_self").css("display", "");
                 $("#div_other").css("display", "none");
+                if(dataSource.round>=3)
+                      $("#btn_next").hide();
             }
 
             $("#btn_sucending").click(function () {
@@ -558,7 +600,32 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
             });
 
             $("#btn_next").click(function () {
+                if(dataSource.round>=3){
+                    alert("已经三轮了");
+                    return;
+                }
+                location.href= "inquiryNew.html?key="+dataSource.id;
+            });
 
+            $("#btn_next").click(function () {
+                if(dataSource.round>=3){
+                    alert("已经三轮了");
+                    return;
+                }
+                location.href= "inquiryNew.html?key="+dataSource.id;
+            });
+
+            $("#btn_round1").click(function () {
+                $("#div_round1").toggle();
+            });
+            $("#btn_round2").click(function () {
+                $("#div_round2").toggle();
+            });
+            $("#btn_close1").click(function(){
+                $("#div_round1").hide();
+            });
+            $("#btn_close2").click(function(){
+                $("#div_round2").hide();
             });
         }
     }
@@ -574,7 +641,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
     function fn_getMyBidList() {
         $("#myBid").css("display", "");
 
-        currentGrid1 = fn_initGrid2();
+        currentGrid1 = fn_initGrid();
         currentGrid1.reBind(dataSource.myList);
         $("#myBid .ui-grid-contentDiv").attr("title","");
 
@@ -597,12 +664,27 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
      */
     function fn_getOpponentBidList() {
 
-        currentGrid2 = fn_initGrid(configMod.gridConfig2);
+        currentGrid2 = fn_initGrid2(configMod.gridConfig2);
 
         currentGrid2.reBind(dataSource.hisList);
         $("#otherBid .ui-grid-contentDiv").attr("title","");
         //bidRepos.getListOfOther(currentQueryObj.userName, currentQueryObj.inquiryID, currentQueryObj.pageno, currentQueryObj.pagesize, call_opponentbid, call_opponentbidfail, call_opponentbidfail);
     }
+
+    function fn_getOpponentBidList2(data) {
+
+        currentGrid2 = fn_initGrid3(configMod.gridConfig3);
+
+        currentGrid2.reBind(data.hisList);
+    }
+
+    function fn_getOpponentBidList3(data) {
+
+        currentGrid2 = fn_initGrid4(configMod.gridConfig4);
+
+        currentGrid2.reBind(data.hisList);
+    }
+
 
     function call_opponentbid(data) {
         currentGrid2.reBind(testData);
@@ -611,6 +693,87 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
     function call_opponentbidfail() {
 
         currentGrid2.reBind(testData);
+    }
+
+    /*历史 轮*/
+    function addHistory(dataSource){
+
+        for(var j=0;j<dataSource.historyList.length;j++){
+            //第一轮 第二轮
+            if(dataSource.historyList[j].round==1){
+                $("#btn_round1").show();
+                fn_getOpponentBidList2(dataSource.historyList[j]);
+                $("#div_round1 span.ui-value").each(function (i, span) {
+                    span = $(span);
+                    var col = span.data("col"),
+                        val = dataSource.historyList[0][col];
+                    if (col == "files") {
+                        span.empty().append(val);
+                        var files = dataSource.historyList[0].fileList;
+                        for (var i = 0; i < files.length; i++) {
+                            var name = files[i].remark == "" ? "附件" : files[i].remark;
+                            span.append("<p><a href=" + files[i].fileUrl + ">" + name + "</a></p>")
+                        }
+                    } else if(col=="status"){
+                        var arr= ["进行中","已成功","已流标"];
+                        span.text(arr[val]).attr("title", arr[val]).css("font-size","18px");
+                        switch (val){
+                            case 0:
+                                span.css("color","green");
+                                break;
+                            case 1:
+                                span.css("color","red");
+                                break;
+                            case 2:
+                                span.css("color","blue");
+                                break;
+                            default :
+                                break;
+                        }
+                    } else {
+                        span.text(val).attr("title", val);
+                    }
+                });
+            }else  if(dataSource.historyList[j].round==2){
+                $("#btn_round2").show();
+                fn_getOpponentBidList3(dataSource.historyList[j]);
+                $("#div_round2 span.ui-value").each(function (i, span) {
+                    span = $(span);
+                    var col = span.data("col"),
+                        val = dataSource.historyList[1][col];
+                    if (col == "files") {
+                        span.empty().append(val);
+                        var files = dataSource.historyList[1].fileList;
+                        for (var i = 0; i < files.length; i++) {
+                            var name = files[i].remark == "" ? "附件" : files[i].remark;
+                            span.append("<p><a href=" + files[i].fileUrl + ">" + name + "</a></p>")
+                        }
+                    } else if(col=="status"){
+                        var arr= ["进行中","已成功","已流标"];
+                        span.text(arr[val]).attr("title", arr[val]).css("font-size","18px");
+                        switch (val){
+                            case 0:
+                                span.css("color","green");
+                                break;
+                            case 1:
+                                span.css("color","red");
+                                break;
+                            case 2:
+                                span.css("color","blue");
+                                break;
+                            default :
+                                break;
+                        }
+                    } else {
+                        span.text(val).attr("title", val);
+                    }
+                });
+            }
+        }
+
+
+
+
     }
 
     var testData = [{

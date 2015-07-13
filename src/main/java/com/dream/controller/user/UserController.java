@@ -4,6 +4,7 @@ import com.dream.entity.user.User;
 import com.dream.entity.user.UserIndex;
 import com.dream.repository.user.UserIndexRepository;
 import com.dream.repository.user.UserRepository;
+import com.dream.service.inquiry.InquiryService;
 import com.dream.service.user.UserService;
 import com.dream.utils.CommonEmail;
 import com.dream.utils.UploadUtils;
@@ -41,6 +42,9 @@ public  class UserController extends AbstractBaseController<User, Long> {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    InquiryService inquiryService;
 
     @Autowired
     CommonEmail commonEmail;
@@ -174,6 +178,8 @@ public  class UserController extends AbstractBaseController<User, Long> {
 
         model.addAttribute("currentUser", user);
 
+
+        inquiryService.calcUserIndex(user);
         res = userService.User2Map(user);
 
         res.put("success", "1");

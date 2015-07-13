@@ -138,16 +138,36 @@ public class Inquiry  extends AbstractPersistable<Long> {
 
     private String logoUrl;
 
+    /**
+     * 是否是测试表  0否1是
+     */
     private int test;
 
+    /**
+     * 中标者
+     */
     @ManyToOne
     private User winner;
 
+    /**
+     * 是否公开中标者
+     */
     private boolean openWinner;
 
+    /**
+     * 中标金额
+     */
     private Long winnerPrice;
 
+    /**
+     * 流标原因
+     */
     private String failReason;
+
+    /**
+     * 间隔时间  用于暗询价
+     */
+    private int intervalHour;
 
     public User getUser() {
         return user;
@@ -447,6 +467,14 @@ public class Inquiry  extends AbstractPersistable<Long> {
 
     public void setFailReason(String failReason) {
         this.failReason = failReason;
+    }
+
+    public int getIntervalHour() {
+        return intervalHour;
+    }
+
+    public void setIntervalHour(int interval) {
+        this.intervalHour = interval;
     }
 
     public Object getProperties(String name){

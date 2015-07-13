@@ -125,6 +125,12 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
             isError = !!1;
         }
 
+        val = (dom = $("#intervalHour")).val();
+        if( $("#inquiryMode").val()==5 && (val<2 || val>240) ){
+            showErrorTip(dom.data("pos"), dom.data("errmsg"));
+            isError = !!1;
+        }
+
         return !isError;
     }
 
@@ -260,6 +266,37 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
     }
 
     function fn_init() {
+
+        if(currentQueryObj.inquiryId){
+            ajaxRetrieveInfo({inquiryId: currentQueryObj.inquiryId},
+                function(data){
+                    console.log(data);
+                    $("input,select,textarea").each(function (i, span) {
+                        span = $(span);
+                        var col = span.attr("name"),
+                            val = data[col];
+                        if(val){
+                            span.val(val);
+                            if(col=="industryCode"){
+                                $("#industryCode").val(industries[val]);
+                            }else if(col=="provinceCode"){
+                                $("#provinceCode").val(provinces[val]);
+                            }else if(col=="limitDate"){
+                                $("#purchaseCloseDate").val(val.split(" ")[0]);
+                                $("#purchaseCloseDateHour").val(parseInt(val.split(" ")[1].split(":")[0])+":00");
+
+                            }
+                        }
+
+
+                    });
+                }, function(data){
+                    alert(data.message);
+                    location.href=location.protocol+'//'+location.host+location.pathname;
+                },  function(){});
+
+        }
+
         $("#chk_allowShare").click(function () {
 
             var status = parseInt($("#status").val());
@@ -333,12 +370,25 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
             $("#image").attr("src","").hide();
         }
     });
+    //切换询价模式
+    $("#inquiryMode").on("change",function(){
+        if($(this).val()==5){
+            $("#hourLi").show();
+        }else{
+            $("#hourLi").hide();
+        }
+    });
 
     $("#inquiryForm").ajaxForm();
     $('#inquiryForm').submit(function () {
         $("#btn_confirm").attr("disabled","");
+        var url = baseUrl+"/inquiry/generateInquiry";;
+        if(currentQueryObj.inquiryId){
+            url = baseUrl + "/inquiry/inquiryNextRound";
+        }
+        console.log(url);
         var options = {
-            url: "../inquiry/generateInquiry",
+            url: url,
             type: 'post',
             dataType: null,
             clearForm: false,
@@ -377,7 +427,11 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
         $("#bubbleLayer").removeClass("bubbleLayer-show");
     });
 
+
+    var currentQueryObj = {};
+
     exports.load = function () {
+        currentQueryObj.inquiryId = getParam("key");
         fn_init();
     };
 });
