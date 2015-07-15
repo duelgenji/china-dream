@@ -100,10 +100,10 @@ public class InquiryService {
         List<Quotation> quotationList= new ArrayList<>();
 
         /*甲方标记*/
-        boolean isOwner=user.getId().equals(inquiry.getUser().getId());
+        boolean isOwner=user.getId()!=null && user.getId().equals(inquiry.getUser().getId());
 
         /*授权标记*/
-        boolean isAuthorize= messageRepository.findAllUserAndInquiryAndStatus(user, inquiry, 1).size() != 0;
+        boolean isAuthorize= user.getId()!=null &&  messageRepository.findAllUserAndInquiryAndStatus(user, inquiry, 1).size() != 0;
 
         //全明询价 只有注册用户才能看到他人出价
         if(user.getId()!=null){
@@ -185,15 +185,23 @@ public class InquiryService {
                     if(inquiry.getInquiryMode().getId().equals(4l)){
                         /* 半暗询价 甲方可以看到*/
                         histList.add(map);
-                    }else if(inquiry.getInquiryMode().getId().equals(5l) && new Date().compareTo(inquiry.getLimitDate())>=0){
+                    }else if(inquiry.getInquiryMode().getId().equals(5l) ){
                         /* 暗询价 截止时间到 甲方可以看到 */
+                        if(new Date().compareTo(inquiry.getLimitDate())<0){
+                            map.put("techFileList",new ArrayList<>());
+                        }
                         if((new Date().getTime()-inquiry.getLimitDate().getTime())<inquiry.getIntervalHour()*3600*1000){
                             /* 暗询价 截止时间到 n小时 （2-240小时）之前  甲方是不能看到 商务文件和价格 */
-                            map.put("totalPrice", "--");
+                            map.put("totalPrice", "***");
                             map.put("businessFileList",new ArrayList<>());
                         }
                         histList.add(map);
-                    }else if(inquiry.getInquiryMode().getId().equals(6l) && (new Date().getTime()-inquiry.getLimitDate().getTime())>=2*3600*1000){
+                    }else if(inquiry.getInquiryMode().getId().equals(6l)){
+                        if((new Date().getTime()-inquiry.getLimitDate().getTime())<2*3600*1000){
+                            map.put("techFileList",new ArrayList<>());
+                            map.put("totalPrice", "***");
+                            map.put("businessFileList",new ArrayList<>());
+                        }
                         /* 全暗询价 截止时间 2小时后 甲方可以看到 */
                         histList.add(map);
                     }

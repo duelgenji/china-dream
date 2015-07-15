@@ -172,7 +172,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
             var col = span.data("col"),
                 val = dataSource[col];
             if (col == "files") {
-                span.append(val);
+                span.append("<span style='color: red'>"+val+"</span>");
                 var files = dataSource.fileList;
                 for (var i = 0; i < files.length; i++) {
                     var name = files[i].remark == "" ? "附件" : files[i].remark;
@@ -195,7 +195,14 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                         break;
                 }
             } else {
-                span.text(val).attr("title", val);
+                // 括号里面的字 变红色
+                val = val.toString();
+                var  bracket= val.substring(val.indexOf("("),val.indexOf(")")+1);
+                if(bracket){
+                    val = val.substring(0,val.indexOf("("))+ "<span style='color: red'>"+bracket+"</span>";
+                }
+                span.append(val).attr("title", val);
+
             }
 
         });
@@ -308,7 +315,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                         '<li><label>上传技术文件:</label><div style="padding-left: 110px;">' +
                         '<input class="modal-attachment" name="tech1" type="file"/><span id="modal-delete-tech1" class="delete-file">删除</span>' +
                         '<input class="modal-attachment" name="tech2" type="file"/><span id="modal-delete-tech2" class="delete-file">删除</span>' +
-                        '<input class="modal-attachment" name="tech3" type="file"/><span id="modal-delete-tech3" class="delete-file">删除</span></div></li>' +
+                        '<input class="modal-attachment" name="tech3" type="file"/><span id="modal-delete-tech3" class="delete-file">删除</span></div></li><div id="loading" style="display: none;text-align: center;" ><img  width="25" height="25" src="/image/loading.gif"/></div>' +
                         '<button id="modal-confirm" type="submit" style="display: none;">333</button></ul></form>', function () {
                         $("#modal-confirm").click();
                     });
@@ -323,6 +330,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                     $("#bidForm").ajaxForm();
                     $("#bidForm").submit(function () {
                         $("#submitModal").attr("disabled","");
+                        $("#loading").show();
                         var options = {
                             url: baseUrl + "/quotation/generateQuotation",
                             type: 'post',
@@ -344,6 +352,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                                 console.log(data);
                             },complete:function(){
                                 $("#submitModal").removeAttr("disabled");
+                                $("#loading").hide();
                             }
                         };
 

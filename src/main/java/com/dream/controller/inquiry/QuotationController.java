@@ -272,6 +272,25 @@ public class QuotationController {
                 map.put("inquiryNickname", quotation.getInquiry().getUser().getNickName());
                 map.put("inquiryPrice", quotation.getInquiry().getTotalPrice());
                 map.put("limitDate", DateFormatUtils.format(quotation.getInquiry().getLimitDate(), "yyyy-MM-dd HH:mm:ss"));
+                List<QuotationFile> quotationFileList=quotationFileRepository.findByQuotation(quotation);
+
+                List<Map<String, Object>>  businessFileList = new ArrayList<>();
+                List<Map<String, Object>> techFileList = new ArrayList<>();
+                for(QuotationFile quotationFile : quotationFileList){
+                    Map<String, Object> fileMap = new HashMap<String, Object>();
+                    fileMap.put("id",quotationFile.getId());
+                    fileMap.put("type",quotationFile.getType());
+                    fileMap.put("fileUrl",quotationFile.getFileUrl());
+                    fileMap.put("remark",quotationFile.getRemark());
+                    if(quotationFile.getType()==0){
+                        businessFileList.add(fileMap);
+                    }else if(quotationFile.getType()==1){
+                        techFileList.add(fileMap);
+                    }
+                }
+
+                map.put("businessFileList", businessFileList);
+                map.put("techFileList", techFileList);
 
                 list.add(map);
             }

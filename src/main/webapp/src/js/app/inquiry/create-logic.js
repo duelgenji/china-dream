@@ -107,6 +107,7 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
 
         for (var i = 0, l = doms.length, dom, val; i < l; i++) {
             val = (dom = $(doms[i])).val();
+            console.log(val);
             if (validMod.isEmptyOrNull(val)) {
                 showErrorTip(dom.data("pos"), dom.attr("placeholder"));
                 isError = !!1;
@@ -267,6 +268,13 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
 
     function fn_init() {
 
+        var commonUrl = 'http://101.231.124.8:45677/xlab-healthcloud/';
+        var url = commonUrl + 'discovery/app/listInfo/5';
+
+        $.get(url, function (data) {
+           console.log(data);
+        });
+
         if(currentQueryObj.inquiryId){
             ajaxRetrieveInfo({inquiryId: currentQueryObj.inquiryId},
                 function(data){
@@ -382,7 +390,9 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
     $("#inquiryForm").ajaxForm();
     $('#inquiryForm').submit(function () {
         $("#btn_confirm").attr("disabled","");
-        var url = baseUrl+"/inquiry/generateInquiry";;
+        $("#loading").show();
+
+        var url = baseUrl+"/inquiry/generateInquiry";
         if(currentQueryObj.inquiryId){
             url = baseUrl + "/inquiry/inquiryNextRound";
         }
@@ -409,6 +419,7 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
                 }
             },complete:function(){
                 $("#btn_confirm").removeAttr("disabled");
+                $("#loading").hide();
             }
         };
 

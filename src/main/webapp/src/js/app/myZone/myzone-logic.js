@@ -92,6 +92,22 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
         return '<div class="ui-optDiv"><button type="button" data-cmd="cancelCollectU" data-ri="' + ri + '">取消收藏</button></div>';
     }
 
+
+    function renderAttachments(vals, ri, objVal) {
+        //var urls = (vals[1] || "").split(','),
+        //    names = (vals[0] || "").split(',');
+        if(!vals){
+            return "---";
+        }
+        var html = [];
+        for (var i = 0, l = vals.length; i < l; i++) {
+            var name = vals[i].remark == "" ? "附件" : vals[i].remark;
+            html.push('<div style="float:left;overflow-x: hidden;max-width:'+ (120 / vals.length) +'px;"><a style="padding: 0 5px" href="' + vals[i].fileUrl + '" target="_blank">' + name + '</a></div>');
+        }
+        return html.join('');
+
+    }
+
     function renderOptOfMessage(vals, ri, objval) {
         objval.title = "";
         if ($("#select_msg").val() == 0) {
@@ -452,6 +468,7 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
             .override("renderOptOfCollect", renderOptOfCollect)
             .override("renderOptOfPersonCollect", renderOptOfCollect)
             .override("renderOptOfMessage", renderOptOfMessage)
+            .override("renderAttachments", renderAttachments)
             .override("renderNickname", renderNickname)
 
             .override("grid.databound", function () {
@@ -476,6 +493,7 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
             .override("renderOptOfCollect", renderOptOfCollect)
             .override("renderOptOfPersonCollect", renderOptOfPersonCollect)
             .override("renderOptOfMessage", renderOptOfMessage)
+            .override("renderAttachments", renderAttachments)
             .override("grid.databound", function () {
             });
     }

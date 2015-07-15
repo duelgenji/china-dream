@@ -137,7 +137,7 @@ public class UserInfoController {
             map.put("logoUrl",u.getLogoUrl());
             map.put("userType",u.getType());
             map.put("quotationDoneTime",u.getUserIndex().getQuotationDoneTime());
-            map.put("quotationSuccessRate",u.getUserIndex().getQuotationSuccessRate());
+            map.put("quotationSuccessRate",String.format("%.2f", u.getUserIndex().getQuotationSuccessRate()) + "%");
             if(u.getType()==1){
                 if( u.getUserPersonalInfo().getCompanyIndustry()!=null)
                     industry = u.getUserPersonalInfo().getCompanyIndustry().getName();
@@ -161,7 +161,7 @@ public class UserInfoController {
     }
 
     /**
-     * 获取用户列表
+     * 搜索 用户列表
      */
     @RequestMapping("searchUserList")
     public Map<String, Object> searchUserList(
@@ -179,7 +179,7 @@ public class UserInfoController {
 
         key =  "%"+key+"%";
 
-        Page<User> userPage= userRepository.findByNickNameLike(key,pageable);
+        Page<User> userPage= userRepository.findByNickNameLikeAndStatus(key,1,pageable);
         List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
 
         String industry="",province="";
@@ -192,7 +192,7 @@ public class UserInfoController {
             map.put("logoUrl",u.getLogoUrl());
             map.put("userType",u.getType());
             map.put("quotationDoneTime",u.getUserIndex().getQuotationDoneTime());
-            map.put("quotationSuccessRate",u.getUserIndex().getQuotationSuccessRate());
+            map.put("quotationSuccessRate",String.format("%.2f", u.getUserIndex().getQuotationSuccessRate()) + "%");
             if(u.getType()==1){
                 if( u.getUserPersonalInfo().getCompanyIndustry()!=null)
                     industry = u.getUserPersonalInfo().getCompanyIndustry().getName();

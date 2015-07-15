@@ -308,7 +308,7 @@ public class InquiryController {
             map.put("provinceCode", inquiry.getCompanyProvince().getName());
             map.put("test", inquiry.getTest());
             map.put("good", 0);
-            map.put("successRate", inquiry.getUser().getUserIndex().getInquirySuccessRate()+"%");
+            map.put("successRate", String.format("%.2f", inquiry.getUser().getUserIndex().getInquirySuccessRate()) + "%");
             map.put("inquiryTimes", inquiry.getUser().getUserIndex().getInquiryDoneTime());
             if(inquiry.getLogoUrl()==null || "".equals(inquiry.getLogoUrl())){
                 map.put("logoUrl",inquiry.getCompanyIndustry().getLogoUrl());
@@ -357,7 +357,7 @@ public class InquiryController {
             map.put("provinceCode", inquiry.getCompanyProvince().getName());
             map.put("test", inquiry.getTest());
             map.put("good", 0);
-            map.put("successRate", inquiry.getUser().getUserIndex().getInquirySuccessRate()+"%");
+            map.put("successRate", String.format("%.2f", inquiry.getUser().getUserIndex().getInquirySuccessRate()) + "%");
             map.put("inquiryTimes", inquiry.getUser().getUserIndex().getInquiryDoneTime());
             if(inquiry.getLogoUrl()==null || "".equals(inquiry.getLogoUrl())){
                 map.put("logoUrl",inquiry.getCompanyIndustry().getLogoUrl());
@@ -684,9 +684,11 @@ public class InquiryController {
 
         inquiry.setTitle(title);
         CompanyProvince companyProvince = companyProvinceRepository.findOne(provinceCode);
-        inquiry.setCompanyProvince(companyProvince);
+        if(companyProvince!=null)
+            inquiry.setCompanyProvince(companyProvince);
         CompanyIndustry companyIndustry = companyIndustryRepository.findOne(industryCode);
-        inquiry.setCompanyIndustry(companyIndustry);
+        if(companyIndustry!=null)
+            inquiry.setCompanyIndustry(companyIndustry);
 
         try {
             inquiry.setLimitDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(limitDate));

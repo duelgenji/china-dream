@@ -93,7 +93,7 @@ define("userroom-logic", ["userroom-config", "jquery", "user-repos", "pure-grid"
 	 * @return {string}        [description]
 	 */
 	function renderBidSuccessRate(vals, ri, objval) {
-		return vals + "%";
+		return vals;
 	}
 
 	/**

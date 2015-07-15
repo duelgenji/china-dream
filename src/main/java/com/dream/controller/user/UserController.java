@@ -162,7 +162,6 @@ public  class UserController extends AbstractBaseController<User, Long> {
             return res;
         }
 
-        //TODO 增加是否激活判断
         if(user.getStatus()==1){
             if(userIndexRepository.findOne(user.getId())==null){
                 UserIndex userIndex = new UserIndex();

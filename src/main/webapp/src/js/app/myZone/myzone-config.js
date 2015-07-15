@@ -13,7 +13,7 @@ define("myzone-config", [], function(require, exports) {
 		columns: [{
 			index: 1,
 			head: {
-				width: 150,
+				width: 140,
 				issort: false,
 				text: "标号"
 			},
@@ -27,7 +27,7 @@ define("myzone-config", [], function(require, exports) {
 			head: {
 				text: "标题",
 				issort: false,
-				width: 109,
+				width: 69,
 				align: "center"
 			},
 			body: {
@@ -40,7 +40,7 @@ define("myzone-config", [], function(require, exports) {
 			head: {
 				text: "轮次",
 				issort: false,
-				width: 59,
+				width: 40,
 				align: "center"
 			},
 			body: {
@@ -52,7 +52,7 @@ define("myzone-config", [], function(require, exports) {
 			head: {
 				text: "询价方式",
 				issort: false,
-				width: 109,
+				width: 70,
 				align: "center"
 			},
 			body: {
@@ -63,21 +63,9 @@ define("myzone-config", [], function(require, exports) {
 		}, {
 			index: 5,
 			head: {
-				text: "所在地",
-				issort: false,
-				width: 89,
-				align: "center"
-			},
-			body: {
-				align: "center",
-				fields: "inquiryProvince"
-			}
-		}, {
-			index: 6,
-			head: {
 				text: "发布方",
 				issort: false,
-				width: 109,
+				width: 59,
 				align: "center"
 			},
 			body: {
@@ -85,19 +73,7 @@ define("myzone-config", [], function(require, exports) {
 				fields: "inquiryNickname"
 			}
 		}, {
-			index: 7,
-			head: {
-				text: "行业",
-				issort: false,
-				width: 89,
-				align: "center"
-			},
-			body: {
-				align: "center",
-				fields: "inquiryIndustry"
-			}
-		}, {
-			index: 8,
+			index: 6,
 			head: {
 				text: "标的",
 				issort: false,
@@ -109,11 +85,11 @@ define("myzone-config", [], function(require, exports) {
 				fields: "inquiryPrice"
 			}
 		}, {
-			index: 9,
+			index: 7,
 			head: {
 				text: "截止时间",
 				issort: false,
-				width: 109,
+				width: 119,
 				align: "center"
 			},
 			body: {
@@ -121,11 +97,37 @@ define("myzone-config", [], function(require, exports) {
 				fields: "limitDate"
 			}
 		}, {
+			index: 8,
+			head: {
+				text: "商务附件",
+				issort: false,
+				width: 120,
+				align: "center"
+			},
+			body: {
+				align: "center",
+				fields: "businessFileList",
+				renderFn: "renderAttachments"
+			}
+		}, {
+			index: 9,
+			head: {
+				text: "技术附件",
+				issort: false,
+				width: 120,
+				align: "center"
+			},
+			body: {
+				align: "center",
+				fields: "techFileList",
+				renderFn: "renderAttachments"
+			}
+		}, {
 			index: 10,
 			head: {
-				text: "我的方案",
+				text: "报价金额",
 				issort: false,
-				width: 109,
+				width: 89,
 				align: "center"
 			},
 			body: {

@@ -15,6 +15,11 @@
 
     <style>
 
+        /* 发布确认页 公开与否 红色 */
+        #div_step4 li span:nth-child(3){
+            color: red;
+        }
+
         .dropdown {
             position: relative;
 
@@ -397,7 +402,7 @@
                                   data-pos="692"></textarea>
                         <select id="remarkOpen" name="remarkOpen" class="ui-isopen">
                             <option value="0">公开</option>
-                            <option value="1">不公开</option>
+                            <option value="1" selected>不公开</option>
                             <option value="2">授权后公开</option>
                         </select>
                     </li>
@@ -426,7 +431,7 @@
                                data-valid="require" data-pos="226">
                         <select id="contactNameOpen" name="contactNameOpen" class="ui-isopen">
                             <option value="0">公开</option>
-                            <option value="1">不公开</option>
+                            <option value="1" selected>不公开</option>
                             <option value="2">授权后公开</option>
                         </select>
 
@@ -438,7 +443,7 @@
                                data-valid="require" data-pos="277" data-errmsg="邮件格式不正确">
                         <select id="contactMailOpen" name="contactEmailOpen" class="ui-isopen">
                             <option value="0">公开</option>
-                            <option value="1">不公开</option>
+                            <option value="1" selected>不公开</option>
                             <option value="2">授权后公开</option>
                         </select>
 
@@ -450,7 +455,7 @@
                                data-valid="require" data-pos="330" data-errmsg="手机格式不正确">
                         <select id="contactTelephoneOpen" name="contactPhoneOpen" class="ui-isopen">
                             <option value="0">公开</option>
-                            <option value="1">不公开</option>
+                            <option value="1" selected>不公开</option>
                             <option value="2">授权后公开</option>
                         </select>
                     </li>
@@ -460,7 +465,7 @@
                         <input id="contactTel" name="contactTel" type="text" placeholder="请输入联系人电话">
                         <select id="contactTelOpen" name="contactTelOpen" class="ui-isopen">
                             <option value="0">公开</option>
-                            <option value="1">不公开</option>
+                            <option value="1" selected>不公开</option>
                             <option value="2">授权后公开</option>
                         </select>
 
@@ -470,7 +475,7 @@
                         <input id="contactFax" name="contactFax" type="text" placeholder="请输入联系人传真">
                         <select id="contactFaxOpen" name="contactFaxOpen" class="ui-isopen">
                             <option value="0">公开</option>
-                            <option value="1">不公开</option>
+                            <option value="1" selected>不公开</option>
                             <option value="2">授权后公开</option>
                         </select>
                     </li>
@@ -480,7 +485,7 @@
                         <input id="contactWeiBo" name="contactWeiBo" type="text" placeholder="请输入联系人微博">
                         <select id="contactWeiBoOpen" name="contactWeiBoOpen" class="ui-isopen">
                             <option value="0">公开</option>
-                            <option value="1">不公开</option>
+                            <option value="1" selected>不公开</option>
                             <option value="2">授权后公开</option>
                         </select>
 
@@ -490,7 +495,7 @@
                         <input id="contactWeiXin" name="contactWeiXin" type="text" placeholder="请输入联系人微信号">
                         <select id="contactWeiXinOpen" name="contactWeiXinOpen" class="ui-isopen">
                             <option value="0">公开</option>
-                            <option value="1">不公开</option>
+                            <option value="1" selected>不公开</option>
                             <option value="2">授权后公开</option>
                         </select>
                     </li>
@@ -502,6 +507,7 @@
                         <label>具体要求上传(文档、清单、图纸等):</label>
                         <select id="filesOpen" name="filesOpen" class="ui-isopen">
                             <option value="0">公开</option>
+                            <option value="1" selected>不公开</option>
                             <option value="2">授权后公开</option>
                         </select>
                     </li>
@@ -544,8 +550,8 @@
                     </li>
                     <li>
                         <label>项目相关备注内容:</label>
-                        <span field="remarks"></span>
-                        (<span field="remarksOpen" data-from="selectedText"></span>)
+                        <span field="remark"></span>
+                        (<span field="remarkOpen" data-from="selectedText"></span>)
                     </li>
                     <li>
                         <label>出价限制:</label>
@@ -605,6 +611,7 @@
                 <button id="btn_pre" type="button" data-pre="1" data-current="1" style="display:none;">上一步</button>
                 <button id="btn_next" type="button" data-next="2" data-current="1">下一步</button>
                 <button id="btn_confirm" type="submit" data-next="5" data-current="4" style="display: none">确认提交</button>
+                <span id="loading" style="text-align: center;display: none;" ><img  width="25" height="25" src="/image/loading.gif"/></span>
                 <button id="btn_back" type="button" onclick="location.href='index.html'" style="display: none">返回首页</button>
             </div>
         </form>
