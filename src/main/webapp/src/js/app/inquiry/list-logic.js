@@ -72,17 +72,28 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
         objval.title = vals[0] + "\n" + vals[1] + "\n" + (vals[2] || "");
 
 
-        var css = "";
+        var css = "",vip="",status="";
         if(vals[4]=="1"){
             css = " orange ";
+            status = "(测试标)";
         }else if(vals[5]=="2"){
             css = " blue ";
+            status = "(流标)";
         }else if(vals[5]=="0"){
             css = " green ";
+            status = "(进行中)";
+        }else if(vals[5]=="1"){
+            status = "(成功)";
+        }
+
+        if(vals[6]=="1"){
+            vip = '<span style="font-weight: bolder" class="orange" > 已认证</span>'
         }
 
         var html =
-            '<p class="ui-inquiryTitle">' + '<a href="inquiryDetail.html?key=' + vals[3] + '" name="detail">' + vals[0] + '</a>' + '</p>' + '<p class="ui-biaohao '+css+'">' + vals[1] + '</p>' + '<p class="ui-userName">' + vals[2] + '</p>';
+            '<p class="ui-inquiryTitle">' + '<a href="inquiryDetail.html?key=' + vals[3] + '" name="detail">' + vals[0] + '</a>'
+            + '</p>' + '<p class="ui-biaohao '+css+'">' + vals[1] + status + '</p>'
+            + '<p class="ui-userName">' + vals[2] + vip + '</p>';
 
         return html;
     }
@@ -95,8 +106,10 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
      * @return {[type]}        [description]
      */
     function renderBiaoDi(vals, ri, objval) {
+        var css = vals[2]?"red":"";
+        var goodsTitle = vals[2]?"取消赞":"赞";
         objval.title = "标的(元):" + vals[0];
-        return "￥" + vals[0] + '元<br /><span style="color:red;">赞:' + (vals[1] || 0) + "</span>";
+        return "￥" + vals[0] + '元<br /><span><span class="goods '+css+' glyphicon glyphicon-thumbs-up" title="'+goodsTitle+'" data-id="'+vals[3]+'"></span>:' + (vals[1] || 0) + "</span>";
     }
 
     /**
@@ -134,7 +147,7 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
     function renderEndDate(vals, ri, objval) {
 
         if (vals[3] == "1") {
-            return (objval.title = "中标方:" + (vals[4] ? vals[4] : "*******"));
+            return (objval.title = "中标方:" + (vals[4] ? vals[4] : "*******")+"<p>中标价格:"+ vals[5]+"</p>");
         }else if (vals[3] == "2") {
             return "流标";
         }
@@ -223,7 +236,10 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
                 $(".btn4").removeClass("disable");
             }
 
+
+
             currentGrid.reBind(testData);
+
             setTimeout(function () {
                 dialogMod.mask.hide();
             }, 800);
@@ -349,6 +365,19 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
             if(e.keyCode==13){
                 evt_doSearch();
             }
+        });
+
+        //点赞
+        $(document).on("click",".goods",function(){
+            var params = {};
+            params.inquiryId = $(this).attr("data-id");
+            var _this = $(this).parent();
+            ajaxInquiryGoods(params, function (data) {
+                var css = data.isGoods?"red":"";
+                var goodsTitle = data.isGoods?"取消赞":"赞";
+                _this.empty().append('<span class="goods '+css+' glyphicon glyphicon-thumbs-up" title="'+goodsTitle+'" data-id="'+params.inquiryId+'"></span>:' + (data.goods || 0));
+            }, call_fail, call_fail);
+
         });
 
         /*

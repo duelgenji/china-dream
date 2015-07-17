@@ -268,11 +268,13 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
 
     function fn_init() {
 
-        var commonUrl = 'http://101.231.124.8:45677/xlab-healthcloud/';
-        var url = commonUrl + 'discovery/app/listInfo/5';
 
-        $.get(url, function (data) {
-           console.log(data);
+        $.get(baseUrl + "/collection/retrieveCollectionListU", function (data) {
+            data = data.data;
+            for(var i=0;i<data.length;i++){
+                $("#userList").append('<option value="'+data[i].userId+'">'+data[i].userNickname+'</option>');
+
+            }
         });
 
         if(currentQueryObj.inquiryId){
@@ -286,17 +288,15 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
                         if(val){
                             span.val(val);
                             if(col=="industryCode"){
-                                $("#industryCode").val(industries[val]);
+                                $("#industryCode").val(industries[val-1]);
                             }else if(col=="provinceCode"){
-                                $("#provinceCode").val(provinces[val]);
+                                $("#provinceCode").val(provinces[val-1]);
                             }else if(col=="limitDate"){
                                 $("#purchaseCloseDate").val(val.split(" ")[0]);
                                 $("#purchaseCloseDateHour").val(parseInt(val.split(" ")[1].split(":")[0])+":00");
 
                             }
                         }
-
-
                     });
                 }, function(data){
                     alert(data.message);

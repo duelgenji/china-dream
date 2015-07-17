@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,4 +29,6 @@ public interface InquiryRepository extends MyRepository<Inquiry,Long> {
     Inquiry findByUserAndId(User user ,long id);
 
     int countByWinner(User winner);
+
+    List<Inquiry> findByStatusAndCreateDateLessThan(int status,Date date);
 }

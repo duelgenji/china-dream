@@ -261,14 +261,17 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
         setTimeout(dialogMod.mask.hide, 500);
     }
 
-    function fn_getMyInquiryList(gridCfg) {
-
-        fn_initGrid(gridCfg);
+    function fn_getMyInquiryList() {
 
         dialogMod.mask.show();
 
         var params = {};
+        if($("#select_inquiry").val()!=""){
+            params.status = $("#select_inquiry").val();
+        }
+        //console.log(params);
         ajaxRetrieveMyInquiryList(params, function (data) {
+            console.log(data);
             dataSource = data.data;
             currentGrid.reBind(dataSource);
         }, function (result) {
@@ -512,10 +515,17 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
             fn_getMyBidList();
         });
 
+        $("#select_inquiry").on("change", function () {
+            fn_initGrid(configMod["gridCfg2"]);
+            fn_getMyInquiryList();
+        });
+
         $("#select_msg").on("change", function () {
             fn_initGrid(configMod["gridCfg4"]);
             fn_getMyLettermsgList();
         });
+
+
 
         $("#myTab li").click(function () {
             var gridNo = $(this).siblings().removeClass("active")
@@ -531,6 +541,7 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
                     fn_getMyBidList(configMod["gridCfg" + gridNo]);
                     break;
                 case "inquiry":
+                    fn_initGrid(configMod["gridCfg" + gridNo]);
                     fn_getMyInquiryList(configMod["gridCfg" + gridNo]);
                     break;
                 case "collect":

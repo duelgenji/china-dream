@@ -420,6 +420,13 @@
                         </label>
                         <input type="file" accept="image/jpeg,image/png" id="projectImage" name="logoFile" value="" placeholder="请上传项目图片" style="margin-left: 20px;"/>
                     </li>
+                    <li>
+                        <label>
+                            邀请用户:
+                        </label>
+                        <select id="userList" name="userList" size="5" style="height: 100px" multiple>
+                        </select>
+                    </li>
                     <img id="image" src="" style="margin-left: 230px;max-width: 300px;max-height: 200px;"/>
                 </ul>
             </div>
@@ -651,5 +658,7 @@
         mod.load().setActiveNav("createinquiry").closeTopFixed();
         mod2.load();
     });
+
+
 </script>
 </html>

@@ -134,6 +134,7 @@ public class UserInfoController {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("userId",u.getId());
             map.put("nickname",u.getNickName());
+            map.put("VIP", u.getVIP());
             map.put("logoUrl",u.getLogoUrl());
             map.put("userType",u.getType());
             map.put("quotationDoneTime",u.getUserIndex().getQuotationDoneTime());
@@ -189,6 +190,7 @@ public class UserInfoController {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("userId",u.getId());
             map.put("nickname",u.getNickName());
+            map.put("VIP", u.getVIP());
             map.put("logoUrl",u.getLogoUrl());
             map.put("userType",u.getType());
             map.put("quotationDoneTime",u.getUserIndex().getQuotationDoneTime());

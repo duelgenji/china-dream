@@ -22,10 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Knight on 2015/7/6 11:30.
@@ -85,6 +82,12 @@ public class QuotationController {
         if(inquiry==null){
             res.put("success",0);
             res.put("message","数据未查到");
+            return res;
+        }
+
+        if(inquiry.getLimitDate().getTime() -new Date().getTime()<0){
+            res.put("success",0);
+            res.put("message","该标限制时间已到，您不能再进行出价!");
             return res;
         }
 
@@ -153,15 +156,17 @@ public class QuotationController {
         //TODO 改为从数据库读取
 
 
-        int quotationDoneTime= quotationRepository.countByInquiryAndUser(user.getId());
+        //int quotationDoneTime= quotationRepository.countByInquiryAndUser(user.getId());
+        int quotationDoneTime= quotationRepository.countByDoneTimes(user.getId());
         int quotationSuccessTime= inquiryRepository.countByWinner(user);
-        int quotationDoingTime= messageRepository.countByInquiryAndUser(user);
+        //int quotationDoingTime= messageRepository.countByInquiryAndUser(user);
+        int quotationDoingTime = quotationRepository.countByDoingTimes(user.getId());
 
-        int inquiryDoneTime = inquiryRepository.countByUser(user);
         int inquirySuccessTime = inquiryRepository.countByUserAndStatus(user, 1);
         long inquiryDoingTime = inquiryRepository.countByUserAndStatus(user, 0);
         long inquiryFailTime = inquiryRepository.countByUserAndStatus(user, 2);
 
+        int inquiryDoneTime = (int) (inquirySuccessTime + inquiryFailTime);
 
 
         String qRate,iRate;

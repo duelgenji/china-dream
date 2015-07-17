@@ -226,13 +226,16 @@ public class InquiryService {
             userIndex.setId(user.getId());
         }
 
-
-        int quotationDoneTime= quotationRepository.countByInquiryAndUser(user.getId());
+        //int quotationDoneTime= quotationRepository.countByInquiryAndUser(user.getId());
+        int quotationDoneTime= quotationRepository.countByDoneTimes(user.getId());
         int quotationSuccessTime= inquiryRepository.countByWinner(user);
+        //int quotationDoingTime= messageRepository.countByInquiryAndUser(user);
+        int quotationDoingTime = quotationRepository.countByDoingTimes(user.getId());
 
-        int inquiryDoneTime = inquiryRepository.countByUser(user);
         int inquirySuccessTime = inquiryRepository.countByUserAndStatus(user, 1);
-
+        long inquiryDoingTime = inquiryRepository.countByUserAndStatus(user, 0);
+        long inquiryFailTime = inquiryRepository.countByUserAndStatus(user, 2);
+        int inquiryDoneTime = (int) (inquirySuccessTime + inquiryFailTime);
 
 
         userIndex.setQuotationDoneTime(quotationDoneTime);

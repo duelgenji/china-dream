@@ -98,7 +98,7 @@
         validator.isMobile = function(val) {
             var _d = /^1[3578][01379]\d{8}$/g;
             var _l = /^1[34578][01256]\d{8}$/g;
-            var _y = /^(134[0-8]\d{7}|1[34578][0-35-9]\d{8})$/g;
+            var _y = /^(134[0-9]\d{7}|1[34578][0-35-9]\d{8})$/g;
 
             return _d.test(val) || _l.test(val) || _y.test(val);
         };

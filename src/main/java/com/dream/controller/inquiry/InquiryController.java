@@ -2,19 +2,13 @@ package com.dream.controller.inquiry;
 
 import com.dream.entity.company.CompanyIndustry;
 import com.dream.entity.company.CompanyProvince;
-import com.dream.entity.inquiry.Inquiry;
-import com.dream.entity.inquiry.InquiryCollection;
-import com.dream.entity.inquiry.InquiryFile;
-import com.dream.entity.inquiry.InquiryMode;
+import com.dream.entity.inquiry.*;
 import com.dream.entity.message.Message;
 import com.dream.entity.user.OpenStatus;
 import com.dream.entity.user.User;
 import com.dream.repository.company.CompanyIndustryRepository;
 import com.dream.repository.company.CompanyProvinceRepository;
-import com.dream.repository.inquiry.InquiryCollectionRepository;
-import com.dream.repository.inquiry.InquiryFileRepository;
-import com.dream.repository.inquiry.InquiryModeRepository;
-import com.dream.repository.inquiry.InquiryRepository;
+import com.dream.repository.inquiry.*;
 import com.dream.repository.message.MessageRepository;
 import com.dream.repository.quotation.QuotationRepository;
 import com.dream.repository.user.UserCompanyInfoRepository;
@@ -86,6 +80,9 @@ public class InquiryController {
     @Autowired
     InquiryCollectionRepository inquiryCollectionRepository;
 
+    @Autowired
+    InquiryGoodsRepository inquiryGoodsRepository;
+
 
     @Value("${file_url}")
     private String file_url;
@@ -124,6 +121,7 @@ public class InquiryController {
             @RequestParam(required = false) int contactWeiBoOpen,
             @RequestParam(required = false) int filesOpen,
             @RequestParam(required = false) Integer intervalHour,
+            @RequestParam(required = false) String[] userList,
             @RequestParam(required = false) MultipartFile file1,
             @RequestParam(required = false) MultipartFile file2,
             @RequestParam(required = false) MultipartFile file3,
@@ -272,6 +270,23 @@ public class InquiryController {
 
         }
 
+        User invitedUser;
+        for(String s : userList){
+            invitedUser = userRepository.findOne(Long.parseLong(s));
+            if(invitedUser!=null){
+                Message message =new Message();
+                message.setInquiry(inquiry);
+                message.setRound(inquiry.getRound());
+                message.setUser(invitedUser);
+                message.setType(0);
+                message.setStatus(1);
+                message.setInquiryUser(inquiry.getUser());
+
+                messageRepository.save(message);
+
+            }
+        }
+
 
 
         res.put("success",1);
@@ -286,7 +301,8 @@ public class InquiryController {
      */
     @RequestMapping("retrieveInquiryList")
     public Map<String, Object> retrieveInquiryList(
-            @PageableDefault(page = 0, size = 20,sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+            @PageableDefault(page = 0, size = 20,sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+            @ModelAttribute("currentUser") User user) {
         Map<String, Object> res = new HashMap<>();
 
         Page<Inquiry> inquiryList= inquiryRepository.findAll(pageable);
@@ -297,6 +313,7 @@ public class InquiryController {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("id", inquiry.getId());
             map.put("userName", inquiry.getUser().getNickName());
+            map.put("VIP", inquiry.getUser().getVIP());
             map.put("title", inquiry.getTitle());
             map.put("inquiryNo", inquiry.getInquiryNo());
             map.put("status", inquiry.getStatus());
@@ -307,7 +324,9 @@ public class InquiryController {
             map.put("industryCode", inquiry.getCompanyIndustry().getName());
             map.put("provinceCode", inquiry.getCompanyProvince().getName());
             map.put("test", inquiry.getTest());
-            map.put("good", 0);
+            map.put("winnerPrice", inquiry.getWinnerPrice());
+            map.put("isGoods", inquiryGoodsRepository.findByInquiryAndUser(inquiry,user)!=null);
+            map.put("goods",inquiryGoodsRepository.countByInquiry(inquiry));
             map.put("successRate", String.format("%.2f", inquiry.getUser().getUserIndex().getInquirySuccessRate()) + "%");
             map.put("inquiryTimes", inquiry.getUser().getUserIndex().getInquiryDoneTime());
             if(inquiry.getLogoUrl()==null || "".equals(inquiry.getLogoUrl())){
@@ -334,7 +353,8 @@ public class InquiryController {
     @RequestMapping("searchInquiryList")
     public Map<String, Object> searchInquiryList(
             @RequestParam(required = false) String key,
-            @PageableDefault(page = 0, size = 20,sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+            @PageableDefault(page = 0, size = 20,sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+            @ModelAttribute("currentUser") User user) {
         Map<String, Object> res = new HashMap<>();
 
         key =  "%"+key+"%";
@@ -346,6 +366,7 @@ public class InquiryController {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("id", inquiry.getId());
             map.put("userName", inquiry.getUser().getNickName());
+            map.put("VIP", inquiry.getUser().getVIP());
             map.put("title", inquiry.getTitle());
             map.put("inquiryNo", inquiry.getInquiryNo());
             map.put("status", inquiry.getStatus());
@@ -356,7 +377,9 @@ public class InquiryController {
             map.put("industryCode", inquiry.getCompanyIndustry().getName());
             map.put("provinceCode", inquiry.getCompanyProvince().getName());
             map.put("test", inquiry.getTest());
-            map.put("good", 0);
+            map.put("winnerPrice", inquiry.getWinnerPrice());
+            map.put("isGoods", inquiryGoodsRepository.findByInquiryAndUser(inquiry,user)!=null);
+            map.put("goods",inquiryGoodsRepository.countByInquiry(inquiry));
             map.put("successRate", String.format("%.2f", inquiry.getUser().getUserIndex().getInquirySuccessRate()) + "%");
             map.put("inquiryTimes", inquiry.getUser().getUserIndex().getInquiryDoneTime());
             if(inquiry.getLogoUrl()==null || "".equals(inquiry.getLogoUrl())){
@@ -480,6 +503,18 @@ public class InquiryController {
             return res;
         }
 
+        //出价 限制 0 不限 1 个人/群  2公司
+        if(inquiry.getUserLimit()==2 && user.getType()!=2){
+            res.put("success",0);
+            res.put("message","该标只允许公司用户出价！");
+            return res;
+        }else if(inquiry.getUserLimit()==1 && user.getType()==2){
+            res.put("success",0);
+            res.put("message","该标只允许(个人/群)用户出价！");
+            return res;
+        }
+
+
         List<Message> list=messageRepository.findAllUserAndInquiryAndStatus(user,inquiry,0);
         if(list.size()>=1){
             res.put("success",0);
@@ -515,6 +550,7 @@ public class InquiryController {
      */
     @RequestMapping("retrieveMyInquiryList")
     public Map<String, Object> retrieveMyInquiryList(
+            @RequestParam(required = false) Integer status,
             @ModelAttribute("currentUser") User user) {
         Map<String, Object> res = new HashMap<>();
 
@@ -524,7 +560,14 @@ public class InquiryController {
             return res;
         }
 
-        List<Inquiry> inquiryList = inquiryRepository.findByUser(user);
+        Map<String, Object> filters = new HashMap<>();
+
+        filters.put("user_equal", user);
+        if(status!=null){
+            filters.put("status_equal", status);
+        }
+
+        List<Inquiry> inquiryList = inquiryRepository.findAll(filters);
 
         List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
 
@@ -645,6 +688,7 @@ public class InquiryController {
             @RequestParam(required = false) int contactWeiBoOpen,
             @RequestParam(required = false) int filesOpen,
             @RequestParam(required = false) Integer intervalHour,
+            @RequestParam(required = false) String[] userList,
             @RequestParam(required = false) MultipartFile file1,
             @RequestParam(required = false) MultipartFile file2,
             @RequestParam(required = false) MultipartFile file3,
@@ -800,7 +844,20 @@ public class InquiryController {
             inquiryFileRepository.save(inquiryFile);
 
         }
-
+        User invitedUser;
+        for(String s : userList){
+            invitedUser = userRepository.findOne(Long.parseLong(s));
+            if(invitedUser!=null){
+                Message message =new Message();
+                message.setInquiry(inquiry);
+                message.setRound(inquiry.getRound());
+                message.setUser(invitedUser);
+                message.setType(0);
+                message.setStatus(1);
+                message.setInquiryUser(inquiry.getUser());
+                messageRepository.save(message);
+            }
+        }
 
 
         res.put("success",1);
@@ -809,6 +866,9 @@ public class InquiryController {
         return res;
     }
 
+    /**
+     * 询价 成功 流标
+     */
     @RequestMapping("changeInquiryStatus")
     public Map<String, Object> changeInquiryStatus(
             @RequestParam(required = false) long inquiryId,
@@ -865,6 +925,42 @@ public class InquiryController {
             inquiryRepository.save(inquiry);
         }
 
+        res.put("success",1);
+        return res;
+    }
+
+
+    /**
+     * 询价 赞 取消赞
+     */
+    @RequestMapping("inquiryGood")
+    public Map<String, Object> inquiryGood(
+            @RequestParam(required = false) long inquiryId,
+            @ModelAttribute("currentUser") User user){
+        Map<String, Object> res = new HashMap<>();
+
+        if(user.getId()==null){
+            res.put("success",0);
+            res.put("message","请先登录");
+            return res;
+        }
+
+        Inquiry inquiry = inquiryRepository.findOne(inquiryId);
+
+        InquiryGoods inquiryGoods = inquiryGoodsRepository.findByInquiryAndUser(inquiry,user);
+        if(inquiryGoods==null){
+            inquiryGoods = new InquiryGoods();
+            inquiryGoods.setInquiry(inquiry);
+            inquiryGoods.setUser(user);
+            inquiryGoodsRepository.save(inquiryGoods);
+            res.put("isGoods",1);
+
+        }else{
+            inquiryGoodsRepository.delete(inquiryGoods);
+            res.put("isGoods", 0);
+        }
+
+        res.put("goods",inquiryGoodsRepository.countByInquiry(inquiry));
         res.put("success",1);
         return res;
     }

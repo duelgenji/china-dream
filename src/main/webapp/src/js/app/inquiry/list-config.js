@@ -33,7 +33,7 @@ define("list-config",[],function(require,exports){
                     },
                     body: {
                         align: "left",
-                        fields: "title,inquiryNo,userName,id,test,status",
+                        fields: "title,inquiryNo,userName,id,test,status,VIP",
                         renderFn: "renderPopularity"
                     }
                 }, {
@@ -46,7 +46,7 @@ define("list-config",[],function(require,exports){
                     },
                     body: {
                         align: "center",
-                        fields: "totalPrice,good",
+                        fields: "totalPrice,goods,isGoods,id",
                         renderFn: "renderBiaoDi"
                     }
                 }, {
@@ -85,7 +85,7 @@ define("list-config",[],function(require,exports){
                     },
                     body: {
                         align: "center",
-                        fields: "limitDate,round,inquiryMode,status,winner",
+                        fields: "limitDate,round,inquiryMode,status,winner,winnerPrice",
                         renderFn: "renderEndDate"
                     }
                 }],

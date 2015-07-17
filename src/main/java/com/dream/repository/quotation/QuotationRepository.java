@@ -26,7 +26,15 @@ public interface QuotationRepository extends MyRepository<Quotation,Long> {
     @Query(value = "select count(*) from ( select * from Quotation q where q.user_id =:user and q.status =:status group by q.inquiry_id ) as  ta " , nativeQuery = true)
     int countByInquiryAndUserAndStatus(@Param("user") long user,@Param("status") int status);
 
-
     Quotation findByInquiryIdAndId(long inquiryId,long id);
+
+    @Query(value = "select count(*) from  (select * from Quotation q left join (select id as aid,round as around from Inquiry i where i.status=0 )\n" +
+            " as a on a.aid=q.inquiry_id  where q.user_id =:user and q.round = a.around group by q.inquiry_id  ) as ta " , nativeQuery = true)
+    int countByDoingTimes(@Param("user") long user);
+
+    @Query(value = "select count(*) from  (select * from Quotation q left join (select id as aid,round as around from Inquiry i where i.status<>0 )\n" +
+            " as a on a.aid=q.inquiry_id  where q.user_id =:user and q.round = a.around  group by q.inquiry_id  ) as ta " , nativeQuery = true)
+    int countByDoneTimes(@Param("user") long user);
+
 
 }

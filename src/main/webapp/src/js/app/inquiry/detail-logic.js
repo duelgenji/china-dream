@@ -156,6 +156,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
 
     function dismissCmdModal() {
         $("#cmdModal").modal('hide');
+        $("#modal-tips").hide();
     }
 
     var dataSource = {};
@@ -305,6 +306,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
 
                     });
                 } else if (cmd == "addBid") {
+                    $("#modal-tips").show();
                     showCmdModal("正式出价", '<form id="bidForm" method="post" enctype="multipart/form-data" accept-charset="utf-8">' +
                         '<input type="hidden" name="inquiryId" value="' + currentQueryObj.inquiryId + '"/>' +
                         '<ul class="ui-items"><li><label>出价金额:</label><input name="totalPrice" id="modal-money" type="text"/></li>' +
@@ -327,8 +329,18 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
 
                     var number = 0;
 
+
                     $("#bidForm").ajaxForm();
                     $("#bidForm").submit(function () {
+
+                        var money = $("#modal-money");
+
+                        var re = /^[0-9]+.?[0-9]*$/;
+                        if(money.val()!="" && !re.test(money.val())){
+                            alert("请输入数字");
+                            return;
+                        }
+
                         $("#submitModal").attr("disabled","");
                         $("#loading").show();
                         var options = {
@@ -341,15 +353,17 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                             clearForm: false,
                             success: function (data, textStatus, jqXHR) {
                                 var result = data.success;
-                                console.log(data);
-
+                                //console.log(data);
+                                if(result=="0"){
+                                    alert(data.message);
+                                }
                                 dismissCmdModal();
                             },
                             fail: function(data){
-                                console.log(data);
+                                //console.log(data);
                             },
                             error:function(data) {
-                                console.log(data);
+                                //console.log(data);
                             },complete:function(){
                                 $("#submitModal").removeAttr("disabled");
                                 $("#loading").hide();
@@ -544,7 +558,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                     arr.push(testList[i].userId);
                 }
 
-                $(".modal-user-list").append('<li style="padding-bottom: 0;"><input class="modal-remark" type="text" name="price" style="margin-left: 0;margin-right: 10px;"/><input class="modal-open" type="radio" name="openWinner" id="open" value="1"/><label for="openWinner" style="padding-left: 10px;float:none;font-weight:100;height">公开</label><input class="modal-open" type="radio" name="openWinner" id="no-open" value="0"/><label for="no-open" style="padding-left: 10px;float:none;font-weight:100;height">不公开</label></li>')
+                $(".modal-user-list").append('<li style="padding-bottom: 0;"><input class="modal-remark" placeholder="请输入中标金额" type="text" name="price" style="margin-left: 0;margin-right: 10px;"/><input class="modal-open" type="radio" name="openWinner" id="open" value="1" /><label for="openWinner" style="padding-left: 10px;float:none;font-weight:100;height">公开</label><input class="modal-open" type="radio" name="openWinner" id="no-open" value="0"/><label for="no-open" style="padding-left: 10px;float:none;font-weight:100;height">不公开</label></li>')
             });
 
             $("#btn_failending").click(function () {

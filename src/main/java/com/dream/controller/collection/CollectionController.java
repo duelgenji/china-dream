@@ -273,7 +273,7 @@ public class CollectionController {
     }
 
     /**
-     * 添加收藏  用户
+     * 删除收藏  用户
      */
     @RequestMapping("cancelCollectionU")
     public Map<String, Object> cancelCollectionU(
@@ -300,5 +300,4 @@ public class CollectionController {
         res.put("success",1);
         return res;
     }
-
 }

@@ -82,7 +82,11 @@ define("userroom-logic", ["userroom-config", "jquery", "user-repos", "pure-grid"
 	 * @return {[type]}        [description]
 	 */
 	function renderUser(vals, ri, objval) {
-		return '<a class="ui-name" name="cmd-seeUserDetail" data-i="' + ri + '">' + (objval.title = vals) + '</a>';
+		var vip="";
+		if(vals[1]=="1"){
+			vip = '<p style="font-weight: bolder;color: orange;"> 已认证</p>'
+		}
+		return '<a class="ui-name" name="cmd-seeUserDetail" data-i="' + ri + '">' + (objval.title = vals[0]) + vip + '</a>';
 	}
 
 	/**
