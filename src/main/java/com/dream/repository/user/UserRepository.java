@@ -16,6 +16,8 @@ public interface UserRepository extends MyRepository<User,Long>{
 
     User findByEmail(String email);
 
+    User findByNickName(String nickName);
+
     User findByEmailAndPassword(String email,String password);
 
     List<User> findByStatus(int status,Pageable pageable);

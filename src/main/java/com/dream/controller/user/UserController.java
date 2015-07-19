@@ -81,6 +81,12 @@ public  class UserController extends AbstractBaseController<User, Long> {
             res.put("message", "该邮箱已经被注册");
             return res;
         }
+        user = userRepository.findByNickName(nickName);
+        if(user!=null){
+            res.put("success", "0");
+            res.put("message", "该昵称已被使用");
+            return res;
+        }
         if(type<1 || type> 3){
             res.put("success", "0");
             res.put("message", "用户类型不正确");
