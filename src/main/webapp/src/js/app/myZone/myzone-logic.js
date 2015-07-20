@@ -193,7 +193,7 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
                 val = data[col];
             if(col=="companyWebsite"){
                 var website=val;
-                if(val.substring(0,4)!="http"){
+                if(val && val.substring(0,4)!="http"){
                     website =  "http://"+val;
                 }
                 span.append('<a target="_blank" href="'+website+'">'+val+'</a>');

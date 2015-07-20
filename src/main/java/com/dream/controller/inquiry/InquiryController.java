@@ -271,21 +271,25 @@ public class InquiryController {
         }
 
         User invitedUser;
-        for(String s : userList){
-            invitedUser = userRepository.findOne(Long.parseLong(s));
-            if(invitedUser!=null){
-                Message message =new Message();
-                message.setInquiry(inquiry);
-                message.setRound(inquiry.getRound());
-                message.setUser(invitedUser);
-                message.setType(0);
-                message.setStatus(1);
-                message.setInquiryUser(inquiry.getUser());
 
-                messageRepository.save(message);
+        if(userList!=null){
+            for(String s : userList){
+                invitedUser = userRepository.findOne(Long.parseLong(s));
+                if(invitedUser!=null){
+                    Message message =new Message();
+                    message.setInquiry(inquiry);
+                    message.setRound(inquiry.getRound());
+                    message.setUser(invitedUser);
+                    message.setType(0);
+                    message.setStatus(1);
+                    message.setInquiryUser(inquiry.getUser());
 
+                    messageRepository.save(message);
+
+                }
             }
         }
+
 
 
 
@@ -325,7 +329,7 @@ public class InquiryController {
             map.put("provinceCode", inquiry.getCompanyProvince().getName());
             map.put("test", inquiry.getTest());
             map.put("winnerPrice", inquiry.getWinnerPrice());
-            map.put("isGoods", inquiryGoodsRepository.findByInquiryAndUser(inquiry,user)!=null);
+            map.put("isGoods", (user.getId()!=null && inquiryGoodsRepository.findByInquiryAndUser(inquiry,user)!=null));
             map.put("goods",inquiryGoodsRepository.countByInquiry(inquiry));
             map.put("successRate", String.format("%.2f", inquiry.getUser().getUserIndex().getInquirySuccessRate()) + "%");
             map.put("inquiryTimes", inquiry.getUser().getUserIndex().getInquiryDoneTime());
@@ -378,7 +382,7 @@ public class InquiryController {
             map.put("provinceCode", inquiry.getCompanyProvince().getName());
             map.put("test", inquiry.getTest());
             map.put("winnerPrice", inquiry.getWinnerPrice());
-            map.put("isGoods", inquiryGoodsRepository.findByInquiryAndUser(inquiry,user)!=null);
+            map.put("isGoods", (user.getId()!=null && inquiryGoodsRepository.findByInquiryAndUser(inquiry,user)!=null));
             map.put("goods",inquiryGoodsRepository.countByInquiry(inquiry));
             map.put("successRate", String.format("%.2f", inquiry.getUser().getUserIndex().getInquirySuccessRate()) + "%");
             map.put("inquiryTimes", inquiry.getUser().getUserIndex().getInquiryDoneTime());
@@ -845,17 +849,20 @@ public class InquiryController {
 
         }
         User invitedUser;
-        for(String s : userList){
-            invitedUser = userRepository.findOne(Long.parseLong(s));
-            if(invitedUser!=null){
-                Message message =new Message();
-                message.setInquiry(inquiry);
-                message.setRound(inquiry.getRound());
-                message.setUser(invitedUser);
-                message.setType(0);
-                message.setStatus(1);
-                message.setInquiryUser(inquiry.getUser());
-                messageRepository.save(message);
+
+        if(userList!=null){
+            for(String s : userList){
+                invitedUser = userRepository.findOne(Long.parseLong(s));
+                if(invitedUser!=null){
+                    Message message =new Message();
+                    message.setInquiry(inquiry);
+                    message.setRound(inquiry.getRound());
+                    message.setUser(invitedUser);
+                    message.setType(0);
+                    message.setStatus(1);
+                    message.setInquiryUser(inquiry.getUser());
+                    messageRepository.save(message);
+                }
             }
         }
 

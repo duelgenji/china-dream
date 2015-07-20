@@ -251,12 +251,10 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
      * @return {[type]} [description]
      */
     function call_fail() {
-        console.log("fail");
-
         currentQuery.page = currentPage;
 
         //currentGrid.reBind(null);
-        alert("数据加载失败");
+        alert(arguments[0].message);
 
         setTimeout(function () {
             dialogMod.mask.hide();
