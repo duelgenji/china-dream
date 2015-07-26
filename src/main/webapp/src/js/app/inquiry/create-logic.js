@@ -416,6 +416,8 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
                     $("#btn_confirm").css("display", "none");
                     $("#btn_back").css("display", "");
 
+                }else{
+                    alert(data.message)
                 }
             },complete:function(){
                 $("#btn_confirm").removeAttr("disabled");

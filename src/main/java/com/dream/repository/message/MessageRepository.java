@@ -28,4 +28,9 @@ public interface MessageRepository  extends MyRepository<Message,Long> {
 
     int countByInquiryAndUserAndRoundAndStatusAndType(Inquiry inquiry,User user,int round,int status,int type);
 
+    @Query("from Message m where m.inquiry = :inquiry and m.status = :status and m.inquiry.round=m.round and m.type=0 order by m.id desc ")
+    List<Message> findByInquiryAndStatus(@Param("inquiry") Inquiry inquiry, @Param("status") int status );
+
+    int countByUserAndChecked(User user,boolean checked);
+
 }

@@ -2,11 +2,14 @@ package com.dream.controller.user;
 
 import com.dream.entity.user.User;
 import com.dream.entity.user.UserIndex;
+import com.dream.repository.dream.SensitiveWordRepository;
+import com.dream.repository.message.MessageRepository;
 import com.dream.repository.user.UserIndexRepository;
 import com.dream.repository.user.UserRepository;
 import com.dream.service.inquiry.InquiryService;
 import com.dream.service.user.UserService;
 import com.dream.utils.CommonEmail;
+import com.dream.utils.SensitiveWordFilter;
 import com.dream.utils.UploadUtils;
 import com.wonders.xlab.framework.controller.AbstractBaseController;
 import com.wonders.xlab.framework.repository.MyRepository;
@@ -51,6 +54,12 @@ public  class UserController extends AbstractBaseController<User, Long> {
 
     @Autowired
     UserIndexRepository userIndexRepository;
+
+    @Autowired
+    SensitiveWordRepository sensitiveWordRepository;
+
+    @Autowired
+    MessageRepository messageRepository;
 
     @Override
     protected MyRepository<User, Long> getRepository() {
@@ -107,6 +116,15 @@ public  class UserController extends AbstractBaseController<User, Long> {
             res.put("message", "请不要使用个人邮箱");
             return res;
         }
+
+
+        SensitiveWordFilter filter = new SensitiveWordFilter(sensitiveWordRepository.findAll());
+        if(filter.isContainSensitiveWord(nickName,1)){
+            res.put("success", "0");
+            res.put("message", "昵称包含敏感词");
+            return res;
+        }
+
         user.setEmail(email);
         user.setPassword(DigestUtils.md5Hex(password));
         user.setNickName(nickName);
@@ -186,7 +204,7 @@ public  class UserController extends AbstractBaseController<User, Long> {
 
         inquiryService.calcUserIndex(user);
         res = userService.User2Map(user);
-
+        res.put("mailCount",messageRepository.countByUserAndChecked(user, false));
         res.put("success", "1");
 
         return res;
@@ -331,5 +349,4 @@ public  class UserController extends AbstractBaseController<User, Long> {
         }
         return res;
     }
-
 }

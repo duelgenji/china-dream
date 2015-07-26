@@ -4,6 +4,7 @@ import com.dream.entity.inquiry.Inquiry;
 import com.dream.entity.user.User;
 import com.dream.repository.inquiry.InquiryRepository;
 import com.dream.repository.user.UserRepository;
+import com.dream.utils.CommonEmail;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -29,6 +30,9 @@ public class SystemScheduleController {
     @Autowired
     private InquiryRepository inquiryRepository;
 
+    @Autowired
+    private CommonEmail commonEmail;
+
     @Transactional
     @Scheduled(cron = "0 0/10 * * * ?")
     public void execute() {
@@ -51,15 +55,24 @@ public class SystemScheduleController {
     }
 
     public void inquiryOverLimitTime(){
-
-        List<Inquiry> inquiryList = inquiryRepository.findByStatusAndCreateDateLessThan(0, DateUtils.addDays(new Date(), -60));
+        List<Inquiry> inquiryList = inquiryRepository.findByStatusAndCreateDateLessThanAndSendFailEmail(0, DateUtils.addDays(new Date(), -60), false);
         //System.out.println("即将流标"+inquiryList.size()+"条");
         for ( Inquiry inquiry : inquiryList) {
-            inquiry.setStatus(2);
+            commonEmail.sendEmail(inquiry.getUser().getEmail(),commonEmail.getContent(CommonEmail.TYPE.AUTO60,inquiry,null));
+            inquiry.setSendFailEmail(true);
             inquiryRepository.save(inquiry);
-            //TODO 发送邮件
         }
 
+        inquiryList = inquiryRepository.findByStatusAndCreateDateLessThan(0, DateUtils.addDays(new Date(), -67));
+        //System.out.println("即将流标"+inquiryList.size()+"条");
+        for ( Inquiry inquiry : inquiryList) {
+            commonEmail.sendEmail(inquiry.getUser().getEmail(),commonEmail.getContent(CommonEmail.TYPE.AUTO67,inquiry,null));
+            inquiry.setStatus(2);
+            inquiryRepository.save(inquiry);
+        }
     }
+
+
+
 
 }

@@ -240,6 +240,14 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
 
         var info = mainMod.loginInfo;
 
+        /*梦幻梦想，奇思妙想，公益梦想之后申请出价改为圆梦*/
+        var special=["梦幻梦想","奇思妙想","公益梦想"];
+        if(special.indexOf(dataSource.industryCode)>0){
+            $("#btn_biddingApply").text("圆梦");
+        }else{
+            $("#btn_biddingApply").text("申请出价");
+        }
+
         if (!info) {
             $("#btn_biddingApply").click(function () {
                 alert("对不起,此部分功能需要登录后才能操作,请先登录!");
@@ -257,6 +265,9 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
             if(dataSource.status=="0"){
                 $("#div_other").css("display", "");
             }
+
+
+            console.log(dataSource);
 
             $("#btn_biddingApply").click(function () {
                 var canApply = true,

@@ -8,6 +8,7 @@ import com.dream.entity.user.OpenStatus;
 import com.dream.entity.user.User;
 import com.dream.repository.company.CompanyIndustryRepository;
 import com.dream.repository.company.CompanyProvinceRepository;
+import com.dream.repository.dream.SensitiveWordRepository;
 import com.dream.repository.inquiry.*;
 import com.dream.repository.message.MessageRepository;
 import com.dream.repository.quotation.QuotationRepository;
@@ -16,6 +17,8 @@ import com.dream.repository.user.UserGroupInfoRepository;
 import com.dream.repository.user.UserPersonalInfoRepository;
 import com.dream.repository.user.UserRepository;
 import com.dream.service.inquiry.InquiryService;
+import com.dream.utils.CommonEmail;
+import com.dream.utils.SensitiveWordFilter;
 import com.dream.utils.UploadUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +86,12 @@ public class InquiryController {
     @Autowired
     InquiryGoodsRepository inquiryGoodsRepository;
 
+    @Autowired
+    CommonEmail commonEmail;
+
+    @Autowired
+    SensitiveWordRepository sensitiveWordRepository;
+
 
     @Value("${file_url}")
     private String file_url;
@@ -138,6 +147,17 @@ public class InquiryController {
 
         Inquiry inquiry = new Inquiry();
         inquiry.setUser(user);
+
+        /*敏感词判断*/
+        SensitiveWordFilter filter = new SensitiveWordFilter(sensitiveWordRepository.findAll());
+
+        if(filter.isContainSensitiveWord(title,1)){
+            res.put("success", "0");
+            res.put("message", "标题包含敏感词");
+            return res;
+        }
+
+
         inquiry.setTitle(title);
         if(round==0){
             inquiry.setRound(0);
@@ -729,6 +749,13 @@ public class InquiryController {
             return res;
         }
 
+        /*敏感词判断*/
+        SensitiveWordFilter filter = new SensitiveWordFilter(sensitiveWordRepository.findAll());
+        if(filter.isContainSensitiveWord(title,1)){
+            res.put("success", "0");
+            res.put("message", "标题包含敏感词");
+            return res;
+        }
 
         inquiry.setTitle(title);
         CompanyProvince companyProvince = companyProvinceRepository.findOne(provinceCode);
@@ -866,6 +893,13 @@ public class InquiryController {
             }
         }
 
+        //发送下一轮 邮件
+        List<Message> messages = messageRepository.findByInquiryAndStatus(inquiry,1);
+        for(Message m : messages){
+            commonEmail.sendEmail(m.getUser().getEmail(),commonEmail.getContent(CommonEmail.TYPE.ROUND_B,inquiry,m.getUser()));
+        }
+
+
 
         res.put("success",1);
         res.put("inquiryNo",inquiry.getInquiryNo());
@@ -908,14 +942,16 @@ public class InquiryController {
         }else{
             /* status 1 完成  2流标 */
             if(status==1){
-                if(userId!=null && userRepository.findOne(userId)!=null){
+                //乙方用户
+                User user_b = userRepository.findOne(userId);
+                if(userId!=null && user_b!=null){
                     if(messageRepository.countByInquiryAndUserAndRoundAndStatusAndType(inquiry,userRepository.findOne(userId),inquiry.getRound(),0,1)>=1){
                         res.put("success",0);
                         res.put("message","已经发送过,请等待对方确认！");
                         return res;
                     }
                     Message message = new Message();
-                    message.setUser(userRepository.findOne(userId));
+                    message.setUser(user_b);
                     message.setType(1);
                     message.setContent(price.toString());
                     message.setRound(inquiry.getRound());
@@ -923,11 +959,22 @@ public class InquiryController {
                     message.setInquiryUser(user);
                     messageRepository.save(message);
                     inquiry.setOpenWinner(openWinner);
+
+                    //todo 发送邮件
+                    commonEmail.sendEmail(user_b.getEmail(),commonEmail.getContent(CommonEmail.TYPE.CHOSEN_B, inquiry, user_b));
+
                 }
             }else if(status==2){
                 /* 流标流程 */
                 inquiry.setStatus(status);
                 inquiry.setFailReason(failReason);
+                //todo 发送邮件
+                //获取所有授权用户(有站内信授权)
+                List<Message> messages = messageRepository.findByInquiryAndStatus(inquiry,1);
+                for(Message m : messages){
+                    commonEmail.sendEmail(m.getUser().getEmail(),commonEmail.getContent(CommonEmail.TYPE.FAIL_B,inquiry,m.getUser()));
+                }
+
             }
             inquiryRepository.save(inquiry);
         }

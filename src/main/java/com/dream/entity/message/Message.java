@@ -46,6 +46,10 @@ public class Message extends AbstractPersistable<Long> {
      */
     private int type;
 
+    /**
+     * 是否已读
+     */
+    private boolean checked;
 
     public int getStatus() {
         return status;
@@ -109,5 +113,13 @@ public class Message extends AbstractPersistable<Long> {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 }

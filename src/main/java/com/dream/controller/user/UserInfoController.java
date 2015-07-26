@@ -1,6 +1,7 @@
 package com.dream.controller.user;
 
 import com.dream.entity.user.User;
+import com.dream.repository.message.MessageRepository;
 import com.dream.repository.user.UserRepository;
 import com.dream.service.user.UserService;
 import com.dream.utils.UploadUtils;
@@ -37,6 +38,9 @@ public class UserInfoController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    MessageRepository messageRepository;
+
     @Value("${avatar_url}")
     private String avatar_url;
 
@@ -49,6 +53,7 @@ public class UserInfoController {
 
         if(user.getId()!=null){
             res = userService.User2Map(userRepository.findOne(user.getId()));
+            res.put("mailCount",messageRepository.countByUserAndChecked(user, false));
             //res.put("info",info);
 
         }else{

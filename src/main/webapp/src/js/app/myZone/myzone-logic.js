@@ -228,6 +228,10 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
         if(data.logoUrl){
             $("img#logo").attr("src",data.logoUrl)
         }
+        if(loadUserInfo().mailCount){
+            $("li[data-mod='message'] a").html("站内信息"+loadUserInfo().mailCount);
+        }
+
 
     }
 

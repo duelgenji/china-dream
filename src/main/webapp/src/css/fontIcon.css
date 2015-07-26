@@ -20,6 +20,40 @@
     content: "\e125";
 }
 
+.glyphicon-envelope:before{
+    content: "\2709";
+
+}
+
+.new_message_count {
+    position: absolute;
+    /* right: -4px; */
+    top: -1px;
+    /* border: 1px solid #fff; */
+    min-width: 25px;
+    _width: 18px;
+    /* height: 8px; */
+    line-height: 15px;
+    text-align: center;
+    display: inline-block;
+    /* padding: 0 2px; */
+    background: #fa7d3c;
+    color: #fff;
+    border-radius: 5px;
+    font-size: 8px;
+}
+
+.new_message{
+    /*color:#fa7d3c;*/
+    right: 38px;
+    top: 3px;
+    /* color: #BAA597; */
+    font-size: 15px;
+    cursor: pointer;
+}
+
+
+
 .goods:hover{
     color: red;
     cursor: pointer;

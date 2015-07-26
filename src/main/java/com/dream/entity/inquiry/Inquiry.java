@@ -169,6 +169,11 @@ public class Inquiry  extends AbstractPersistable<Long> {
      */
     private int intervalHour;
 
+    /**
+     * 是否 发送过 流标提示email 60天提示 67天真正流标
+     */
+    private boolean sendFailEmail;
+
     public User getUser() {
         return user;
     }
@@ -475,6 +480,14 @@ public class Inquiry  extends AbstractPersistable<Long> {
 
     public void setIntervalHour(int interval) {
         this.intervalHour = interval;
+    }
+
+    public boolean isSendFailEmail() {
+        return sendFailEmail;
+    }
+
+    public void setSendFailEmail(boolean sendFailEmail) {
+        this.sendFailEmail = sendFailEmail;
     }
 
     public Object getProperties(String name){

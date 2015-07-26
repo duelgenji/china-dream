@@ -6,6 +6,7 @@ import com.dream.entity.user.User;
 import com.dream.repository.inquiry.InquiryRepository;
 import com.dream.repository.message.MessageRepository;
 import com.dream.repository.user.UserRepository;
+import com.dream.utils.CommonEmail;
 import com.wonders.xlab.framework.controller.AbstractBaseController;
 import com.wonders.xlab.framework.repository.MyRepository;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -34,6 +35,9 @@ public class MessageController extends AbstractBaseController<Message, Long> {
 
     @Autowired
     MessageRepository messageRepository;
+
+    @Autowired
+    CommonEmail commonEmail;
 
     @Override
     protected MyRepository<Message, Long> getRepository() {
@@ -102,7 +106,8 @@ public class MessageController extends AbstractBaseController<Message, Long> {
             map.put("inquiryId", message.getInquiry().getId());
             map.put("inquiryMode", message.getInquiry().getInquiryMode().getName());
             map.put("inquiryRound", message.getInquiry().getRound());
-
+            message.setChecked(true);
+            messageRepository.save(message);
             list.add(map);
         }
 
@@ -157,7 +162,16 @@ public class MessageController extends AbstractBaseController<Message, Long> {
              inquiry.setPurchaseCloseDate(new Date());
              inquiryRepository.save(inquiry);
 
-        }
+             // 发送成功邮件
+             List<Message> messages = messageRepository.findByInquiryAndStatus(inquiry,1);
+             for(Message m : messages){
+                 commonEmail.sendEmail(m.getUser().getEmail(),commonEmail.getContent(CommonEmail.TYPE.SUCCESS_B,inquiry,m.getUser()));
+             }
+
+        } else if(status==1 && message.getType()==2){
+             //拒绝 邮件
+             commonEmail.sendEmail(message.getInquiryUser().getEmail(),commonEmail.getContent(CommonEmail.TYPE.REJECT_A,message.getInquiry(),message.getUser()));
+         }
         messageRepository.save(message);
 
         res.put("success",1);
