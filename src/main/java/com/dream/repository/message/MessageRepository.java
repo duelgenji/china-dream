@@ -31,6 +31,9 @@ public interface MessageRepository  extends MyRepository<Message,Long> {
     @Query("from Message m where m.inquiry = :inquiry and m.status = :status and m.inquiry.round=m.round and m.type=0 order by m.id desc ")
     List<Message> findByInquiryAndStatus(@Param("inquiry") Inquiry inquiry, @Param("status") int status );
 
+    @Query("from Message m where m.inquiry = :inquiry and m.status = :status and m.round=:round and m.type=0 order by m.id desc ")
+    List<Message> findByInquiryAndRoundAndStatus(@Param("inquiry") Inquiry inquiry,@Param("status") int round, @Param("status") int status );
+
     int countByUserAndChecked(User user,boolean checked);
 
 }

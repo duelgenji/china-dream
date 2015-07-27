@@ -894,7 +894,7 @@ public class InquiryController {
         }
 
         //发送下一轮 邮件
-        List<Message> messages = messageRepository.findByInquiryAndStatus(inquiry,1);
+        List<Message> messages = messageRepository.findByInquiryAndRoundAndStatus(inquiry, inquiry.getRound()-1,1);
         for(Message m : messages){
             commonEmail.sendEmail(m.getUser().getEmail(),commonEmail.getContent(CommonEmail.TYPE.ROUND_B,inquiry,m.getUser()));
         }
