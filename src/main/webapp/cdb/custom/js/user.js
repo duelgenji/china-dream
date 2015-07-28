@@ -63,8 +63,31 @@ function ajaxRemove(params) {
 }
 
 
+function ajaxUpgrade(params) {
+    var url="/backend/upgradeUser";
+
+    $.ajax({
+        url: baseUrl + url,
+        type : "post",
+        dataType: "json",
+        data:params,
+        success: function (data) {
+            if (data.success == 1) {
+                location.reload();
+            } else {
+                alert(data.message);
+            }
+        },
+        error: function(){
+            alert("请求错误,请尝试点击右上角退出重新登录!");
+        }
+        //complete
+    })
+}
+
 var userType=["","个人","公司","群"];
 var html="";
+var vip="";
 var obj;
 var logoUrl="";
 function updateTable(data){
@@ -74,10 +97,15 @@ function updateTable(data){
         if(obj.logoUrl!=""){
             logoUrl=obj.logoUrl+"?imageView2/2/w/40&name=dl.jpg";
         }
+        if(obj.VIP==1){
+            vip=' <span class="am-icon-credit-card admin-icon-red"></span>';
+        }else{
+            vip='';
+        }
         html+=
             '<tr>' +
             '<td>'+obj.userId+'</td>' +
-            '<td><a target="_blank" href="/html/userDetail.html?key='+obj.userId+'">'+ obj.nickname+'</a></td>' +
+            '<td><a target="_blank" href="/html/userDetail.html?key='+obj.userId+'">'+ obj.nickname+vip+'</a></td>' +
             '<td>'+userType[obj.userType]+'</td>' +
             '<td class="am-hide-sm-only">'+obj.industry+'</td>' +
             '<td class="am-hide-sm-only">'+obj.createDate+'</td>' +
@@ -85,6 +113,7 @@ function updateTable(data){
             '<td data-id="'+obj.userId+'">' +
             '<div class="am-btn-toolbar">' +
             '<div class="am-btn-group am-btn-group-xs">' +
+            '<button type="button" class="am-btn am-btn-default am-btn-xs am-text-warning am-hide-sm-only btn-upgrade"><span class="am-icon-trash-o"></span> 认证</button>' +
             '<button type="button" class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only btn-remove"><span class="am-icon-trash-o"></span> 删除</button>' +
             '</div>' +
             '</div>' +
@@ -115,6 +144,20 @@ $(document).ready(function(){
                 var params={};
                 params.id=id;
                 ajaxRemove(params);
+            }
+        });
+    });
+
+    /* 认证 click */
+    $(document).on("click",".btn-upgrade", function() {
+        $('#my-confirm-upgrade').modal({
+            relatedTarget: this,
+            onConfirm: function() {
+                var $link = $(this.relatedTarget).closest('td');
+                var id = $link.data('id');
+                var params={};
+                params.id=id;
+                ajaxUpgrade(params);
             }
         });
     });

@@ -51,6 +51,37 @@ public class BackendController {
         return res;
     }
 
+    /**
+     * 用户 加v
+     */
+    @RequestMapping("upgradeUser")
+    public Map<String, Object> upgradeUser(
+            @RequestParam Long id,
+            @ModelAttribute("currentManager") Manager manager
+
+    ) {
+        Map<String, Object> res = new HashMap<>();
+
+        User user = userRepository.findOne(id);
+
+        if(user==null){
+            res.put("success",0);
+            res.put("message","此记录不存在！");
+            return res;
+        }
+
+        if(user.getVIP()==1){
+            user.setVIP(0);
+        }else{
+            user.setVIP(1);
+        }
+
+        userRepository.save(user);
+
+        res.put("success",1);
+        return res;
+    }
+
 
 
     /**
