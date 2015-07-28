@@ -6,6 +6,7 @@ import com.dream.repository.user.UserRepository;
 import com.dream.service.user.UserService;
 import com.dream.utils.UploadUtils;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -120,7 +121,7 @@ public class UserInfoController {
     @RequestMapping("retrieveUserList")
     public Map<String, Object> retrieveUserList(
             @RequestParam int type,
-            @PageableDefault(page = 0, size = 20) Pageable pageable,
+            @PageableDefault(page = 0, size = 20,sort = "id", direction = Sort.Direction.DESC)  Pageable pageable,
             @ModelAttribute("currentUser") User user) {
         Map<String, Object> res = new HashMap<>();
 
@@ -136,12 +137,17 @@ public class UserInfoController {
 
         for (User u : userPage) {
 
+            //删除的用户不显示
+            if(u.isRemoved())
+                continue;
+
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("userId",u.getId());
             map.put("nickname",u.getNickName());
             map.put("VIP", u.getVIP());
             map.put("logoUrl",u.getLogoUrl());
             map.put("userType",u.getType());
+            map.put("createDate", DateFormatUtils.format(u.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
             map.put("quotationDoneTime",u.getUserIndex().getQuotationDoneTime());
             map.put("quotationSuccessRate",String.format("%.2f", u.getUserIndex().getQuotationSuccessRate()) + "%");
             if(u.getType()==1){
@@ -173,7 +179,7 @@ public class UserInfoController {
     public Map<String, Object> searchUserList(
             @RequestParam int type,
             @RequestParam String key,
-            @PageableDefault(page = 0, size = 20) Pageable pageable,
+            @PageableDefault(page = 0, size = 20,sort = "id", direction = Sort.Direction.DESC)  Pageable pageable,
             @ModelAttribute("currentUser") User user) {
         Map<String, Object> res = new HashMap<>();
 
@@ -189,15 +195,28 @@ public class UserInfoController {
         List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
 
         String industry="",province="";
+        String logoUrl;
 
         for (User u : userPage) {
+
+            //删除的用户不显示
+            if(u.isRemoved())
+                continue;
 
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("userId",u.getId());
             map.put("nickname",u.getNickName());
             map.put("VIP", u.getVIP());
-            map.put("logoUrl",u.getLogoUrl());
+
+            logoUrl=u.getLogoUrl();
+            if(logoUrl!=null && !logoUrl.equals("")){
+                //按百分比缩放
+                logoUrl+="?imageView2/2/w/40&name=dl.jpg";
+//                logoUrl+="imageView2/2/w/200&attname=down2.jpg";
+            }
+            map.put("logoUrl",logoUrl);
             map.put("userType",u.getType());
+            map.put("createDate", DateFormatUtils.format(u.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
             map.put("quotationDoneTime",u.getUserIndex().getQuotationDoneTime());
             map.put("quotationSuccessRate",String.format("%.2f", u.getUserIndex().getQuotationSuccessRate()) + "%");
             if(u.getType()==1){

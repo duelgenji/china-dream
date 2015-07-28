@@ -1,6 +1,7 @@
 package com.dream.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -10,7 +11,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table
-public class Manager {
+public class Manager extends AbstractPersistable<Long> {
 
     private String name;
 

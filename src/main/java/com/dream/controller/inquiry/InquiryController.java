@@ -334,6 +334,10 @@ public class InquiryController {
         List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
         for (Inquiry inquiry : inquiryList) {
 
+            //被删除 不显示
+            if(inquiry.isRemoved() || inquiry.getUser().isRemoved())
+                continue;
+
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("id", inquiry.getId());
             map.put("userName", inquiry.getUser().getNickName());
@@ -386,6 +390,10 @@ public class InquiryController {
 
         List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
         for (Inquiry inquiry : inquiryList) {
+
+            //被删除 不显示
+            if(inquiry.isRemoved() || inquiry.getUser().isRemoved())
+                continue;
 
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("id", inquiry.getId());
@@ -596,6 +604,10 @@ public class InquiryController {
         List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
 
         for ( Inquiry inquiry : inquiryList ){
+
+            //被删除 不显示
+            if(inquiry.isRemoved())
+                continue;
 
             Map<String, Object> map = new HashMap<String, Object>();
 

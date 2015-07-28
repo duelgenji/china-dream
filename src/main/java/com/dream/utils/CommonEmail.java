@@ -131,7 +131,7 @@ public class CommonEmail {
             StringBuffer buffer = new StringBuffer();
             buffer.append("<img src='http://121.40.143.120:8080/dream/image/logo.png'/>");
             buffer.append("<br>");
-            buffer.append("<div style='font-size:18px;>"+content+"</div>");
+            buffer.append("<div style='font-size:18px;'>"+content+"</div>");
             buffer.append("<br>");
             buffer.append("<br>");
             buffer.append("<div style='font-size:18px;'>更多精彩梦想/询价， 敬请登录中梦国网（http://www.mychinadreams.com）</div>");

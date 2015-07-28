@@ -1,0 +1,11 @@
+.am-offcanvas-bar{
+    overflow-y: hidden !important;
+}
+
+.admin-icon-red{
+    color: #f00;
+}
+
+.small-logo{
+    max-height: 28px;
+}

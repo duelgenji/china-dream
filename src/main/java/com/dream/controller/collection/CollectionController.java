@@ -71,6 +71,10 @@ public class CollectionController {
         List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
         for (InquiryCollection collection : collectionPage) {
 
+            //被删除 不显示
+            if(collection.getInquiry().isRemoved())
+                continue;
+
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("collectionId", collection.getId());
             map.put("collectionCreateTime",  DateFormatUtils.format(collection.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
@@ -197,6 +201,10 @@ public class CollectionController {
         List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
         String industry="",province="";
         for (UserCollection collection : collectionPage) {
+
+            //删除的用户不显示
+            if(collection.getTargetUser().isRemoved())
+                continue;
 
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("collectionId", collection.getId());

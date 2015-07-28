@@ -197,6 +197,11 @@ public  class UserController extends AbstractBaseController<User, Long> {
             res.put("message", "用户没有激活");
             return res;
         }
+        if(user.isRemoved()){
+            res.put("success", "0");
+            res.put("message", "该用户已被封停，无法登陆！");
+            return res;
+        }
 
 
         model.addAttribute("currentUser", user);

@@ -83,6 +83,10 @@ public class MessageController extends AbstractBaseController<Message, Long> {
         List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
         for (Message message : messagePage) {
 
+            //被删除不显示
+            if(message.getInquiry().isRemoved() || message.getInquiry().getUser().isRemoved())
+                continue;
+
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("messageId", message.getId());
             map.put("messageStatus", message.getStatus());

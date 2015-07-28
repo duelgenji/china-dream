@@ -262,6 +262,10 @@ public class QuotationController {
 
             for ( Quotation quotation : quotationList ){
 
+                //被删除不显示
+                if(quotation.getInquiry().isRemoved() || quotation.getInquiry().getUser().isRemoved())
+                    continue;
+
                 Map<String, Object> map = new HashMap<String, Object>();
                 map.put("quotationId", quotation.getId());
                 map.put("quotationArchived", quotation.getArchived());
@@ -305,9 +309,16 @@ public class QuotationController {
             Inquiry inquiry;
             for ( Message message : messageList ){
 
+
+
+
                 Map<String, Object> map = new HashMap<String, Object>();
 
                 inquiry= message.getInquiry();
+
+                //被删除不显示
+                if(inquiry.isRemoved() || inquiry.getUser().isRemoved())
+                    continue;
 
                 map.put("quotationId", "");
                 map.put("quotationStatus", "");

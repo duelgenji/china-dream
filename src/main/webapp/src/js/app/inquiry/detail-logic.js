@@ -212,11 +212,21 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
 
 
         console.log(dataSource);
+        var special=["梦幻梦想","奇思妙想","公益梦想"];
+        var btnText="出价";
+        if(special.indexOf(dataSource.industryCode)>=0){
+            btnText="圆梦";
+        }else{
+            btnText="出价";
+        }
+        if(dataSource.applyStatus == 0){
+            /*梦幻梦想，奇思妙想，公益梦想之后申请出价改为圆梦*/
+            $("#btn_biddingApply").text("申请"+btnText);
 
-        if (dataSource.applyStatus == 1) {
-            $("#btn_biddingApply").attr("status", "working").text("已申请出价");
+        }else if (dataSource.applyStatus == 1) {
+            $("#btn_biddingApply").attr("status", "working").text("已申请"+btnText);
         } else if (dataSource.applyStatus == 2) {
-            $("#btn_biddingApply").data("cmd", "addBid").text("正式出价");
+            $("#btn_biddingApply").data("cmd", "addBid").text("正式"+btnText);
         }
 
         if (dataSource.isCollection) {
@@ -240,13 +250,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
 
         var info = mainMod.loginInfo;
 
-        /*梦幻梦想，奇思妙想，公益梦想之后申请出价改为圆梦*/
-        var special=["梦幻梦想","奇思妙想","公益梦想"];
-        if(special.indexOf(dataSource.industryCode)>0){
-            $("#btn_biddingApply").text("圆梦");
-        }else{
-            $("#btn_biddingApply").text("申请出价");
-        }
+
 
         if (!info) {
             $("#btn_biddingApply").click(function () {
@@ -305,7 +309,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                         ajaxSendInquiryMessage(params, function () {
                             alert("申请发送成功,请耐心等待对方的回复!");
 
-                            that.attr("status", "working").text("已申请出价");
+                            that.attr("status", "working").text("已申请"+btnText);
                             //that.data("cmd", "addBid").attr("status", "done").text("正式出价");
                             dismissCmdModal();
                         }, function (result) {

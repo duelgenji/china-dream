@@ -1,6 +1,7 @@
 package com.dream.controller.dream;
 
 import com.dream.entity.dream.DreamWord;
+import com.dream.entity.user.Manager;
 import com.dream.repository.dream.DreamWordRepository;
 import com.wonders.xlab.framework.controller.AbstractBaseController;
 import com.wonders.xlab.framework.repository.MyRepository;
@@ -12,7 +13,9 @@ import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.crypto.Mac;
@@ -51,6 +54,63 @@ public class DreamWordController extends AbstractBaseController<DreamWord, Long>
 
         res.put("success",1);
         res.put("data",wordList);
+        return res;
+    }
+
+
+    /**
+     * 新增 敏感词
+     */
+    @RequestMapping("generateDreamWord")
+    public Map<String, Object> generateDreamWord(
+            @RequestParam String word,
+            @ModelAttribute("currentManager") Manager manager
+
+    ) {
+        Map<String, Object> res = new HashMap<>();
+
+        if(word==null || word.equals("")){
+            res.put("success",0);
+            res.put("message","输入不能为空");
+            return res;
+        }
+        if(dreamWordRepository.findByContent(word)!=null){
+            res.put("success",0);
+            res.put("message","已经存在,不用重复添加");
+            return res;
+        }
+
+
+        DreamWord dreamWord = new DreamWord();
+        dreamWord.setContent(word);
+        dreamWordRepository.save(dreamWord);
+
+        res.put("success",1);
+        return res;
+    }
+
+    /**
+     * 删除 敏感词
+     */
+    @RequestMapping("removeDreamWord")
+    public Map<String, Object> removeDreamWord(
+            @RequestParam Long id,
+            @ModelAttribute("currentManager") Manager manager
+
+    ) {
+        Map<String, Object> res = new HashMap<>();
+
+        DreamWord dreamWord = dreamWordRepository.findOne(id);
+
+        if(dreamWord==null){
+            res.put("success",0);
+            res.put("message","此记录不存在！");
+            return res;
+        }
+
+        dreamWordRepository.delete(dreamWord);
+
+        res.put("success",1);
         return res;
     }
 

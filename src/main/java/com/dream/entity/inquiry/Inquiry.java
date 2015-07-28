@@ -174,6 +174,11 @@ public class Inquiry  extends AbstractPersistable<Long> {
      */
     private boolean sendFailEmail;
 
+    /**
+     * 删除标记
+     */
+    private boolean removed;
+
     public User getUser() {
         return user;
     }
@@ -488,6 +493,14 @@ public class Inquiry  extends AbstractPersistable<Long> {
 
     public void setSendFailEmail(boolean sendFailEmail) {
         this.sendFailEmail = sendFailEmail;
+    }
+
+    public boolean isRemoved() {
+        return removed;
+    }
+
+    public void setRemoved(boolean removed) {
+        this.removed = removed;
     }
 
     public Object getProperties(String name){

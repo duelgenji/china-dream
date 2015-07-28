@@ -93,6 +93,11 @@ public class User extends AbstractPersistable<Long> {
      */
     private String description;
 
+    /**
+     * 删除标记
+     */
+    private boolean removed;
+
     public String getEmail() {
         return email;
     }
@@ -323,5 +328,13 @@ public class User extends AbstractPersistable<Long> {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public boolean isRemoved() {
+        return removed;
+    }
+
+    public void setRemoved(boolean removed) {
+        this.removed = removed;
     }
 }
