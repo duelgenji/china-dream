@@ -91,9 +91,9 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
         }
 
         var html =
-            '<p class="ui-inquiryTitle">' + '<a href="inquiryDetail.html?key=' + vals[3] + '" name="detail">' + vals[0] + '</a>'
-            + '</p>' + '<p class="ui-biaohao '+css+'">' + vals[1] + status + '</p>'
-            + '<p class="ui-userName">' + vals[2] + vip + '</p>';
+            '<p class="ui-inquiryTitle">' + '<a href="inquiryDetail.html?key=' + vals[3] + '" name="detail">' + vals[0] + '</a>' +  '</p>' +
+            '<p class="ui-biaohao '+css+'">' + '<a class="'+css+'" href="inquiryDetail.html?key=' + vals[3] + '" name="detail">' +  vals[1] + '</a>'   + status + '</p>' +
+            '<p class="ui-userName">' +'<a href="userDetail.html?key=' + vals[7] + '" >' +  vals[2] + '</a>' + vip + '</p>';
 
         return html;
     }

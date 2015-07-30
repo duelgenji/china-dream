@@ -51,6 +51,12 @@ public class Message extends AbstractPersistable<Long> {
      */
     private boolean checked;
 
+
+    /**
+     * 是否 发送过 提示email 2天提示 5天流标
+     */
+    private boolean sendFailEmail;
+
     public int getStatus() {
         return status;
     }
@@ -121,5 +127,13 @@ public class Message extends AbstractPersistable<Long> {
 
     public void setChecked(boolean checked) {
         this.checked = checked;
+    }
+
+    public boolean isSendFailEmail() {
+        return sendFailEmail;
+    }
+
+    public void setSendFailEmail(boolean sendFailEmail) {
+        this.sendFailEmail = sendFailEmail;
     }
 }

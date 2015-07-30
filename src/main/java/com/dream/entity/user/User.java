@@ -93,6 +93,12 @@ public class User extends AbstractPersistable<Long> {
      */
     private String description;
 
+
+    /**
+     * 测试用户
+     */
+    private boolean test;
+
     /**
      * 删除标记
      */
@@ -328,6 +334,14 @@ public class User extends AbstractPersistable<Long> {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public boolean isTest() {
+        return test;
+    }
+
+    public void setTest(boolean test) {
+        this.test = test;
     }
 
     public boolean isRemoved() {

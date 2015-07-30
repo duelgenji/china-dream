@@ -83,6 +83,8 @@ public class MessageController extends AbstractBaseController<Message, Long> {
         List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
         for (Message message : messagePage) {
 
+            message.setChecked(true);
+            messageRepository.save(message);
             //被删除不显示
             if(message.getInquiry().isRemoved() || message.getInquiry().getUser().isRemoved())
                 continue;
@@ -91,12 +93,16 @@ public class MessageController extends AbstractBaseController<Message, Long> {
             map.put("messageId", message.getId());
             map.put("messageStatus", message.getStatus());
             /* 0自己发的 用户显示询价方  1别人发我 显示出价方  */
-            if(type==0 || type==2){
+            if(type==0){
                 map.put("userNickname", message.getInquiryUser().getNickName());
                 map.put("userId", message.getInquiryUser().getId());
             }else if(type==1){
                 map.put("userNickname", message.getUser().getNickName());
                 map.put("userId", message.getUser().getId());
+            }else if(type ==2){
+                map.put("userNickname", message.getInquiryUser().getNickName());
+                map.put("userId", message.getInquiryUser().getId());
+                map.put("winnerPrice", message.getInquiry().getWinnerPrice());
             }
             map.put("content", message.getContent());
             map.put("createTime", DateFormatUtils.format(message.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
@@ -105,13 +111,12 @@ public class MessageController extends AbstractBaseController<Message, Long> {
             map.put("inquiryStatus", message.getInquiry().getStatus());
             map.put("province", message.getInquiry().getCompanyProvince().getName());
             map.put("totalPrice", message.getInquiry().getTotalPrice());
-            map.put("limitDate",  DateFormatUtils.format(message.getInquiry().getLimitDate(), "yyyy-MM-dd HH:mm:ss"));
+            map.put("limitDate", DateFormatUtils.format(message.getInquiry().getLimitDate(), "yyyy-MM-dd HH:mm:ss"));
             map.put("inquiryTitle", message.getInquiry().getTitle());
             map.put("inquiryId", message.getInquiry().getId());
             map.put("inquiryMode", message.getInquiry().getInquiryMode().getName());
             map.put("inquiryRound", message.getInquiry().getRound());
-            message.setChecked(true);
-            messageRepository.save(message);
+            map.put("type", message.getType());
             list.add(map);
         }
 

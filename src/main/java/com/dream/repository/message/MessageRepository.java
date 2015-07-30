@@ -7,6 +7,7 @@ import com.wonders.xlab.framework.repository.MyRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,5 +36,7 @@ public interface MessageRepository  extends MyRepository<Message,Long> {
     List<Message> findByInquiryAndRoundAndStatus(@Param("inquiry") Inquiry inquiry,@Param("round") int round, @Param("status") int status );
 
     int countByUserAndChecked(User user,boolean checked);
+
+    List<Message> findByStatusAndCreateTimeLessThanAndSendFailEmailAndType(int status,Date date,boolean sendFailEmail,int type);
 
 }

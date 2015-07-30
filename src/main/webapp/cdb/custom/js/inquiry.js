@@ -67,7 +67,8 @@ var logoUrl="";
 function updateTable(data){
     html="";
     for(var i=0;i<data.length;i++){
-        obj=data[i];
+        obj=data[i];                n
+        logoUrl="";
         if(obj.logoUrl!=""){
             logoUrl=obj.logoUrl+"?imageView2/2/w/40&name=dl.jpg";
         }

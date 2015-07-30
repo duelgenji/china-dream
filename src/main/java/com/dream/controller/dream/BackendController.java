@@ -44,7 +44,11 @@ public class BackendController {
             return res;
         }
 
-        user.setRemoved(true);
+        if(user.isRemoved()){
+            user.setRemoved(false);
+        }else{
+            user.setRemoved(true);
+        }
         userRepository.save(user);
 
         res.put("success",1);
@@ -74,6 +78,37 @@ public class BackendController {
             user.setVIP(0);
         }else{
             user.setVIP(1);
+        }
+
+        userRepository.save(user);
+
+        res.put("success",1);
+        return res;
+    }
+
+    /**
+     * 用户 加测试
+     */
+    @RequestMapping("testUser")
+    public Map<String, Object> testUser(
+            @RequestParam Long id,
+            @ModelAttribute("currentManager") Manager manager
+
+    ) {
+        Map<String, Object> res = new HashMap<>();
+
+        User user = userRepository.findOne(id);
+
+        if(user==null){
+            res.put("success",0);
+            res.put("message","此记录不存在！");
+            return res;
+        }
+
+        if(user.isTest()){
+            user.setTest(false);
+        }else{
+            user.setTest(true);
         }
 
         userRepository.save(user);

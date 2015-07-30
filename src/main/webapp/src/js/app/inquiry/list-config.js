@@ -33,7 +33,7 @@ define("list-config",[],function(require,exports){
                     },
                     body: {
                         align: "left",
-                        fields: "title,inquiryNo,userName,id,test,status,VIP",
+                        fields: "title,inquiryNo,userName,id,test,status,VIP,userId",
                         renderFn: "renderPopularity"
                     }
                 }, {

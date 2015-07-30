@@ -121,6 +121,7 @@ public class UserInfoController {
     @RequestMapping("retrieveUserList")
     public Map<String, Object> retrieveUserList(
             @RequestParam int type,
+            @RequestParam(required = false) Boolean removed ,
             @PageableDefault(page = 0, size = 20,sort = "id", direction = Sort.Direction.DESC)  Pageable pageable,
             @ModelAttribute("currentUser") User user) {
         Map<String, Object> res = new HashMap<>();
@@ -130,21 +131,30 @@ public class UserInfoController {
         }  if(type==2){
             pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "userIndex.quotationSuccessRate");
         }
-        Page<User> userPage= userRepository.findAllUser(pageable);
+
+
+        Page<User> userPage;
+
+        if(removed==null){
+            userPage = userRepository.findAllUserAndRemoved(false, pageable);
+        }else{
+            userPage = userRepository.findAllUser(pageable);
+        }
+
         List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
 
         String industry="",province="";
 
         for (User u : userPage) {
 
-            //删除的用户不显示
-            if(u.isRemoved())
-                continue;
+
 
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("userId",u.getId());
             map.put("nickname",u.getNickName());
             map.put("VIP", u.getVIP());
+            map.put("test", u.isTest());
+            map.put("removed", u.isRemoved());
             map.put("logoUrl",u.getLogoUrl());
             map.put("userType",u.getType());
             map.put("createDate", DateFormatUtils.format(u.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
@@ -179,6 +189,7 @@ public class UserInfoController {
     public Map<String, Object> searchUserList(
             @RequestParam int type,
             @RequestParam String key,
+            @RequestParam(required = false) Boolean removed ,
             @PageableDefault(page = 0, size = 20,sort = "id", direction = Sort.Direction.DESC)  Pageable pageable,
             @ModelAttribute("currentUser") User user) {
         Map<String, Object> res = new HashMap<>();
@@ -191,7 +202,15 @@ public class UserInfoController {
 
         key =  "%"+key+"%";
 
-        Page<User> userPage= userRepository.findByNickNameLikeAndStatus(key,1,pageable);
+        Page<User> userPage ;
+
+        if(removed==null){
+            userPage = userRepository.findByNickNameLikeAndStatusAndRemoved(key,1,false,pageable);
+        }else{
+            userPage = userRepository.findByNickNameLikeAndStatus(key, 1,pageable);
+        }
+
+
         List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
 
         String industry="",province="";
@@ -199,14 +218,12 @@ public class UserInfoController {
 
         for (User u : userPage) {
 
-            //删除的用户不显示
-            if(u.isRemoved())
-                continue;
-
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("userId",u.getId());
             map.put("nickname",u.getNickName());
             map.put("VIP", u.getVIP());
+            map.put("test", u.isTest());
+            map.put("removed", u.isRemoved());
 
             logoUrl=u.getLogoUrl();
             if(logoUrl!=null && !logoUrl.equals("")){

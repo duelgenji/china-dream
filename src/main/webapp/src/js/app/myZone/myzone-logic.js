@@ -320,6 +320,7 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
 
         var params = {};
         params.page = 0;
+        params.size = 10000;
         params.type = $("#select_msg").val();
 
         ajaxRetrieveMessageList(params, function (data) {
@@ -618,11 +619,19 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
                     alert("请求失败");
                 })
             }else if (cmd == "check") {
+
+                var text = "申请留言";
+                var content = data.content;
+                if(data.type==1){
+                    text = "合同金额"
+                    content = data.winnerPrice;
+                }
+
                 showCmdModal("查看详情", '<ul class="ui-items">' +
                 '<li><label>申请日期:</label><div style="padding-left: 110px;">' +
                 '<p class="modal-date">'+data.createTime+'</p></div>' +
-                '<li><label>申请留言:</label><div style="padding-left: 110px;">' +
-                '<p class="modal-date">'+data.content+'</p></div>' +
+                '<li><label>'+text+':</label><div style="padding-left: 110px;">' +
+                '<p class="modal-date">'+content+'</p></div>' +
                 '</ul>',null);
             }
         });

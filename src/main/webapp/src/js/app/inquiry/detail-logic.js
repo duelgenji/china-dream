@@ -510,7 +510,8 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
 
             $("#btn_sucending").click(function () {
 
-                showCmdModal("系统提示", '<span style="font-size: 14px;padding-bottom: 20px;">请选择合同公司：</span><div style="height: 10px;"></div><ul class="ui-items modal-user-list"></ul>', function () {
+                showCmdModal("系统提示", '<span style="font-size: 14px;padding-bottom: 20px;">请选择合同公司：</span><input class="modal-open" type="radio" name="openWinner" value="1" checked/><label for="openWinner" style="padding-left: 10px;float:none;font-weight:100;margin-right: 10px;">公开</label><input class="modal-open" type="radio" name="openWinner" value="0"/><label for="" style="padding-left: 10px;float:none;font-weight:100;height">不公开</label><div style="height: 10px;"></div>' +
+                '<ul class="ui-items modal-user-list"></ul>', function () {
                     var params = {},
                         noCom = true;
 
@@ -523,12 +524,13 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                         }
                     });
 
-                    if (noCom) {
-                        alert("请选择合同公司");
-                        return;
-                    }
+                    //if (noCom) {
+                    //    alert("请选择合同公司");
+                    //    return;
+                    //}
 
-                    var radio = $(".modal-open:checked"),
+                    var winner = $("input[name='openWinner']:checked"),
+                        price = $("input[name='openPrice']:checked"),
                         remark = $(".modal-remark");
 
                     var re = /^[0-9]+.?[0-9]*$/;
@@ -536,14 +538,16 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                         alert("请输入数字");
                         return;
                     }
-                    if (radio.length == 0) {
+                    if (winner.length == 0) {
                         alert("请选择是否公开");
                         return;
                     }
-                    params[radio.attr("name")] = radio.val();
+                    params[winner.attr("name")] = winner.val();
+                    params[price.attr("name")] = price.val();
                     params[remark.attr("name")] = remark.val();
                     params["inquiryId"] = dataSource.id;
                     params["status"] = 1;
+
 
                     if (confirm("是否确认将此标执行成功操作?")) {
                         //console.log(JSON.stringify(params));
@@ -573,7 +577,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                     arr.push(testList[i].userId);
                 }
 
-                $(".modal-user-list").append('<li style="padding-bottom: 0;"><input class="modal-remark" placeholder="请输入中标金额" type="text" name="price" style="margin-left: 0;margin-right: 10px;"/><input class="modal-open" type="radio" name="openWinner" id="open" value="1" /><label for="openWinner" style="padding-left: 10px;float:none;font-weight:100;height">公开</label><input class="modal-open" type="radio" name="openWinner" id="no-open" value="0"/><label for="no-open" style="padding-left: 10px;float:none;font-weight:100;height">不公开</label></li>')
+                $(".modal-user-list").append('<li style="padding-bottom: 0;">输入金额: <input class="modal-remark" placeholder="请输入中标金额" type="text" name="price" style="margin-left: 0;margin-right: 10px;"/><input class="modal-open" type="radio" name="openPrice" id="open" value="1" checked/><label for="openPrice" style="padding-left: 10px;float:none;font-weight:100;height">公开</label><input class="modal-open" type="radio" name="openPrice" id="no-open" value="0"/><label for="no-open" style="padding-left: 10px;float:none;font-weight:100;height">不公开</label></li>')
             });
 
             $("#btn_failending").click(function () {

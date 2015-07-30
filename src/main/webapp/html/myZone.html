@@ -20,7 +20,7 @@
 		#data2 .ui-grid-unlock_bodyDiv,
 		#data3 .ui-grid-unlock_bodyDiv,
 		#data4 .ui-grid-unlock_bodyDiv {
-			max-height: 200px;
+			max-height: 450px;
 			overflow-y: scroll;
 		}
 
@@ -56,6 +56,24 @@
 		.ui-items li label{
 			float: left;
 		}
+
+		.ui-detail li{
+			font-size: 14px;
+			width: 300px;
+			height: inherit !important;
+			min-height: 40px;
+			white-space: inherit;
+			line-height: inherit !important;
+		}
+
+
+		#ul_group{
+			display: none;
+		}
+
+		#contentPanel {
+			 height: inherit;
+		 }
 	</style>
 
 </head>
@@ -126,7 +144,7 @@
 							<span class="ui-val" data-col="groupSize"></span>
 						</li>
 						<li>
-							<span class="ui-bold ui-title">群号:</span>
+							<span class="ui-bold ui-title">群名:</span>
 							<span class="ui-val" data-col="groupNumber"></span>
 						</li>
 						<li>
@@ -238,8 +256,8 @@
 						<div style="display:none">
 							<div class="ui-querySelect">
 								<select id="select_msg" data-grid="data4" data-mod="message">
-									<option value="0">我申请的</option>
 									<option value="1">需我回复的</option>
+									<option value="0">我申请的</option>
 									<option value="2">出价成功确认</option>
 								</select>
 							</div>

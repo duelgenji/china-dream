@@ -120,8 +120,8 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
             }
         }
 
-        val = (dom = $("#remarks")).val();
-        if (val && val.length > 500) {
+        val = (dom = $("#remark")).val();
+        if (val && val.length > 1000) {
             showErrorTip(dom.data("pos"), dom.data("errmsg"));
             isError = !!1;
         }
@@ -268,19 +268,26 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
 
     function fn_init() {
 
-
         $.get(baseUrl + "/collection/retrieveCollectionListU", function (data) {
             data = data.data;
             for(var i=0;i<data.length;i++){
                 $("#userList").append('<option value="'+data[i].userId+'">'+data[i].userNickname+'</option>');
-
             }
         });
 
         if(currentQueryObj.inquiryId){
+            //第二第三轮隐藏 轮次选择
+            $("input[name='round']").closest("li").hide();
             ajaxRetrieveInfo({inquiryId: currentQueryObj.inquiryId},
                 function(data){
-                    console.log(data);
+
+                    //轮次标题变更
+                    if(data.round==1){
+                        $("input[name='round'][type=radio]:checked").attr("title","第二轮(有的放矢)");
+                    }else if(data.round==2){
+                        $("input[name='round'][type=radio]:checked").attr("title","第三轮(精益求精)");
+                    }
+
                     $("input,select,textarea").each(function (i, span) {
                         span = $(span);
                         var col = span.attr("name"),

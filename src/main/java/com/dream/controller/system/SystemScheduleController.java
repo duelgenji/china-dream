@@ -1,8 +1,10 @@
 package com.dream.controller.system;
 
 import com.dream.entity.inquiry.Inquiry;
+import com.dream.entity.message.Message;
 import com.dream.entity.user.User;
 import com.dream.repository.inquiry.InquiryRepository;
+import com.dream.repository.message.MessageRepository;
 import com.dream.repository.user.UserRepository;
 import com.dream.utils.CommonEmail;
 import org.apache.commons.lang3.time.DateUtils;
@@ -31,11 +33,18 @@ public class SystemScheduleController {
     private InquiryRepository inquiryRepository;
 
     @Autowired
+    private MessageRepository messageRepository;
+
+    @Autowired
     private CommonEmail commonEmail;
 
+    private static int times=0;
+
     @Transactional
-    @Scheduled(cron = "0 0/10 * * * ?")
+    @Scheduled(cron = "0 0/30 * * * ?")
     public void execute() {
+
+        System.out.println("Mission running..."+ ++times);
         removeUser();
         inquiryOverLimitTime();
     }
@@ -49,29 +58,48 @@ public class SystemScheduleController {
         List<User> userList = userRepository.findByStatusAndCreateTimeLessThan(0, DateUtils.addHours(new Date(), -120));
         //System.out.println("即将删除用户"+userList.size()+"条");
         for ( User user : userList) {
-            //userRepository.delete(user);
+            userRepository.delete(user);
         }
 
     }
 
     public void inquiryOverLimitTime(){
+        //发送60天即将流标邮件
         List<Inquiry> inquiryList = inquiryRepository.findByStatusAndCreateDateLessThanAndSendFailEmail(0, DateUtils.addDays(new Date(), -60), false);
-        //System.out.println("即将流标"+inquiryList.size()+"条");
         for ( Inquiry inquiry : inquiryList) {
             commonEmail.sendEmail(inquiry.getUser().getEmail(),commonEmail.getContent(CommonEmail.TYPE.AUTO60,inquiry,null));
             inquiry.setSendFailEmail(true);
             inquiryRepository.save(inquiry);
         }
 
+        //67天自动流标
+        //发送流标邮件
         inquiryList = inquiryRepository.findByStatusAndCreateDateLessThan(0, DateUtils.addDays(new Date(), -67));
-        //System.out.println("即将流标"+inquiryList.size()+"条");
         for ( Inquiry inquiry : inquiryList) {
             commonEmail.sendEmail(inquiry.getUser().getEmail(),commonEmail.getContent(CommonEmail.TYPE.AUTO67,inquiry,null));
             inquiry.setStatus(2);
             inquiryRepository.save(inquiry);
+            //todo 是否发送邮件
+        }
+
+        //发送 成功标 2天未响应邮件
+        List<Message> messageList = messageRepository.findByStatusAndCreateTimeLessThanAndSendFailEmailAndType(0, DateUtils.addDays(new Date(), -2), false, 1);
+        for ( Message message : messageList) {
+            commonEmail.sendEmail(message.getInquiryUser().getEmail(),commonEmail.getContent(CommonEmail.TYPE.NO_RESPONSE_A,message.getInquiry(),message.getUser()));
+            message.setSendFailEmail(true);
+            messageRepository.save(message);
+        }
+
+        //成功标 5天未响应邮件 自动流标
+        messageList = messageRepository.findByStatusAndCreateTimeLessThanAndSendFailEmailAndType(0, DateUtils.addDays(new Date(), -5), true, 1);
+        for ( Message message : messageList) {
+            Inquiry i = message.getInquiry();
+            i.setStatus(2);
+            inquiryRepository.save(i);
+            //todo 是否发送邮件
+
         }
     }
-
 
 
 

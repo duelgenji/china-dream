@@ -87,6 +87,7 @@ public class Inquiry  extends AbstractPersistable<Long> {
     /**
      * 备注
      */
+    @Column(columnDefinition = "TEXT")
     private String remark;
 
     @Enumerated
@@ -153,6 +154,11 @@ public class Inquiry  extends AbstractPersistable<Long> {
      * 是否公开中标者
      */
     private boolean openWinner;
+
+    /**
+     * 是否公开中标者
+     */
+    private boolean openPrice;
 
     /**
      * 中标金额
@@ -447,6 +453,10 @@ public class Inquiry  extends AbstractPersistable<Long> {
         return test;
     }
 
+    public void setTest(int test) {
+        this.test = test;
+    }
+
     public User getWinner() {
         return winner;
     }
@@ -461,6 +471,14 @@ public class Inquiry  extends AbstractPersistable<Long> {
 
     public void setOpenWinner(boolean openWinner) {
         this.openWinner = openWinner;
+    }
+
+    public boolean isOpenPrice() {
+        return openPrice;
+    }
+
+    public void setOpenPrice(boolean openPrice) {
+        this.openPrice = openPrice;
     }
 
     public Long getWinnerPrice() {

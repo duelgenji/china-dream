@@ -202,6 +202,11 @@ public class InquiryController {
         inquiry.setContactWeiBoOpen(OpenStatus.values()[contactWeiBoOpen]);
         inquiry.setFilesOpen(OpenStatus.values()[filesOpen]);
 
+        //测试用户 只能发测试标
+        if(user.isTest()){
+            inquiry.setTest(1);
+        }
+
         Date date = new Date();
 
         if(companyProvince!=null){
@@ -304,6 +309,10 @@ public class InquiryController {
                     message.setStatus(1);
                     message.setInquiryUser(inquiry.getUser());
 
+                    //邀请 邮件
+                    commonEmail.sendEmail(invitedUser.getEmail(),commonEmail.getContent(CommonEmail.TYPE.INVITE_B,inquiry,invitedUser));
+
+
                     messageRepository.save(message);
 
                 }
@@ -340,6 +349,7 @@ public class InquiryController {
 
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("id", inquiry.getId());
+            map.put("userId", inquiry.getUser().getId());
             map.put("userName", inquiry.getUser().getNickName());
             map.put("VIP", inquiry.getUser().getVIP());
             map.put("title", inquiry.getTitle());
@@ -352,7 +362,6 @@ public class InquiryController {
             map.put("industryCode", inquiry.getCompanyIndustry().getName());
             map.put("provinceCode", inquiry.getCompanyProvince().getName());
             map.put("test", inquiry.getTest());
-            map.put("winnerPrice", inquiry.getWinnerPrice());
             map.put("isGoods", (user.getId()!=null && inquiryGoodsRepository.findByInquiryAndUser(inquiry,user)!=null));
             map.put("goods",inquiryGoodsRepository.countByInquiry(inquiry));
             map.put("successRate", String.format("%.2f", inquiry.getUser().getUserIndex().getInquirySuccessRate()) + "%");
@@ -365,6 +374,11 @@ public class InquiryController {
             if(inquiry.getStatus()==1 && inquiry.isOpenWinner()){
                 map.put("winner",inquiry.getWinner()!=null?inquiry.getWinner().getNickName():"");
             }
+
+            if(inquiry.getStatus()==1 && inquiry.isOpenPrice()){
+                map.put("winnerPrice", inquiry.getWinnerPrice());
+            }
+
 
             list.add(map);
         }
@@ -397,6 +411,7 @@ public class InquiryController {
 
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("id", inquiry.getId());
+            map.put("userId", inquiry.getUser().getId());
             map.put("userName", inquiry.getUser().getNickName());
             map.put("VIP", inquiry.getUser().getVIP());
             map.put("title", inquiry.getTitle());
@@ -409,7 +424,6 @@ public class InquiryController {
             map.put("industryCode", inquiry.getCompanyIndustry().getName());
             map.put("provinceCode", inquiry.getCompanyProvince().getName());
             map.put("test", inquiry.getTest());
-            map.put("winnerPrice", inquiry.getWinnerPrice());
             map.put("isGoods", (user.getId()!=null && inquiryGoodsRepository.findByInquiryAndUser(inquiry,user)!=null));
             map.put("goods",inquiryGoodsRepository.countByInquiry(inquiry));
             map.put("successRate", String.format("%.2f", inquiry.getUser().getUserIndex().getInquirySuccessRate()) + "%");
@@ -421,6 +435,9 @@ public class InquiryController {
             }
             if(inquiry.getStatus()==1 && inquiry.isOpenWinner()){
                 map.put("winner",inquiry.getWinner()!=null?inquiry.getWinner().getNickName():"");
+            }
+            if(inquiry.getStatus()==1 && inquiry.isOpenPrice()){
+                map.put("winnerPrice", inquiry.getWinnerPrice());
             }
             list.add(map);
         }
@@ -667,6 +684,7 @@ public class InquiryController {
         res.put("industryCode", inquiry.getCompanyIndustry().getId());
         res.put("provinceCode", inquiry.getCompanyProvince().getId());
         res.put("userLimit", inquiry.getUserLimit());
+        res.put("round", inquiry.getRound());
         res.put("logoUrl", inquiry.getLogoUrl());
 
         res.put("remark", inquiry.getRemark());
@@ -900,6 +918,10 @@ public class InquiryController {
                     message.setType(0);
                     message.setStatus(1);
                     message.setInquiryUser(inquiry.getUser());
+
+                    //邀请 邮件
+                    commonEmail.sendEmail(invitedUser.getEmail(),commonEmail.getContent(CommonEmail.TYPE.INVITE_B,inquiry,invitedUser));
+
                     messageRepository.save(message);
                 }
             }
@@ -928,6 +950,7 @@ public class InquiryController {
             @RequestParam(required = false) int status,
             @RequestParam(required = false) String failReason,
             @RequestParam(required = false) Boolean openWinner,
+            @RequestParam(required = false) Boolean openPrice,
             @RequestParam(required = false) Long price,
             @RequestParam(required = false) Long userId,
             @ModelAttribute("currentUser") User user) {
@@ -971,8 +994,9 @@ public class InquiryController {
                     message.setInquiryUser(user);
                     messageRepository.save(message);
                     inquiry.setOpenWinner(openWinner);
+                    inquiry.setOpenPrice(openPrice);
 
-                    //todo 发送邮件
+                    //发送  选中用户邮件
                     commonEmail.sendEmail(user_b.getEmail(),commonEmail.getContent(CommonEmail.TYPE.CHOSEN_B, inquiry, user_b));
 
                 }
@@ -980,7 +1004,7 @@ public class InquiryController {
                 /* 流标流程 */
                 inquiry.setStatus(status);
                 inquiry.setFailReason(failReason);
-                //todo 发送邮件
+                //发送  流标邮件
                 //获取所有授权用户(有站内信授权)
                 List<Message> messages = messageRepository.findByInquiryAndStatus(inquiry,1);
                 for(Message m : messages){

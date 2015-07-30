@@ -16,7 +16,7 @@ import java.util.Date;
 public class CommonEmail {
 
     public enum TYPE{
-        AUTO60,AUTO67,FAIL_B,ROUND_B,SUCCESS_B,CHOSEN_B,REJECT_A,NO_RESPONSE_A
+        AUTO60,AUTO67,FAIL_B,ROUND_B,SUCCESS_B,CHOSEN_B,REJECT_A,NO_RESPONSE_A,INVITE_B
     }
 
     public String sendTextMail(String url, long userId, String email, String captcha) {
@@ -178,7 +178,7 @@ public class CommonEmail {
                         "您在中梦国网参与的标号为 "+inquiry.getInquiryNo()+" ， 已经成功寻找到合适的出价方/圆梦者， 详情登录中梦国网。\n";
             case CHOSEN_B:
                 return "你好,"+user.getNickName()+"。\n" +
-                        "您在中梦国网参与的标号为 "+inquiry.getInquiryNo()+" ， 询价方"+inquiry.getUser().getNickName()+"已经确认您为最合适人选， 如您已经与该询价方线下合同，请登录中梦国网（http://www.mychinadreams.com） 并在  “我的主页”/“站内信息”中“出价成功确认”下拉框中选择响应的标号点击“确认”， 系统才能认定该询价正真成功（见下图示列）：\n"+
+                        "您在中梦国网参与的标号为 "+inquiry.getInquiryNo()+" ， 询价方"+inquiry.getUser().getNickName()+"已经确认您为最合适人选， 如您已经与该询价方线下合同，请登录中梦国网（http://www.mychinadreams.com） 并在  “我的主页”/“站内信息”中“出价成功确认”下拉框中选择响应的标号点击“确认”， 系统才能认定该询价真正成功（见下图示列）：\n"+
                         "<img src='http://121.40.143.120:8080/dream/image/chosenExample.png'/>\n" +
                         "如询价方"+inquiry.getUser().getNickName()+"并未与您线下合同，请选择拒绝；\n" +
                         "如您未做任何操作，系统将在4日之后自动流标，  详情登录中梦国网。\n" ;
@@ -188,6 +188,10 @@ public class CommonEmail {
             case NO_RESPONSE_A:
                 return "你好,"+inquiry.getUser().getNickName()+"。\n" +
                         "您在中梦国网发布的标号为 "+inquiry.getInquiryNo()+" ， 并勾选的成功出价方"+user.getNickName()+"没有确认， 请线下通知， 否则， 系统将在2天后自动流标。\n";
+            case INVITE_B:
+                return "你好,"+user.getNickName()+"。\n" +
+                        inquiry.getUser().getNickName()+"在中梦国网发布的标号为 "+inquiry.getInquiryNo()+" ， 邀请您参与并已经全部授权， 请登录中梦国网在“我的主页”中“我的出价”中“未报价”下拉框中找到该询价， 参见下图：\n"+
+                        "<img src='http://121.40.143.120:8080/dream/image/inviteExample.png'/>\n" ;
             default:
                 break;
         }
