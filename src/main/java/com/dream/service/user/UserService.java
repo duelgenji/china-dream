@@ -269,7 +269,7 @@ public class UserService {
                 }
 
 
-                if(request.getParameter("groupSize")!=null){
+                if(request.getParameter("groupSize")!=null && !request.getParameter("groupSize").equals("")){
                     userGroupInfo.setGroupSize(Integer.parseInt(request.getParameter("groupSize")));
                 }
                 if(request.getParameter("groupNumber")!=null){

@@ -1,5 +1,6 @@
 package com.dream.controller.dream;
 
+import com.dream.entity.dream.DreamWord;
 import com.dream.entity.dream.SensitiveWord;
 import com.dream.entity.user.Manager;
 import com.dream.repository.dream.SensitiveWordRepository;
@@ -13,6 +14,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -76,6 +78,47 @@ public class SensitiveWordController extends AbstractBaseController<SensitiveWor
         sensitiveWordRepository.save(sensitiveWord);
 
         res.put("success",1);
+        return res;
+    }
+
+    /**
+     * 新增 敏感词
+     */
+    @RequestMapping("generateSensitiveWords")
+    public Map<String, Object> generateSensitiveWords(
+            @RequestParam(required = false) List<String> words,
+            @ModelAttribute("currentManager") Manager manager
+
+    ) {
+        Map<String, Object> res = new HashMap<>();
+
+        int total = 0;
+        int same = 0;
+
+        if(words==null || words.size()==0){
+            res.put("success",0);
+            res.put("message","数据为空");
+            return res;
+        }
+
+        SensitiveWord sensitiveWord ;
+        for(String word : words){
+            if(sensitiveWordRepository.findByContent(word)!=null){
+                same++;
+                continue;
+            }
+
+            sensitiveWord = new SensitiveWord();
+            sensitiveWord.setContent(word);
+            sensitiveWordRepository.save(sensitiveWord);
+            total++;
+        }
+
+
+
+        res.put("success", 1);
+        res.put("same", same);
+        res.put("total",total);
         return res;
     }
 

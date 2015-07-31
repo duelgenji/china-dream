@@ -10,6 +10,7 @@ import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.URI;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
+import org.apache.http.HttpRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.security.InvalidKeyException;
@@ -50,7 +52,8 @@ public class DreamWordController extends AbstractBaseController<DreamWord, Long>
     public Map<String, Object> retrieveDreamWordList() {
         Map<String, Object> res = new HashMap<>();
 
-        List<DreamWord> wordList= dreamWordRepository.findAll();
+
+        List<DreamWord> wordList= dreamWordRepository.orderByRand();
 
         res.put("success",1);
         res.put("data",wordList);
@@ -86,6 +89,47 @@ public class DreamWordController extends AbstractBaseController<DreamWord, Long>
         dreamWordRepository.save(dreamWord);
 
         res.put("success",1);
+        return res;
+    }
+
+    /**
+     * 新增 敏感词
+     */
+    @RequestMapping("generateDreamWords")
+    public Map<String, Object> generateDreamWords(
+            @RequestParam(required = false) List<String> words,
+            @ModelAttribute("currentManager") Manager manager
+
+    ) {
+        Map<String, Object> res = new HashMap<>();
+
+        int total = 0;
+        int same = 0;
+
+        if(words==null || words.size()==0){
+            res.put("success",0);
+            res.put("message","数据为空");
+            return res;
+        }
+
+        DreamWord dreamWord ;
+        for(String word : words){
+            if(dreamWordRepository.findByContent(word)!=null){
+                same++;
+                continue;
+            }
+
+            dreamWord = new DreamWord();
+            dreamWord.setContent(word);
+            dreamWordRepository.save(dreamWord);
+            total++;
+        }
+
+
+
+        res.put("success",1);
+        res.put("same",same);
+        res.put("total",total);
         return res;
     }
 

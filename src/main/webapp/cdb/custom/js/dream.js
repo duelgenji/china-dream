@@ -53,6 +53,30 @@ function ajaxGenerate(params) {
     })
 }
 
+function ajaxGenerateList(params) {
+
+    var url="/dreamWord/generateDreamWords";
+
+    $.ajax({
+        url: baseUrl + url,
+        type : "post",
+        dataType: "json",
+        data: params,
+        success: function (data) {
+            if (data.success == 1) {
+                alert("成功增加"+data.total+"条(重复数据:"+data.same+")");
+                location.reload();
+            } else {
+                alert(data.message);
+            }
+        },
+        error: function(){
+            alert("请求错误,请尝试点击右上角退出重新登录!");
+        }
+        //complete
+    })
+}
+
 function ajaxRemove(params) {
 
     var url="/dreamWord/removeDreamWord";
@@ -102,6 +126,36 @@ function updateTable(data){
 }
 
 $(document).ready(function(){
+
+
+    $("#doc-modal-toggle").on('click', function(e) {
+        $('#my-modal').modal('toggle');
+    });
+
+    $("#modal-submit").on("click",function(){
+
+        var words = $("#words").val();
+
+        if(!words){
+            alert("请输入内容");
+            return;
+        }
+
+        words = words.split("\n");
+        var arr = [];
+
+        for(var i = 0;i<words.length;i++){
+            if(words[i])
+                arr.push(words[i])
+        }
+        var params = {};
+        params.words = arr.toString();
+
+        console.log(params);
+        ajaxGenerateList(params);
+
+    });
+
 
     ajaxRetrieveList();
 
