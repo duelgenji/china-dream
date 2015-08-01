@@ -83,6 +83,7 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
             css = " green ";
             status = "(进行中)";
         }else if(vals[5]=="1"){
+            css = " red ";
             status = "(成功)";
         }
 

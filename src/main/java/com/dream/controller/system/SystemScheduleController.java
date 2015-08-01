@@ -74,8 +74,8 @@ public class SystemScheduleController {
 
         //67天自动流标
         //发送流标邮件
-        inquiryList = inquiryRepository.findByStatusAndCreateDateLessThan(0, DateUtils.addDays(new Date(), -67));
-        for ( Inquiry inquiry : inquiryList) {
+        List<Inquiry> inquiryList2  = inquiryRepository.findByStatusAndCreateDateLessThan(0, DateUtils.addDays(new Date(), -67));
+        for ( Inquiry inquiry : inquiryList2) {
             commonEmail.sendEmail(inquiry.getUser().getEmail(),commonEmail.getContent(CommonEmail.TYPE.AUTO67,inquiry,null));
             inquiry.setStatus(2);
             inquiryRepository.save(inquiry);
@@ -91,14 +91,16 @@ public class SystemScheduleController {
         }
 
         //成功标 5天未响应邮件 自动流标
-        messageList = messageRepository.findByStatusAndCreateTimeLessThanAndSendFailEmailAndType(0, DateUtils.addDays(new Date(), -5), true, 1);
-        for ( Message message : messageList) {
+        List<Message> messageList2  = messageRepository.findByStatusAndCreateTimeLessThanAndSendFailEmailAndType(0, DateUtils.addDays(new Date(), -5), true, 1);
+
+        for ( Message message : messageList2) {
             Inquiry i = message.getInquiry();
             i.setStatus(2);
             inquiryRepository.save(i);
             //todo 是否发送邮件
 
         }
+
     }
 
 
