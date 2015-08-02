@@ -24,6 +24,7 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -334,15 +335,60 @@ public class InquiryController {
      */
     @RequestMapping("retrieveInquiryList")
     public Map<String, Object> retrieveInquiryList(
+            @RequestParam(required = false) Integer type,
+            @RequestParam(required = false) List<Long> industryCode,
+            @RequestParam(required = false) List<Long> provinceCode,
+            @RequestParam(required = false) List<Integer> round,
+            @RequestParam(required = false) List<Long> inquiryMode,
+            @RequestParam(required = false) String userType,
+            @RequestParam(required = false) String minPrice,
+            @RequestParam(required = false) String maxPrice,
             @PageableDefault(page = 0, size = 20,sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
             @ModelAttribute("currentUser") User user) {
         Map<String, Object> res = new HashMap<>();
+        if(type!=null){
+            switch (type){
+                case 1:
+                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "goods");
+                    break;
+                case 2:
+                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "totalPrice");
+                    break;
+                case 3:
+                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "user.userIndex.inquiryDoneTime");
+                    break;
+                case 4:
+                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "user.userIndex.inquirySuccessRate");
+                    break;
+                case 5:
+                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "limitDate");
+                    break;
+                default:
+                    break;
+            }
+        }
+        Map<String, Object> filters = new HashMap<>();
 
-        Page<Inquiry> inquiryList= inquiryRepository.findAll(pageable);
+        if(industryCode!=null && industryCode.size()>0){
+            filters.put("companyIndustry_in", industryCode);
+        }
+        if(provinceCode!=null && provinceCode.size()>0){
+            filters.put("companyProvince_in", provinceCode);
+        }
+        if(round!=null && round.size()>0){
+            filters.put("round_in", round);
+        }
+        if(inquiryMode!=null && inquiryMode.size()>0){
+            filters.put("inquiryMode_in", inquiryMode);
+        }
+        //todo 用户类型  价格区间
+
+        Page<Inquiry> inquiryList= inquiryRepository.findAll(filters,pageable);
 
         List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
         for (Inquiry inquiry : inquiryList) {
 
+            //todo 优化 用筛选 搜索同理
             //被删除 不显示
             if(inquiry.isRemoved() || inquiry.getUser().isRemoved())
                 continue;
@@ -363,7 +409,10 @@ public class InquiryController {
             map.put("provinceCode", inquiry.getCompanyProvince().getName());
             map.put("test", inquiry.getTest());
             map.put("isGoods", (user.getId()!=null && inquiryGoodsRepository.findByInquiryAndUser(inquiry,user)!=null));
-            map.put("goods",inquiryGoodsRepository.countByInquiry(inquiry));
+            //todo 下次去掉
+            inquiry.setGoods(inquiryGoodsRepository.countByInquiry(inquiry));
+            inquiryRepository.save(inquiry);
+            map.put("goods",inquiry.getGoods());
             map.put("successRate", String.format("%.2f", inquiry.getUser().getUserIndex().getInquirySuccessRate()) + "%");
             map.put("inquiryTimes", inquiry.getUser().getUserIndex().getInquiryDoneTime());
             if(inquiry.getLogoUrl()==null || "".equals(inquiry.getLogoUrl())){
@@ -425,7 +474,10 @@ public class InquiryController {
             map.put("provinceCode", inquiry.getCompanyProvince().getName());
             map.put("test", inquiry.getTest());
             map.put("isGoods", (user.getId()!=null && inquiryGoodsRepository.findByInquiryAndUser(inquiry,user)!=null));
-            map.put("goods",inquiryGoodsRepository.countByInquiry(inquiry));
+            //todo 下次去掉
+            inquiry.setGoods(inquiryGoodsRepository.countByInquiry(inquiry));
+            inquiryRepository.save(inquiry);
+            map.put("goods",inquiry.getGoods());
             map.put("successRate", String.format("%.2f", inquiry.getUser().getUserIndex().getInquirySuccessRate()) + "%");
             map.put("inquiryTimes", inquiry.getUser().getUserIndex().getInquiryDoneTime());
             if(inquiry.getLogoUrl()==null || "".equals(inquiry.getLogoUrl())){
@@ -1049,8 +1101,10 @@ public class InquiryController {
             inquiryGoodsRepository.delete(inquiryGoods);
             res.put("isGoods", 0);
         }
+        inquiry.setGoods(inquiryGoodsRepository.countByInquiry(inquiry));
+        inquiryRepository.save(inquiry);
 
-        res.put("goods",inquiryGoodsRepository.countByInquiry(inquiry));
+        res.put("goods",inquiry.getGoods());
         res.put("success",1);
         return res;
     }

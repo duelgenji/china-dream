@@ -185,6 +185,11 @@ public class Inquiry  extends AbstractPersistable<Long> {
      */
     private boolean removed;
 
+    /**
+     * 被赞数
+     */
+    private int goods;
+
     public User getUser() {
         return user;
     }
@@ -519,6 +524,14 @@ public class Inquiry  extends AbstractPersistable<Long> {
 
     public void setRemoved(boolean removed) {
         this.removed = removed;
+    }
+
+    public int getGoods() {
+        return goods;
+    }
+
+    public void setGoods(int goods) {
+        this.goods = goods;
     }
 
     public Object getProperties(String name){

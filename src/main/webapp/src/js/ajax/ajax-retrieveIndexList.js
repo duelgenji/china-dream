@@ -30,7 +30,6 @@ function ajaxRetriveIndexList(params, ok, fail, error) {
 
 function ajaxInquiryGoods(params, ok, fail, error) {
 
-
     var url="/inquiry/inquiryGood";
 
     $.ajax({

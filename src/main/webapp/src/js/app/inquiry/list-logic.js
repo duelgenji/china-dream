@@ -25,6 +25,7 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
 
         currentQuery = {
             page: 0,
+            type: 0,
             size: size
         },
         currentPage = 0,
@@ -148,7 +149,7 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
     function renderEndDate(vals, ri, objval) {
 
         if (vals[3] == "1") {
-            return (objval.title = "中标方:" + (vals[4] ? vals[4] : "*******")+"<p>中标价格:"+ vals[5]+"</p>");
+            return (objval.title = "中标方:" + (vals[4] ? vals[4] : "*******")+"<p>中标价格:"+  (vals[5] ? vals[5] : "*******")+"</p>");
         }else if (vals[3] == "2") {
             return "流标";
         }
@@ -506,6 +507,18 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
                 setTimeout(fn_bind, 200);
             }
         });
+
+        //排序项目
+        $(document).on("click",".ui-grid-contentDiv-span",function(){
+            if($(this).attr("active")=="1"){
+                return;
+            }
+            currentQuery.type= $(this).closest("th").attr("ci");
+            $(".ui-grid-contentDiv-span").removeAttr("active").removeClass("red");
+            $(this).attr("active","1").addClass("red");
+            fn_bind();
+        });
+
     }
 
     exports.load = function () {
