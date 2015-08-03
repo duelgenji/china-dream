@@ -4,8 +4,6 @@ import com.dream.entity.dream.DreamWord;
 import com.dream.entity.dream.SensitiveWord;
 import com.dream.entity.user.Manager;
 import com.dream.repository.dream.SensitiveWordRepository;
-import com.wonders.xlab.framework.controller.AbstractBaseController;
-import com.wonders.xlab.framework.repository.MyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,15 +22,10 @@ import java.util.Map;
 @RestController
 @RequestMapping("sensitive")
 @SessionAttributes("currentManager")
-public class SensitiveWordController extends AbstractBaseController<SensitiveWord, Long> {
+public class SensitiveWordController{
 
     @Autowired
     SensitiveWordRepository sensitiveWordRepository;
-
-    @Override
-    protected MyRepository<SensitiveWord, Long> getRepository() {
-        return sensitiveWordRepository;
-    }
 
     /**
      * 获取 敏感词列表

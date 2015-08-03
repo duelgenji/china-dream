@@ -120,34 +120,55 @@ public class UserInfoController {
      */
     @RequestMapping("retrieveUserList")
     public Map<String, Object> retrieveUserList(
-            @RequestParam int type,
+            @RequestParam(required = false) Integer type,
+            @RequestParam(required = false) List<Long> industryCode,
+            @RequestParam(required = false) List<Long> provinceCode,
+            @RequestParam(required = false) List<Integer> userType,
             @RequestParam(required = false) Boolean removed ,
             @PageableDefault(page = 0, size = 20,sort = "id", direction = Sort.Direction.DESC)  Pageable pageable,
             @ModelAttribute("currentUser") User user) {
         Map<String, Object> res = new HashMap<>();
 
-        if(type==1){
-            pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "userIndex.quotationDoneTime");
-        }  if(type==2){
-            pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "userIndex.quotationSuccessRate");
+
+
+        if(type!=null){
+            switch (type){
+                case 1:
+                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "userIndex.quotationDoneTime");
+                    break;
+                case 2:
+                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "userIndex.quotationSuccessRate");
+                    break;
+                default:
+                    break;
+            }
         }
 
-
+        Map<String, Object> filters = new HashMap<>();
+        filters.put("status_equal", 1);
+        //todo 更改结构
+        if(industryCode!=null && industryCode.size()>0){
+            filters.put("user.userPersonalInfo.companyIndustry_in", industryCode);
+        }
+        if(provinceCode!=null && provinceCode.size()>0){
+            filters.put("companyProvince_in", provinceCode);
+        }
+        if(userType!=null && userType.size()>0){
+            filters.put("user.type_in", userType);
+        }
+        if(removed==null){
+            filters.put("removed_equal", false);
+        }
         Page<User> userPage;
 
-        if(removed==null){
-            userPage = userRepository.findAllUserAndRemoved(false, pageable);
-        }else{
-            userPage = userRepository.findAllUser(pageable);
-        }
+
+        userPage = userRepository.findAll(filters,pageable);
 
         List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
 
         String industry="",province="";
 
         for (User u : userPage) {
-
-
 
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("userId",u.getId());

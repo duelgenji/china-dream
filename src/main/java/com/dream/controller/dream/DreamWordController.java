@@ -3,14 +3,11 @@ package com.dream.controller.dream;
 import com.dream.entity.dream.DreamWord;
 import com.dream.entity.user.Manager;
 import com.dream.repository.dream.DreamWordRepository;
-import com.wonders.xlab.framework.controller.AbstractBaseController;
-import com.wonders.xlab.framework.repository.MyRepository;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.URI;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
-import org.apache.http.HttpRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.security.InvalidKeyException;
@@ -35,15 +31,10 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("dreamWord")
-public class DreamWordController extends AbstractBaseController<DreamWord, Long> {
+public class DreamWordController {
 
     @Autowired
     DreamWordRepository dreamWordRepository;
-
-    @Override
-    protected MyRepository<DreamWord, Long> getRepository() {
-        return dreamWordRepository;
-    }
 
     /**
      * 获取语录列表

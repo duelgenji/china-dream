@@ -7,8 +7,6 @@ import com.dream.repository.inquiry.InquiryRepository;
 import com.dream.repository.message.MessageRepository;
 import com.dream.repository.user.UserRepository;
 import com.dream.utils.CommonEmail;
-import com.wonders.xlab.framework.controller.AbstractBaseController;
-import com.wonders.xlab.framework.repository.MyRepository;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,7 +23,7 @@ import java.util.*;
 @RestController
 @RequestMapping("message")
 @SessionAttributes("currentUser")
-public class MessageController extends AbstractBaseController<Message, Long> {
+public class MessageController{
 
     @Autowired
     UserRepository userRepository;
@@ -38,11 +36,6 @@ public class MessageController extends AbstractBaseController<Message, Long> {
 
     @Autowired
     CommonEmail commonEmail;
-
-    @Override
-    protected MyRepository<Message, Long> getRepository() {
-        return messageRepository;
-    }
 
 
     /**

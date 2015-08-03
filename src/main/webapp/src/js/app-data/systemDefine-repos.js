@@ -13,7 +13,7 @@ define("systemDefine-repos", ["base-repos"], function (require, exports) {
         base.setAction("systemDefine/getProvince").get(null, ok, fail, error);
     };
 
-    exports.getAllDreamwords = function (ok, fail, error) {
+    exports.getAllDreamword = function (ok, fail, error) {
         $.ajax({
             url: "../dreamWord/retrieveDreamWordList",
             type: "post",

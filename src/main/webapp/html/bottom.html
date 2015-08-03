@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <base target="_self">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="中国梦-一个让你实现自己梦想的舞台！">
+    <meta name="Keywords" content="撮合平台，项目招投标">
+    <link rel="icon" href="../image/icon/icon.jpg" mce_href="../image/icon/icon.jpg" type="image/x-icon">
+    <title>我的中国梦-询价大厅</title>
+    <link rel="icon" href="" mce_href="" type="image/x-icon">
+    <link rel="stylesheet" href="../dest/css/base.css">
+    <link rel="stylesheet" href="../dest/css/plugins.css">
+    <link rel="stylesheet" href="../dest/css/inquiry.css">
+    <link rel="stylesheet" href="../src/css/fontIcon.css">
+</head>
+<body>
+<div id="mainPage">
+    <header id="header">
+    </header>
+    <!-- /header -->
+    <section id="container">
+
+    </section>
+
+    <div id="footer">
+    </div>
+</div>
+<iframe id="login_ifm" name="login_ifm" style="display: none;" iframeborder=0></iframe>
+</body>
+
+<script src="../dest/js/lib/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="../dest/js/lib/sea.js" type="text/javascript" charset="utf-8"></script>
+<script src="../dest/js/plugins/plugins.js" type="text/javascript" charset="utf-8"></script>
+
+<script src="../src/js/app/main.js" charset="utf-8"></script>
+
+<script type="text/javascript">
+    define("jquery", function () {
+        return $;
+    });
+    seajs.use(["main", "list-logic"], function (mod, listMod) {
+        mod.load();
+    });
+</script>
+
+</html>

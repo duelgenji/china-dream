@@ -229,7 +229,7 @@ define("main", ["systemDefine-repos", "pure-dialog"], function (require, exports
             var header = $("#header").html(format(headerHtml, base));
 
             if (header.length) {
-                systemDefineMod.getAllDreamwords(call_newsOk, call_newsFail, call_newsFail);
+                ajaxAllDreamWord(call_newsOk, call_newsFail, call_newsFail);
             }
         }
 
@@ -403,3 +403,24 @@ define("main", ["systemDefine-repos", "pure-dialog"], function (require, exports
         return exports;
     };
 });
+
+function ajaxAllDreamWord( ok, fail, error) {
+    $.ajax({
+        url: baseUrl + "/dreamWord/retrieveDreamWordList",
+        type : "post",
+        dataType: "json",
+        success: function (result) {
+            if (result.success == 1) {
+                ok(result.data);
+            } else {
+                if (fail) {
+                    fail(result);
+                } else {
+                    alert(result.message);
+                }
+            }
+        },
+        error: error
+        //complete
+    })
+}

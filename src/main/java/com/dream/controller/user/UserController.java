@@ -11,8 +11,6 @@ import com.dream.service.user.UserService;
 import com.dream.utils.CommonEmail;
 import com.dream.utils.SensitiveWordFilter;
 import com.dream.utils.UploadUtils;
-import com.wonders.xlab.framework.controller.AbstractBaseController;
-import com.wonders.xlab.framework.repository.MyRepository;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -38,7 +36,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("user")
 @SessionAttributes("currentUser")
-public  class UserController extends AbstractBaseController<User, Long> {
+public  class UserController {
 
     @Autowired
     UserRepository userRepository;
@@ -60,11 +58,6 @@ public  class UserController extends AbstractBaseController<User, Long> {
 
     @Autowired
     MessageRepository messageRepository;
-
-    @Override
-    protected MyRepository<User, Long> getRepository() {
-        return userRepository;
-    }
 
     @Value("${avatar_url}")
     private String avatar_url;

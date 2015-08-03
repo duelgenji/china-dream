@@ -340,9 +340,9 @@ public class InquiryController {
             @RequestParam(required = false) List<Long> provinceCode,
             @RequestParam(required = false) List<Integer> round,
             @RequestParam(required = false) List<Long> inquiryMode,
-            @RequestParam(required = false) String userType,
-            @RequestParam(required = false) String minPrice,
-            @RequestParam(required = false) String maxPrice,
+            @RequestParam(required = false) List<Integer> userType,
+            @RequestParam(required = false) Integer minPrice,
+            @RequestParam(required = false) Integer maxPrice,
             @PageableDefault(page = 0, size = 20,sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
             @ModelAttribute("currentUser") User user) {
         Map<String, Object> res = new HashMap<>();
@@ -381,7 +381,15 @@ public class InquiryController {
         if(inquiryMode!=null && inquiryMode.size()>0){
             filters.put("inquiryMode_in", inquiryMode);
         }
-        //todo 用户类型  价格区间
+        if(userType!=null && userType.size()>0){
+            filters.put("user.type_in", userType);
+        }
+        if(minPrice!=null){
+            filters.put("totalPrice_greaterThanOrEqualTo", minPrice);
+        }
+        if(maxPrice!=null){
+            filters.put("totalPrice_lessThanOrEqualTo", maxPrice);
+        }
 
         Page<Inquiry> inquiryList= inquiryRepository.findAll(filters,pageable);
 
@@ -443,13 +451,70 @@ public class InquiryController {
      */
     @RequestMapping("searchInquiryList")
     public Map<String, Object> searchInquiryList(
+            @RequestParam(required = false) Integer type,
+            @RequestParam(required = false) List<Long> industryCode,
+            @RequestParam(required = false) List<Long> provinceCode,
+            @RequestParam(required = false) List<Integer> round,
+            @RequestParam(required = false) List<Long> inquiryMode,
+            @RequestParam(required = false) List<Integer> userType,
+            @RequestParam(required = false) Integer minPrice,
+            @RequestParam(required = false) Integer maxPrice,
             @RequestParam(required = false) String key,
             @PageableDefault(page = 0, size = 20,sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
             @ModelAttribute("currentUser") User user) {
         Map<String, Object> res = new HashMap<>();
 
-        key =  "%"+key+"%";
-        Page<Inquiry> inquiryList= inquiryRepository.findByInquiryNoLikeOrTitleLike(key, key,pageable);
+        if(type!=null){
+            switch (type){
+                case 1:
+                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "goods");
+                    break;
+                case 2:
+                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "totalPrice");
+                    break;
+                case 3:
+                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "user.userIndex.inquiryDoneTime");
+                    break;
+                case 4:
+                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "user.userIndex.inquirySuccessRate");
+                    break;
+                case 5:
+                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "limitDate");
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        //todo filter没使用
+        Map<String, Object> filters = new HashMap<>();
+
+        if(industryCode!=null && industryCode.size()>0){
+            filters.put("companyIndustry_in", industryCode);
+        }
+        if(provinceCode!=null && provinceCode.size()>0){
+            filters.put("companyProvince_in", provinceCode);
+        }
+        if(round!=null && round.size()>0){
+            filters.put("round_in", round);
+        }
+        if(inquiryMode!=null && inquiryMode.size()>0){
+            filters.put("inquiryMode_in", inquiryMode);
+        }
+        if(userType!=null && userType.size()>0){
+            filters.put("user.type_in", userType);
+        }
+        if(minPrice!=null){
+            filters.put("totalPrice_greaterThanOrEqualTo", minPrice);
+        }
+        if(maxPrice!=null){
+            filters.put("totalPrice_lessThanOrEqualTo", maxPrice);
+        }
+//        if(key!=null && !key.equals("")){
+//            filters.put("titleOrName_like", key);
+//        }
+
+        Page<Inquiry> inquiryList= inquiryRepository.findByInquiryNoLikeOrTitleLike(key,key,pageable);
 
         List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
         for (Inquiry inquiry : inquiryList) {
@@ -1108,5 +1173,4 @@ public class InquiryController {
         res.put("success",1);
         return res;
     }
-
 }
