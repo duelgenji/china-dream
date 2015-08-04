@@ -143,8 +143,8 @@ function updateTable(data){
             '<td data-id="'+obj.userId+'">' +
             '<div class="am-btn-toolbar">' +
             '<div class="am-btn-group am-btn-group-xs">' +
-            '<button type="button" class="am-btn am-btn-default am-btn-xs am-text-warning am-hide-sm-only btn-upgrade"><span class="am-icon-trash-o"></span> 认证</button>' +
-            '<button type="button" class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only btn-remove"><span class="am-icon-trash-o"></span> 封停</button>' +
+            '<button type="button" class="am-btn am-btn-default am-btn-xs am-text-warning am-hide-sm-only btn-upgrade"><span class="am-icon-credit-card"></span> 认证</button>' +
+            '<button type="button" class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only btn-remove"><span class="am-icon-ban"></span> 封停</button>' +
             '<button type="button" class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only btn-test"><span class="am-icon-trash-o"></span> 测试</button>' +
             '</div>' +
             '</div>' +

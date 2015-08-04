@@ -147,12 +147,12 @@ public class UserInfoController {
         Map<String, Object> filters = new HashMap<>();
         filters.put("status_equal", 1);
         //todo 更改结构
-        if(industryCode!=null && industryCode.size()>0){
-            filters.put("user.userPersonalInfo.companyIndustry_in", industryCode);
-        }
-        if(provinceCode!=null && provinceCode.size()>0){
-            filters.put("companyProvince_in", provinceCode);
-        }
+//        if(industryCode!=null && industryCode.size()>0){
+//            filters.put("user.userPersonalInfo.companyIndustry_in", industryCode);
+//        }
+//        if(provinceCode!=null && provinceCode.size()>0){
+//            filters.put("companyProvince_in", provinceCode);
+//        }
         if(userType!=null && userType.size()>0){
             filters.put("user.type_in", userType);
         }
@@ -167,6 +167,7 @@ public class UserInfoController {
         List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
 
         String industry="",province="";
+        String logoUrl;
 
         for (User u : userPage) {
 
@@ -176,7 +177,13 @@ public class UserInfoController {
             map.put("VIP", u.getVIP());
             map.put("test", u.isTest());
             map.put("removed", u.isRemoved());
-            map.put("logoUrl",u.getLogoUrl());
+            logoUrl=u.getLogoUrl();
+            if(logoUrl!=null && !logoUrl.equals("")){
+                //按百分比缩放
+                logoUrl+="?imageView2/2/w/120&name=dl.jpg";
+            }
+            map.put("logoUrl",logoUrl);
+
             map.put("userType",u.getType());
             map.put("createDate", DateFormatUtils.format(u.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
             map.put("quotationDoneTime",u.getUserIndex().getQuotationDoneTime());
@@ -249,8 +256,7 @@ public class UserInfoController {
             logoUrl=u.getLogoUrl();
             if(logoUrl!=null && !logoUrl.equals("")){
                 //按百分比缩放
-                logoUrl+="?imageView2/2/w/40&name=dl.jpg";
-//                logoUrl+="imageView2/2/w/200&attname=down2.jpg";
+                logoUrl+="?imageView2/2/w/120&name=dl.jpg";
             }
             map.put("logoUrl",logoUrl);
             map.put("userType",u.getType());

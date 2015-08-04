@@ -336,6 +336,7 @@ public class InquiryController {
     @RequestMapping("retrieveInquiryList")
     public Map<String, Object> retrieveInquiryList(
             @RequestParam(required = false) Integer type,
+            @RequestParam(required = false) Integer direction,
             @RequestParam(required = false) List<Long> industryCode,
             @RequestParam(required = false) List<Long> provinceCode,
             @RequestParam(required = false) List<Integer> round,
@@ -346,27 +347,36 @@ public class InquiryController {
             @PageableDefault(page = 0, size = 20,sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
             @ModelAttribute("currentUser") User user) {
         Map<String, Object> res = new HashMap<>();
+
+
+        Sort.Direction pageDirection = Sort.Direction.DESC;
+        if(direction!=null && direction>=1){
+            pageDirection = Sort.Direction.ASC;
+        }
+
         if(type!=null){
             switch (type){
                 case 1:
-                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "goods");
+                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), pageDirection, "goods");
                     break;
                 case 2:
-                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "totalPrice");
+                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), pageDirection, "totalPrice");
                     break;
                 case 3:
-                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "user.userIndex.inquiryDoneTime");
+                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), pageDirection, "user.userIndex.inquiryDoneTime");
                     break;
                 case 4:
-                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "user.userIndex.inquirySuccessRate");
+                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), pageDirection, "user.userIndex.inquirySuccessRate");
                     break;
                 case 5:
-                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "limitDate");
+                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), pageDirection, "limitDate");
                     break;
                 default:
+                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), pageDirection, "id");
                     break;
             }
         }
+
         Map<String, Object> filters = new HashMap<>();
 
         if(industryCode!=null && industryCode.size()>0){
@@ -391,15 +401,16 @@ public class InquiryController {
             filters.put("totalPrice_lessThanOrEqualTo", maxPrice);
         }
 
+
+        filters.put("removed_equal", 0);
+        filters.put("user.removed_equal", 0);
+
         Page<Inquiry> inquiryList= inquiryRepository.findAll(filters,pageable);
 
         List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
         for (Inquiry inquiry : inquiryList) {
 
             //todo 优化 用筛选 搜索同理
-            //被删除 不显示
-            if(inquiry.isRemoved() || inquiry.getUser().isRemoved())
-                continue;
 
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("id", inquiry.getId());
@@ -424,9 +435,9 @@ public class InquiryController {
             map.put("successRate", String.format("%.2f", inquiry.getUser().getUserIndex().getInquirySuccessRate()) + "%");
             map.put("inquiryTimes", inquiry.getUser().getUserIndex().getInquiryDoneTime());
             if(inquiry.getLogoUrl()==null || "".equals(inquiry.getLogoUrl())){
-                map.put("logoUrl",inquiry.getCompanyIndustry().getLogoUrl());
+                map.put("logoUrl",inquiry.getCompanyIndustry().getLogoUrl()+"?imageView2/2/w/120&name=dl.jpg)");
             }else{
-                map.put("logoUrl",inquiry.getLogoUrl() );
+                map.put("logoUrl",inquiry.getLogoUrl()+"?imageView2/2/w/120&name=dl.jpg)" );
             }
             if(inquiry.getStatus()==1 && inquiry.isOpenWinner()){
                 map.put("winner",inquiry.getWinner()!=null?inquiry.getWinner().getNickName():"");
@@ -452,6 +463,7 @@ public class InquiryController {
     @RequestMapping("searchInquiryList")
     public Map<String, Object> searchInquiryList(
             @RequestParam(required = false) Integer type,
+            @RequestParam(required = false) Integer direction,
             @RequestParam(required = false) List<Long> industryCode,
             @RequestParam(required = false) List<Long> provinceCode,
             @RequestParam(required = false) List<Integer> round,
@@ -464,24 +476,30 @@ public class InquiryController {
             @ModelAttribute("currentUser") User user) {
         Map<String, Object> res = new HashMap<>();
 
+        Sort.Direction pageDirection = Sort.Direction.DESC;
+        if(direction!=null && direction>=1){
+            pageDirection = Sort.Direction.ASC;
+        }
+
         if(type!=null){
             switch (type){
                 case 1:
-                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "goods");
+                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), pageDirection, "goods");
                     break;
                 case 2:
-                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "totalPrice");
+                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), pageDirection, "totalPrice");
                     break;
                 case 3:
-                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "user.userIndex.inquiryDoneTime");
+                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), pageDirection, "user.userIndex.inquiryDoneTime");
                     break;
                 case 4:
-                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "user.userIndex.inquirySuccessRate");
+                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), pageDirection, "user.userIndex.inquirySuccessRate");
                     break;
                 case 5:
-                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "limitDate");
+                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), pageDirection, "limitDate");
                     break;
                 default:
+                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), pageDirection, "id");
                     break;
             }
         }
@@ -546,9 +564,9 @@ public class InquiryController {
             map.put("successRate", String.format("%.2f", inquiry.getUser().getUserIndex().getInquirySuccessRate()) + "%");
             map.put("inquiryTimes", inquiry.getUser().getUserIndex().getInquiryDoneTime());
             if(inquiry.getLogoUrl()==null || "".equals(inquiry.getLogoUrl())){
-                map.put("logoUrl",inquiry.getCompanyIndustry().getLogoUrl());
+                map.put("logoUrl",inquiry.getCompanyIndustry().getLogoUrl()+"?imageView2/2/w/120&name=dl.jpg)");
             }else{
-                map.put("logoUrl",inquiry.getLogoUrl() );
+                map.put("logoUrl",inquiry.getLogoUrl()+"?imageView2/2/w/120&name=dl.jpg)" );
             }
             if(inquiry.getStatus()==1 && inquiry.isOpenWinner()){
                 map.put("winner",inquiry.getWinner()!=null?inquiry.getWinner().getNickName():"");

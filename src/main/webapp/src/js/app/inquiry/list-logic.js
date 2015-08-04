@@ -511,11 +511,19 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
         //排序项目
         $(document).on("click",".ui-grid-contentDiv-span",function(){
             if($(this).attr("active")=="1"){
+                if($(this).find("span").html()=="↓"){
+                    $(this).find("span").html("↑");
+                    currentQuery.direction= 1;
+                }else{
+                    $(this).find("span").html("↓");
+                    currentQuery.direction= 0;
+                }
+                fn_bind();
                 return;
             }
             currentQuery.type= $(this).closest("th").attr("ci");
-            $(".ui-grid-contentDiv-span").removeAttr("active").removeClass("red");
-            $(this).attr("active","1").addClass("red");
+            $(".ui-grid-contentDiv-span").removeAttr("active").removeClass("red").find("span").remove();
+            $(this).attr("active","1").addClass("red").append("<span>↓</span>");
             fn_bind();
         });
 
