@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../dest/css/base.css">
     <link rel="stylesheet" href="../dest/css/plugins.css">
     <link rel="stylesheet" href="../dest/css/inquiry.css">
+    <link rel="stylesheet" href="../src/css/fontIcon.css">
     <!--<link rel="stylesheet" href="../src/css/bootstrap/bootstrap.css">-->
 
     <style>
@@ -209,6 +210,26 @@
                 color: #444;
                 background-color: transparent;
             }
+        }
+
+
+        /*邀请用户*/
+        .userList{
+            margin-left: 20px;
+            float: left;
+            width: 500px;
+        }
+        .userDiv{
+            float: left;
+            padding: 0 3px;
+        }
+
+        .userDiv label{
+            width: inherit !important;
+            font-weight : inherit !important;
+            float: right !important;
+            margin-right: inherit !important;
+            text-align: inherit !important;
         }
 
     </style>
@@ -423,8 +444,12 @@
                         <label>
                             邀请用户:
                         </label>
-                        <select id="userList" name="userList" size="5" style="height: 100px" multiple>
-                        </select>
+                        <!--<select id="userList" name="userList" size="5" style="height: 100px" multiple>-->
+                        <!--</select>-->
+                        <div class="userList" id="userList">
+
+                        </div>
+
                     </li>
                     <img id="image" src="" style="margin-left: 230px;max-width: 300px;max-height: 200px;"/>
                 </ul>

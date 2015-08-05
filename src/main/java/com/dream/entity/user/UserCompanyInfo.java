@@ -1,10 +1,7 @@
 package com.dream.entity.user;
 
-import com.dream.entity.company.CompanyIndustry;
 import com.dream.entity.company.CompanyOwnership;
-import com.dream.entity.company.CompanyProvince;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -26,18 +23,6 @@ public class UserCompanyInfo  implements Serializable {
     private User user;
 
     private String companyName;
-
-    /**
-     * 公司所在地
-     */
-    @ManyToOne(fetch = FetchType.EAGER)
-    private CompanyProvince companyProvince;
-
-    /**
-     * 公司行业
-     */
-    @ManyToOne(fetch = FetchType.EAGER)
-    private CompanyIndustry companyIndustry;
 
     /**
      * 公司性质
@@ -106,22 +91,6 @@ public class UserCompanyInfo  implements Serializable {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
-    }
-
-    public CompanyProvince getCompanyProvince() {
-        return companyProvince;
-    }
-
-    public void setCompanyProvince(CompanyProvince companyProvince) {
-        this.companyProvince = companyProvince;
-    }
-
-    public CompanyIndustry getCompanyIndustry() {
-        return companyIndustry;
-    }
-
-    public void setCompanyIndustry(CompanyIndustry companyIndustry) {
-        this.companyIndustry = companyIndustry;
     }
 
     public CompanyOwnership getCompanyOwnership() {

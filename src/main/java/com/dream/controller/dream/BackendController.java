@@ -199,15 +199,10 @@ public class BackendController {
             map.put("logoUrl",logoUrl);
             map.put("userType",u.getType());
             map.put("createDate", DateFormatUtils.format(u.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
-            if(u.getType()==1){
-                if( u.getUserPersonalInfo().getCompanyIndustry()!=null)
-                    industry = u.getUserPersonalInfo().getCompanyIndustry().getName();
-            }else if(u.getType()==2){
-                if( u.getUserCompanyInfo().getCompanyIndustry()!=null)
-                    industry = u.getUserCompanyInfo().getCompanyIndustry().getName();
-                if( u.getUserCompanyInfo().getCompanyProvince() !=null)
-                    province = u.getUserCompanyInfo().getCompanyProvince().getName();
-            }
+            if( u.getCompanyIndustry()!=null)
+                industry = u.getCompanyIndustry().getName();
+            if( u.getCompanyProvince() !=null)
+                province = u.getCompanyProvince().getName();
 
             map.put("industry", industry);
             map.put("province", province);

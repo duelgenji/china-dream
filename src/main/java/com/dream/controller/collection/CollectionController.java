@@ -216,15 +216,11 @@ public class CollectionController {
             map.put("quotationDoneTime", collection.getTargetUser().getUserIndex().getQuotationDoneTime());
             map.put("quotationSuccessRate", collection.getTargetUser().getUserIndex().getQuotationSuccessRate());
 
-            if(collection.getTargetUser().getType()==1){
-                if( collection.getTargetUser().getUserPersonalInfo().getCompanyIndustry()!=null)
-                    industry = collection.getTargetUser().getUserPersonalInfo().getCompanyIndustry().getName();
-            }else if(collection.getTargetUser().getType()==2){
-                if( collection.getTargetUser().getUserCompanyInfo().getCompanyIndustry()!=null)
-                    industry = collection.getTargetUser().getUserCompanyInfo().getCompanyIndustry().getName();
-                if( collection.getTargetUser().getUserCompanyInfo().getCompanyProvince() !=null)
-                    province = collection.getTargetUser().getUserCompanyInfo().getCompanyProvince().getName();
-            }
+            if( collection.getTargetUser().getCompanyIndustry()!=null)
+                industry = collection.getTargetUser().getCompanyIndustry().getName();
+            if( collection.getTargetUser().getCompanyProvince() !=null)
+                province = collection.getTargetUser().getCompanyProvince().getName();
+
 
             map.put("industry", industry);
             map.put("province", province);

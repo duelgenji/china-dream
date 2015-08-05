@@ -156,11 +156,11 @@ public class UserService {
                     Long iid=Long.parseLong(request.getParameter("companyIndustry"));
                     CompanyIndustry companyIndustry= companyIndustryRepository.findOne(iid);
                     if(companyIndustry!=null){
-                        userPersonalInfo.setCompanyIndustry(companyIndustry);
+                        user.setCompanyIndustry(companyIndustry);
                     }else{
                         return "行业编号错误";
                     }
-                }else if (userPersonalInfo.getCompanyIndustry()==null ){
+                }else if (user.getCompanyIndustry()==null ){
                     return "行业不能为空";
                 }
 
@@ -201,22 +201,22 @@ public class UserService {
                     Long pid=Long.parseLong(request.getParameter("companyProvince"));
                     CompanyProvince companyProvince= companyProvinceRepository.findOne(pid);
                     if(companyProvince!=null){
-                        userCompanyInfo.setCompanyProvince(companyProvince);
+                        user.setCompanyProvince(companyProvince);
                     }else{
                         return "地区编号错误";
                     }
-                }else if (userCompanyInfo.getCompanyProvince()==null ){
+                }else if (user.getCompanyProvince()==null ){
                     return "企业所在地不能为空";
                 }
                 if(request.getParameter("companyIndustry")!=null){
                     Long iid=Long.parseLong(request.getParameter("companyIndustry"));
                     CompanyIndustry companyIndustry= companyIndustryRepository.findOne(iid);
                     if(companyIndustry!=null){
-                        userCompanyInfo.setCompanyIndustry(companyIndustry);
+                        user.setCompanyIndustry(companyIndustry);
                     }else{
                         return "行业编号错误";
                     }
-                }else if (userCompanyInfo.getCompanyIndustry()==null ){
+                }else if (user.getCompanyIndustry()==null ){
                     return "企业所属行业不能为空";
                 }
                 if(request.getParameter("companyOwnership")!=null){
@@ -325,7 +325,17 @@ public class UserService {
             res.put("telephone",user.getTelephone());
             res.put("VIP",user.getVIP());
             res.put("description",user.getDescription());
+            if(user.getCompanyIndustry()!=null){
+                res.put("companyIndustry",user.getCompanyIndustry().getId());
+            }else{
+                res.put("companyIndustry","");
+            }
+            if(user.getCompanyProvince()!=null){
+                res.put("companyProvince", user.getCompanyProvince().getId());
 
+            }else{
+                res.put("companyProvince","");
+            }
 
             //Map<String, Object> info = new HashMap<>();
             switch (type){
@@ -348,9 +358,7 @@ public class UserService {
                     res.put("weiboUrl",user.getUserCompanyInfo().getWeiboUrl());
                     res.put("weixin",user.getUserCompanyInfo().getWeixin());
                     res.put("companyName",user.getUserCompanyInfo().getCompanyName());
-                    res.put("companyIndustry",user.getUserCompanyInfo().getCompanyIndustry().getId());
                     res.put("companyOwnership",user.getUserCompanyInfo().getCompanyOwnership().getId());
-                    res.put("companyProvince",user.getUserCompanyInfo().getCompanyProvince().getId());
                     res.put("companyEmail",user.getUserCompanyInfo().getCompanyEmail());
                     res.put("companyEmailOpen",user.getUserCompanyInfo().getCompanyEmailOpen().ordinal());
                     res.put("organizationsCode",user.getUserCompanyInfo().getOrganizationsCode());
@@ -378,16 +386,24 @@ public class UserService {
     public void putUserDetailInfo(Map<String, Object> res, User user ){
 
         int type = user.getType();
-        switch (type){
-            case 1 :
-                res.put("personalIndustry",user.getUserPersonalInfo().getCompanyIndustry().getName());
+        switch (type) {
+            case 1:
+                if(user.getCompanyIndustry()!=null){
+                    res.put("personalIndustry",user.getCompanyIndustry().getName());
+                }else{
+                    res.put("personalIndustry","");
+                }
                 res.put("personalWeiBo",user.getUserPersonalInfo().getWeiboUrl());
                 res.put("personalWeiXin",user.getUserPersonalInfo().getWeixin());
                 break;
             case 2:
                 res.put("companyName",user.getUserCompanyInfo().getCompanyName());
                 res.put("companyOwnership",user.getUserCompanyInfo().getCompanyOwnership().getName());
-                res.put("companyIndustry",user.getUserCompanyInfo().getCompanyIndustry().getName());
+                if(user.getCompanyIndustry()!=null){
+                    res.put("companyIndustry",user.getCompanyIndustry().getName());
+                }else{
+                    res.put("companyIndustry","");
+                }
                 res.put("companyWebsite", user.getUserCompanyInfo().getWebsite());
 
                 break;

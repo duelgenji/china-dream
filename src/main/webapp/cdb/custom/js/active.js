@@ -15,7 +15,6 @@ function ajaxRetrieveUserList() {
     params.key=decodeURI(keyword);
 
     if(!params.key){
-        alert("请输入昵称");
         return;
     }
 

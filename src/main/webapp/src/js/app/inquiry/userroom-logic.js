@@ -158,7 +158,8 @@ define("userroom-logic", ["userroom-config", "jquery", "user-repos", "pure-grid"
 				$(".btn4").removeClass("disable");
 			}
 			//console.log(data);
-			currentGrid.bindData(data.data);
+
+			currentGrid.reBind(data.data);
 			setTimeout(dialogMod.mask.hide, 500);
 		}, call_fail, call_fail);
 	}
@@ -315,11 +316,42 @@ define("userroom-logic", ["userroom-config", "jquery", "user-repos", "pure-grid"
 				dom = $(e.target);
 				var index = dom.data("index"),
 					target = dom.data("target");
-				var query = $("#" + target).children("li").eq(parseInt(index)).attr("state", 0).end().end().data("query");
+				var query = $("#" + target).children("li").eq(parseInt(index)).data("state", 0).end().end().data("query");
 				currentQuery[query] = currentQuery[query].replace(dom.siblings('a').data("value") + ",", "");
 
+
+
 				dom.parent().remove();
+
+				setTimeout(fn_bind, 200);
 			}
+		});
+
+
+		//排序项目
+		$(document).on("click",".ui-grid-contentDiv-span",function(){
+			if($(this).attr("active")=="1"){
+				if($(this).find("span").html()=="↓"){
+					$(this).find("span").html("↑");
+					currentQuery.direction= 1;
+				}else{
+					$(this).find("span").html("↓");
+					currentQuery.direction= 0;
+				}
+				fn_bind();
+				return;
+			}
+
+			if($(this).closest("th").attr("ci")=="4"){
+				currentQuery.type = 1;
+			}else if($(this).closest("th").attr("ci")=="5"){
+				currentQuery.type = 2;
+			}else{
+				return;
+			}
+			$(".ui-grid-contentDiv-span").removeAttr("active").removeClass("red").find("span").remove();
+			$(this).attr("active","1").addClass("red").append("<span>↓</span>");
+			fn_bind();
 		});
 	}
 

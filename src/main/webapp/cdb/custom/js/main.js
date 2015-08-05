@@ -64,7 +64,7 @@ function initSileBar(param){
         '<li data-col="case"><a href="case.html"><span class="am-icon-archive"></span> 案例分析</a></li>' +
         '<li data-col="sensitive"><a href="sensitive.html"><span class="am-icon-warning"></span> 敏感词</a></li>' +
         '<li data-col="dream"><a href="dream.html"><span class="am-icon-birthday-cake"></span> 梦想语录</a></li>' +
-        '<li data-col="dream"><a href="active.html"><span class="am-icon-key"></span> 激活用户</a></li>';
+        '<li data-col="active"><a href="active.html"><span class="am-icon-key"></span> 激活用户</a></li>';
 
     $(".admin-sidebar-list").empty().append(html);
 

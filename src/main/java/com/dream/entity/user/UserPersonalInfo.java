@@ -1,8 +1,6 @@
 package com.dream.entity.user;
 
-import com.dream.entity.company.CompanyIndustry;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -67,10 +65,6 @@ public class UserPersonalInfo implements Serializable {
      * 个人微信号
      */
     private String weixin;
-
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    private CompanyIndustry companyIndustry;
 
     public Long getId() {
         return id;
@@ -184,11 +178,4 @@ public class UserPersonalInfo implements Serializable {
         this.weixin = weixin;
     }
 
-    public CompanyIndustry getCompanyIndustry() {
-        return companyIndustry;
-    }
-
-    public void setCompanyIndustry(CompanyIndustry companyIndustry) {
-        this.companyIndustry = companyIndustry;
-    }
-}
+  }

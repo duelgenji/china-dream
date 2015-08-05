@@ -129,8 +129,8 @@ public class InquiryService {
             map.put("userId",quotation.getUser().getId());
             map.put("userNickname",quotation.getUser().getNickName());
 
-            if(quotation.getUser().getUserCompanyInfo()!=null){
-                map.put("userProvince",quotation.getUser().getUserCompanyInfo().getCompanyProvince().getName());
+            if(quotation.getUser().getCompanyProvince()!=null){
+                map.put("userProvince", quotation.getUser().getCompanyProvince().getName());
             }else{
                 map.put("userProvince","");
             }
@@ -400,8 +400,8 @@ public class InquiryService {
             map.put("totalPrice",quotation.getTotalPrice());
             map.put("userId",quotation.getUser().getId());
             map.put("userNickname",quotation.getUser().getNickName());
-            if(quotation.getUser().getUserCompanyInfo()!=null){
-                map.put("userProvince",quotation.getUser().getUserCompanyInfo().getCompanyProvince().getName());
+            if(quotation.getUser().getCompanyProvince()!=null){
+                map.put("userProvince",quotation.getUser().getCompanyProvince().getName());
             }else{
                 map.put("userProvince","");
             }

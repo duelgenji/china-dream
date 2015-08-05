@@ -146,15 +146,15 @@ public class UserInfoController {
 
         Map<String, Object> filters = new HashMap<>();
         filters.put("status_equal", 1);
-        //todo 更改结构
-//        if(industryCode!=null && industryCode.size()>0){
-//            filters.put("user.userPersonalInfo.companyIndustry_in", industryCode);
-//        }
-//        if(provinceCode!=null && provinceCode.size()>0){
-//            filters.put("companyProvince_in", provinceCode);
-//        }
+
+        if(industryCode!=null && industryCode.size()>0){
+            filters.put("companyIndustry_in", industryCode);
+        }
+        if(provinceCode!=null && provinceCode.size()>0){
+            filters.put("companyProvince_in", provinceCode);
+        }
         if(userType!=null && userType.size()>0){
-            filters.put("user.type_in", userType);
+            filters.put("type_in", userType);
         }
         if(removed==null){
             filters.put("removed_equal", false);
@@ -166,11 +166,11 @@ public class UserInfoController {
 
         List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
 
-        String industry="",province="";
+        String industry,province;
         String logoUrl;
 
         for (User u : userPage) {
-
+            industry="";province="";
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("userId",u.getId());
             map.put("nickname",u.getNickName());
@@ -188,15 +188,10 @@ public class UserInfoController {
             map.put("createDate", DateFormatUtils.format(u.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
             map.put("quotationDoneTime",u.getUserIndex().getQuotationDoneTime());
             map.put("quotationSuccessRate",String.format("%.2f", u.getUserIndex().getQuotationSuccessRate()) + "%");
-            if(u.getType()==1){
-                if( u.getUserPersonalInfo().getCompanyIndustry()!=null)
-                    industry = u.getUserPersonalInfo().getCompanyIndustry().getName();
-            }else if(u.getType()==2){
-                if( u.getUserCompanyInfo().getCompanyIndustry()!=null)
-                    industry = u.getUserCompanyInfo().getCompanyIndustry().getName();
-                if( u.getUserCompanyInfo().getCompanyProvince() !=null)
-                    province = u.getUserCompanyInfo().getCompanyProvince().getName();
-            }
+            if( u.getCompanyIndustry()!=null)
+                industry = u.getCompanyIndustry().getName();
+            if( u.getCompanyProvince() !=null)
+                province = u.getCompanyProvince().getName();
 
             map.put("industry", industry);
             map.put("province", province);
@@ -215,36 +210,60 @@ public class UserInfoController {
      */
     @RequestMapping("searchUserList")
     public Map<String, Object> searchUserList(
-            @RequestParam int type,
-            @RequestParam String key,
+            @RequestParam(required = false) Integer type,
+            @RequestParam(required = false) List<Long> industryCode,
+            @RequestParam(required = false) List<Long> provinceCode,
+            @RequestParam(required = false) List<Integer> userType,
+            @RequestParam(required = false) String key,
             @RequestParam(required = false) Boolean removed ,
             @PageableDefault(page = 0, size = 20,sort = "id", direction = Sort.Direction.DESC)  Pageable pageable,
             @ModelAttribute("currentUser") User user) {
         Map<String, Object> res = new HashMap<>();
 
-        if(type==1){
-            pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "userIndex.quotationDoneTime");
-        }  if(type==2){
-            pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "userIndex.quotationSuccessRate");
+        if(type!=null){
+            switch (type){
+                case 1:
+                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "userIndex.quotationDoneTime");
+                    break;
+                case 2:
+                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "userIndex.quotationSuccessRate");
+                    break;
+                default:
+                    break;
+            }
         }
 
-        key =  "%"+key+"%";
+        Map<String, Object> filters = new HashMap<>();
+        filters.put("status_equal", 1);
 
+        if(industryCode!=null && industryCode.size()>0){
+            filters.put("companyIndustry_in", industryCode);
+        }
+        if(provinceCode!=null && provinceCode.size()>0){
+            filters.put("companyProvince_in", provinceCode);
+        }
+        if(userType!=null && userType.size()>0){
+            filters.put("type_in", userType);
+        }
+        if(removed==null){
+            filters.put("removed_equal", false);
+        }
+        if(key!=null && !key.equals("")){
+            filters.put("nickName_like", key);
+        }
         Page<User> userPage ;
 
-        if(removed==null){
-            userPage = userRepository.findByNickNameLikeAndStatusAndRemoved(key,1,false,pageable);
-        }else{
-            userPage = userRepository.findByNickNameLikeAndStatus(key, 1,pageable);
-        }
+
+        userPage = userRepository.findAll(filters,pageable);
 
 
         List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
 
-        String industry="",province="";
+        String industry,province;
         String logoUrl;
 
         for (User u : userPage) {
+            industry="";province="";
 
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("userId",u.getId());
@@ -263,15 +282,10 @@ public class UserInfoController {
             map.put("createDate", DateFormatUtils.format(u.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
             map.put("quotationDoneTime",u.getUserIndex().getQuotationDoneTime());
             map.put("quotationSuccessRate",String.format("%.2f", u.getUserIndex().getQuotationSuccessRate()) + "%");
-            if(u.getType()==1){
-                if( u.getUserPersonalInfo().getCompanyIndustry()!=null)
-                    industry = u.getUserPersonalInfo().getCompanyIndustry().getName();
-            }else if(u.getType()==2){
-                if( u.getUserCompanyInfo().getCompanyIndustry()!=null)
-                    industry = u.getUserCompanyInfo().getCompanyIndustry().getName();
-                if( u.getUserCompanyInfo().getCompanyProvince() !=null)
-                    province = u.getUserCompanyInfo().getCompanyProvince().getName();
-            }
+            if( u.getCompanyIndustry()!=null)
+                industry = u.getCompanyIndustry().getName();
+            if( u.getCompanyProvince() !=null)
+                province = u.getCompanyProvince().getName();
 
             map.put("industry", industry);
             map.put("province", province);
