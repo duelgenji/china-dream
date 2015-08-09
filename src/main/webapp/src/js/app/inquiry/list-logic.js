@@ -472,10 +472,10 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
             $(this).closest(".ui-targetAttr").hide();
 
             if (min != "") {
-                currentQuery.minPrice = min;
+                currentQuery.minPrice = min * 10000;
             }
             if (max != "") {
-                currentQuery.maxPrice = max;
+                currentQuery.maxPrice = max * 10000;
             }
 
             setTimeout(fn_bind, 200);
@@ -509,7 +509,7 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
         });
 
         //排序项目
-        $(document).on("click",".ui-grid-contentDiv-span",function(){
+        $(document).on("click",".ui-grid-unlock_headTable .ui-grid-contentDiv-span",function(){
             if($(this).attr("active")=="1"){
                 if($(this).find("span").html()=="↓"){
                     $(this).find("span").html("↑");

@@ -624,7 +624,7 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
                 var content = data.content;
                 if(data.type==1){
                     text = "合同金额"
-                    content = data.winnerPrice;
+                    content = data.content;
                 }
 
                 showCmdModal("查看详情", '<ul class="ui-items">' +

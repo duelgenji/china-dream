@@ -170,7 +170,7 @@ public class MessageController{
                  commonEmail.sendEmail(m.getUser().getEmail(),commonEmail.getContent(CommonEmail.TYPE.SUCCESS_B,inquiry,m.getUser()));
              }
 
-        } else if(status==1 && message.getType()==2){
+        } else if(status==2 && message.getType()==1){
              //拒绝 邮件
              commonEmail.sendEmail(message.getInquiryUser().getEmail(),commonEmail.getContent(CommonEmail.TYPE.REJECT_A,message.getInquiry(),message.getUser()));
          }

@@ -188,6 +188,7 @@ public class BackendController {
             map.put("status", u.getStatus());
             map.put("VIP", u.getVIP());
             map.put("test", u.isTest());
+            map.put("email",u.getEmail());
             map.put("removed", u.isRemoved());
 
             logoUrl=u.getLogoUrl();

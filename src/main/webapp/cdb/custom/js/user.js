@@ -139,7 +139,8 @@ function updateTable(data){
             '<td>'+userType[obj.userType]+'</td>' +
             '<td class="am-hide-sm-only">'+obj.industry+'</td>' +
             '<td class="am-hide-sm-only">'+obj.createDate+'</td>' +
-            '<td class="am-hide-sm-only"><img class="small-logo" src="'+logoUrl+'"/></td>' +
+            '<td class="am-hide-sm-only">'+obj.email+'</td>' +
+            //'<td class="am-hide-sm-only"><img class="small-logo" src="'+logoUrl+'"/></td>' +
             '<td data-id="'+obj.userId+'">' +
             '<div class="am-btn-toolbar">' +
             '<div class="am-btn-group am-btn-group-xs">' +

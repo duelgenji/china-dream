@@ -30,6 +30,9 @@ public class User extends AbstractPersistable<Long> {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime = new Date();
 
+    /**
+     * 用户类型  1个人  2企业 3群
+     */
     private int type;
 
     @Temporal(TemporalType.TIMESTAMP)

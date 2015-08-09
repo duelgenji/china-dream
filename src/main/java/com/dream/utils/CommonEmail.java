@@ -46,7 +46,7 @@ public class CommonEmail {
             buffer.append("<div style='font-size:18px;'>验证邮箱会增加帐号的安全性，也会享受更多的中梦国网服务。</div>");
             buffer.append("<br>");
             buffer.append("<div style='font-size:18px;'>祝使用愉快！</div>");
-            buffer.append("<div style='font-size:18px;'>中梦国网 "+ DateFormatUtils.format(new Date(), "yyyy-MM-dd hh:mm:ss")+"</div>");
+            buffer.append("<div style='font-size:18px;'>中梦国网 "+ DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss")+"</div>");
             buffer.append("<br>");
             buffer.append("<br>");
             buffer.append("<div style='font-size:14px;color:#999;'>如果你没有注册过中梦国网，请忽略此邮件。</div>");
@@ -93,7 +93,7 @@ public class CommonEmail {
             buffer.append("<br>");
             buffer.append("<div style='font-size:18px;'>如果该链接无法点击，请将其复制粘贴到你的浏览器地址栏中访问。</div>");
             buffer.append("<div style='font-size:18px;'>祝使用愉快！</div>");
-            buffer.append("<div style='font-size:18px;'>中梦国网 "+ DateFormatUtils.format(new Date(), "yyyy-MM-dd hh:mm:ss")+"</div>");
+            buffer.append("<div style='font-size:18px;'>中梦国网 "+ DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss")+"</div>");
             buffer.append("<br>");
             buffer.append("<br>");
             buffer.append("<div style='font-size:14px;color:#999;'>如果你没有注册过中梦国网，请忽略此邮件。</div>");
@@ -136,7 +136,7 @@ public class CommonEmail {
             buffer.append("<br>");
             buffer.append("<div style='font-size:18px;'>更多精彩梦想/询价， 敬请登录中梦国网（http://www.mychinadreams.com）</div>");
             buffer.append("<div style='font-size:18px;'>祝使用愉快！</div>");
-            buffer.append("<div style='font-size:18px;'>中梦国网 "+ DateFormatUtils.format(new Date(), "yyyy-MM-dd hh:mm:ss")+"</div>");
+            buffer.append("<div style='font-size:18px;'>中梦国网 "+ DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss")+"</div>");
             buffer.append("<br>");
             buffer.append("<br>");
             buffer.append("<div style='font-size:14px;color:#999;'>如果你没有注册过中梦国网，请忽略此邮件。</div>");

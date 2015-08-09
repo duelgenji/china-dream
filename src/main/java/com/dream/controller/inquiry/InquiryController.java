@@ -340,6 +340,7 @@ public class InquiryController {
             @RequestParam(required = false) List<Long> industryCode,
             @RequestParam(required = false) List<Long> provinceCode,
             @RequestParam(required = false) List<Integer> round,
+            @RequestParam(required = false) List<Integer> inquiryStatus,
             @RequestParam(required = false) List<Long> inquiryMode,
             @RequestParam(required = false) List<Integer> userType,
             @RequestParam(required = false) Integer minPrice,
@@ -363,10 +364,10 @@ public class InquiryController {
                     pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), pageDirection, "totalPrice");
                     break;
                 case 3:
-                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), pageDirection, "user.userIndex.inquiryDoneTime");
+                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), pageDirection, "user.userIndex.inquirySuccessRate");
                     break;
                 case 4:
-                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), pageDirection, "user.userIndex.inquirySuccessRate");
+                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), pageDirection, "user.userIndex.inquiryDoneTime");
                     break;
                 case 5:
                     pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), pageDirection, "limitDate");
@@ -387,6 +388,9 @@ public class InquiryController {
         }
         if(round!=null && round.size()>0){
             filters.put("round_in", round);
+        }
+        if(inquiryStatus!=null && inquiryStatus.size()>0){
+            filters.put("status_in", inquiryStatus);
         }
         if(inquiryMode!=null && inquiryMode.size()>0){
             filters.put("inquiryMode_in", inquiryMode);
@@ -409,8 +413,6 @@ public class InquiryController {
 
         List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
         for (Inquiry inquiry : inquiryList) {
-
-            //todo 优化 用筛选 搜索同理
 
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("id", inquiry.getId());
@@ -490,10 +492,10 @@ public class InquiryController {
                     pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), pageDirection, "totalPrice");
                     break;
                 case 3:
-                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), pageDirection, "user.userIndex.inquiryDoneTime");
+                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), pageDirection, "user.userIndex.inquirySuccessRate");
                     break;
                 case 4:
-                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), pageDirection, "user.userIndex.inquirySuccessRate");
+                    pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), pageDirection, "user.userIndex.inquiryDoneTime");
                     break;
                 case 5:
                     pageable =  new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), pageDirection, "limitDate");
@@ -531,6 +533,10 @@ public class InquiryController {
 //        if(key!=null && !key.equals("")){
 //            filters.put("titleOrName_like", key);
 //        }
+
+        if(key!=null && !key.equals("")){
+            key = "%" + key + "%";
+        }
 
         Page<Inquiry> inquiryList= inquiryRepository.findByInquiryNoLikeOrTitleLike(key,key,pageable);
 
@@ -679,6 +685,9 @@ public class InquiryController {
             return res;
         }
 
+        //不做这一步 user.type 是错误的0 原因待查
+        user = userRepository.findOne(user.getId());
+
 
         Inquiry inquiry = inquiryRepository.findOne(inquiryId);
         if(inquiry==null){
@@ -687,7 +696,7 @@ public class InquiryController {
             return res;
         }
 
-        //出价 限制 0 不限 1 个人/群  2公司
+        //出价 限制 0 不限 1 个人/群  2公司      用户类型  1个人  2企业 3群
         if(inquiry.getUserLimit()==2 && user.getType()!=2){
             res.put("success",0);
             res.put("message","该标只允许公司用户出价！");
@@ -1120,6 +1129,15 @@ public class InquiryController {
                         res.put("message","已经发送过,请等待对方确认！");
                         return res;
                     }
+
+                    int count = messageRepository.countByInquiryAndUserAndRoundAndStatusAndType(inquiry, user_b, inquiry.getRound(), 2, 1);
+                    if(count>=2){
+                        res.put("success",0);
+                        res.put("message","您已经被拒绝2次，此用户不可以再被选择！");
+                        return res;
+                    }
+
+
                     Message message = new Message();
                     message.setUser(user_b);
                     message.setType(1);

@@ -32,7 +32,7 @@ define("userroom-config",[],function(require,exports){
                     },
                     body: {
                         align: "center",
-                        fields: "nickname,VIP",
+                        fields: "nickname,VIP,test",
                         renderFn:"renderUser"
                     }
                 }, {
