@@ -37,6 +37,10 @@
             cursor: pointer;
         }
 
+        #ul_biaoDi li a{
+            padding: 1px 0 1px 4px;
+        }
+
     </style>
 </head>
 <body>
@@ -45,7 +49,7 @@
     </div>
     <div id="container">
         <div id="query_item">
-            <span>全部:</span>
+            <span><a href="index.html">全部</a>:</span>
             <span id="link"></span>
         </div>
         <div class="ui-queryitem ui-attr">
@@ -159,13 +163,13 @@
                     </div>
                     <div class="ui-attrValues">
                         <ul data-query="bidprice" class="ui-normal" id="ul_biaoDi">
-                            <li index=0><a data-value="0-10" data-min-price="0" data-max-price="100000">0-10</a></li>
-                            <li index=1><a data-value="10-20" data-min-price="100000" data-max-price="300000">10-30</a></li>
-                            <li index=2><a data-value="30-50" data-min-price="300000" data-max-price="500000">30-50</a></li>
-                            <li index=3><a data-value="50-100" data-min-price="500000" data-max-price="1000000">50-100</a></li>
-                            <li index=4><a data-value="100-500" data-min-price="1000000" data-max-price="5000000">100-500</a></li>
-                            <li index=5><a data-value="500-1000" data-min-price="5000000" data-max-price="10000000">500-1000</a></li>
-                            <li index=6><a data-value="1000" data-min-price="10000000" data-max-price="">1000以上</a></li>
+                            <li index=0><a data-value="0-10" data-min-price="0" data-max-price="100000">0-10万</a></li>
+                            <li index=1><a data-value="10-20" data-min-price="100000" data-max-price="300000">10万-30万</a></li>
+                            <li index=2><a data-value="30-50" data-min-price="300000" data-max-price="500000">30万-50万</a></li>
+                            <li index=3><a data-value="50-100" data-min-price="500000" data-max-price="1000000">50万-100万</a></li>
+                            <li index=4><a data-value="100-500" data-min-price="1000000" data-max-price="5000000">100万-500万</a></li>
+                            <li index=5><a data-value="500-1000" data-min-price="5000000" data-max-price="10000000">500万-1000万</a></li>
+                            <li index=6><a data-value="1000" data-min-price="10000000" data-max-price="">1000万以上</a></li>
                             <input id="minPrice" type="text" style="width:50px;"/> — <input id="maxPrice" type="text" style="width: 50px;"/>
                             <button index="9" id="customPrice" style="height: 20px;width: 40px;padding: 0;">提交</button>
                         </ul>
@@ -216,26 +220,26 @@
                             <ul data-query="inquiryMode" class="ui-normal" id="ul_type">
                                 <li index=0>
                                     <a data-value="1"
-                                       title="当询价方勾选全明询价选项后，&#10;即所有在本网站注册用户均可在该询价截止时间前看见所有出价方之方案， 报价， 清单及所有文件">全明询价</a>
+                                       title="当询价方勾选全明询价选项后，即所有在本网站注册用户均可在该询价截止时间前看见所有参与出价方之方案，报价，清单及所有文件。">全明询价</a>
                                 </li>
                                 <li index=1>
                                     <a data-value="2"
-                                       title="当询价方勾选明询价选项后，&#10;即所有被授权出价方均可在该询价截止时间前看见对手之方案， 报价， 清单及所有文件。并可多次修改方案和出价">明询价</a>
+                                       title="当询价方勾选明询价选项后，即所有被授权出价方均可在该询价截止时间前看见对手之方案，报价，清单及所有文件。并可多次修改方案和出价。">明询价</a>
                                 </li>
                                 <li index=2>
                                     <a data-value="3"
-                                       title="当询价方勾选半明询价选项后，&#10;即所有出价方可在该询价截止时间前仅看见对手之报价。并可多次出价">半明询价</a>
+                                       title="当询价方勾选半明询价选项后，即被授权出价方可在该询价截止时间前仅看见对手之报价。并可多次出价。">半明询价</a>
                                 </li>
                                 <li index=3>
-                                    <a data-value="4" title="当询价方勾选暗询价选项后，&#10;仅询价方可看见出价方之方案， 报价， 清单及所有文件">半暗询价</a>
+                                    <a data-value="4" title="当询价方勾选暗询价选项后，仅询价方可实时看见出价方之方案，报价，清单及所有文件。">半暗询价</a>
                                 </li>
                                 <li index=4>
                                     <a data-value="5"
-                                       title="当询价方勾选半暗询价选项后，&#10;仅询价方可看见出价方之方案，及所有不涉及价格之文件， 而清单及报价均储存于本网站服务器上， 待截止时间后1小时—72小时(用户自行定义)之内发送至询价方">暗询价</a>
+                                       title="当询价方勾选半暗询价选项后，仅询价方可看见出价方之技术文件，及所有不涉及价格之文件（询价方请自行在所发布的询价文件中严格规定技术文件和商务文件的定义，可参考中梦国网文件下载模板），而清单及报价均储存于本网站服务器上，待截止时间后2-240小时后（用户自行定义）之内发送至询价方。">暗询价</a>
                                 </li>
                                 <li index=5>
                                     <a data-value="6"
-                                       title="当询价方勾选全暗询价选项后，&#10;所有出价方可之方案， 报价， 清单及所有文件均储存于本网站服务器上， 待截止时间后1小时—480小时(用户自行定义)之内发送至询价方">全暗询价</a>
+                                       title="当询价方勾选全暗询价选项后，所有出价方上传之方案，报价，清单及所有文件均储存于本网站服务器上，待截止时间后2小时后之内发送至询价方。">全暗询价</a>
                                 </li>
                             </ul>
                         </div>

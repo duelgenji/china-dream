@@ -429,7 +429,7 @@ public class InquiryController {
             map.put("industryCode", inquiry.getCompanyIndustry().getName());
             map.put("provinceCode", inquiry.getCompanyProvince().getName());
             map.put("test", inquiry.getTest());
-            map.put("isGoods", (user.getId()!=null && inquiryGoodsRepository.findByInquiryAndUser(inquiry,user)!=null));
+            map.put("isGoods", (user.getId()!=null && inquiryGoodsRepository.findByInquiryAndUser(inquiry,user).size()>=1));
             //todo 下次去掉
             inquiry.setGoods(inquiryGoodsRepository.countByInquiry(inquiry));
             inquiryRepository.save(inquiry);
@@ -562,7 +562,7 @@ public class InquiryController {
             map.put("industryCode", inquiry.getCompanyIndustry().getName());
             map.put("provinceCode", inquiry.getCompanyProvince().getName());
             map.put("test", inquiry.getTest());
-            map.put("isGoods", (user.getId()!=null && inquiryGoodsRepository.findByInquiryAndUser(inquiry,user)!=null));
+            map.put("isGoods", (user.getId()!=null && inquiryGoodsRepository.findByInquiryAndUser(inquiry,user).size()>=1));
             //todo 下次去掉
             inquiry.setGoods(inquiryGoodsRepository.countByInquiry(inquiry));
             inquiryRepository.save(inquiry);
@@ -1190,16 +1190,18 @@ public class InquiryController {
 
         Inquiry inquiry = inquiryRepository.findOne(inquiryId);
 
-        InquiryGoods inquiryGoods = inquiryGoodsRepository.findByInquiryAndUser(inquiry,user);
-        if(inquiryGoods==null){
-            inquiryGoods = new InquiryGoods();
+        List<InquiryGoods> inquiryGoodsList = inquiryGoodsRepository.findByInquiryAndUser(inquiry,user);
+        if(inquiryGoodsList==null || inquiryGoodsList.size()==0){
+            InquiryGoods inquiryGoods = new InquiryGoods();
             inquiryGoods.setInquiry(inquiry);
             inquiryGoods.setUser(user);
             inquiryGoodsRepository.save(inquiryGoods);
             res.put("isGoods",1);
 
         }else{
-            inquiryGoodsRepository.delete(inquiryGoods);
+            for(InquiryGoods inquiryGoods :  inquiryGoodsList){
+                inquiryGoodsRepository.delete(inquiryGoods);
+            }
             res.put("isGoods", 0);
         }
         inquiry.setGoods(inquiryGoodsRepository.countByInquiry(inquiry));

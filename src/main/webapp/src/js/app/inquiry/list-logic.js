@@ -160,22 +160,22 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
         var modeDetail = "";
         switch (mode) {
             case "全明询价":
-                modeDetail = "当询价方勾选全明询价选项后，即所有在本网站注册用户均可在该询价截止时间前看见所有出价方之方案，报价，清单及所有文件。";
+                modeDetail = "当询价方勾选全明询价选项后，即所有在本网站注册用户均可在该询价截止时间前看见所有参与出价方之方案，报价，清单及所有文件。";
                 break;
             case "明询价":
-                modeDetail = "当询价方勾选明询价选项后，即所有被授权出价方均可在该询价截止时间前看见对手之方案，报价，清单及所有文件。并可多次修改方案，出价。";
+                modeDetail = "当询价方勾选明询价选项后，即所有被授权出价方均可在该询价截止时间前看见对手之方案，报价，清单及所有文件。并可多次修改方案和出价。";
                 break;
             case "半明询价":
-                modeDetail = "当询价方勾选半明询价选项后，即所有出价方可在该询价截止时间前仅看见对手之报价。";
+                modeDetail = "当询价方勾选半明询价选项后，即被授权出价方可在该询价截止时间前仅看见对手之报价。并可多次出价。";
                 break;
             case "半暗询价":
-                modeDetail = "当询价方勾选暗询价选项后，仅询价方可看见出价方之方案，报价，清单及所有文件。";
+                modeDetail = "当询价方勾选暗询价选项后，仅询价方可实时看见出价方之方案，报价，清单及所有文件。";
                 break;
             case "暗询价":
-                modeDetail = "当询价方勾选半暗询价选项后，仅询价方可看见出价方之方案，及所有不涉及价格之文件，而清单及报价均储存于本网站服务器上，待截止时间后1小时—72小时(用户自行定义)之内发送至询价方。";
+                modeDetail = "当询价方勾选半暗询价选项后，仅询价方可看见出价方之技术文件，及所有不涉及价格之文件（询价方请自行在所发布的询价文件中严格规定技术文件和商务文件的定义，可参考中梦国网文件下载模板），而清单及报价均储存于本网站服务器上，待截止时间后2-240小时后（用户自行定义）之内发送至询价方。";
                 break;
             case "全暗询价":
-                modeDetail = "当询价方勾选全暗询价选项后，所有出价方可之方案，报价，清单及所有文件均储存于本网站服务器上，待截止时间后1小时—72小时(用户自行定义)之内询价方可以看到出价方的报价和文件。";
+                modeDetail = "当询价方勾选全暗询价选项后，所有出价方上传之方案，报价，清单及所有文件均储存于本网站服务器上，待截止时间后2小时后之内发送至询价方。";
                 break;
         }
 
@@ -424,10 +424,10 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
                     var min = a.data("minPrice"),
                         max = a.data("maxPrice");
                     if (min != "") {
-                        currentQuery.minPrice = min;
+                        currentQuery.minPrice = parseInt(min);
                     }
                     if (max != "") {
-                        currentQuery.maxPrice = max;
+                        currentQuery.maxPrice = parseInt(max);
                     }
 
                 } else {
@@ -450,9 +450,9 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
             }
 
             if (max == "") {
-                text = min + "以上";
+                text = min + "万以上";
             } else if (min == "") {
-                text = max + "以下";
+                text = max + "万以下";
             } else if (min == max) {
                 text = min;
             } else {
@@ -463,7 +463,7 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
                     $("#minPrice").val(min);
                     $("#maxPrice").val(max);
                 }
-                text = min + "-" + max;
+                text = min + "万-" + max+"万";
             }
 
             $("#link").append('<span class="link"><a>' + text + '</a><span data-index="' + $(this).attr("index") + '" data-target="' + $(this).parent().attr("id") + '" class="ui-close" title="去除当前筛选项">x</span>')

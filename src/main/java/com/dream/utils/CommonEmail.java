@@ -16,7 +16,7 @@ import java.util.Date;
 public class CommonEmail {
 
     public enum TYPE{
-        AUTO60,AUTO67,FAIL_B,ROUND_B,SUCCESS_B,CHOSEN_B,REJECT_A,NO_RESPONSE_A,INVITE_B
+        AUTO60,AUTO67,FAIL_B,ROUND_B,SUCCESS_B,CHOSEN_B,REJECT_A,NO_RESPONSE_A,INVITE_B,AGREE_B
     }
 
     public String sendTextMail(String url, long userId, String email, String captcha) {
@@ -35,7 +35,7 @@ public class CommonEmail {
             sEmail.setFrom("info@mychinadreams.com", "中梦国网");
             //标题
             StringBuffer buffer = new StringBuffer();
-            buffer.append("<img src='http://121.40.143.120:8080/dream/image/logo.png'/>");
+            buffer.append("<img src='http://121.40.143.120/dream/image/logo.png'/>");
             buffer.append("<div style='font-weight:bolder;font-size:20px;'>你好， 中国梦网用户0000000"+userId+"，欢迎成为中国梦网用户。</div>");
             buffer.append("<div style='font-size:18px;'>请点击下面的链接对你的邮箱进行验证：</div>");
             buffer.append("<br>");
@@ -84,7 +84,7 @@ public class CommonEmail {
             sEmail.setFrom("info@mychinadreams.com", "中梦国网");
             //标题
             StringBuffer buffer = new StringBuffer();
-            buffer.append("<img src='http://121.40.143.120:8080/dream/image/logo.png'/>");
+            buffer.append("<img src='http://121.40.143.120/dream/image/logo.png'/>");
             buffer.append("<div style='font-weight:bolder;font-size:20px;'>你好， "+user.getNickName()+" </div>");
             buffer.append("<div style='font-size:18px;'>请点击下面的链接重置密码：：</div>");
             buffer.append("<br>");
@@ -129,7 +129,7 @@ public class CommonEmail {
             sEmail.setSubject("中梦国网 系统提示");
             //标题
             StringBuffer buffer = new StringBuffer();
-            buffer.append("<img src='http://121.40.143.120:8080/dream/image/logo.png'/>");
+            buffer.append("<img src='http://121.40.143.120/dream/image/logo.png'/>");
             buffer.append("<br>");
             buffer.append("<div style='font-size:18px;'>"+content+"</div>");
             buffer.append("<br>");
@@ -145,7 +145,7 @@ public class CommonEmail {
             buffer.append("<div style='font-size:14px;color:#999;'>或关注我们的微信公众号 ： 中梦国网   微信号：zmguowang </div>");
             buffer.append("<br>");
             buffer.append("<br>");
-            buffer.append("<img width='160' height='160' src='http://121.40.143.120:8080/dream/image/weixinLogo.jpg'/>");
+            buffer.append("<img width='160' height='160' src='http://121.40.143.120/dream/image/weixinLogo.jpg'/>");
             buffer.append("<br>");
             buffer.append("<br>");
             buffer.append("中梦国网");
@@ -179,7 +179,7 @@ public class CommonEmail {
             case CHOSEN_B:
                 return "你好,"+user.getNickName()+"。\n" +
                         "您在中梦国网参与的标号为 "+inquiry.getInquiryNo()+" ， 询价方"+inquiry.getUser().getNickName()+"已经确认您为最合适人选， 如您已经与该询价方线下合同，请登录中梦国网（http://www.mychinadreams.com） 并在  “我的主页”/“站内信息”中“出价成功确认”下拉框中选择响应的标号点击“确认”， 系统才能认定该询价真正成功（见下图示列）：\n"+
-                        "<img src='http://121.40.143.120:8080/dream/image/chosenExample.png'/>\n" +
+                        "<img src='http://121.40.143.120/dream/image/chosenExample.png'/>\n" +
                         "如询价方"+inquiry.getUser().getNickName()+"并未与您线下合同，请选择拒绝；\n" +
                         "如您未做任何操作，系统将在4日之后自动流标，  详情登录中梦国网。\n" ;
             case REJECT_A:
@@ -191,7 +191,11 @@ public class CommonEmail {
             case INVITE_B:
                 return "你好,"+user.getNickName()+"。\n" +
                         inquiry.getUser().getNickName()+"在中梦国网发布的标号为 "+inquiry.getInquiryNo()+" ， 邀请您参与并已经全部授权， 请登录中梦国网在“我的主页”中“我的出价”中“未报价”下拉框中找到该询价， 参见下图：\n"+
-                        "<img src='http://121.40.143.120:8080/dream/image/inviteExample.png'/>\n" ;
+                        "<img src='http://121.40.143.120/dream/image/inviteExample.png'/>\n" ;
+            case AGREE_B:
+                return "你好,"+user.getNickName()+"。\n" +
+                        "您在中梦国网申请的的标号为 "+inquiry.getInquiryNo()+" ， 询价方"+inquiry.getUser().getNickName()+"已经同意了您的申请 ，并已经全部授权， 请登录中梦国网在“我的主页”中“我的出价”中“未报价”下拉框中找到该询价， 参见下图：\n"+
+                        "<img src='http://121.40.143.120/dream/image/agreeExample.png'/>\n" ;
             default:
                 break;
         }

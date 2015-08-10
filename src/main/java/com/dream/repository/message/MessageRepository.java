@@ -21,7 +21,7 @@ public interface MessageRepository  extends MyRepository<Message,Long> {
     @Query("from Message m where m.user = :user and m.inquiry = :inquiry and m.inquiry.round=m.round and m.type=0 order by id desc ")
     List<Message> findAllUserAndInquiry(@Param("user") User user, @Param("inquiry") Inquiry inquiry);
 
-    @Query("from Message m where m.user = :user and m.type=:type and  m.status=1 and  m.inquiry.round=m.round ")
+    @Query("from Message m where m.user = :user and m.type=:type and  m.status=1 and  m.inquiry.round=m.round and m.inquiry.status=0 ")
     List<Message> findByUser(@Param("user") User user,@Param("type") int type);
 
     @Query("select count(*) from Message m where m.user =:user and m.status =1 and m.inquiry.status=0 and m.type=0")
