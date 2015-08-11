@@ -163,6 +163,17 @@ public class UserService {
                 }else if (user.getCompanyIndustry()==null ){
                     return "行业不能为空";
                 }
+                if(request.getParameter("companyProvince")!=null){
+                    Long pid=Long.parseLong(request.getParameter("companyProvince"));
+                    CompanyProvince companyProvince= companyProvinceRepository.findOne(pid);
+                    if(companyProvince!=null){
+                        user.setCompanyProvince(companyProvince);
+                    }else{
+                        return "地区编号错误";
+                    }
+                }else if (user.getCompanyProvince()==null ){
+                    return "所在地区不能为空";
+                }
 
                 userRepository.save(user);
                 userPersonalInfo.setId(user.getId());
@@ -278,7 +289,17 @@ public class UserService {
                 if(request.getParameter("description") != null) {
                     userGroupInfo.setDescription(request.getParameter("description"));
                 }
-
+                if(request.getParameter("companyProvince")!=null){
+                    Long pid=Long.parseLong(request.getParameter("companyProvince"));
+                    CompanyProvince companyProvince= companyProvinceRepository.findOne(pid);
+                    if(companyProvince!=null){
+                        user.setCompanyProvince(companyProvince);
+                    }else{
+                        return "地区编号错误";
+                    }
+                }else if (user.getCompanyProvince()==null ){
+                    return "所在地区不能为空";
+                }
 
                 userRepository.save(user);
 

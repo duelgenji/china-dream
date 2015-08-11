@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <base target="_self">
+    <base target="_blank">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="中国梦-一个让你实现自己梦想的舞台！">
@@ -433,6 +433,7 @@
 <script src="../src/js/ajax/ajax-retrieveInquiryDetail.js" charset="utf-8"></script>
 <script src="../src/js/bootstrap/bootstrap.min.js" charset="utf-8"></script>
 <script src="../src/js/plugins/jquery.form.js" charset="utf-8"></script>
+<script src="../src/js/plugins/jquery.blockUI.js" charset="utf-8"></script>
 <script src="../src/js/ajax/ajax-collection.js" charset="utf-8"></script>
 <script src="../src/js/ajax/ajax-message.js" charset="utf-8"></script>
 
@@ -448,6 +449,7 @@
         mod.load();
         mod2.load();
     });
+    $(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
 </script>
 </body>
 </html>

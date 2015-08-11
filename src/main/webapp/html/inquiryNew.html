@@ -622,9 +622,12 @@
                 <ul class="ui-infoUl">
                     <li>
                         <label>项目文档:</label>
+                        <span></span>
+                        (<span field="filesOpen" data-from="selectedText"></span>)
                         <span field="file1"></span>
                         <span field="file2"></span>
                         <span field="file3"></span>
+
                     </li>
                 </ul>
             </div>
@@ -643,6 +646,27 @@
     <div id="footer">
     </div>
 </div>
+
+<div class="modal fade" id="messageModal" tabindex="-1" role="dialog"
+     aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="messageModalLabel">
+                </h2>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">关闭
+                </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+
+
 <iframe name="inquiryNewIframe" id="inquiryNewIframe" style="display: none;" iframeborder="0"></iframe>
 </body>
 <script src="../dest/js/lib/jquery.min.js" type="text/javascript" charset="utf-8"></script>
@@ -663,6 +687,7 @@
 <script src="../src/js/app/main.js" charset="utf-8"></script>
 <script src="../src/js/bootstrap/bootstrap.min.js"></script>
 <script src="../src/js/plugins/jquery.form.js" charset="utf-8"></script>
+<script src="../src/js/plugins/jquery.blockUI.js" charset="utf-8"></script>
 <script src="../src/js/app/inquiry/create-logic.js" charset="utf-8"></script>
 <script src="../src/js/ajax/ajax-retrieveInquiryDetail.js" charset="utf-8"></script>
 <!-- <script src="../dest/js/app/inquiry.publish.logic.js" type="text/javascript" charset="utf-8"></script> -->
@@ -675,7 +700,7 @@
         mod.load().setActiveNav("createinquiry").closeTopFixed();
         mod2.load();
     });
-
+    $(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
 
 </script>
 </html>

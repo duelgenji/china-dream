@@ -136,7 +136,7 @@ define("main", ["systemDefine-repos", "pure-dialog"], function (require, exports
                 break;
         }
 
-        window.open(url, "_self");
+        window.open(url, "_blank");
         //window.open(url, that.data("target") || $("base").attr("target"));
     }
 

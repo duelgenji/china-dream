@@ -400,13 +400,17 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
     $("#inquiryForm").ajaxForm();
     $('#inquiryForm').submit(function () {
         $("#btn_confirm").attr("disabled","");
-        $("#loading").show();
+
+
+        //$("#loading").show();
 
         var url = baseUrl+"/inquiry/generateInquiry";
         if(currentQueryObj.inquiryId){
             url = baseUrl + "/inquiry/inquiryNextRound";
         }
-        console.log(url);
+
+
+
         var options = {
             url: url,
             type: 'post',
@@ -431,7 +435,7 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
                 }
             },complete:function(){
                 $("#btn_confirm").removeAttr("disabled");
-                $("#loading").hide();
+                //$("#loading").hide();
             }
         };
 
