@@ -543,7 +543,7 @@ public class Inquiry  extends AbstractPersistable<Long> {
             case "contactName":
                 return this.getContactName();
             case "contactNameOpen":
-                return this.getRemarkOpen();
+                return this.getContactNameOpen();
             case "contactEmail":
                 return this.getContactEmail();
             case "contactEmailOpen":
