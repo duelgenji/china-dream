@@ -195,6 +195,9 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                     default :
                         break;
                 }
+            } else if(col=="round"){
+                var arrRound= ["预告轮","第一轮(大海捞针)","第二轮(有的放矢)","第三轮(精益求精)"];
+                span.text(arrRound[val]).attr("title", arrRound[val]);
             } else {
                 // 括号里面的字 变红色
                 val = val.toString();
@@ -368,7 +371,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                             clearForm: false,
                             success: function (data, textStatus, jqXHR) {
                                 var result = data.success;
-                                //console.log(data);
+                                //console.log(data);‘
                                 if(result=="0"){
                                     alert(data.message);
                                 }
@@ -772,6 +775,9 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                             default :
                                 break;
                         }
+                    } else if(col=="round"){
+                        var arrRound= ["预告轮","第一轮(大海捞针)","第二轮(有的放矢)","第三轮(精益求精)"];
+                        span.text(arrRound[val]).attr("title", arrRound[val]);
                     } else {
                         span.text(val).attr("title", val);
                     }

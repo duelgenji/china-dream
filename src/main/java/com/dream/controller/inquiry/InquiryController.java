@@ -146,6 +146,8 @@ public class InquiryController {
             return res;
         }
 
+        user = userRepository.findOne(user.getId());
+
         Inquiry inquiry = new Inquiry();
         inquiry.setUser(user);
 
@@ -899,6 +901,7 @@ public class InquiryController {
             res.put("message","请先登录");
             return res;
         }
+        user = userRepository.findOne(user.getId());
 
         Inquiry inquiry = inquiryRepository.findByUserAndId(user, inquiryId);
         if(inquiry==null){

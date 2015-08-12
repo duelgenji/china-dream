@@ -72,6 +72,11 @@ define("login-logic", ["jquery", "user-repos"], function(require, exports) {
 			var val = 1 - parseInt($("#hd_savelogin").val());
 			$("#hd_savelogin").val(val);
 		});
+
+
+		$("#btn_register").click(function(){
+			self.location = "register.html"
+		});
 	}
 
 	exports.load = function() {

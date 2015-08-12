@@ -42,6 +42,14 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
             span = $(span);
             var col = span.data("col"),
                 val = data[col];
+            if(col=="companyWebsite"){
+                var website=val;
+                if(val && val.substring(0,4)!="http"){
+                    website =  "http://"+val;
+                }
+                span.append('<a target="_blank" href="'+website+'">'+val+'</a>');
+                return true;
+            }
             span.text(val).attr("title", val);
         });
 

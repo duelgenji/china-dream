@@ -152,7 +152,7 @@ public  class UserController {
             return res;
         }
 
-        commonEmail.sendTextMail("http://121.40.143.120/dream/user/",user.getId(), email, captcha);
+        commonEmail.sendTextMail("http://www.mychinadreams.com/dream/user/",user.getId(), email, captcha);
 
         res.put("success", "1");
         return res;
@@ -304,7 +304,7 @@ public  class UserController {
         }else{
             captcha=user.getCaptcha();
         }
-        commonEmail.sendForgetPwdMail("http://121.40.143.120/dream/user/", user, email, captcha);
+        commonEmail.sendForgetPwdMail("http://www.mychinadreams.com/dream/user/", user, email, captcha);
         res.put("success", "1");
         return res;
 
