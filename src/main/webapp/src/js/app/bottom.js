@@ -71,6 +71,10 @@ function getFile(type){
         url="/dreamCase/retrieveDreamCaseList";
     }else if(type==2){
         url="/dreamFile/retrieveDreamFileList";
+        }
+    if(!loadAccount()){
+        $("#my_container").append('<a href="login.html">请登录后查看</a>');
+        return;
     }
     $.ajax({
         url: baseUrl + url,

@@ -125,6 +125,10 @@ define("main", ["systemDefine-repos", "pure-dialog"], function (require, exports
                 url = that.data("link");
                 break;
             case "createinquiry":
+                if (!fn_isLogin()) {
+                    alert("你还未登录!");
+                    return;
+                }
                 url = that.data("link");
                 break;
             case "help":
