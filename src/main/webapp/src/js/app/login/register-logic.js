@@ -324,16 +324,19 @@ define("register-logic", ["user-repos", "jquery", "pure-dialog", "pure-validator
                     hideLi = $("ul.ui-items li[data-type=c], ul.ui-items li[data-type=g]");
                     currentLi = $("ul.ui-items li[data-type=p],ul.ui-items li[data-type=pc]");
                     $("#input_type").val(1);
+                    $("#c-tips").hide();
                     break;
                 case "c":
                     hideLi = $("ul.ui-items li[data-type=p], ul.ui-items li[data-type=g]");
                     currentLi = $("ul.ui-items li[data-type=c],ul.ui-items li[data-type=pc]");
+                    $("#c-tips").show();
                     $("#input_type").val(2);
                     break;
                 case "g":
                     hideLi = $("ul.ui-items li[data-type=p], ul.ui-items li[data-type=c], ul.ui-items li[data-type=pc]");
                     currentLi = $("ul.ui-items li[data-type=g]");
                     $("#input_type").val(3);
+                    $("#c-tips").hide();
                     break;
             }
 
