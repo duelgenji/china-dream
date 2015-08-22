@@ -248,7 +248,8 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
                     return;
                 }
 
-                span.innerText = from == "selectedText" ? (from == "attrTitle" ? target.attr("title") : target.find("option:selected").text()) : target.val();
+                span.innerText = from == "selectedText" ? (from == "attrTitle" ? target.attr("title") : target.find("option:selected").text()) : (target.val()==null? "":target.val());
+
             });
 
             $this.text("确认提交");

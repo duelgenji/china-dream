@@ -90,6 +90,7 @@ public class InquiryHistory extends AbstractPersistable<Long> {
     /**
      * 备注
      */
+    @Column(columnDefinition = "TEXT")
     private String remark;
 
     @Enumerated
