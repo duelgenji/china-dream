@@ -51,6 +51,10 @@ public class Message extends AbstractPersistable<Long> {
      */
     private boolean checked;
 
+    /**
+     * 是否出价
+     */
+    private boolean bade;
 
     /**
      * 是否 发送过 提示email 2天提示 5天流标
@@ -135,5 +139,13 @@ public class Message extends AbstractPersistable<Long> {
 
     public void setSendFailEmail(boolean sendFailEmail) {
         this.sendFailEmail = sendFailEmail;
+    }
+
+    public boolean isBade() {
+        return bade;
+    }
+
+    public void setBade(boolean bade) {
+        this.bade = bade;
     }
 }

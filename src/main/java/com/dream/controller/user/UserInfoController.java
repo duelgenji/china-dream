@@ -315,6 +315,7 @@ public class UserInfoController {
             res.put("message","请先登录");
             return res;
         }
+        user = userRepository.findOne(user.getId());
 
         user.setPassword(DigestUtils.md5Hex(password));
         userRepository.save(user);

@@ -131,6 +131,11 @@ public class QuotationController {
             }
         }
 
+        for(Message m : list){
+            m.setBade(true);
+            messageRepository.save(m);
+        }
+
         res.put("success",1);
         return res;
 
