@@ -168,10 +168,21 @@ public class InquiryController {
             inquiry.setRound(1);
         }
 
-        CompanyProvince companyProvince = companyProvinceRepository.findOne(provinceCode);
-        inquiry.setCompanyProvince(companyProvince);
         CompanyIndustry companyIndustry = companyIndustryRepository.findOne(industryCode);
+        if(companyIndustry==null){
+            res.put("success", "0");
+            res.put("message", "项目行业选择有误，请返回第一步重新勾选");
+            return res;
+        }
         inquiry.setCompanyIndustry(companyIndustry);
+        CompanyProvince companyProvince = companyProvinceRepository.findOne(provinceCode);
+        if(companyProvince==null){
+            res.put("success", "0");
+            res.put("message", "项目地区选择有误，请返回第一步重新勾选");
+            return res;
+        }
+        inquiry.setCompanyProvince(companyProvince);
+
 
         try {
             inquiry.setLimitDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(limitDate));
@@ -212,13 +223,8 @@ public class InquiryController {
 
         Date date = new Date();
 
-        if(companyProvince!=null){
-            inquiry.setInquiryNo(companyProvince.getAlias()+DateFormatUtils.format(date, "yyyyMMddHHmmssssss"));
-        }else{
-            res.put("success",0);
-            res.put("message","行业编号错误");
-            return res;
-        }
+        inquiry.setInquiryNo(companyProvince.getAlias()+DateFormatUtils.format(date, "yyyyMMddHHmmssssss"));
+
 
 
         if (null != logoFile) {
@@ -428,8 +434,8 @@ public class InquiryController {
             map.put("round", inquiry.getRound());
             map.put("limitDate", DateFormatUtils.format(inquiry.getLimitDate(), "yyyy-MM-dd HH:mm:ss"));
             map.put("inquiryMode", inquiry.getInquiryMode().getName());
-            map.put("industryCode", inquiry.getCompanyIndustry().getName());
-            map.put("provinceCode", inquiry.getCompanyProvince().getName());
+            map.put("industryCode", inquiry.getCompanyIndustry()!=null ? inquiry.getCompanyIndustry().getName():"");
+            map.put("provinceCode", inquiry.getCompanyProvince()!=null ? inquiry.getCompanyProvince().getName():"");
             map.put("test", inquiry.getTest());
             map.put("isGoods", (user.getId()!=null && inquiryGoodsRepository.findByInquiryAndUser(inquiry,user).size()>=1));
             //todo 下次去掉
@@ -561,8 +567,8 @@ public class InquiryController {
             map.put("round", inquiry.getRound());
             map.put("limitDate", DateFormatUtils.format(inquiry.getLimitDate(), "yyyy-MM-dd HH:mm:ss"));
             map.put("inquiryMode", inquiry.getInquiryMode().getName());
-            map.put("industryCode", inquiry.getCompanyIndustry().getName());
-            map.put("provinceCode", inquiry.getCompanyProvince().getName());
+            map.put("industryCode", inquiry.getCompanyIndustry()!=null ? inquiry.getCompanyIndustry().getName():"");
+            map.put("provinceCode", inquiry.getCompanyProvince()!=null ? inquiry.getCompanyProvince().getName():"");
             map.put("test", inquiry.getTest());
             map.put("isGoods", (user.getId()!=null && inquiryGoodsRepository.findByInquiryAndUser(inquiry,user).size()>=1));
             //todo 下次去掉
@@ -622,8 +628,8 @@ public class InquiryController {
         res.put("round", inquiry.getRound());
         res.put("limitDate", DateFormatUtils.format(inquiry.getLimitDate(), "yyyy-MM-dd HH:mm:ss"));
         res.put("inquiryMode", inquiry.getInquiryMode().getName());
-        res.put("industryCode", inquiry.getCompanyIndustry().getName());
-        res.put("provinceCode", inquiry.getCompanyProvince().getName());
+        res.put("industryCode", inquiry.getCompanyIndustry()!=null ? inquiry.getCompanyIndustry().getName():"");
+        res.put("provinceCode", inquiry.getCompanyProvince()!=null ? inquiry.getCompanyProvince().getName():"");
         res.put("userLimit", inquiry.getUserLimit());
         res.put("logoUrl", inquiry.getLogoUrl());
         res.put("test", inquiry.getTest());
@@ -780,8 +786,8 @@ public class InquiryController {
             map.put("inquiryRound", inquiry.getRound());
             map.put("inquiryStatus", inquiry.getStatus());
             map.put("inquiryMode", inquiry.getInquiryMode().getName());
-            map.put("inquiryIndustry", inquiry.getCompanyIndustry().getName());
-            map.put("inquiryProvince", inquiry.getCompanyProvince().getName());
+            map.put("inquiryIndustry", inquiry.getCompanyIndustry()!=null ? inquiry.getCompanyIndustry().getName():"");
+            map.put("inquiryProvince", inquiry.getCompanyProvince()!=null ? inquiry.getCompanyProvince().getName():"");
             map.put("inquiryPrice", inquiry.getTotalPrice());
             map.put("limitDate", DateFormatUtils.format(inquiry.getLimitDate(), "yyyy-MM-dd HH:mm:ss"));
 
@@ -827,8 +833,8 @@ public class InquiryController {
         res.put("totalPrice", inquiry.getTotalPrice());
         res.put("limitDate", DateFormatUtils.format(inquiry.getLimitDate(), "yyyy-MM-dd HH:mm:ss"));
         res.put("inquiryModeCode", inquiry.getInquiryMode().getId());
-        res.put("industryCode", inquiry.getCompanyIndustry().getId());
-        res.put("provinceCode", inquiry.getCompanyProvince().getId());
+        res.put("industryCode", inquiry.getCompanyIndustry() != null ? inquiry.getCompanyIndustry().getId() : "");
+        res.put("provinceCode", inquiry.getCompanyProvince() != null ? inquiry.getCompanyProvince().getId() : "");
         res.put("userLimit", inquiry.getUserLimit());
         res.put("round", inquiry.getRound());
         res.put("logoUrl", inquiry.getLogoUrl());
