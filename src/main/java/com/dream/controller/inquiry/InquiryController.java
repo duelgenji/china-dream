@@ -188,6 +188,9 @@ public class InquiryController {
             inquiry.setLimitDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(limitDate));
         } catch (ParseException e) {
             e.printStackTrace();
+            res.put("success", "0");
+            res.put("message", "项目截止时间格式有误，正确范例：2015-5-10");
+            return res;
         }
         inquiry.setTotalPrice(totalPrice);
 
@@ -223,7 +226,7 @@ public class InquiryController {
 
         Date date = new Date();
 
-        inquiry.setInquiryNo(companyProvince.getAlias()+DateFormatUtils.format(date, "yyyyMMddHHmmssssss"));
+        inquiry.setInquiryNo(companyProvince.getAlias()+DateFormatUtils.format(date, "yyyyMMddHHmmssSSSS"));
 
 
 

@@ -120,6 +120,12 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
             }
         }
 
+        val = (dom = $("#purchaseCloseDate")).val();
+        if (val && !val.match(/^(\d{4})\-(\d{1,2})\-(\d{1,2})$/ )) {
+            showErrorTip(dom.data("pos"), dom.data("errmsg"));
+            isError = !!1;
+        }
+
         val = (dom = $("#remark")).val();
         if (val && val.length > 1000) {
             showErrorTip(dom.data("pos"), dom.data("errmsg"));
@@ -215,6 +221,10 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
             if (!valid_step1()) {
                 return;
             }
+            var date = $("#purchaseCloseDate").val();
+            console.log("ttttt:"+date);
+
+            //^\d{4}(\-|\/|\.)\d{1,2}\1\d{1,2}$
             $("#hd_purchaseCloseDate").val($("#purchaseCloseDate").val() + " " + $("#purchaseCloseDateHour").val() + ":00");
         }
 
