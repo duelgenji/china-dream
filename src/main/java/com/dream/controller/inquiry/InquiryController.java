@@ -743,6 +743,8 @@ public class InquiryController {
         message.setContent(description);
 
         messageRepository.save(message);
+        commonEmail.sendEmail(inquiry.getUser().getEmail(), commonEmail.getContent(CommonEmail.TYPE.REQUEST_A, inquiry, user));
+
 
         res.put("success",1);
         return res;

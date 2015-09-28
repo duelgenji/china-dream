@@ -198,8 +198,8 @@ public class CommonEmail {
                         "<img src='http://121.40.143.120/dream/image/agreeExample.png'/>\n" ;
             case REQUEST_A:
                 return "你好,"+inquiry.getUser().getNickName()+"。\n" +
-                        "您在中梦国网发布的标号为 "+inquiry.getInquiryNo()+" ，  出价方YYYYY（乙方）向您提出了申请 ，并发送站内信， 请登录中梦国网在“我的主页”中“站内信息”中“需我回复的”下拉框中找到该询价， 参见下图， 点击查看，可见申请方留言； 点击其ID， 可浏览其主页，并可链接至其网站，判断是否同意。\n";
-
+                        "您在中梦国网发布的标号为 "+inquiry.getInquiryNo()+" ，  出价方"+user.getNickName()+"（乙方）向您提出了申请 ，并发送站内信， 请登录中梦国网在“我的主页”中“站内信息”中“需我回复的”下拉框中找到该询价， 参见下图， 点击查看，可见申请方留言； 点击其ID， 可浏览其主页，并可链接至其网站，判断是否同意。\n"+
+                        "<img src='http://121.40.143.120/dream/image/requestExample.png'/>\n";
             default:
                 break;
         }
