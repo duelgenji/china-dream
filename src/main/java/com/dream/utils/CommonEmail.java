@@ -16,7 +16,7 @@ import java.util.Date;
 public class CommonEmail {
 
     public enum TYPE{
-        AUTO60,AUTO67,FAIL_B,ROUND_B,SUCCESS_B,CHOSEN_B,REJECT_A,NO_RESPONSE_A,INVITE_B,AGREE_B
+        AUTO60,AUTO67,FAIL_B,ROUND_B,SUCCESS_B,CHOSEN_B,REJECT_A,NO_RESPONSE_A,INVITE_B,AGREE_B,REQUEST_A
     }
 
     public String sendTextMail(String url, long userId, String email, String captcha) {
@@ -196,6 +196,10 @@ public class CommonEmail {
                 return "你好,"+user.getNickName()+"。\n" +
                         "您在中梦国网申请的的标号为 "+inquiry.getInquiryNo()+" ， 询价方"+inquiry.getUser().getNickName()+"已经同意了您的申请 ，并已经全部授权， 请登录中梦国网在“我的主页”中“我的出价”中“未报价”下拉框中找到该询价， 参见下图：\n"+
                         "<img src='http://121.40.143.120/dream/image/agreeExample.png'/>\n" ;
+            case REQUEST_A:
+                return "你好,"+inquiry.getUser().getNickName()+"。\n" +
+                        "您在中梦国网发布的标号为 "+inquiry.getInquiryNo()+" ，  出价方YYYYY（乙方）向您提出了申请 ，并发送站内信， 请登录中梦国网在“我的主页”中“站内信息”中“需我回复的”下拉框中找到该询价， 参见下图， 点击查看，可见申请方留言； 点击其ID， 可浏览其主页，并可链接至其网站，判断是否同意。\n";
+
             default:
                 break;
         }
