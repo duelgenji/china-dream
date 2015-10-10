@@ -177,7 +177,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                 var files = dataSource.fileList;
                 for (var i = 0; i < files.length; i++) {
                     var name = files[i].remark == "" ? "附件" : files[i].remark;
-                    span.append("<p><a href=" + files[i].fileUrl + ">" + name + "</a></p>")
+                    span.append("<p><a href='" + files[i].fileUrl + "'>" + name + "</a></p>")
                 }
             } else if(col=="status"){
                 var arr= ["进行中","已成功","已流标"];
@@ -757,7 +757,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                         var files = dataSource.historyList[0].fileList;
                         for (var i = 0; i < files.length; i++) {
                             var name = files[i].remark == "" ? "附件" : files[i].remark;
-                            span.append("<p><a href=" + files[i].fileUrl + ">" + name + "</a></p>")
+                            span.append("<p><a href='" + files[i].fileUrl + "'>" + name + "</a></p>")
                         }
                     } else if(col=="status"){
                         var arr= ["进行中","已成功","已流标"];
@@ -794,7 +794,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                         var files = dataSource.historyList[1].fileList;
                         for (var i = 0; i < files.length; i++) {
                             var name = files[i].remark == "" ? "附件" : files[i].remark;
-                            span.append("<p><a href=" + files[i].fileUrl + ">" + name + "</a></p>")
+                            span.append("<p><a href='" + files[i].fileUrl + "'>" + name + "</a></p>")
                         }
                     } else if(col=="status"){
                         var arr= ["进行中","已成功","已流标"];
