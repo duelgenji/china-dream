@@ -329,7 +329,7 @@
                         </label>
                         <input type="hidden" id="hd_purchaseCloseDate" name="limitDate">
                         <input id="purchaseCloseDate" type="text" autocomplete="OFF" style="width:156px;"
-                               placeholder="请输入项目截止时间" data-valid="require" data-pos="470" data-errmsg="格式有误,范例：2011-10-01">
+                               placeholder="请输入项目截止时间" data-valid="require" data-pos="470" data-errmsg="格式有误,范例：2011-10-01" data-errmsg2="日期无效，不能超过60天">
                         <img id="calendar_ctrl" class="ui-calendar_ctrl"/>
                         <select id="purchaseCloseDateHour" style="width:65px;margin-left:2px;">
                             <option value="0:00">0:00</option>
@@ -652,25 +652,6 @@
     </div>
     <div id="footer">
     </div>
-</div>
-
-<div class="modal fade" id="messageModal" tabindex="-1" role="dialog"
-     aria-labelledby="messageModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title" id="messageModalLabel">
-                </h2>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default"
-                        data-dismiss="modal">关闭
-                </button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal -->
 </div>
 
 

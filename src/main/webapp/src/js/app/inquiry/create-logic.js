@@ -124,6 +124,15 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
         if (val && !val.match(/^(\d{4})\-(\d{1,2})\-(\d{1,2})$/ )) {
             showErrorTip(dom.data("pos"), dom.data("errmsg"));
             isError = !!1;
+
+        }else if(val && val.match(/^(\d{4})\-(\d{1,2})\-(\d{1,2})$/ )){
+
+            var d= new Date(val).getTime();
+            var now = new Date().getTime();
+            if(!d || d<now || d-now>=1000*60*60*24*61){
+                showErrorTip(dom.data("pos"), dom.data("errmsg2"));
+                isError = !!1;
+            }
         }
 
         val = (dom = $("#remark")).val();
@@ -222,7 +231,6 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
                 return;
             }
             var date = $("#purchaseCloseDate").val();
-            console.log("ttttt:"+date);
 
             //^\d{4}(\-|\/|\.)\d{1,2}\1\d{1,2}$
             $("#hd_purchaseCloseDate").val($("#purchaseCloseDate").val() + " " + $("#purchaseCloseDateHour").val() + ":00");
