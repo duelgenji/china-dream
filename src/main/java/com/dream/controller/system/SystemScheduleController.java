@@ -65,7 +65,7 @@ public class SystemScheduleController {
 
     public void inquiryOverLimitTime(){
         //发送60天即将流标邮件
-        List<Inquiry> inquiryList = inquiryRepository.findByStatusAndCreateDateLessThanAndSendFailEmail(0, DateUtils.addDays(new Date(), -60), false);
+        List<Inquiry> inquiryList = inquiryRepository.findByStatusAndModifyDateLessThanAndSendFailEmail(0, DateUtils.addDays(new Date(), -60), false);
         for ( Inquiry inquiry : inquiryList) {
             commonEmail.sendEmail(inquiry.getUser().getEmail(),commonEmail.getContent(CommonEmail.TYPE.AUTO60,inquiry,null));
             inquiry.setSendFailEmail(true);
@@ -74,7 +74,7 @@ public class SystemScheduleController {
 
         //67天自动流标
         //发送流标邮件
-        List<Inquiry> inquiryList2  = inquiryRepository.findByStatusAndCreateDateLessThan(0, DateUtils.addDays(new Date(), -67));
+        List<Inquiry> inquiryList2  = inquiryRepository.findByStatusAndModifyDateLessThan(0, DateUtils.addDays(new Date(), -67));
         for ( Inquiry inquiry : inquiryList2) {
             commonEmail.sendEmail(inquiry.getUser().getEmail(),commonEmail.getContent(CommonEmail.TYPE.AUTO67,inquiry,null));
             inquiry.setStatus(2);

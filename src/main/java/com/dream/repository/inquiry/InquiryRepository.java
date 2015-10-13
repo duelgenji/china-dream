@@ -30,7 +30,7 @@ public interface InquiryRepository extends MyRepository<Inquiry,Long> {
 
     int countByWinner(User winner);
 
-    List<Inquiry> findByStatusAndCreateDateLessThan(int status,Date date);
+    List<Inquiry> findByStatusAndModifyDateLessThan(int status,Date date);
 
-    List<Inquiry> findByStatusAndCreateDateLessThanAndSendFailEmail(int status,Date date,boolean sendFailEmail);
+    List<Inquiry> findByStatusAndModifyDateLessThanAndSendFailEmail(int status,Date date,boolean sendFailEmail);
 }

@@ -986,6 +986,7 @@ public class InquiryController {
         inquiry.setFilesOpen(OpenStatus.values()[filesOpen]);
 
         inquiry.setModifyDate(new Date());
+        inquiry.setSendFailEmail(false);
 
         if (null != logoFile) {
             String uname;
