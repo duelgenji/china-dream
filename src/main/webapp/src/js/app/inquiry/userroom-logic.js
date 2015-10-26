@@ -345,10 +345,11 @@ define("userroom-logic", ["userroom-config", "jquery", "user-repos", "pure-grid"
 				return;
 			}
 
+			//临时修改意见 1/2 反过来 （应该在controller里控制)  2015-10-26
 			if($(this).closest("th").attr("ci")=="4"){
-				currentQuery.type = 1;
-			}else if($(this).closest("th").attr("ci")=="5"){
 				currentQuery.type = 2;
+			}else if($(this).closest("th").attr("ci")=="5"){
+				currentQuery.type = 1;
 			}else{
 				return;
 			}
