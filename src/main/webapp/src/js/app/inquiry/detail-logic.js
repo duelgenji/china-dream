@@ -201,9 +201,9 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
             } else {
                 // 括号里面的字 变红色
                 val = val.toString();
-                var  bracket= val.substring(val.indexOf("("),val.indexOf(")")+1);
+                var  bracket= val.substring(val.lastIndexOf("("),val.lastIndexOf(")")+1);
                 if(bracket){
-                    val = val.substring(0,val.indexOf("("))+ "<span style='color: red'>"+bracket+"</span>";
+                    val = val.substring(0,val.lastIndexOf("("))+ "<span style='color: red'>"+bracket+"</span>";
                 }
                 span.append(val).attr("title", val);
 
