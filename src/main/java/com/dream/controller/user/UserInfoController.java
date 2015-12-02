@@ -7,6 +7,7 @@ import com.dream.service.user.UserService;
 import com.dream.utils.UploadUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -17,12 +18,10 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 用户信息 相关 接口
@@ -78,10 +77,17 @@ public class UserInfoController {
         Map<String, Object> res = new HashMap<>();
 
         if(user.getId()!=null){
+
             user = userRepository.findOne(user.getId());
             user = userService.generateOptionalInfo(user,request);
 
             if (null != logoImage) {
+                if(!UploadUtils.isImage(logoImage)){
+                    res.put("success", "0");
+                    res.put("message", "该附件不是图片类型");
+                    return res;
+                }
+
                 String uname;
                 if (null == user.getId()) {
                     uname = avatar_url + "u" + user.getId();

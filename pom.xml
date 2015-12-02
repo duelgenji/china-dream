@@ -10,7 +10,7 @@
   <repositories>
     <repository>
       <id>xlab-nexus-snapshots</id>
-      <url>http://101.231.124.8:45675/nexus/content/repositories/snapshots</url>
+      <url>http://101.231.124.8:45682/nexus/content/repositories/snapshots</url>
       <snapshots>
         <enabled>true</enabled>
       </snapshots>

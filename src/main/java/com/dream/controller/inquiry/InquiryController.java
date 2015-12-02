@@ -231,6 +231,11 @@ public class InquiryController {
 
 
         if (null != logoFile) {
+            if(!UploadUtils.isImage(logoFile)){
+                res.put("success", "0");
+                res.put("message", "该附件不是图片类型");
+                return res;
+            }
             String uname;
             if (null == inquiry.getId()) {
                 uname = inquiry_url + "u" + user.getId();
@@ -989,6 +994,11 @@ public class InquiryController {
         inquiry.setSendFailEmail(false);
 
         if (null != logoFile) {
+            if(!UploadUtils.isImage(logoFile)){
+                res.put("success", "0");
+                res.put("message", "该附件不是图片类型");
+                return res;
+            }
             String uname;
             if (null == inquiry.getId()) {
                 uname = inquiry_url + "u" + user.getId();

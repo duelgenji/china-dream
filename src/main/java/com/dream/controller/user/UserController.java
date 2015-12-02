@@ -129,6 +129,11 @@ public  class UserController {
         user = userService.generateOptionalInfo(user, request);
 
         if (null != logoImage) {
+            if(!UploadUtils.isImage(logoImage)){
+                res.put("success", "0");
+                res.put("message", "该附件不是图片类型");
+                return res;
+            }
             String uname;
             if (null == user.getId()) {
                 uname = avatar_url + "u" + user.getId();

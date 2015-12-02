@@ -205,4 +205,24 @@ public class CommonEmail {
         }
         return null;
     }
+
+//    public static void testEmail(String email) {
+//        HtmlEmail sEmail = new HtmlEmail ();
+//        sEmail.setHostName("smtp.mxhichina.com");
+//        sEmail.setAuthentication("info@mychinadreams.com", "Macbook010");
+//        //接收人
+//        try {
+//            System.out.println(email);
+//            sEmail.addTo(email);
+//            sEmail.setFrom("info@mychinadreams.com", "中梦国网");
+//            sEmail.setHtmlMsg("中梦国网测试邮件");
+//            sEmail.send();
+//        } catch (EmailException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    public static void main(String[] args) {
+//        testEmail("asdasdas@asdas11dasd.com");
+//    }
 }

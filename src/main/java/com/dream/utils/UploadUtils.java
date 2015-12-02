@@ -79,7 +79,11 @@ public class UploadUtils {
             e.printStackTrace();
         }
         String bucketName;
-        String key = name + file.getOriginalFilename().substring(0,file.getOriginalFilename().lastIndexOf(".")) +  "_" +  DateFormatUtils.format(new Date(), "yyyyMMddHHmmssssss")+"."+ file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1);
+//        String key = name + file.getOriginalFilename().substring(0,file.getOriginalFilename().lastIndexOf(".")) +  "_" +  DateFormatUtils.format(new Date(), "yyyyMMddHHmmssSSS")+"."+ file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1);
+        String suffix = file.getOriginalFilename().contains(".")?"." +file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1):"";
+
+        String key = name + "_" +  DateFormatUtils.format(new Date(), "yyyyMMddHHmmssSSS")+ suffix;
+
         String url;
         switch (type) {
             case 0 :
@@ -103,4 +107,13 @@ public class UploadUtils {
         }
         return url;
     }
+
+    //判断是否图片   (application  audio  image video text multipart message)
+    public static boolean isImage(MultipartFile file){
+        String type = file.getContentType();
+        return type.contains("image");
+
+    }
+
+
 }
