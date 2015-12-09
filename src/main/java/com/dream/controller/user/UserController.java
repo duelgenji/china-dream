@@ -156,6 +156,7 @@ public  class UserController {
             res.put("message", message);
             return res;
         }
+        System.out.println("email send to : "+ email);
 
         commonEmail.sendTextMail("http://www.mychinadreams.com/dream/user/",user.getId(), email, captcha);
 
