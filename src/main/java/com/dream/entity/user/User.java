@@ -96,6 +96,7 @@ public class User extends AbstractPersistable<Long> {
     /**
      * 简介
      */
+    @Column(columnDefinition = "TEXT")
     private String description;
 
 
