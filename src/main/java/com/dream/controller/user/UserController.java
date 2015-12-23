@@ -161,6 +161,7 @@ public  class UserController {
             res.put("message", message);
             return res;
         }
+        System.out.println("email send to : "+ email);
 
         UserEmailLog userEmailLog = new UserEmailLog();
         userEmailLog.setUser(user);
