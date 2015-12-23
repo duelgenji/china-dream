@@ -1,9 +1,11 @@
 package com.dream.controller.user;
 
 import com.dream.entity.user.User;
+import com.dream.entity.user.UserEmailLog;
 import com.dream.entity.user.UserIndex;
 import com.dream.repository.dream.SensitiveWordRepository;
 import com.dream.repository.message.MessageRepository;
+import com.dream.repository.user.UserEmailLogRepository;
 import com.dream.repository.user.UserIndexRepository;
 import com.dream.repository.user.UserRepository;
 import com.dream.service.inquiry.InquiryService;
@@ -52,6 +54,9 @@ public  class UserController {
 
     @Autowired
     UserIndexRepository userIndexRepository;
+
+    @Autowired
+    UserEmailLogRepository userEmailLogRepository;
 
     @Autowired
     SensitiveWordRepository sensitiveWordRepository;
@@ -156,6 +161,12 @@ public  class UserController {
             res.put("message", message);
             return res;
         }
+
+        UserEmailLog userEmailLog = new UserEmailLog();
+        userEmailLog.setUser(user);
+        userEmailLog.setEmail(email);
+        userEmailLogRepository.save(userEmailLog);
+
 
         commonEmail.sendTextMail("http://www.mychinadreams.com/dream/user/",user.getId(), email, captcha);
 
