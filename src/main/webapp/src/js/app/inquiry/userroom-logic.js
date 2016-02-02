@@ -203,7 +203,8 @@ define("userroom-logic", ["userroom-config", "jquery", "user-repos", "pure-grid"
 				.override("grid.databound", function() {
 					$("a[name=cmd-seeUserDetail]").click(function() {
 						if (util_isLogin()) {
-							location.href = "userDetail.html?key=" + currentGrid.dataSource[$(this).data("i")]["userId"];
+							//location.href = "userDetail.html?key=" + currentGrid.dataSource[$(this).data("i")]["userId"];
+							window.open("userDetail.html?key=" + currentGrid.dataSource[$(this).data("i")]["userId"]);
 						} else {
 							alert("您好,如需查看此用户信息,请您先登录!");
 						}
@@ -367,6 +368,7 @@ define("userroom-logic", ["userroom-config", "jquery", "user-repos", "pure-grid"
 
 		fn_initEvent();
 
+		//初始加载不显示读取列表
 		fn_bind();
 	};
-})
+});

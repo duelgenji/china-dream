@@ -181,6 +181,7 @@ public class UserInfoController {
             map.put("userId",u.getId());
             map.put("nickname",u.getNickName());
             map.put("email",u.getEmail());
+            map.put("telephone",u.getTelephone());
             map.put("VIP", u.getVIP());
             map.put("test", u.isTest());
             map.put("removed", u.isRemoved());
@@ -278,6 +279,7 @@ public class UserInfoController {
             map.put("VIP", u.getVIP());
             map.put("test", u.isTest());
             map.put("email",u.getEmail());
+            map.put("telephone",u.getTelephone());
             map.put("removed", u.isRemoved());
 
             logoUrl=u.getLogoUrl();

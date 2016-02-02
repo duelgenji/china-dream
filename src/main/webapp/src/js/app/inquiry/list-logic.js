@@ -533,6 +533,7 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
 
         fn_initEvent();
 
-        fn_bind();
+        //初始加载不显示读取列表
+        //fn_bind();
     };
 })
