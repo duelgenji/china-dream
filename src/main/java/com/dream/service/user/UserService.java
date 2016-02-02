@@ -199,11 +199,12 @@ public class UserService {
                 if(request.getParameter("companyName")!=null && !request.getParameter("website").equals("")){
                     if(userCompanyInfo.getCompanyName()!=null)
                         return "公司名称不能修改";
-                    if(userCompanyInfoRepository.findByCompanyName(request.getParameter("companyName")).size()==0){
-                        userCompanyInfo.setCompanyName(request.getParameter("companyName"));
-                    }else{
-                        return "公司名称已经被使用";
-                    }
+//                    if(userCompanyInfoRepository.findByCompanyName(request.getParameter("companyName")).size()==0){
+//                        userCompanyInfo.setCompanyName(request.getParameter("companyName"));
+//                    }else{
+//                        return "公司名称已经被使用";
+//                    }//2015 12 24 去除公司名称 唯一性
+                    userCompanyInfo.setCompanyName(request.getParameter("companyName"));
                 }else if (userCompanyInfo.getCompanyName()==null ){
                     return "公司名称不能为空";
                 }

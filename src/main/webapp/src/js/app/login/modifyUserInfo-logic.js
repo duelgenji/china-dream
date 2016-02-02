@@ -152,6 +152,15 @@ define("modifyUserInfo-logic", ["user-repos", "jquery", "pure-dialog", "pure-val
             }
         }
 
+        val = (dom = $("#description")).val();
+        if (val && val.length > 1000) {
+            if(type==3)
+                showErrorTip(680, dom.data("errmsg"));
+            else
+                showErrorTip(980, dom.data("errmsg"));
+            isError = !!1;
+        }
+
         if (isError)
             return false;
 

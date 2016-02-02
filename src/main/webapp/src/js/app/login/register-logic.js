@@ -227,6 +227,16 @@ define("register-logic", ["user-repos", "jquery", "pure-dialog", "pure-validator
             }
         }
 
+        val = (dom = $("#description")).val();
+        if (val && val.length > 1000) {
+            if(type=="g")
+                showErrorTip(760, dom.data("errmsg"));
+            else
+                showErrorTip(1050, dom.data("errmsg"));
+            isError = !!1;
+        }
+
+
         if (isError)
             return false;
 
