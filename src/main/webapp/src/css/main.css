@@ -1,0 +1,180 @@
+
+.get {
+    background: #1E5B94;
+    color: #fff;
+    text-align: center;
+    padding: 100px 0;
+}
+
+.get-title {
+    font-size: 200%;
+    border: 2px solid #fff;
+    padding: 20px;
+    display: inline-block;
+}
+
+.get-btn {
+    background: #fff;
+}
+
+.detail {
+    background: #fff;
+}
+
+.detail-h2 {
+    text-align: center;
+    font-size: 150%;
+    margin: 40px 0;
+}
+
+.detail-h3 {
+    color: #1f8dd6;
+}
+
+.detail-p {
+    color: #7f8c8d;
+}
+
+.detail-mb {
+    margin-bottom: 30px;
+}
+
+.hope {
+    background: #0bb59b;
+    padding: 50px 0;
+}
+
+.hope-img {
+    text-align: center;
+}
+
+.hope-hr {
+    border-color: #149C88;
+}
+
+.hope-title {
+    font-size: 140%;
+}
+
+.about {
+    background: #fff;
+    padding: 40px 0;
+    color: #7f8c8d;
+}
+
+.about-color {
+    color: #34495e;
+}
+
+.about-title {
+    font-size: 180%;
+    padding: 30px 0 50px 0;
+    text-align: center;
+}
+
+.footer p {
+    color: #7f8c8d;
+    margin: 0;
+    padding: 15px 0;
+    text-align: center;
+    background: #2d3e50;
+}
+
+/*by knight*/
+.am-icon-btn-ex{
+    width: 150px;
+    height: 150px;
+    line-height: 150px;
+    font-size : 64px
+}
+
+
+.banner img{
+    max-height: 400px;
+}
+
+.am-slider-b1 .am-slider-desc {
+    height: 100%;
+    position: absolute;
+    left: 10px;
+    right: 50px;
+    bottom: 0;
+    color: #fff;
+    text-align: center;
+}
+
+
+.banner-top .detail-h2{
+    color: #9300FF;
+    font-size: 40px;
+}
+
+.banner-top p{
+    font-size: 30px;
+}
+
+input ,button{
+    border-radius: 3px !important;
+}
+
+.amz-toolbar {
+    position: fixed;
+    right: 10px;
+    bottom: 70px;
+    z-index: 999;
+}
+
+.amz-toolbar .am-icon-pencil-square-o {
+    display: block;
+    opacity: 1;
+    background-color: #dd514c;
+    color: #fff;
+    margin-top: 10px;
+    -webkit-transition: all .3s ease-in;
+    transition: all .3s ease-in;
+}
+
+.detail-suf{
+    display: none;
+    width: 100%;
+    height: 240px;
+    position: absolute;
+    top: 0;
+    left: -1px;
+    border: 1px solid #bad6f5;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    background: #fff;
+    z-index: 3;
+    text-align: center;
+    animation: flipInX 0.7s ease both;
+    -webkit-animation: flipInX 0.7s ease both;
+    -moz-animation: flipInX 0.7s ease both;
+}
+.detail-suf p{
+}
+
+.detail{
+    overflow: hidden;
+}
+
+.detail-pre:hover .detail-suf{
+    display: block;
+
+}
+
+.footer{
+    background-color:  #2d3e50;
+}
+
+.hope p,.hope a,.hope h2{
+    color : #FFE200;
+}
+
+.banner-mid .detail-p{
+    color :#fff;
+}
+
+
+@-moz-keyframes flipInX{0%{-moz-transform:perspective(400px) rotateX(90deg);opacity:0.5;}40%{-moz-transform:perspective(400px) rotateX(-10deg)}70%{-moz-transform:perspective(400px) rotateX(10deg)}100%{-moz-transform:perspective(400px) rotateX(0deg);opacity:1.0}}@keyframes flipInX{0%{transform:perspective(400px) rotateX(90deg);opacity:0.5;}40%{transform:perspective(400px) rotateX(-10deg)}70%{transform:perspective(400px) rotateX(10deg)}100%{transform:perspective(400px) rotateX(0deg);opacity:1.0}}

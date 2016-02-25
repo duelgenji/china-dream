@@ -215,16 +215,21 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
 
 
         console.log(dataSource);
-        var special=["梦幻梦想","奇思妙想","公益梦想"];
+        var specialDream=["梦幻梦想","奇思妙想","公益梦想"];
+        var specialBP=["股权融资","风险投资"];
         var btnText="出价";
-        if(special.indexOf(dataSource.industryCode)>=0){
+        if(specialDream.indexOf(dataSource.industryCode)>=0){
             btnText="圆梦";
-        }else{
+        }
+        else{
             btnText="出价";
         }
         if(dataSource.applyStatus == 0){
-            /*梦幻梦想，奇思妙想，公益梦想之后申请出价改为圆梦*/
+
             $("#btn_biddingApply").text("申请"+btnText);
+            if(specialBP.indexOf(dataSource.industryCode)>=0){
+               $("#btn_biddingApply").text("查看BP");
+            }
 
         }else if (dataSource.applyStatus == 1) {
             $("#btn_biddingApply").attr("status", "working").text("已申请"+btnText);
