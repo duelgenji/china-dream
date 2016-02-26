@@ -513,80 +513,175 @@
 
 <div class="about" id="quickRegister">
     <div class="am-g am-container">
-        <div class="am-u-lg-12">
-            <h2 class="about-title about-color">免费注册中梦国网</h2>
-            <p style="color: red;">
-                留下您的联系信息，我们会有专业营销顾问与您联系，一对一为您详细介绍百中梦国网相关产品和服务，帮您更高效的管理供应链
-            </p>
+        <div class="am-tabs-bd" id="register-tab" data-am-tabs="{noSwipe: 1}" >
+            <div id="tab1" class="am-tab-panel am-active">
+                <div class="am-u-lg-12">
+                    <h2 class="about-title about-color">
+                        免费注册中梦国网
+                        <span class="am-badge am-badge-danger am-radius" style="vertical-align:middle;">企业注册</span>
+                    </h2>
+                    <p style="color: red;">
+                        留下您的联系信息，我们会有专业营销顾问与您联系，一对一为您详细介绍中梦国网相关产品和服务，帮助您的企业更高效的管理供应链。
+                    </p>
+                    <p style="color: red;">
+                        企业注册需提供非公共邮箱和公司网址， 如不具备以上条件， 请点击个人注册。
+                    </p>
 
-            <div class="am-g">
-                <div class="am-u-lg-6 am-u-md-4 am-u-sm-12">
-                    <form class="am-form am-form-horizontal">
-                        <div class="am-form-group">
-                            <label for="name" class="am-u-sm-4 am-form-label">*联系人姓名</label>
-                            <div class="am-u-sm-8">
-                                <input type="text" id="name" placeholder="">
-                            </div>
-                        </div>
-                        <div class="am-form-group">
-                            <label for="company" class="am-u-sm-4 am-form-label">*公司昵称</label>
-                            <div class="am-u-sm-8">
-                                <input type="text" id="company" placeholder="">
-                            </div>
-                        </div>
-                        <div class="am-form-group">
-                            <label for="website" class="am-u-sm-4 am-form-label">*公司网址</label>
-                            <div class="am-u-sm-8">
-                                <input type="text" id="website" placeholder="">
-                            </div>
-                        </div>
-                        <div class="am-form-group">
-                            <label for="hangye" class="am-u-sm-4 am-form-label">行业</label>
-                            <div class="am-u-sm-8">
-                                <input type="text" id="hangye" placeholder="">
-                            </div>
+
+                    <div class="am-g">
+                        <div class="am-u-lg-6 am-u-md-4 am-u-sm-12">
+                            <form class="am-form am-form-horizontal">
+                                <div class="am-form-group">
+                                    <label for="name" class="am-u-sm-4 am-form-label">*联系人姓名</label>
+                                    <div class="am-u-sm-8">
+                                        <input type="text" id="name" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="company" class="am-u-sm-4 am-form-label">*公司昵称</label>
+                                    <div class="am-u-sm-8">
+                                        <input type="text" id="company" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="website" class="am-u-sm-4 am-form-label">*公司网址</label>
+                                    <div class="am-u-sm-8">
+                                        <input type="text" id="website" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="hangye" class="am-u-sm-4 am-form-label">行业</label>
+                                    <div class="am-u-sm-8">
+                                        <input type="text" id="hangye" placeholder="">
+                                    </div>
+                                </div>
+
+                            </form>
+                            <hr class="am-article-divider am-show-sm-only">
                         </div>
 
-                    </form>
-                    <hr class="am-article-divider am-show-sm-only">
+                        <div class="am-u-lg-6 am-u-md-8 am-u-sm-12">
+                            <form class="am-form am-form-horizontal">
+                                <div class="am-form-group">
+                                    <label for="email" class="am-u-sm-4 am-form-label">*联系人邮箱</label>
+                                    <div class="am-u-sm-8">
+                                        <input type="email" id="email" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="phone" class="am-u-sm-4 am-form-label">*联系人手机</label>
+                                    <div class="am-u-sm-8">
+                                        <input type="text" id="phone" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="password" class="am-u-sm-4 am-form-label">*设置密码</label>
+                                    <div class="am-u-sm-8">
+                                        <input type="password" id="password" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="diqu" class="am-u-sm-4 am-form-label">地区</label>
+                                    <div class="am-u-sm-8">
+                                        <input type="text" id="diqu" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="xingzhi" class="am-u-sm-4 am-form-label">公司性质</label>
+                                    <div class="am-u-sm-8">
+                                        <input type="text" id="xingzhi" placeholder="">
+                                    </div>
+                                </div>
+                            </form>
+
+                            <div style="text-align: right;">
+                                <p>
+                                    <a href="login.html">已经注册用户 <span class="am-icon-angle-double-right"></span></a>
+                                </p>
+                                <p>
+                                    <a id="go_personal" href="javascript:void(0)">个人注册 <span class="am-icon-angle-double-right"></span></a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="am-u-lg-6 am-u-md-8 am-u-sm-12">
-                    <form class="am-form am-form-horizontal">
-                        <div class="am-form-group">
-                            <label for="email" class="am-u-sm-4 am-form-label">*联系人邮箱</label>
-                            <div class="am-u-sm-8">
-                                <input type="email" id="email" placeholder="">
-                            </div>
-                        </div>
-                        <div class="am-form-group">
-                            <label for="phone" class="am-u-sm-4 am-form-label">*联系人手机</label>
-                            <div class="am-u-sm-8">
-                                <input type="text" id="phone" placeholder="">
-                            </div>
-                        </div>
-                        <div class="am-form-group">
-                            <label for="password" class="am-u-sm-4 am-form-label">*设置密码</label>
-                            <div class="am-u-sm-8">
-                                <input type="password" id="password" placeholder="">
-                            </div>
-                        </div>
-                        <div class="am-form-group">
-                            <label for="diqu" class="am-u-sm-4 am-form-label">地区</label>
-                            <div class="am-u-sm-8">
-                                <input type="text" id="diqu" placeholder="">
-                            </div>
-                        </div>
-                        <div class="am-form-group">
-                            <label for="xingzhi" class="am-u-sm-4 am-form-label">公司性质</label>
-                            <div class="am-u-sm-8">
-                                <input type="text" id="xingzhi" placeholder="">
-                            </div>
-                        </div>
-                    </form>
+            </div>
+            <div id="tab2" class="am-tab-panel">
+                <div class="am-u-lg-12">
+                    <h2 class="about-title about-color">
+                        免费注册中梦国网
+                        <span class="am-badge am-badge-danger am-radius" style="vertical-align:middle;">个人注册</span>
+                    </h2>
+                    <p style="color: red;">
+                        留下您的联系信息，我们会有专业营销顾问与您联系，一对一为您详细介绍中梦国网相关产品和服务，帮助您的企业更高效的管理供应链。
+                    </p>
+                    <p style="color: red;">
+                        企业注册需提供非公共邮箱和公司网址， 如不具备以上条件， 请点击个人注册。
+                    </p>
 
+
+                    <div class="am-g">
+                        <div class="am-u-lg-6 am-u-md-4 am-u-sm-12">
+                            <form class="am-form am-form-horizontal">
+                                <div class="am-form-group">
+                                    <label for="nickname" class="am-u-sm-4 am-form-label">*昵称</label>
+                                    <div class="am-u-sm-8">
+                                        <input type="text" id="nickname" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="diqu" class="am-u-sm-4 am-form-label">地区</label>
+                                    <div class="am-u-sm-8">
+                                        <input type="text" id="diqu" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="hangye" class="am-u-sm-4 am-form-label">行业</label>
+                                    <div class="am-u-sm-8">
+                                        <input type="text" id="hangye" placeholder="">
+                                    </div>
+                                </div>
+
+                            </form>
+                            <div style="text-align: left;">
+                                <p>
+                                    <a href="login.html"><span class="am-icon-angle-double-left"></span> 已经注册用户</a>
+                                </p>
+                                <p>
+                                    <a id="go_company" href="javascript:void(0)"><span class="am-icon-angle-double-left"></span> 企业注册 </a>
+                                </p>
+                            </div>
+                            <hr class="am-article-divider am-show-sm-only">
+                        </div>
+
+                        <div class="am-u-lg-6 am-u-md-8 am-u-sm-12">
+                            <form class="am-form am-form-horizontal">
+                                <div class="am-form-group">
+                                    <label for="email" class="am-u-sm-4 am-form-label">*邮箱</label>
+                                    <div class="am-u-sm-8">
+                                        <input type="email" id="email" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="phone" class="am-u-sm-4 am-form-label">*手机</label>
+                                    <div class="am-u-sm-8">
+                                        <input type="text" id="phone" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="password" class="am-u-sm-4 am-form-label">*设置密码</label>
+                                    <div class="am-u-sm-8">
+                                        <input type="password" id="password" placeholder="">
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
                 </div>
             </div>
+
         </div>
 
     </div>
@@ -597,6 +692,42 @@
 
 <footer class="footer">
     <p>中梦国网Beta 2.0</p>
+
+    <div class="footer-content">
+        <div class="footer-link">
+            <div class="footer-link-column">
+                <ul>
+                    <li>写在开始</li>
+                    <li>产生背景</li>
+                    <li>案例分析</li>
+                </ul>
+            </div>
+            <div class="footer-link-column">
+                <ul>
+                    <li>提问回答(Q&A)</li>
+                    <li>公司章程(节选)</li>
+                    <li>采购规则(节选)</li>
+                </ul>
+            </div>
+            <div class="footer-link-column">
+                <ul>
+                    <li>接受捐赠</li>
+                    <li>名词解释</li>
+                    <li>文件下载</li>
+                </ul>
+            </div>
+            <div class="footer-link-column">
+                <ul>
+                    <li>周公吐脯</li>
+                    <li>核心价值</li>
+                    <li>投诉建议</li>
+                    <li>问题举报</li>
+                </ul>
+            </div>
+
+        </div>
+
+    </div>
 </footer>
 
 
@@ -610,6 +741,7 @@
 <script src="../cdb/assets/js/jquery.min.js"></script>
 <!--<![endif]-->
 <script src="../cdb/assets/js/amazeui.min.js"></script>
-<script src="../cdb/custom/js/main.js"></script>
+<script src="../src/js/app/cover.js"></script>
+
 </body>
 </html>

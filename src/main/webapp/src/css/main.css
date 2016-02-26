@@ -166,6 +166,7 @@ input ,button{
 
 .footer{
     background-color:  #2d3e50;
+    /*overflow: hidden;*/
 }
 
 .hope p,.hope a,.hope h2{
@@ -176,5 +177,40 @@ input ,button{
     color :#fff;
 }
 
+
+.footer-content{
+    margin: 0 auto;
+    width: 100%;
+    padding :15px 30px;
+}
+
+.footer-link{
+    width: 600px;
+    margin-bottom: 30px;
+}
+.footer-link::after{
+    content: ' ';
+    clear: both;
+    display: block;
+}
+
+
+.footer-link-column{
+    width: 25%;
+    float: left;
+}
+
+
+.footer-link-column h2{
+    color: #fff;
+    font-size : 12px;
+}
+.footer-link-column ul,.footer-link-column li{
+    list-style :none;
+    margin: 0;
+    padding: 0;
+    color: #787878;
+    font-size : 12px;
+}
 
 @-moz-keyframes flipInX{0%{-moz-transform:perspective(400px) rotateX(90deg);opacity:0.5;}40%{-moz-transform:perspective(400px) rotateX(-10deg)}70%{-moz-transform:perspective(400px) rotateX(10deg)}100%{-moz-transform:perspective(400px) rotateX(0deg);opacity:1.0}}@keyframes flipInX{0%{transform:perspective(400px) rotateX(90deg);opacity:0.5;}40%{transform:perspective(400px) rotateX(-10deg)}70%{transform:perspective(400px) rotateX(10deg)}100%{transform:perspective(400px) rotateX(0deg);opacity:1.0}}
