@@ -363,4 +363,91 @@ public  class UserController {
         }
         return res;
     }
+
+
+    @RequestMapping("quickRegister")
+    public Map<String, Object> quickRegister(
+            @RequestParam(required = true) String email,
+            @RequestParam(required = true) String password,
+            @RequestParam(required = true) String nickName,
+            @RequestParam int type,
+            HttpServletRequest request) {
+
+        Map<String, Object> res = new HashMap<>();
+
+        User user;
+        user = userRepository.findByEmail(email);
+        if(user!=null){
+            res.put("success", "0");
+            res.put("message", "该邮箱已经被注册");
+            return res;
+        }
+        user = userRepository.findByNickName(nickName);
+        if(user!=null){
+            res.put("success", "0");
+            res.put("message", "该昵称已被使用");
+            return res;
+        }
+        if(type<1 || type> 3){
+            res.put("success", "0");
+            res.put("message", "用户类型不正确");
+            return res;
+        }
+
+        user = new User();
+        String captcha = DateFormatUtils.format(new Date(), "yyyyMMdd") + RandomStringUtils.random(22, "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+        if(!email.matches("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*")){
+            res.put("success", "0");
+            res.put("message", "邮箱不符合格式");
+            return res;
+        }
+        if(type==2 && Arrays.asList(new String[]{"126.com", "163.com", "139.com", "gmail.com", "hotmail.com",
+                "sohu.com", "sina.com", "sina.cn", "yeah.net", "qq.com", "189.cn", "263.net", "outlook.com",
+                "21cn.com", "188.com", "wo.cn", "sogou.com"}).contains(email.split("@")[1])){
+            res.put("success", "0");
+            res.put("message", "请不要使用个人邮箱");
+            return res;
+        }
+
+
+        SensitiveWordFilter filter = new SensitiveWordFilter(sensitiveWordRepository.findAll());
+        if(filter.isContainSensitiveWord(nickName,1)){
+            res.put("success", "0");
+            res.put("message", "昵称包含敏感词");
+            return res;
+        }
+
+        user.setEmail(email);
+        user.setPassword(DigestUtils.md5Hex(password));
+        user.setNickName(nickName);
+        user.setType(type);
+        user.setCaptcha(captcha);
+
+
+
+        user = userService.generateOptionalInfo(user, request);
+
+        String message=userService.generateUserByType(user,type,request);
+
+
+
+        if(!message.equals("")){
+            res.put("success", "0");
+            res.put("message", message);
+            return res;
+        }
+        System.out.println("email send to : "+ email);
+
+        UserEmailLog userEmailLog = new UserEmailLog();
+        userEmailLog.setUser(user);
+        userEmailLog.setEmail(email);
+        userEmailLogRepository.save(userEmailLog);
+
+
+        commonEmail.sendTextMail("http://www.mychinadreams.com/dream/user/",user.getId(), email, captcha);
+
+        res.put("success", "1");
+        return res;
+
+    }
 }
