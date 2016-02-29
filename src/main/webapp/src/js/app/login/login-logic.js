@@ -17,6 +17,11 @@ define("login-logic", ["jquery", "user-repos"], function(require, exports) {
 			$("#hd_username").val("");
 		});
 
+		$("#input_password,#input_user").on("keydown",function(event) {
+			if(event.keyCode==13){
+				$("#btn_login").click();
+			}
+		});
 		$("#btn_login").click(function() {
 			var val = $("#input_user").val(),
 				psw;

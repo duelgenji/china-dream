@@ -10,6 +10,7 @@ define("userroom-config",[],function(require,exports){
     
     exports.gridConfig = {
         renderTo:"data",
+        height : 1760,
         columns: [
             {
                     index: 1,
@@ -83,13 +84,15 @@ define("userroom-config",[],function(require,exports){
                 }, {
                     index: 7,
                     head: {
-                        text: "评分",
+                        text: "收藏",
                         width: 160,
                         align: "center"
                     },
                     body: {
                         align: "center",
-                        text:"--"
+                        fields: "userId,isCollection",
+                        renderFn: "renderCollection"
+
                     }
                 }],
                 sortCss: sortCss

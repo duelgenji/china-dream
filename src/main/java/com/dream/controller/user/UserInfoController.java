@@ -2,12 +2,12 @@ package com.dream.controller.user;
 
 import com.dream.entity.user.User;
 import com.dream.repository.message.MessageRepository;
+import com.dream.repository.user.UserCollectionRepository;
 import com.dream.repository.user.UserRepository;
 import com.dream.service.user.UserService;
 import com.dream.utils.UploadUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -18,10 +18,12 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 用户信息 相关 接口
@@ -40,6 +42,9 @@ public class UserInfoController {
 
     @Autowired
     MessageRepository messageRepository;
+
+    @Autowired
+    UserCollectionRepository userCollectionRepository;
 
     @Value("${avatar_url}")
     private String avatar_url;
@@ -203,6 +208,13 @@ public class UserInfoController {
 
             map.put("industry", industry);
             map.put("province", province);
+
+            if(user.getId()!=null && userCollectionRepository.findByUserAndTargetUser(user,u).size()!=0){
+                map.put("isCollection",1);
+//                map.put("collectionId",userCollectionRepository.findByUserAndTargetUser(u,user).get(0).getId());
+            }else
+                map.put("isCollection",0);
+
             list.add(map);
         }
 
@@ -299,6 +311,13 @@ public class UserInfoController {
 
             map.put("industry", industry);
             map.put("province", province);
+
+            if(user.getId()!=null && userCollectionRepository.findByUserAndTargetUser(user,u).size()!=0){
+                map.put("isCollection",1);
+//                map.put("collectionId",userCollectionRepository.findByUserAndTargetUser(u,user).get(0).getId());
+            }else
+                map.put("isCollection",0);
+
             list.add(map);
         }
 
