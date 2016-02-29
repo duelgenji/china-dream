@@ -161,7 +161,7 @@ public class UserService {
                         return "行业编号错误";
                     }
                 }else if (user.getCompanyIndustry()==null ){
-                    return "行业不能为空";
+//                    return "行业不能为空";
                 }
                 if(request.getParameter("companyProvince")!=null){
                     Long pid=Long.parseLong(request.getParameter("companyProvince"));
@@ -172,7 +172,7 @@ public class UserService {
                         return "地区编号错误";
                     }
                 }else if (user.getCompanyProvince()==null ){
-                    return "所在地区不能为空";
+//                    return "所在地区不能为空";
                 }
 
                 userRepository.save(user);
@@ -206,7 +206,7 @@ public class UserService {
 //                    }//2015 12 24 去除公司名称 唯一性
                     userCompanyInfo.setCompanyName(request.getParameter("companyName"));
                 }else if (userCompanyInfo.getCompanyName()==null ){
-                    return "公司名称不能为空";
+//                    return "公司名称不能为空";
                 }
 
                 if(request.getParameter("companyProvince")!=null){
@@ -218,7 +218,7 @@ public class UserService {
                         return "地区编号错误";
                     }
                 }else if (user.getCompanyProvince()==null ){
-                    return "企业所在地不能为空";
+//                    return "企业所在地不能为空";
                 }
                 if(request.getParameter("companyIndustry")!=null){
                     Long iid=Long.parseLong(request.getParameter("companyIndustry"));
@@ -229,7 +229,7 @@ public class UserService {
                         return "行业编号错误";
                     }
                 }else if (user.getCompanyIndustry()==null ){
-                    return "企业所属行业不能为空";
+//                    return "企业所属行业不能为空";
                 }
                 if(request.getParameter("companyOwnership")!=null){
                     Long oid=Long.parseLong(request.getParameter("companyOwnership"));
@@ -240,7 +240,7 @@ public class UserService {
                         return "行业性质编号错误";
                     }
                 }else if (userCompanyInfo.getCompanyOwnership()==null ){
-                    return "企业性质不能为空";
+//                    return "企业性质不能为空";
                 }
 
                 if(request.getParameter("companyEmail")!=null){
@@ -380,7 +380,7 @@ public class UserService {
                     res.put("weiboUrl",user.getUserCompanyInfo().getWeiboUrl());
                     res.put("weixin",user.getUserCompanyInfo().getWeixin());
                     res.put("companyName",user.getUserCompanyInfo().getCompanyName());
-                    res.put("companyOwnership",user.getUserCompanyInfo().getCompanyOwnership().getId());
+                    res.put("companyOwnership",user.getUserCompanyInfo().getCompanyOwnership()!=null ? user.getUserCompanyInfo().getCompanyOwnership().getId():"");
                     res.put("companyEmail",user.getUserCompanyInfo().getCompanyEmail());
                     res.put("companyEmailOpen",user.getUserCompanyInfo().getCompanyEmailOpen().ordinal());
                     res.put("organizationsCode",user.getUserCompanyInfo().getOrganizationsCode());
@@ -420,7 +420,13 @@ public class UserService {
                 break;
             case 2:
                 res.put("companyName",user.getUserCompanyInfo().getCompanyName());
-                res.put("companyOwnership",user.getUserCompanyInfo().getCompanyOwnership().getName());
+
+                if(user.getUserCompanyInfo().getCompanyOwnership()!=null){
+                    res.put("companyOwnership",user.getUserCompanyInfo().getCompanyOwnership().getName());
+                }else{
+                    res.put("companyOwnership","");
+                }
+
                 if(user.getCompanyIndustry()!=null){
                     res.put("companyIndustry",user.getCompanyIndustry().getName());
                 }else{

@@ -369,6 +369,6 @@ define("userroom-logic", ["userroom-config", "jquery", "user-repos", "pure-grid"
 		fn_initEvent();
 
 		//初始加载不显示读取列表
-		fn_bind();
+		//fn_bind();
 	};
 });

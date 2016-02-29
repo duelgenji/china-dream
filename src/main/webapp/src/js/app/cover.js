@@ -35,6 +35,9 @@ $(document).ready(function(){
                 $dom.addClass("am-field-error");
                 return;
             }
+            if($dom[0].tagName == "SELECT" && $dom.val()=="0") {
+                continue;
+            }
             json[$dom.attr("name")] =$dom.val();
 
         }
@@ -54,7 +57,10 @@ $(document).ready(function(){
                 $dom.addClass("am-field-error");
                 return;
             }
-            json[$dom.attr("id")] =$dom.val();
+            if($dom[0].tagName == "SELECT" && $dom.val()=="0") {
+                continue;
+            }
+            json[$dom.attr("name")] = $dom.val();
 
         }
         json.type=1;
@@ -62,14 +68,19 @@ $(document).ready(function(){
     }
 
     function register(json){
+
         //console.log(json);
-        //$.ajax({
-        //    url : "../user/quickRegister",
-        //    type :"post",
-        //    data : json,
-        //    success:function(result){
-        //        console.log(result);
-        //    }
-        //});
+        $.ajax({
+            url : "../user/quickRegister",
+            type :"post",
+            data : json,
+            success:function(result){
+                if(result.success==1){
+                    $("#my-alert").modal("open");
+                }else{
+                    alert(result.message);
+                }
+            }
+        });
     }
 });
