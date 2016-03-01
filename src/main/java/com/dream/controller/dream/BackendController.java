@@ -162,7 +162,7 @@ public class BackendController {
      */
     @RequestMapping("searchUserBack")
     public Map<String, Object> searchUserBack(
-            @RequestParam String key,
+            @RequestParam(required = false) String key,
             @PageableDefault(page = 0, size = 20,sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
             @ModelAttribute("currentManager") Manager manager) {
         Map<String, Object> res = new HashMap<>();
