@@ -10,7 +10,8 @@ define("list-config",[],function(require,exports){
     
 	exports.gridConfig = {
 		renderTo:"data",
-		columns: [
+        height : 1760,
+        columns: [
 			{
                     index: 1,
                     head: {

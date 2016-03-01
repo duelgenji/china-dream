@@ -103,6 +103,14 @@ define("userroom-logic", ["userroom-config", "jquery", "user-repos", "pure-grid"
 		return vals;
 	}
 
+	function renderCollection(vals, ri, objval) {
+		if(vals[1]==0){
+			return '<a href="javascript:void(0)" class="collectU" data-uid="'+vals[0]+'">收藏</a>';
+		}else{
+			return "已收藏";
+		}
+	}
+
 	/**
 	 * 绑定数据
 	 * @return {[type]} [description]
@@ -200,6 +208,8 @@ define("userroom-logic", ["userroom-config", "jquery", "user-repos", "pure-grid"
 				.override("renderLogo", renderLogo)
 				.override("renderUser", renderUser)
 				.override("renderBidSuccessRate", renderBidSuccessRate)
+				.override("renderCollection", renderCollection)
+
 				.override("grid.databound", function() {
 					$("a[name=cmd-seeUserDetail]").click(function() {
 						if (util_isLogin()) {
@@ -270,6 +280,18 @@ define("userroom-logic", ["userroom-config", "jquery", "user-repos", "pure-grid"
 			}
 		});
 
+		//收藏
+		$(document).on("click",".collectU",function(){
+			var $this = $(this);
+			ajaxGenerateCollectionU({userId: $(this).data("uid")}, function (data) {
+				alert("收藏成功");
+				$this.parent().empty().html("已收藏");
+			}, function (data) {
+				alert("添加收藏失败：" +data.message);
+			}, function () {
+				alert("添加收藏异常!");
+			});
+		});
 
 		$("#btn_search").click(evt_doSearch);
 

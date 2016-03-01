@@ -370,6 +370,7 @@ public  class UserController {
             @RequestParam(required = true) String email,
             @RequestParam(required = true) String password,
             @RequestParam(required = true) String nickName,
+            @RequestParam(required = true) String telephone,
             @RequestParam int type,
             HttpServletRequest request) {
 
@@ -401,6 +402,13 @@ public  class UserController {
             res.put("message", "邮箱不符合格式");
             return res;
         }
+
+        if(!telephone.matches("^1[0-9]{10}$")){
+            res.put("success", "0");
+            res.put("message", "手机号不符合格式");
+            return res;
+        }
+
         if(type==2 && Arrays.asList(new String[]{"126.com", "163.com", "139.com", "gmail.com", "hotmail.com",
                 "sohu.com", "sina.com", "sina.cn", "yeah.net", "qq.com", "189.cn", "263.net", "outlook.com",
                 "21cn.com", "188.com", "wo.cn", "sogou.com"}).contains(email.split("@")[1])){
