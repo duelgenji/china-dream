@@ -18,10 +18,15 @@
   </repositories>
 
   <parent>
-    <groupId>com.wonders.xlab</groupId>
-    <artifactId>xlab-pom-root</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>1.3.3.RELEASE</version>
   </parent>
+
+  <properties>
+    <java.version>1.7</java.version>
+    <start-class>com.wonders.xlab.framework.Application</start-class>
+  </properties>
 
   <dependencies>
     <dependency>
@@ -97,6 +102,5 @@
     </dependency>
 
   </dependencies>
-
 
 </project>
