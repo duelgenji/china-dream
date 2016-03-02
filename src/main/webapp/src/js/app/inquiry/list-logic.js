@@ -187,8 +187,12 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
      * @return {[type]} [description]
      */
     function fn_bind() {
-        fn_initGrid();
 
+        fn_initGrid();
+        if($("#link").find(".link").size()<=0){
+            currentGrid.reBind({});
+            return;
+        }
         var params = {};
 
         for (var key in currentQuery) {
@@ -207,7 +211,7 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
             params.key=currentQuery.keyword
         }
 
-        console.log(JSON.stringify(params));
+        //console.log(JSON.stringify(params));
 
         dialogMod.mask.show();
 
@@ -435,7 +439,6 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
 
                     currentQuery[query] = (currentQuery[query] || "") + val + ",";
                 }
-
                 setTimeout(fn_bind, 200);
             }
         });
@@ -477,7 +480,6 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
             if (max != "") {
                 currentQuery.maxPrice = max * 10000;
             }
-
             setTimeout(fn_bind, 200);
 
         });
@@ -503,7 +505,6 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
                 }
 
                 dom.parent().remove();
-
                 setTimeout(fn_bind, 200);
             }
         });
@@ -534,6 +535,6 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
         fn_initEvent();
 
         //初始加载不显示读取列表
-        //fn_bind();
+        fn_bind();
     };
 })

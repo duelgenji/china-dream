@@ -194,7 +194,7 @@ public class CommonEmail {
                         "<img src='http://121.40.143.120/dream/image/inviteExample.png'/>\n" ;
             case AGREE_B:
                 return "你好,"+user.getNickName()+"。\n" +
-                        "您在中梦国网申请的的标号为 "+inquiry.getInquiryNo()+" ， 询价方"+inquiry.getUser().getNickName()+"已经同意了您的申请 ，并已经全部授权， 请登录中梦国网在“我的主页”中“我的出价”中“未报价”下拉框中找到该询价， 参见下图：\n"+
+                        "您在中梦国网申请的的标号为 "+inquiry.getInquiryNo()+" ， 询价方"+inquiry.getUser().getNickName()+"已经同意了您的申请 ，并已经全部授权，（http://www.mychinadreams.com/dream/html/inquiryDetail.html?key="+inquiry.getId()+"） 请登录中梦国网在“我的主页”中“我的出价”中“未报价”下拉框中找到该询价， 参见下图：\n"+
                         "<img src='http://121.40.143.120/dream/image/agreeExample.png'/>\n" ;
             case REQUEST_A:
                 return "你好,"+inquiry.getUser().getNickName()+"。\n" +
@@ -206,6 +206,53 @@ public class CommonEmail {
         return null;
     }
 
+    /**
+     * 阿里云 邮件推送
+     */
+    public String pushEmail(String email,String content){
+
+        HtmlEmail sEmail = new HtmlEmail ();
+        //smtp host
+        sEmail.setHostName("smtpdm.aliyun.com");
+        //登陆邮件服务器的用户名和密码
+        sEmail.setAuthentication("mychinadreams@163.com", "Zgmw20150514");
+        //接收人
+        try {
+            sEmail.addTo(email);
+            //发送人
+            sEmail.setFrom("info@mychinadreams.com", "中梦国网");
+            sEmail.setSubject("中梦国网 系统提示");
+            //标题
+            StringBuffer buffer = new StringBuffer();
+            buffer.append("<img src='http://121.40.143.120/dream/image/logo.png'/>");
+            buffer.append("<br>");
+            buffer.append("<div style='font-size:18px;'>"+content+"</div>");
+            buffer.append("<br>");
+            buffer.append("<br>");
+            buffer.append("<div style='font-size:18px;'>更多精彩梦想/询价， 敬请登录中梦国网（http://www.mychinadreams.com）</div>");
+            buffer.append("<div style='font-size:18px;'>祝使用愉快！</div>");
+            buffer.append("<div style='font-size:18px;'>中梦国网 "+ DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss")+"</div>");
+            buffer.append("<br>");
+            buffer.append("<br>");
+            buffer.append("<div style='font-size:14px;color:#999;'>如果你没有注册过中梦国网，请忽略此邮件。</div>");
+            buffer.append("<div style='font-size:14px;color:#999;'>这是中梦国网的帐号服务邮件，请不要回复。</div>");
+            buffer.append("<div style='font-size:14px;color:#999;'>如需了解中梦国网或遇到注册问题，请访问我们的网站（http://www.mychinadreams.com）</div>");
+            buffer.append("<div style='font-size:14px;color:#999;'>或关注我们的微信公众号 ： 中梦国网   微信号：zmguowang </div>");
+            buffer.append("<br>");
+            buffer.append("<br>");
+            buffer.append("<img width='160' height='160' src='http://121.40.143.120/dream/image/weixinLogo.jpg'/>");
+            buffer.append("<br>");
+            buffer.append("<br>");
+            buffer.append("中梦国网");
+//            sEmail.setMsg(buffer.toString());
+            sEmail.setHtmlMsg(buffer.toString());
+            //发送
+            sEmail.send();
+        } catch (EmailException e) {
+            e.printStackTrace();
+        }
+        return "1";
+    }
 //    public static void testEmail(String email) {
 //        HtmlEmail sEmail = new HtmlEmail ();
 //        sEmail.setHostName("smtp.mxhichina.com");

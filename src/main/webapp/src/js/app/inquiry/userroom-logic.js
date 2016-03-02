@@ -119,6 +119,11 @@ define("userroom-logic", ["userroom-config", "jquery", "user-repos", "pure-grid"
 
 		fn_initGridMod();
 
+		if($("#link").find(".link").size()<=0){
+			currentGrid.reBind({});
+			return;
+		}
+
 		var params = {};
 		params.type=0;
 

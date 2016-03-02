@@ -13,10 +13,7 @@ function ajaxRetrieveUserList() {
     params.type=0;
     params.page=page;
     params.key=decodeURI(keyword);
-
-    if(!params.key){
-        return;
-    }
+    console.log(params);
 
     $.ajax({
         url: baseUrl + "/backend/searchUserBack",
