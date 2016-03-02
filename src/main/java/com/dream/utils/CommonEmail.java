@@ -5,6 +5,7 @@ import com.dream.entity.user.User;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -209,13 +210,15 @@ public class CommonEmail {
     /**
      * 阿里云 邮件推送
      */
+
+    @Async
     public String pushEmail(String email,String content){
 
         HtmlEmail sEmail = new HtmlEmail ();
         //smtp host
         sEmail.setHostName("smtpdm.aliyun.com");
         //登陆邮件服务器的用户名和密码
-        sEmail.setAuthentication("mychinadreams@163.com", "Zgmw20150514");
+        sEmail.setAuthentication("info@mychinadreams.com", "Zgmw20150514");
         //接收人
         try {
             sEmail.addTo(email);
@@ -255,8 +258,9 @@ public class CommonEmail {
     }
 //    public static void testEmail(String email) {
 //        HtmlEmail sEmail = new HtmlEmail ();
-//        sEmail.setHostName("smtp.mxhichina.com");
-//        sEmail.setAuthentication("info@mychinadreams.com", "Macbook010");
+//        sEmail.setHostName("smtpdm.aliyun.com");
+//        sEmail.setAuthentication("info@mychinadreams.com", "Zgmw20150514");
+//
 //        //接收人
 //        try {
 //            System.out.println(email);
@@ -270,6 +274,6 @@ public class CommonEmail {
 //    }
 //
 //    public static void main(String[] args) {
-//        testEmail("asdasdas@asdas11dasd.com");
+//        testEmail("361714571@qq.com");
 //    }
 }
