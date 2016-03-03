@@ -569,6 +569,11 @@
                     <li data-type="pcg" style="height: 80px">
                         <label>简介:</label><textarea style="height: 80px" id="description" name="description" placeholder="请输入用户简介(如自我介绍、博客、主页等信息"  data-errmsg="简介内容超出1000字"></textarea>
                     </li>
+                    <li data-type="pcg" style="height: 80px">
+                        <label>关注行业:</label>
+                        <button type="button" id="btnModifyIndustry" style="margin-left: 20px;">修改</button>
+                        <input type="hidden" id="removedIndustry" name="removedIndustry" />
+                    </li>
                     <li data-type="pcg">
                         <label>logo:</label><input id="logoImage" style="margin-left: 20px"  type="file" name="logoImage" accept="image/*" />
                     </li>
@@ -594,6 +599,71 @@
                 </h2>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">关闭
+                </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+
+<div class="modal fade" id="industryModal" tabindex="-1" role="dialog"
+     aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="industryModalLabel">
+                </h2>
+            </div>
+            <div class="modal-body">
+                <input type="checkbox" id="c01" name="rIndustry" value="01" checked/><label for="c01">梦幻梦想</label>
+                <input type="checkbox" id="c02" name="rIndustry" value="02" checked/><label for="c02">奇思妙想</label>
+                <input type="checkbox" id="c03" name="rIndustry" value="03" checked/><label for="c03">公益梦想</label>
+                <input type="checkbox" id="c04" name="rIndustry" value="04" checked/><label for="c04">行业梦想</label>
+                <input type="checkbox" id="c05" name="rIndustry" value="05" checked/><label for="c05">企业服务</label>
+                <input type="checkbox" id="c06" name="rIndustry" value="06" checked/><label for="c06">股权融资</label>
+                <input type="checkbox" id="c07" name="rIndustry" value="07" checked/><label for="c07">IT产业</label>
+                <input type="checkbox" id="c08" name="rIndustry" value="08" checked/><label for="c08">房产租售</label>
+                <br/>
+                <input type="checkbox" id="c09" name="rIndustry" value="09" checked/><label for="c09">广告文案</label>
+                <input type="checkbox" id="c10" name="rIndustry" value="10" checked/><label for="c10">工程建筑</label>
+                <input type="checkbox" id="c11" name="rIndustry" value="11" checked/><label for="c11">文化艺术</label>
+                <input type="checkbox" id="c12" name="rIndustry" value="12" checked/><label for="c12">服装纺织</label>
+                <input type="checkbox" id="c13" name="rIndustry" value="13" checked/><label for="c13">专业服务</label>
+                <input type="checkbox" id="c14" name="rIndustry" value="14" checked/><label for="c14">安全防护</label>
+                <input type="checkbox" id="c15" name="rIndustry" value="15" checked/><label for="c15">环保绿化</label>
+                <input type="checkbox" id="c16" name="rIndustry" value="16" checked/><label for="c16">旅游休闲</label>
+                <br/>
+                <input type="checkbox" id="c17" name="rIndustry" value="17" checked/><label for="c17">互联网+</label>
+                <input type="checkbox" id="c18" name="rIndustry" value="18" checked/><label for="c18">电子电工</label>
+                <input type="checkbox" id="c19" name="rIndustry" value="19" checked/><label for="c19">玩具礼品</label>
+                <input type="checkbox" id="c20" name="rIndustry" value="20" checked/><label for="c20">风险投资</label>
+                <input type="checkbox" id="c21" name="rIndustry" value="21" checked/><label for="c21">冶金矿产</label>
+                <input type="checkbox" id="c22" name="rIndustry" value="22" checked/><label for="c22">石油化工</label>
+                <input type="checkbox" id="c23" name="rIndustry" value="23" checked/><label for="c23">水利水电</label>
+                <input type="checkbox" id="c24" name="rIndustry" value="24" checked/><label for="c24">交通运输</label>
+                <br/>
+                <input type="checkbox" id="c25" name="rIndustry" value="25" checked/><label for="c25">信息产业</label>
+                <input type="checkbox" id="c26" name="rIndustry" value="26" checked/><label for="c26">机械机电</label>
+                <input type="checkbox" id="c27" name="rIndustry" value="27" checked/><label for="c27">轻工产品</label>
+                <input type="checkbox" id="c28" name="rIndustry" value="28" checked/><label for="c28">农林牧渔</label>
+                <input type="checkbox" id="c29" name="rIndustry" value="29" checked/><label for="c29">家居用品</label>
+                <input type="checkbox" id="c30" name="rIndustry" value="30" checked/><label for="c30">物流包装</label>
+                <input type="checkbox" id="c31" name="rIndustry" value="31" checked/><label for="c31">体育用品</label>
+                <input type="checkbox" id="c32" name="rIndustry" value="32" checked/><label for="c32">办公文教</label>
+                <br/>
+                <input type="checkbox" id="c33" name="rIndustry" value="33" checked/><label for="c33">软件游戏</label>
+                <input type="checkbox" id="c34" name="rIndustry" value="34" checked/><label for="c34">强电弱电</label>
+                <input type="checkbox" id="c35" name="rIndustry" value="35" checked/><label for="c35">债券清算</label>
+                <input type="checkbox" id="c36" name="rIndustry" value="36" checked/><label for="c36">反向团购</label>
+                <input type="checkbox" id="c37" name="rIndustry" value="37" checked/><label for="c37">其他</label>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="saveModifyIndustry" class="btn btn-default">保存
+                </button>
                 <button type="button" class="btn btn-default"
                         data-dismiss="modal">关闭
                 </button>

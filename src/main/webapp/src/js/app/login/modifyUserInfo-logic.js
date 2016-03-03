@@ -333,6 +333,24 @@ define("modifyUserInfo-logic", ["user-repos", "jquery", "pure-dialog", "pure-val
             }
         });
 
+        //关注行业相关 js
+        $("#btnModifyIndustry").on("click",function(){
+            var a = $("#removedIndustry").val().split(",");
+            for(var i=0;i< a.length;i++){
+                $("#c"+a[i]).removeProp("checked");
+            }
+            $("#industryModal").modal('show');
+        });
+        $("#saveModifyIndustry").on("click",function(){
+            var $dom = $("input[name='rIndustry']").not(":checked");
+            var a= [];
+            for(var i = 0; i<$dom.size();i++){
+                a.push($($dom[i]).attr("value"));
+            }
+            $("#removedIndustry").val(a.toString());
+            $("#industryModal").modal('hide');
+        });
+
         $("#form").ajaxForm();
         $('#form').submit(function () {
             var dialog = dialogMod(regCallDg)

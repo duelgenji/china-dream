@@ -89,6 +89,9 @@ public class UserService {
         if(request.getParameter("description")!=null){
             user.setDescription(request.getParameter("description"));
         }
+        if(request.getParameter("removedIndustry")!=null){
+            user.setRemovedIndustry(request.getParameter("removedIndustry"));
+        }
 
 
         user.setUpdateTime(new Date());
@@ -347,6 +350,7 @@ public class UserService {
             res.put("telephone",user.getTelephone());
             res.put("VIP",user.getVIP());
             res.put("description",user.getDescription());
+            res.put("removedIndustry",user.getRemovedIndustry());
             if(user.getCompanyIndustry()!=null){
                 res.put("companyIndustry",user.getCompanyIndustry().getId());
             }else{

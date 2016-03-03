@@ -17,7 +17,7 @@ import java.util.Date;
 public class CommonEmail {
 
     public enum TYPE{
-        AUTO60,AUTO67,FAIL_B,ROUND_B,SUCCESS_B,CHOSEN_B,REJECT_A,NO_RESPONSE_A,INVITE_B,AGREE_B,REQUEST_A
+        AUTO60,AUTO67,FAIL_B,ROUND_B,SUCCESS_B,CHOSEN_B,REJECT_A,NO_RESPONSE_A,INVITE_B,AGREE_B,REQUEST_A,GENERATE_B
     }
 
     public String sendTextMail(String url, long userId, String email, String captcha) {
@@ -201,6 +201,9 @@ public class CommonEmail {
                 return "你好,"+inquiry.getUser().getNickName()+"。\n" +
                         "您在中梦国网发布的标号为 "+inquiry.getInquiryNo()+" ，  出价方"+user.getNickName()+"（乙方）向您提出了申请 ，并发送站内信， 请登录中梦国网在“我的主页”中“站内信息”中“需我回复的”下拉框中找到该询价， 参见下图， 点击查看，可见申请方留言； 点击其ID， 可浏览其主页，并可链接至其网站，判断是否同意。\n"+
                         "<img src='http://121.40.143.120/dream/image/requestExample.png'/>\n";
+            case GENERATE_B:
+                return "你好,"+user.getNickName()+"。\n" +
+                        "\""+inquiry.getUser().getNickName()+"\" 在中梦国网已经发布的标号为 "+inquiry.getInquiryNo()+" ， 标题为 "+inquiry.getTitle()+"， 行业为 "+inquiry.getCompanyIndustry().getName()+"，如您有意向，请在中梦国网询价大厅（http://www.mychinadreams.com/dream/html/index.html）搜索标题或标号， 并点击了解详情；申请出价……" ;
             default:
                 break;
         }

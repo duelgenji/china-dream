@@ -122,6 +122,12 @@ public class User extends AbstractPersistable<Long> {
     @ManyToOne(fetch = FetchType.EAGER)
     private CompanyProvince companyProvince;
 
+    /**
+     * 不关注的 行业 （新标发布时 不推送使用）
+     */
+    @Column(columnDefinition = "varchar(255) default ''")
+    private String removedIndustry;
+
     public String getEmail() {
         return email;
     }
@@ -384,5 +390,13 @@ public class User extends AbstractPersistable<Long> {
 
     public void setCompanyProvince(CompanyProvince companyProvince) {
         this.companyProvince = companyProvince;
+    }
+
+    public String getRemovedIndustry() {
+        return removedIndustry;
+    }
+
+    public void setRemovedIndustry(String removedIndustry) {
+        this.removedIndustry = removedIndustry;
     }
 }
