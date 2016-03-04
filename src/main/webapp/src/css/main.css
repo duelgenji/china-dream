@@ -289,4 +289,58 @@ a.mail {
     color: #787878;
 }
 
+
+/*手机端css*/
+@media only screen and (max-width: 640px){
+    .detail-h2 {
+        margin: 20px 0;
+    }
+
+    .banner-top .detail-h2,.banner-mid .detail-h2{
+        font-size: 14px;
+    }
+
+    .banner-top p,.banner-mid p{
+        font-size: 12px;
+        text-align: center;
+        width: 80%;
+        margin: 0 auto;
+    }
+    .am-slider-b1 .am-slider-desc{
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+    }
+
+    .am-slider-b1 .am-direction-nav a{
+        height: 32px;
+    }
+    .am-slider-b1 .am-direction-nav a.am-prev:before{
+        font-size: 32px;
+    }
+
+    .am-slider-b1 .am-direction-nav a.am-next:before{
+        font-size: 32px;
+    }
+
+    .detail-angle-right ,.footer-link{
+        display: none;
+    }
+    .footer-weixin{
+        float: none;
+        text-align: center;
+    }
+    .footer-email{
+        float: none;
+        margin-left: 0;
+        padding-left: 0;
+        text-align: center;
+        border: none;
+    }
+
+    .footer-beian, .footer-beian a{
+      font-size: 12px;
+    }
+}
+
 @-moz-keyframes flipInX{0%{-moz-transform:perspective(400px) rotateX(90deg);opacity:0.5;}40%{-moz-transform:perspective(400px) rotateX(-10deg)}70%{-moz-transform:perspective(400px) rotateX(10deg)}100%{-moz-transform:perspective(400px) rotateX(0deg);opacity:1.0}}@keyframes flipInX{0%{transform:perspective(400px) rotateX(90deg);opacity:0.5;}40%{transform:perspective(400px) rotateX(-10deg)}70%{transform:perspective(400px) rotateX(10deg)}100%{transform:perspective(400px) rotateX(0deg);opacity:1.0}}

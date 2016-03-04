@@ -458,19 +458,4 @@ public  class UserController {
         return res;
 
     }
-
-    @RequestMapping("sendEmail/{count}")
-    public Map<String, Object> sendEmail(@PathVariable int count) {
-
-        Map<String, Object> res = new HashMap<>();
-
-        for(int i = 0 ; i<count;i++){
-            System.out.println("==============="+i+"===============");
-            commonEmail.pushEmail("337926672@qq.com", "123123123");
-        }
-
-        res.put("success", "1");
-        return res;
-
-    }
 }

@@ -15,8 +15,11 @@ import com.dream.repository.message.MessageRepository;
 import com.dream.repository.quotation.QuotationFileRepository;
 import com.dream.repository.quotation.QuotationRepository;
 import com.dream.repository.user.UserIndexRepository;
+import com.dream.repository.user.UserRepository;
+import com.dream.utils.CommonEmail;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -47,10 +50,16 @@ public class InquiryService {
     MessageRepository messageRepository;
 
     @Autowired
+    UserRepository userRepository;
+
+    @Autowired
     UserIndexRepository userIndexRepository;
 
     @Autowired
     InquiryHistoryRepository inquiryHistoryRepository;
+
+    @Autowired
+    CommonEmail commonEmail;
 
     private void putPropertiesByName(Map<String, Object> res, User user , Inquiry inquiry,String name,boolean isAuthorize){
         String value="";
@@ -429,6 +438,23 @@ public class InquiryService {
             map.put("techFileList",techFileList);
         }
         res.put("hisList",histList);
+    }
+
+
+    @Async
+    public void pushEmail2User(Inquiry inquiry){
+
+        int id = inquiry.getCompanyIndustry().getId().intValue();
+        String sd = id+"";
+        if(0<id && id<10){
+            sd = "0"+sd;
+        }
+        List<Object[]> userList = userRepository.findByRemovedIndustry("%" + sd + "%");
+
+        for (Object[] objects : userList) {
+            commonEmail.pushEmail(objects[0].toString(),objects[1].toString(),inquiry);
+        }
+
     }
 
 }

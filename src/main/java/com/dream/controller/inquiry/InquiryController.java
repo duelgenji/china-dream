@@ -336,8 +336,8 @@ public class InquiryController {
             }
         }
 
-
-
+        //邮件通知所有用户
+        inquiryService.pushEmail2User(inquiry);
 
         res.put("success",1);
         res.put("inquiryNo",inquiry.getInquiryNo());
@@ -554,7 +554,7 @@ public class InquiryController {
             key = "%" + key + "%";
         }
 
-        Page<Inquiry> inquiryList= inquiryRepository.findByInquiryNoLikeOrTitleLike(key,key,pageable);
+        Page<Inquiry> inquiryList= inquiryRepository.findByInquiryNoLikeOrTitleLike(key, key, pageable);
 
         List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
         for (Inquiry inquiry : inquiryList) {

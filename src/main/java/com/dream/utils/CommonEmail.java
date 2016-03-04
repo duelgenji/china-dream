@@ -214,8 +214,9 @@ public class CommonEmail {
      * 阿里云 邮件推送
      */
 
-    @Async
-    public String pushEmail(String email,String content){
+    public String pushEmail(String email,String nickName ,Inquiry inquiry){
+        String content = "你好,"+nickName+"。\n" +
+                "\""+inquiry.getUser().getNickName()+"\" 在中梦国网已经发布的标号为 "+inquiry.getInquiryNo()+" ， 标题为 "+inquiry.getTitle()+"， 行业为 "+inquiry.getCompanyIndustry().getName()+"，如您有意向，请在中梦国网询价大厅（http://www.mychinadreams.com/dream/html/index.html）搜索标题或标号， 并点击了解详情；申请出价……" ;
 
         HtmlEmail sEmail = new HtmlEmail ();
         //smtp host
