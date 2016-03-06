@@ -1,4 +1,4 @@
-package com.dream;
+package com.wonders.xlab.framework;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;

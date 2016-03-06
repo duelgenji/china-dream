@@ -342,6 +342,10 @@ define("modifyUserInfo-logic", ["user-repos", "jquery", "pure-dialog", "pure-val
             $("#industryModal").modal('show');
         });
         $("#saveModifyIndustry").on("click",function(){
+            if($("input[name='rIndustry']:checked").size()<2){
+                alert("请至少选择两项！") ;
+                return;
+            }
             var $dom = $("input[name='rIndustry']").not(":checked");
             var a= [];
             for(var i = 0; i<$dom.size();i++){
