@@ -56,7 +56,7 @@ define("userroom-logic", ["userroom-config", "jquery", "user-repos", "pure-grid"
 		objval.title = "";
 		var url = vals[0];
 		var type = vals[1];
-		if(url==""){
+		if(url==null ||  url==""){
 			switch(type){
 				case 1:
 					url = "../image/pic/personalDefaultLogo.jpg";
