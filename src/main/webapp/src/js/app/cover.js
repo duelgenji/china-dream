@@ -11,6 +11,8 @@ $(document).ready(function(){
         $("#tab1").addClass("am-active");
     });
 
+    $(".detail-pre").on("click",function(){})
+
 
     $("#register").on("click",function(){
 

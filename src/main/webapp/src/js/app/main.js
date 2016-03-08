@@ -70,7 +70,7 @@ define("main", ["systemDefine-repos", "pure-dialog"], function (require, exports
             '        </ul>' + '      </div>' + '  </div>',
 
         footerHtml =
-            ' <div class="ui-title">' + '    <span>中梦国网(Beta)</span>' + '  </div>' +
+            ' <div class="ui-title">' + '    <span>中梦国网Beta2.0</span>' + '  </div>' +
             '  <div class="ui-zhinan">' + '    <dl>' + '      <dt></dt>' + '      <dd>' +
             '        <a href="bottom.html?title=xzks">写在开始</a>' + '        <a href="bottom.html?title=csbj">产生背景</a>' + '        <a href="bottom.html?title=alfx">案例分析</a>' +
             '      </dd>' + '    </dl>' + '    <dl>' + '      <dt></dt>' + '      <dd>' +

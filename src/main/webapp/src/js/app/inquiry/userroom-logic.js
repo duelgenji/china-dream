@@ -119,7 +119,7 @@ define("userroom-logic", ["userroom-config", "jquery", "user-repos", "pure-grid"
 
 		fn_initGridMod();
 
-		if($("#link").find(".link").size()<=0){
+		if($("#link").find(".link").size()<=0 && !currentQuery.keyword){
 			currentGrid.reBind({});
 			return;
 		}

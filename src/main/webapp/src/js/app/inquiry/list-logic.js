@@ -189,7 +189,7 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
     function fn_bind() {
 
         fn_initGrid();
-        if($("#link").find(".link").size()<=0){
+        if($("#link").find(".link").size()<=0 && !currentQuery.keyword){
             currentGrid.reBind({});
             return;
         }
@@ -400,6 +400,7 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
          */
         $("#a_extraMore").click(function () {
             var text = $(this).text();
+            console.log(text);
             if (text == "精简选项") {
                 $("div.ui-morePropAttr").css("display", "none");
                 $(this).text("更多选项");
@@ -535,6 +536,6 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
         fn_initEvent();
 
         //初始加载不显示读取列表
-        fn_bind();
+        //fn_bind();
     };
 })
