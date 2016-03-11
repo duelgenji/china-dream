@@ -97,6 +97,7 @@
 
 
 .banner img{
+    min-height: 218px;
     max-height: 400px;
 }
 
@@ -289,6 +290,8 @@ a.mail {
     color: #787878;
 }
 
+.am-slider .am-slides .img_pc { display:block;}
+.am-slider .am-slides .img_mb { display:none;}
 
 /*手机端css*/
 @media only screen and (max-width: 640px){
@@ -296,16 +299,13 @@ a.mail {
         margin: 20px 0;
     }
 
+    .am-slider .am-slides .img_pc { display:none;}
+    .am-slider .am-slides .img_mb { display:block;}
+
     .banner-top .detail-h2,.banner-mid .detail-h2{
-        font-size: 14px;
+        /*font-size: 14px;*/
     }
 
-    .banner-top p,.banner-mid p{
-        font-size: 12px;
-        text-align: center;
-        width: 80%;
-        margin: 0 auto;
-    }
     .am-slider-b1 .am-slider-desc{
         left: 0;
         right: 0;
