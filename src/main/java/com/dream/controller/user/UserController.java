@@ -1,9 +1,11 @@
 package com.dream.controller.user;
 
+import com.dream.entity.inquiry.Inquiry;
 import com.dream.entity.user.User;
 import com.dream.entity.user.UserEmailLog;
 import com.dream.entity.user.UserIndex;
 import com.dream.repository.dream.SensitiveWordRepository;
+import com.dream.repository.inquiry.InquiryRepository;
 import com.dream.repository.message.MessageRepository;
 import com.dream.repository.user.UserEmailLogRepository;
 import com.dream.repository.user.UserIndexRepository;
@@ -66,6 +68,9 @@ public  class UserController {
 
     @Value("${avatar_url}")
     private String avatar_url;
+
+    @Autowired
+    InquiryRepository inquiryRepository;
 
     /**
      * 注册
@@ -458,4 +463,19 @@ public  class UserController {
         return res;
 
     }
+
+//    @RequestMapping("sendEmail/{count}")
+//    public Map<String, Object> sendEmail(@PathVariable int count) {
+//
+//        Map<String, Object> res = new HashMap<>();
+//
+//        for(int i = 0 ; i<count;i++){
+//            System.out.println("==============="+i+"===============");
+//            commonEmail.pushEmail("361714571@qq.com", "123123123",inquiryRepository.findOne(185l));
+//        }
+//
+//        res.put("success", "1");
+//        return res;
+//
+//    }
 }

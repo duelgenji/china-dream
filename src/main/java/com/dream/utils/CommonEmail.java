@@ -222,12 +222,12 @@ public class CommonEmail {
         //smtp host
         sEmail.setHostName("smtpdm.aliyun.com");
         //登陆邮件服务器的用户名和密码
-        sEmail.setAuthentication("info@mychinadreams.com", "Zgmw20150514");
+        sEmail.setAuthentication("info@push.mychinadreams.com", "Zgmw20150514");
         //接收人
         try {
             sEmail.addTo(email);
             //发送人
-            sEmail.setFrom("info@mychinadreams.com", "中梦国网");
+            sEmail.setFrom("info@push.mychinadreams.com", "中梦国网");
             sEmail.setSubject("中梦国网 系统提示");
             //标题
             StringBuffer buffer = new StringBuffer();
