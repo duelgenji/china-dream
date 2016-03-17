@@ -203,7 +203,8 @@ public class CommonEmail {
                         "<img src='http://121.40.143.120/dream/image/requestExample.png'/>\n";
             case GENERATE_B:
                 return "你好,"+user.getNickName()+"。\n" +
-                        "\""+inquiry.getUser().getNickName()+"\" 在中梦国网已经发布的标号为 "+inquiry.getInquiryNo()+" ， 标题为 "+inquiry.getTitle()+"， 行业为 "+inquiry.getCompanyIndustry().getName()+"，如您有意向，请在中梦国网询价大厅（http://www.mychinadreams.com/dream/html/index.html）搜索标题或标号， 并点击了解详情；申请出价……" ;
+                        "\""+inquiry.getUser().getNickName()+"\" 在中梦国网已经发布的标号为 "+inquiry.getInquiryNo()+" ， 标题为 "+inquiry.getTitle()+"， 行业为 "+inquiry.getCompanyIndustry().getName()+"，如您有意向，请在中梦国网询价大厅（http://www.mychinadreams.com/dream/html/index.html）搜索标题或标号， 并点击了解详情；申请出价…… \n" +
+                        "您也可以在登陆中梦国网后，在右上角“设置”中添加或删除您想收到的或不想收到的行业招标信息。http://mychinadreams.com/dream/html/register.html ";
             default:
                 break;
         }
@@ -216,7 +217,8 @@ public class CommonEmail {
 
     public String pushEmail(String email,String nickName ,Inquiry inquiry){
         String content = "你好,"+nickName+"。\n" +
-                "\""+inquiry.getUser().getNickName()+"\" 在中梦国网已经发布的标号为 "+inquiry.getInquiryNo()+" ， 标题为 "+inquiry.getTitle()+"， 行业为 "+inquiry.getCompanyIndustry().getName()+"，如您有意向，请在中梦国网询价大厅（http://www.mychinadreams.com/dream/html/index.html）搜索标题或标号， 并点击了解详情；申请出价……" ;
+                "\""+inquiry.getUser().getNickName()+"\" 在中梦国网已经发布的标号为 "+inquiry.getInquiryNo()+" ， 标题为 "+inquiry.getTitle()+"， 行业为 "+inquiry.getCompanyIndustry().getName()+"，如您有意向，请在中梦国网询价大厅（http://www.mychinadreams.com/dream/html/index.html）搜索标题或标号， 并点击了解详情；申请出价…… \n" +
+        "您也可以在登陆中梦国网后，在右上角“设置”中添加或删除您想收到的或不想收到的行业招标信息。http://mychinadreams.com/dream/html/register.html ";
 
         HtmlEmail sEmail = new HtmlEmail ();
         //smtp host
