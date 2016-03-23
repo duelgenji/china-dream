@@ -70,7 +70,8 @@ define("myzone-config", [], function(require, exports) {
 			},
 			body: {
 				align: "center",
-				fields: "inquiryNickname"
+				fields: "inquiryNickname,userId",
+				renderFn: "renderNickname"
 			}
 		}, {
 			index: 6,

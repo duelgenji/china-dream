@@ -275,7 +275,6 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
         }
         //console.log(params);
         ajaxRetrieveMyInquiryList(params, function (data) {
-            console.log(data);
             dataSource = data.data;
             currentGrid.reBind(dataSource);
         }, function (result) {

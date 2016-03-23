@@ -284,6 +284,7 @@ public class QuotationController {
                 map.put("inquiryIndustry", quotation.getInquiry().getCompanyIndustry().getName());
                 map.put("inquiryProvince", quotation.getInquiry().getCompanyProvince().getName());
                 map.put("inquiryNickname", quotation.getInquiry().getUser().getNickName());
+                map.put("userId", quotation.getInquiry().getUser().getId());
                 map.put("inquiryPrice", quotation.getInquiry().getTotalPrice());
                 map.put("limitDate", DateFormatUtils.format(quotation.getInquiry().getLimitDate(), "yyyy-MM-dd HH:mm:ss"));
                 List<QuotationFile> quotationFileList=quotationFileRepository.findByQuotation(quotation);
@@ -338,6 +339,7 @@ public class QuotationController {
                 map.put("inquiryIndustry", inquiry.getCompanyIndustry().getName());
                 map.put("inquiryProvince", inquiry.getCompanyProvince().getName());
                 map.put("inquiryNickname",inquiry.getUser().getNickName());
+                map.put("userId", inquiry.getUser().getId());
                 map.put("inquiryPrice",inquiry.getTotalPrice());
                 map.put("limitDate", DateFormatUtils.format(inquiry.getLimitDate(), "yyyy-MM-dd HH:mm:ss"));
 
