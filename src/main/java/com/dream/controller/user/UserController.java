@@ -169,7 +169,6 @@ public  class UserController {
         System.out.println("email send to : "+ email);
 
         UserEmailLog userEmailLog = new UserEmailLog();
-        userEmailLog.setUser(user);
         userEmailLog.setEmail(email);
         userEmailLogRepository.save(userEmailLog);
 
@@ -452,7 +451,6 @@ public  class UserController {
         System.out.println("email send to : "+ email);
 
         UserEmailLog userEmailLog = new UserEmailLog();
-        userEmailLog.setUser(user);
         userEmailLog.setEmail(email);
         userEmailLogRepository.save(userEmailLog);
 

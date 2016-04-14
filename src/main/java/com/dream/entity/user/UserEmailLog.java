@@ -14,21 +14,12 @@ import java.util.Date;
 @Entity
 public class UserEmailLog extends AbstractPersistable<Long> {
 
-    @ManyToOne
-    private User user;
 
     private String email;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDate = new Date();
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     public String getEmail() {
         return email;
