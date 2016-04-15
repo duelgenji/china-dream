@@ -79,7 +79,6 @@ public class SystemScheduleController {
             commonEmail.sendEmail(inquiry.getUser().getEmail(),commonEmail.getContent(CommonEmail.TYPE.AUTO67,inquiry,null));
             inquiry.setStatus(2);
             inquiryRepository.save(inquiry);
-            //todo 是否发送邮件
         }
 
         //发送 成功标 2天未响应邮件
@@ -97,8 +96,6 @@ public class SystemScheduleController {
             Inquiry i = message.getInquiry();
             i.setStatus(2);
             inquiryRepository.save(i);
-            //todo 是否发送邮件
-
         }
 
     }
