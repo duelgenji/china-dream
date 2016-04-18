@@ -15,7 +15,6 @@ $(document).ready(function(){
 
 
     $("#register").on("click",function(){
-
         if($("#tab1").hasClass("am-active")){
             c_reg();
         }else{

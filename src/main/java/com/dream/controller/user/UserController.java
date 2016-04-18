@@ -1,6 +1,5 @@
 package com.dream.controller.user;
 
-import com.dream.entity.inquiry.Inquiry;
 import com.dream.entity.user.User;
 import com.dream.entity.user.UserEmailLog;
 import com.dream.entity.user.UserIndex;
@@ -212,7 +211,7 @@ public  class UserController {
         }
         if(user.isRemoved()){
             res.put("success", "0");
-            res.put("message", "该用户已被封停，无法登陆！");
+            res.put("message", "该账户已被封停，请联系中梦国网mcd@mychinadreams.com");
             return res;
         }
 
