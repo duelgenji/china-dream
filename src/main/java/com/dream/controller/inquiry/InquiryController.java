@@ -337,7 +337,7 @@ public class InquiryController {
         }
 
         //邮件通知所有用户
-        inquiryService.pushEmail2User(inquiry);
+//        inquiryService.pushEmail2User(inquiry);
 
         res.put("success",1);
         res.put("inquiryNo",inquiry.getInquiryNo());
@@ -446,6 +446,8 @@ public class InquiryController {
             map.put("provinceCode", inquiry.getCompanyProvince()!=null ? inquiry.getCompanyProvince().getName():"");
             map.put("test", inquiry.getTest());
             map.put("isGoods", (user.getId()!=null && inquiryGoodsRepository.findByInquiryAndUser(inquiry,user).size()>=1));
+            map.put("adjustAmountRate", inquiry.getAdjustAmountRate());
+
             //todo 下次去掉
             inquiry.setGoods(inquiryGoodsRepository.countByInquiry(inquiry));
             inquiryRepository.save(inquiry);
@@ -579,6 +581,7 @@ public class InquiryController {
             map.put("provinceCode", inquiry.getCompanyProvince()!=null ? inquiry.getCompanyProvince().getName():"");
             map.put("test", inquiry.getTest());
             map.put("isGoods", (user.getId()!=null && inquiryGoodsRepository.findByInquiryAndUser(inquiry,user).size()>=1));
+            map.put("adjustAmountRate", inquiry.getAdjustAmountRate());
             //todo 下次去掉
             inquiry.setGoods(inquiryGoodsRepository.countByInquiry(inquiry));
             inquiryRepository.save(inquiry);

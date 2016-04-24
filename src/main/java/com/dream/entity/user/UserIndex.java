@@ -32,6 +32,9 @@ public class UserIndex implements Serializable {
 
     private double inquirySuccessRate;
 
+    /*余额*/
+    private double amount;
+
     public Long getId() {
         return id;
     }
@@ -96,4 +99,11 @@ public class UserIndex implements Serializable {
         this.user = user;
     }
 
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
 }

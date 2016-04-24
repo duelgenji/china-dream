@@ -38,6 +38,29 @@ function ajaxRetrieveInquiryList() {
     })
 }
 
+function ajaxModifyAdjustAmountRate(params) {
+    var url="/backend/modifyAdjustAmountRate";
+
+    $.ajax({
+        url: baseUrl + url,
+        type : "post",
+        dataType: "json",
+        data:params,
+        success: function (data) {
+            if (data.success == 1) {
+                location.reload();
+            } else {
+                alert(data.message);
+            }
+        },
+        error: function(){
+            alert("请求错误,请尝试点击右上角退出重新登录!");
+        }
+        //complete
+    })
+}
+
+
 function ajaxRemove(params) {
 
     var url="/backend/removeInquiry";
@@ -73,12 +96,13 @@ function updateTable(data){
             logoUrl=obj.logoUrl+"?imageView2/2/w/40&name=dl.jpg";
         }
         html+=
-            '<tr>' +
+            '<tr data-id="'+obj.id+'">' +
             '<td>'+obj.id+'</td>' +
             '<td><a target="_blank" href="/html/inquiryDetail.html?key='+obj.id+'">'+ obj.title+'</a></td>' +
             '<td>'+obj.userName+'</td>' +
             '<td class="am-hide-sm-only">'+obj.inquiryNo+'</td>' +
             '<td class="am-hide-sm-only">'+obj.limitDate+'</td>' +
+            '<td class="am-hide-sm-only">'+obj.adjustAmountRate+'<span class="am-icon-edit edit_amount"></span></td>' +
             '<td class="am-hide-sm-only"><img class="small-logo" src="'+logoUrl+'"/></td>' +
             '<td data-id="'+obj.id+'">' +
             '<div class="am-btn-toolbar">' +
@@ -119,6 +143,23 @@ $(document).ready(function(){
             }
         });
     });
+
+    /* 修改费率modal */
+    $(document).on("click",".edit_amount", function() {
+        var id = $(this).closest('tr').data('id');
+        $('#modal-amount').modal("open");
+        console.log(id);
+        $("#inquiryId").val(id);
+    });
+
+    /* 确认修改费率 */
+    $(document).on("click","#btn_modfiy_amount", function() {
+        var params={};
+        params.id=$("#inquiryId").val();
+        params.adjustAmountRate=$("#adjustAmountRate").val();
+        ajaxModifyAdjustAmountRate(params);
+    });
+
 
     $("#page-prev").on("click",function(){
         if(page>=1){

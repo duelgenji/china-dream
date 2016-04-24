@@ -86,6 +86,27 @@ function ajaxUpgrade(params) {
     })
 }
 
+function ajaxModifyAmount(params) {
+    var url="/backend/modifyUserAccount";
+
+    $.ajax({
+        url: baseUrl + url,
+        type : "post",
+        dataType: "json",
+        data:params,
+        success: function (data) {
+            if (data.success == 1) {
+                location.reload();
+            } else {
+                alert(data.message);
+            }
+        },
+        error: function(){
+            alert("请求错误,请尝试点击右上角退出重新登录!");
+        }
+        //complete
+    })
+}
 
 function ajaxTest(params) {
     var url="/backend/testUser";
@@ -133,7 +154,7 @@ function updateTable(data){
             vip +=' <span class="am-icon-user-secret admin-icon-orange" title="测试"></span>';
         }
         html+=
-            '<tr>' +
+            '<tr data-id="'+obj.userId+'">' +
             '<td>'+obj.userId+'</td>' +
             '<td><a target="_blank" href="/html/userDetail.html?key='+obj.userId+'">'+ obj.nickname+vip+'</a></td>' +
             '<td>'+userType[obj.userType]+'</td>' +
@@ -141,6 +162,7 @@ function updateTable(data){
             '<td class="am-hide-sm-only">'+obj.createDate+'</td>' +
             '<td class="am-hide-sm-only">'+obj.telephone+'</td>' +
             '<td class="am-hide-sm-only">'+obj.email+'</td>' +
+            '<td class="am-hide-sm-only">'+obj.amount+'<span class="am-icon-edit edit_amount"></span></td>' +
             //'<td class="am-hide-sm-only"><img class="small-logo" src="'+logoUrl+'"/></td>' +
             '<td data-id="'+obj.userId+'">' +
             '<div class="am-btn-toolbar">' +
@@ -208,6 +230,24 @@ $(document).ready(function(){
             }
         });
     });
+
+    /* 修改余额modal */
+    $(document).on("click",".edit_amount", function() {
+        var id = $(this).closest('tr').data('id');
+        $('#modal-amount').modal("open");
+        $("#userId").val(id);
+    });
+
+    /* 确认修改余额 */
+    $(document).on("click","#btn_modfiy_amount", function() {
+        var params={};
+        params.id=$("#userId").val();
+        params.amount=$("#amount").val();
+        params.project=$("#project").val();
+        params.remark=$("#remark").val();
+        ajaxModifyAmount(params);
+    });
+
 
     $("#page-prev").on("click",function(){
         if(page>=1){

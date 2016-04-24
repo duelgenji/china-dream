@@ -190,6 +190,10 @@ public class Inquiry  extends AbstractPersistable<Long> {
      */
     private int goods;
 
+    private double defaultAmountRate = 0.02;
+
+    private double adjustAmountRate = 0.00;
+
     public User getUser() {
         return user;
     }
@@ -532,6 +536,22 @@ public class Inquiry  extends AbstractPersistable<Long> {
 
     public void setGoods(int goods) {
         this.goods = goods;
+    }
+
+    public double getDefaultAmountRate() {
+        return defaultAmountRate;
+    }
+
+    public void setDefaultAmountRate(double defaultAmountRate) {
+        this.defaultAmountRate = defaultAmountRate;
+    }
+
+    public double getAdjustAmountRate() {
+        return adjustAmountRate;
+    }
+
+    public void setAdjustAmountRate(double adjustAmountRate) {
+        this.adjustAmountRate = adjustAmountRate;
     }
 
     public Object getProperties(String name){

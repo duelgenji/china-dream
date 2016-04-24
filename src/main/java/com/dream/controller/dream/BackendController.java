@@ -3,8 +3,10 @@ package com.dream.controller.dream;
 import com.dream.entity.inquiry.Inquiry;
 import com.dream.entity.user.Manager;
 import com.dream.entity.user.User;
+import com.dream.entity.user.UserAccountLog;
 import com.dream.entity.user.UserIndex;
 import com.dream.repository.inquiry.InquiryRepository;
+import com.dream.repository.user.UserAccountLogRepository;
 import com.dream.repository.user.UserIndexRepository;
 import com.dream.repository.user.UserRepository;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -13,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -36,6 +39,9 @@ public class BackendController {
 
     @Autowired
     UserIndexRepository userIndexRepository;
+
+    @Autowired
+    UserAccountLogRepository userAccountLogRepository;
 
     /**
      * 用户删除
@@ -207,6 +213,7 @@ public class BackendController {
 
             map.put("industry", industry);
             map.put("province", province);
+            map.put("amount", u.getUserIndex().getAmount());
             list.add(map);
         }
 
@@ -242,6 +249,79 @@ public class BackendController {
         UserIndex userIndex = new UserIndex();
         userIndex.setId(user.getId());
         userIndexRepository.save(userIndex);
+
+        res.put("success", "1");
+        return res;
+
+    }
+
+
+    /**
+     * 更改用户余额
+     */
+    @Transactional
+    @RequestMapping("modifyUserAccount")
+    public Map<String, Object> modifyUserAccount(
+            @RequestParam Long id,
+            @RequestParam double amount,
+            @RequestParam(required = false) String remark,
+            @RequestParam(required = false) String project,
+            @ModelAttribute("currentManager") Manager manager) {
+
+        Map<String, Object> res = new HashMap<>();
+
+        User user;
+        user = userRepository.findOne(id);
+        UserIndex userIndex = userIndexRepository.findOne(id);
+
+        if(user==null || userIndex ==null){
+            res.put("success", "0");
+            res.put("message", "没有该用户");
+            return res;
+        }
+
+        double currentAmount =  userIndex.getAmount();
+        currentAmount = currentAmount + amount;
+
+        UserAccountLog userAccountLog = new UserAccountLog();
+        userAccountLog.setUser(user);
+        userAccountLog.setAuto(false);
+        userAccountLog.setAmountChange(amount);
+        userAccountLog.setProject(project);
+        userAccountLog.setRemark(remark);
+        userAccountLog.setCurrentAmount(currentAmount);
+        userAccountLogRepository.save(userAccountLog);
+
+        userIndex.setAmount(currentAmount);
+        userIndexRepository.save(userIndex);
+
+        res.put("success", "1");
+        return res;
+
+    }
+
+    /**
+     * 更改标 费率
+     */
+    @Transactional
+    @RequestMapping("modifyAdjustAmountRate")
+    public Map<String, Object> modifyAdjustAmountRate(
+            @RequestParam Long id,
+            @RequestParam double adjustAmountRate,
+            @ModelAttribute("currentManager") Manager manager) {
+
+        Map<String, Object> res = new HashMap<>();
+
+        Inquiry inquiry = inquiryRepository.findOne(id);
+
+        if(inquiry==null){
+            res.put("success",0);
+            res.put("message","此记录不存在！");
+            return res;
+        }
+
+        inquiry.setAdjustAmountRate(adjustAmountRate);
+        inquiryRepository.save(inquiry);
 
         res.put("success", "1");
         return res;

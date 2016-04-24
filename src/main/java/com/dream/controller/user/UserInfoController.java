@@ -208,6 +208,7 @@ public class UserInfoController {
 
             map.put("industry", industry);
             map.put("province", province);
+            map.put("amount", u.getUserIndex().getAmount());
 
             if(user.getId()!=null && userCollectionRepository.findByUserAndTargetUser(user,u).size()!=0){
                 map.put("isCollection",1);
@@ -311,6 +312,7 @@ public class UserInfoController {
 
             map.put("industry", industry);
             map.put("province", province);
+            map.put("amount", u.getUserIndex().getAmount());
 
             if(user.getId()!=null && userCollectionRepository.findByUserAndTargetUser(user,u).size()!=0){
                 map.put("isCollection",1);
