@@ -203,7 +203,7 @@ public class QuotationController {
 
         userIndexRepository.save(userIndex);
 
-        res.put("quotationDoneTime",quotationDoneTime);
+        res.put("quotationDoneTime", quotationDoneTime);
         res.put("quotationSuccessTime",quotationSuccessTime);
         res.put("quotationSuccessRate", qRate+"%");
         res.put("quotationDoingTime",quotationDoingTime);
@@ -220,6 +220,8 @@ public class QuotationController {
         res.put("nickname",user.getNickName());
         res.put("userType",user.getType());
         res.put("description",user.getDescription());
+        res.put("amount", String.format("%.2f", userIndex.getAmount()));
+
 
         if(currentUser.getId()!=null){
             if(currentUser.getId().equals(user.getId())){

@@ -1,7 +1,9 @@
 package com.dream.controller.user;
 
 import com.dream.entity.user.User;
+import com.dream.entity.user.UserAccountLog;
 import com.dream.repository.message.MessageRepository;
+import com.dream.repository.user.UserAccountLogRepository;
 import com.dream.repository.user.UserCollectionRepository;
 import com.dream.repository.user.UserRepository;
 import com.dream.service.user.UserService;
@@ -45,6 +47,9 @@ public class UserInfoController {
 
     @Autowired
     UserCollectionRepository userCollectionRepository;
+
+    @Autowired
+    UserAccountLogRepository userAccountLogRepository;
 
     @Value("${avatar_url}")
     private String avatar_url;
@@ -350,6 +355,61 @@ public class UserInfoController {
         userRepository.save(user);
 
         res.put("success",1);
+        return res;
+    }
+
+    /**
+     * 用户获取 我的账户日志
+     */
+    @RequestMapping("retrieveAccountLogList")
+    public Map<String, Object> retrieveAccountLogList(
+            @PageableDefault(page = 0, size = 20,sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+            @ModelAttribute("currentUser") User user) {
+        Map<String, Object> res = new HashMap<>();
+
+        if(user.getId()==null){
+            res.put("success",0);
+            res.put("message","请先登录");
+            return res;
+        }
+
+        Map<String, Object> filters = new HashMap<>();
+
+        filters.put("user_equal", user);
+
+        Page<UserAccountLog> userAccountLogs= userAccountLogRepository.findAll(filters,pageable);
+
+
+        List<Map<String, Object>> list = new ArrayList<>();
+        for (UserAccountLog userAccountLog : userAccountLogs) {
+
+            Map<String, Object> map = new HashMap<String, Object>();
+
+            if(userAccountLog.getInquiry()!=null){
+                map.put("inquiryId", userAccountLog.getInquiry().getId());
+                map.put("inquiryTitle", userAccountLog.getInquiry().getId());
+                map.put("userNickname", userAccountLog.getInquiry().getUser().getNickName());
+                map.put("userId", userAccountLog.getInquiry().getUser().getId());
+                map.put("project", userAccountLog.getInquiry().getTitle());
+
+            }else{
+                map.put("inquiryId", "");
+                map.put("inquiryTitle", "");
+                map.put("userNickname", "");
+                map.put("userId", "");
+                map.put("project", userAccountLog.getProject());
+            }
+            map.put("createDate", userAccountLog.getCreateDate());
+            map.put("remark", userAccountLog.getRemark());
+            map.put("amountChange", userAccountLog.getAmountChange());
+            map.put("currentAmount", userAccountLog.getCurrentAmount());
+
+            list.add(map);
+        }
+
+
+        res.put("success", 1);
+        res.put("data",list);
         return res;
     }
 

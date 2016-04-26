@@ -19,6 +19,7 @@
 		#data1 .ui-grid-unlock_bodyDiv,
 		#data2 .ui-grid-unlock_bodyDiv,
 		#data3 .ui-grid-unlock_bodyDiv,
+		#data6 .ui-grid-unlock_bodyDiv,
 		#data4 .ui-grid-unlock_bodyDiv {
 			max-height: 450px;
 			overflow-y: scroll;
@@ -74,6 +75,29 @@
 		#contentPanel {
 			 height: inherit;
 		 }
+
+		.amount{
+			margin-top: 30px;
+		}
+		.amount span{
+			color : #F40;
+			font-size : 26px;
+			font-weight: 700;
+		}
+
+		.recharge{
+			text-align: center;
+			margin-top: 15px;
+		}
+
+		.recharge a{
+			border-color: #F22D00;
+			background: #F22D00;
+			padding : 10px 35px;
+			color:#fff;
+			border-radius: 4px;
+		}
+
 	</style>
 
 </head>
@@ -86,8 +110,10 @@
 
 				<div class="ui-logo">
 					<img id="logo" src="" alt="" style="width:186px;height:186px;">
+					<div class="amount"><label>账户余额：</label><span>￥</span><span class="ui-val" data-col="amount">0.00</span></div>
+					<div class="recharge"><a href="bottom.html?title=zhxx">账户充值</a></div>
 				</div>
-				<div class="ui-detail"	>
+				<div class="ui-detail">
 					<p>
 					<h2 id="nickName">
 						<span class="ui-val" data-col="nickname"></span>
@@ -218,6 +244,9 @@
 							<li data-grid="4" data-mod="message">
 								<a>站内信息</a>
 							</li>
+							<li data-grid="6" data-mod="account">
+								<a>我的账户</a>
+							</li>
 						</ul>
 						<span class="ui-bold ui-tabTitle">资料库</span>
 						<div class="clearfloat"></div>
@@ -262,6 +291,9 @@
 								</select>
 							</div>
 							<div id="data4"></div>
+						</div>
+						<div style="display:none">
+							<div id="data6"></div>
 						</div>
 					</div>
 				</div>

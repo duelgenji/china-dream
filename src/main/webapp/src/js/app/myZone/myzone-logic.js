@@ -55,6 +55,15 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
         return (objval.title = util_mapInquiryMode(vals[0]));
     }
 
+    function renderProject(vals, ri, objval) {
+        objval.title= vals[0];
+        if(vals[1]){
+            return '<a style="text-decoration: underline;" title="'+vals[0]+'" href="inquiryDetail.html?key=' + vals[1] + '">' + vals[0] + '</a>';
+        }else{
+            return vals[2]
+        }
+    }
+
     function renderState(vals, ri, objval) {
         var result;
         switch (vals) {
@@ -349,113 +358,24 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
         setTimeout(dialogMod.mask.hide(), 800);
     }
 
-    function call_fail(g) {
-        var testData = [{
-            biaohao: "沪A201502050001",
-            state: 0,
-            title: "企业员工工作服采购",
-            round: 1,
-            inquiryMode: 1,
-            province: "上海",
-            userName: "上海无忧公司",
-            industry: "服装",
-            biaoDi: 5,
-            purchaseCloseDate: "2015/3/31 10:00",
-            money: 5000,
-            id: 2
-        }, {
-            biaohao: "沪A201502050001",
-            state: 0,
-            title: "企业员工工作服采购",
-            round: 1,
-            inquiryMode: 1,
-            province: "上海",
-            userName: "上海无忧公司",
-            industry: "服装",
-            biaoDi: 5,
-            purchaseCloseDate: "2015/3/31 10:00",
-            money: 5000,
-            id: 2
-        }, {
-            biaohao: "沪A201502050001",
-            state: 1,
-            title: "企业员工工作服采购",
-            round: 1,
-            inquiryMode: 1,
-            province: "上海",
-            userName: "上海无忧公司",
-            industry: "服装",
-            biaoDi: 5,
-            purchaseCloseDate: "2015/3/31 10:00",
-            money: 5000,
-            id: 2
-        }, {
-            biaohao: "沪A201502050001",
-            state: 2,
-            title: "企业员工工作服采购",
-            round: 1,
-            inquiryMode: 6,
-            province: "上海",
-            userName: "上海无忧公司",
-            industry: "服装",
-            biaoDi: 5,
-            purchaseCloseDate: "2015/3/31 10:00",
-            money: 5000,
-            id: 2
-        }, {
-            biaohao: "沪A201502050001",
-            state: 1,
-            title: "企业员工工作服采购",
-            round: 1,
-            inquiryMode: 5,
-            province: "上海",
-            userName: "上海无忧公司",
-            industry: "服装",
-            biaoDi: 5,
-            purchaseCloseDate: "2015/3/31 10:00",
-            money: 5000,
-            id: 2
-        }, {
-            biaohao: "沪A201502050001",
-            state: 1,
-            title: "企业员工工作服采购",
-            round: 1,
-            inquiryMode: 4,
-            province: "上海",
-            userName: "上海无忧公司",
-            industry: "服装",
-            biaoDi: 5,
-            purchaseCloseDate: "2015/3/31 10:00",
-            money: 5000,
-            id: 2
-        }, {
-            biaohao: "沪A201502050001",
-            state: 1,
-            title: "企业员工工作服采购",
-            round: 1,
-            inquiryMode: 2,
-            province: "上海",
-            userName: "上海无忧公司",
-            industry: "服装",
-            biaoDi: 5,
-            purchaseCloseDate: "2015/3/31 10:00",
-            money: 5000,
-            id: 2
-        }, {
-            biaohao: "沪A201502050001",
-            state: 2,
-            title: "企业员工工作服采购",
-            round: 1,
-            inquiryMode: 3,
-            province: "上海",
-            userName: "上海无忧公司",
-            industry: "服装",
-            biaoDi: 5,
-            purchaseCloseDate: "2015/3/31 10:00",
-            money: 5000,
-            id: 2
-        }];
-        g.reBind(testData);
+    function fn_getMyAccountList() {
+
+        dialogMod.mask.show();
+
+        var params = {};
+        params.page = 0;
+        params.size = 10000;
+        ajaxRetrieveAccountLogList(params, function (data) {
+            dataSource = data.data;
+            console.log(dataSource);
+            currentGrid.reBind(dataSource);
+        }, function (result) {
+            alert(result.message);
+        }, function () {
+            alert("请求失败");
+        });
+
+        dialogMod.mask.hide();
     }
 
     function fn_initGrid(gridCfg) {
@@ -477,6 +397,7 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
             .override("renderOptOfMessage", renderOptOfMessage)
             .override("renderAttachments", renderAttachments)
             .override("renderNickname", renderNickname)
+            .override("renderProject", renderProject)
 
             .override("grid.databound", function () {
             });
@@ -536,8 +457,12 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
                 .end().removeClass("active").addClass("active")
                 .data("grid");
 
-            $("#contentPanel").children().css("display", "none")
-                .eq(parseInt(gridNo) - 1).css("display", "");
+            if(gridNo == "6"){
+                $("#contentPanel").children().css("display", "none").eq(4).css("display", "");
+            }else{
+                $("#contentPanel").children().css("display", "none")
+                    .eq(parseInt(gridNo) - 1).css("display", "");
+            }
 
             var mod = $(this).data("mod");
             switch (mod) {
@@ -556,6 +481,10 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
                 case "message":
                     fn_initGrid(configMod["gridCfg" + gridNo]);
                     fn_getMyLettermsgList();
+                    break;
+                case "account":
+                    fn_initGrid(configMod["gridCfg" + gridNo]);
+                    fn_getMyAccountList();
                     break;
             }
         })[0].click();
