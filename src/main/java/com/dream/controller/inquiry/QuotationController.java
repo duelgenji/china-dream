@@ -158,9 +158,6 @@ public class QuotationController {
         }
 
 
-        //TODO 改为从数据库读取
-
-
         //int quotationDoneTime= quotationRepository.countByInquiryAndUser(user.getId());
         int quotationDoneTime= quotationRepository.countByDoneTimes(user.getId());
         int quotationSuccessTime= inquiryRepository.countByWinner(user);

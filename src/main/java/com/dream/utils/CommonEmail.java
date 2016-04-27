@@ -5,7 +5,6 @@ import com.dream.entity.user.User;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -153,7 +152,7 @@ public class CommonEmail {
 //            sEmail.setMsg(buffer.toString());
             sEmail.setHtmlMsg(buffer.toString());
             //发送
-            sEmail.send();
+//            sEmail.send();
         } catch (EmailException e) {
             e.printStackTrace();
         }
@@ -196,7 +195,8 @@ public class CommonEmail {
             case AGREE_B:
                 return "你好,"+user.getNickName()+"。\n" +
                         "您在中梦国网申请的的标号为 "+inquiry.getInquiryNo()+" ， 询价方"+inquiry.getUser().getNickName()+"已经同意了您的申请 ，并已经全部授权，（http://www.mychinadreams.com/dream/html/inquiryDetail.html?key="+inquiry.getId()+"） 请登录中梦国网在“我的主页”中“我的出价”中“未报价”下拉框中找到该询价， 参见下图：\n"+
-                        "<img src='http://121.40.143.120/dream/image/agreeExample.png'/>\n" ;
+                        "<img src='http://121.40.143.120/dream/image/agreeExample.png'/>\n" +
+                        "<div style='color:#f00;'>如您最后中标，并与询价方签订合同， 中梦国网将收取标的金额2%-3%的网络服务费（具体费率请在该询价详情页面中，点击正式出价按钮， 系统将会按照算法提示您，以便于您正式报价）。</div>\n";
             case REQUEST_A:
                 return "你好,"+inquiry.getUser().getNickName()+"。\n" +
                         "您在中梦国网发布的标号为 "+inquiry.getInquiryNo()+" ，  出价方"+user.getNickName()+"（乙方）向您提出了申请 ，并发送站内信， 请登录中梦国网在“我的主页”中“站内信息”中“需我回复的”下拉框中找到该询价， 参见下图， 点击查看，可见申请方留言； 点击其ID， 可浏览其主页，并可链接至其网站，判断是否同意。\n"+
@@ -256,7 +256,7 @@ public class CommonEmail {
 //            sEmail.setMsg(buffer.toString());
             sEmail.setHtmlMsg(buffer.toString());
             //发送
-            sEmail.send();
+//            sEmail.send();
         } catch (EmailException e) {
             e.printStackTrace();
         }

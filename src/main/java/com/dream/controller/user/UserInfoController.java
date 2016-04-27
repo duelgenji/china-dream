@@ -387,7 +387,7 @@ public class UserInfoController {
 
             if(userAccountLog.getInquiry()!=null){
                 map.put("inquiryId", userAccountLog.getInquiry().getId());
-                map.put("inquiryTitle", userAccountLog.getInquiry().getId());
+                map.put("inquiryTitle", userAccountLog.getInquiry().getTitle());
                 map.put("userNickname", userAccountLog.getInquiry().getUser().getNickName());
                 map.put("userId", userAccountLog.getInquiry().getUser().getId());
                 map.put("project", userAccountLog.getInquiry().getTitle());

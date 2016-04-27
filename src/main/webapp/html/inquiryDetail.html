@@ -39,6 +39,10 @@
             padding-top: 6px;
         }
 
+        .modal-remark-pay{
+            padding: 0 35px 10px;
+        }
+
     </style>
 
 </head>
@@ -116,6 +120,10 @@
                         <li class="ui-normal">
                             <span class="ui-field">标的:</span>
                             <span data-access="1" data-col="totalPrice" class="ui-value"></span>
+                        </li>
+                        <li class="ui-normal">
+                            <span class="ui-field">本轮发布时间:</span>
+                            <span data-access="1" data-col="modifyDate" class="ui-value"></span>
                         </li>
                         <li class="ui-normal">
                             <span class="ui-field">传真:</span>
@@ -410,6 +418,13 @@
                 </h2>
             </div>
             <div class="modal-body" id="cmdModalBody">
+            </div>
+            <div class="modal-remark-pay" style="display: none;">
+                <input type="checkbox" id="chk_xieyi" checked="checked" disabled="false" style="margin-top:1px;">
+                <label for="chk_xieyi">我已阅读并同意<a href="bottom.html?title=sfxz">《中梦国网收费细则》</a></label>
+                <div>
+                    如中标并与甲方合同后，需向中梦国网支付<span id="amount_pay"></span>
+                </div>
             </div>
 
             <div class="modal-footer"  style="background-color:#D3EAEf;" id="cmdModalFooter">

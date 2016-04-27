@@ -28,6 +28,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -103,6 +104,7 @@ public class InquiryController {
     /**
      * 发布询价/梦想
      */
+    @Transactional
     @RequestMapping("generateInquiry")
     public Map<String, Object> generateInquiry(
             @RequestParam(required = true) String title,
@@ -192,7 +194,7 @@ public class InquiryController {
             res.put("message", "项目截止时间格式有误，正确范例：2015-5-10");
             return res;
         }
-        inquiry.setTotalPrice(totalPrice);
+        inquiry.setTotalPrice(Math.abs(totalPrice));
 
         InquiryMode inquiryMode=inquiryModeRepository.findOne(inquiryModeCode);
         inquiry.setInquiryMode(inquiryMode);
@@ -644,6 +646,9 @@ public class InquiryController {
         res.put("userLimit", inquiry.getUserLimit());
         res.put("logoUrl", inquiry.getLogoUrl());
         res.put("test", inquiry.getTest());
+        res.put("modifyDate", inquiry.getModifyDate());
+        res.put("defaultAmountRate", inquiry.getDefaultAmountRate());
+        res.put("adjustAmountRate", inquiry.getAdjustAmountRate());
 
 
         inquiryService.putPrivateInfo(res,user,inquiry);
@@ -870,6 +875,7 @@ public class InquiryController {
         res.put("contactWeiXinOpen", inquiry.getContactWeiXinOpen().ordinal());
         res.put("filesOpen", inquiry.getFilesOpen().ordinal());
         res.put("intervalHour", inquiry.getIntervalHour());
+        res.put("modifyDate", inquiry.getModifyDate());
 
         res.put("success",1);
         return res;
@@ -879,6 +885,7 @@ public class InquiryController {
     /**
      * 进入下一轮
      */
+    @Transactional
     @RequestMapping("inquiryNextRound")
     public Map<String, Object> inquiryNextRound(
             @RequestParam(required = false) long inquiryId,
@@ -966,7 +973,7 @@ public class InquiryController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        inquiry.setTotalPrice(totalPrice);
+        inquiry.setTotalPrice(Math.abs(totalPrice));
 
         InquiryMode inquiryMode=inquiryModeRepository.findOne(inquiryModeCode);
         inquiry.setInquiryMode(inquiryMode);
@@ -1116,6 +1123,7 @@ public class InquiryController {
     /**
      * 询价 成功 流标
      */
+    @Transactional
     @RequestMapping("changeInquiryStatus")
     public Map<String, Object> changeInquiryStatus(
             @RequestParam(required = false) long inquiryId,

@@ -150,6 +150,9 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
     function showCmdModal(title, body, submitFn) {
         $("#cmdModalTitle").text(title);
         $("#cmdModalBody").empty().append(body);
+        var calcPrice = dataSource.totalPrice * dataSource.defaultAmountRate * dataSource.adjustAmountRate;
+        $("#amount_pay").html(dataSource.totalPrice + "*" + dataSource.defaultAmountRate*100+ "%*" +dataSource.adjustAmountRate +"=" +calcPrice.toFixed(2) + "元");
+
         $("#submitModal").unbind("click").bind("click", submitFn);
         $("#cmdModal").modal('show');
     }
@@ -157,6 +160,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
     function dismissCmdModal() {
         $("#cmdModal").modal('hide');
         $("#modal-tips").hide();
+        $(".modal-remark-pay").hide();
     }
 
     var dataSource = {};
@@ -307,7 +311,6 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                 var cmd = that.data("cmd");
 
                 if (cmd == "apply") {
-
                     showCmdModal("申请出价", '<textarea id="modal-description" style="resize: none;width: 96%;height: 100px;font-size: 14px;padding: 2%;" placeholder="请输入内容，点击确定后将发送站内信给询价方，等待授权"></textarea>', function () {
                         var params = {};
                         params.inquiryId = currentQueryObj.inquiryId;
@@ -330,6 +333,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                     });
                 } else if (cmd == "addBid") {
                     $("#modal-tips").show();
+                    $(".modal-remark-pay").show();
                     showCmdModal("正式出价", '<form id="bidForm" method="post" enctype="multipart/form-data" accept-charset="utf-8">' +
                         '<input type="hidden" name="inquiryId" value="' + currentQueryObj.inquiryId + '"/>' +
                         '<ul class="ui-items"><li><label>出价金额:</label><input name="totalPrice" id="modal-money" type="text"/></li>' +

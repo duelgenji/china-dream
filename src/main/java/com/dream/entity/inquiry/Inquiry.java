@@ -192,7 +192,7 @@ public class Inquiry  extends AbstractPersistable<Long> {
 
     private double defaultAmountRate = 0.02;
 
-    private double adjustAmountRate = 0.00;
+    private double adjustAmountRate = 1;
 
     public User getUser() {
         return user;

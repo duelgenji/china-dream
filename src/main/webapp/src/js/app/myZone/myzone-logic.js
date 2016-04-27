@@ -207,6 +207,13 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
                 }
                 span.append('<a target="_blank" href="'+website+'">'+val+'</a>');
                 return true;
+            }else if(col=="amount"){
+                if(parseFloat(val)>0){
+                    span.text("+"+val).attr("title", "+"+val);
+                }else{
+                    span.text(val).attr("title", val);
+                }
+                return true;
             }
             span.text(val).attr("title", val);
         });

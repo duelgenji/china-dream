@@ -3,8 +3,12 @@ package com.dream.controller.inquiry;
 import com.dream.entity.inquiry.Inquiry;
 import com.dream.entity.message.Message;
 import com.dream.entity.user.User;
+import com.dream.entity.user.UserAccountLog;
+import com.dream.entity.user.UserIndex;
 import com.dream.repository.inquiry.InquiryRepository;
 import com.dream.repository.message.MessageRepository;
+import com.dream.repository.user.UserAccountLogRepository;
+import com.dream.repository.user.UserIndexRepository;
 import com.dream.repository.user.UserRepository;
 import com.dream.utils.CommonEmail;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -13,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -37,6 +42,13 @@ public class MessageController{
     @Autowired
     CommonEmail commonEmail;
 
+
+
+    @Autowired
+    UserIndexRepository userIndexRepository;
+
+    @Autowired
+    UserAccountLogRepository userAccountLogRepository;
 
     /**
      * 获取 站内信列表
@@ -123,6 +135,7 @@ public class MessageController{
     /**
      * 修改 站内信状态 （同意 拒绝）
      */
+    @Transactional
     @RequestMapping("modifyMessageStatus")
     public Map<String, Object> modifyMessageStatus(
             @RequestParam(required = false) long messageId,
@@ -163,6 +176,25 @@ public class MessageController{
              inquiry.setWinnerPrice(Long.parseLong(message.getContent()));
              inquiry.setPurchaseCloseDate(new Date());
              inquiryRepository.save(inquiry);
+
+
+             //todo 计算乙方余额
+             double calcAmount = inquiry.getTotalPrice() * inquiry.getDefaultAmountRate() * inquiry.getAdjustAmountRate();
+
+             UserIndex userIndex = user.getUserIndex();
+             double currentAmount = userIndex.getAmount();
+
+             userIndex.setAmount(currentAmount - calcAmount);
+             userIndexRepository.save(userIndex);
+
+             UserAccountLog userAccountLog = new UserAccountLog();
+             userAccountLog.setAuto(true);
+             userAccountLog.setInquiry(inquiry);
+             userAccountLog.setAmountChange(-calcAmount);
+             userAccountLog.setCurrentAmount(currentAmount - calcAmount);
+             userAccountLog.setUser(user);
+             userAccountLogRepository.save(userAccountLog);
+
 
              // 发送成功邮件
              List<Message> messages = messageRepository.findByInquiryAndStatus(inquiry,1);
