@@ -41,6 +41,12 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
 
     }
 
+    function renderNickName(vals, ri, objval) {
+        objval.title= vals[0];
+        return '<a title="" style="text-decoration: underline;" href="userDetail.html?key=' + vals[1] + '">' + vals[0] + '</a>';
+    }
+
+
     function renderRound(val, ri, objVal) {
         return (objVal.title = "第" + val + "轮");
     }
@@ -70,6 +76,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
         var grid = gridMod(config || configMod.gridConfig);
 
         grid.pubSub()
+            .override("renderNickName", renderNickName)
             .override("renderRound", renderRound)
             .override("renderAttachments", renderAttachments)
             .override("renderOpt", renderOpt)
@@ -88,6 +95,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
         var grid = gridMod(config || configMod.gridConfig2);
 
         grid.pubSub()
+            .override("renderNickName", renderNickName)
             .override("renderRound", renderRound)
             .override("renderAttachments", renderAttachments)
             .override("renderOpt", renderOpt)
@@ -681,9 +689,15 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
             $("#btn_close2").click(function(){
                 $("#div_round2").hide();
             });
+
+
+
         }
     }
+    $("#chk_xieyi").on("click",function () {
+        $("#submitModal")[!$(this).prop("checked") ? "attr" : "removeAttr"]("disabled", "disabled");
 
+    })
     function call_detailFail() {
         alert("数据加载失败");
     }

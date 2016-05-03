@@ -29,7 +29,8 @@ define("detail-config", [], function(require, exports) {
             },
             body: {
                 align: "center",
-                fields: "userNickName"
+                fields: "userNickName,userId",
+                renderFn:"renderNickName"
             }
         }, {
             index: 3,

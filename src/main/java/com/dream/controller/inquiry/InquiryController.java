@@ -450,9 +450,8 @@ public class InquiryController {
             map.put("isGoods", (user.getId()!=null && inquiryGoodsRepository.findByInquiryAndUser(inquiry,user).size()>=1));
             map.put("adjustAmountRate", inquiry.getAdjustAmountRate());
 
-            //todo 下次去掉
-            inquiry.setGoods(inquiryGoodsRepository.countByInquiry(inquiry));
-            inquiryRepository.save(inquiry);
+//            inquiry.setGoods(inquiryGoodsRepository.countByInquiry(inquiry));
+//            inquiryRepository.save(inquiry);
             map.put("goods",inquiry.getGoods());
             map.put("successRate", String.format("%.2f", inquiry.getUser().getUserIndex().getInquirySuccessRate()) + "%");
             map.put("inquiryTimes", inquiry.getUser().getUserIndex().getInquiryDoneTime());
@@ -584,9 +583,9 @@ public class InquiryController {
             map.put("test", inquiry.getTest());
             map.put("isGoods", (user.getId()!=null && inquiryGoodsRepository.findByInquiryAndUser(inquiry,user).size()>=1));
             map.put("adjustAmountRate", inquiry.getAdjustAmountRate());
-            //todo 下次去掉
-            inquiry.setGoods(inquiryGoodsRepository.countByInquiry(inquiry));
-            inquiryRepository.save(inquiry);
+
+//            inquiry.setGoods(inquiryGoodsRepository.countByInquiry(inquiry));
+//            inquiryRepository.save(inquiry);
             map.put("goods",inquiry.getGoods());
             map.put("successRate", String.format("%.2f", inquiry.getUser().getUserIndex().getInquirySuccessRate()) + "%");
             map.put("inquiryTimes", inquiry.getUser().getUserIndex().getInquiryDoneTime());

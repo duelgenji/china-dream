@@ -92,6 +92,7 @@ function ajaxModifyAmount(params) {
     $.ajax({
         url: baseUrl + url,
         type : "post",
+        async:false,
         dataType: "json",
         data:params,
         success: function (data) {

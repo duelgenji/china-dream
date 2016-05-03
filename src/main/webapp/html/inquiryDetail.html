@@ -43,6 +43,10 @@
             padding: 0 35px 10px;
         }
 
+        button:disabled {
+            background-color: #eee;
+        }
+
     </style>
 
 </head>
@@ -420,9 +424,9 @@
             <div class="modal-body" id="cmdModalBody">
             </div>
             <div class="modal-remark-pay" style="display: none;">
-                <input type="checkbox" id="chk_xieyi" checked="checked" disabled="false" style="margin-top:1px;">
+                <input type="checkbox" id="chk_xieyi" checked="checked" style="margin-top:1px;">
                 <label for="chk_xieyi">我已阅读并同意<a href="bottom.html?title=sfxz">《中梦国网收费细则》</a></label>
-                <div>
+                <div style="color: red;">
                     如中标并与甲方合同后，需向中梦国网支付<span id="amount_pay"></span>
                 </div>
             </div>
