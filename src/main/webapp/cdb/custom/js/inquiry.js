@@ -126,9 +126,8 @@ $(document).ready(function(){
     ajaxRetrieveInquiryList();
 
     //点击搜索 调用请求数据
-    $(".am-btn-default").on("click",function(){
+    $("#btn-search").on("click",function(){
         self.location="inquiry.html?index=0&key="+$(".am-form-field").val();
-
     });
 
     /* 删除 click */

@@ -185,7 +185,7 @@ function updateTable(data){
 $(document).ready(function(){
     ajaxRetrieveUserList();
     //点击搜索 调用请求数据
-    $(".am-btn-default").on("click",function(){
+    $("#btn-search").on("click",function(){
         self.location="user.html?index=0&key="+$(".am-form-field").val();
 
     });
