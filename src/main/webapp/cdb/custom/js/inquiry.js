@@ -153,7 +153,7 @@ $(document).ready(function(){
     });
 
     /* 确认修改费率 */
-    $(document).on("click","#btn_modfiy_amount", function() {
+    $(document).on("click","#btn_modify_amount", function() {
         var params={};
         params.id=$("#inquiryId").val();
         params.adjustAmountRate=$("#adjustAmountRate").val();
@@ -171,4 +171,16 @@ $(document).ready(function(){
         self.location="inquiry.html?index="+(parseInt(page)+1)+"&key="+keyword;
     });
 
+    $(document).on("keydown","#keyword",function(e){
+        if(e.keyCode==13){
+            $("#btn-search").click();
+        }
+    });
+
+    $(document).on("keydown","#adjustAmountRate",function(e){
+        if(e.keyCode==13){
+            $("#btn_modify_amount").click();
+            event.preventDefault();
+        }
+    });
 });

@@ -240,7 +240,7 @@ $(document).ready(function(){
     });
 
     /* 确认修改余额 */
-    $(document).on("click","#btn_modfiy_amount", function() {
+    $(document).on("click","#btn_modify_amount", function() {
         var params={};
         params.id=$("#userId").val();
         params.amount=$("#amount").val();
@@ -258,5 +258,19 @@ $(document).ready(function(){
 
     $("#page-next").on("click",function(){
         self.location="user.html?index="+(parseInt(page)+1)+"&key="+keyword;
+    });
+
+
+    $(document).on("keydown","#keyword",function(e){
+        if(e.keyCode==13){
+            $("#btn-search").click();
+        }
+    });
+
+    $(document).on("keydown","#amount,#project,#remark",function(e){
+        if(e.keyCode==13){
+            $("#btn_modify_amount").click();
+            event.preventDefault();
+        }
     });
 });

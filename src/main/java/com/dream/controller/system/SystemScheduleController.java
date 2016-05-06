@@ -10,6 +10,7 @@ import com.dream.utils.CommonEmail;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,8 +40,9 @@ public class SystemScheduleController {
 
     private static int times=0;
 
+    //todo 定时任务开关
     @Transactional
-//    @Scheduled(cron = "0 0/30 * * * ?")
+    @Scheduled(cron = "0 0/30 * * * ?")
     public void execute() {
 
         System.out.println("Mission running..."+ ++times);

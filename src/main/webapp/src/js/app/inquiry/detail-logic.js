@@ -352,7 +352,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                         '<li><label>上传技术文件:</label><div style="padding-left: 110px;">' +
                         '<input class="modal-attachment" name="tech1" type="file"/><span id="modal-delete-tech1" class="delete-file">删除</span>' +
                         '<input class="modal-attachment" name="tech2" type="file"/><span id="modal-delete-tech2" class="delete-file">删除</span>' +
-                        '<input class="modal-attachment" name="tech3" type="file"/><span id="modal-delete-tech3" class="delete-file">删除</span></div></li><div id="loading" style="display: none;text-align: center;" ><img  width="25" height="25" src="/image/loading.gif"/></div>' +
+                        '<input class="modal-attachment" name="tech3" type="file"/><span id="modal-delete-tech3" class="delete-file">删除</span></div></li><div id="loading" style="display: none;text-align: center;" ><img  width="25" height="25" src="../image/loading.gif"/></div>' +
                         '<button id="modal-confirm" type="submit" style="display: none;">333</button></ul></form>', function () {
                         $("#modal-confirm").click();
                     });

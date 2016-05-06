@@ -151,8 +151,8 @@ public class CommonEmail {
             buffer.append("中梦国网");
 //            sEmail.setMsg(buffer.toString());
             sEmail.setHtmlMsg(buffer.toString());
-            //发送
-//            sEmail.send();
+            //todo 发送开关
+            sEmail.send();
         } catch (EmailException e) {
             e.printStackTrace();
         }
@@ -255,8 +255,8 @@ public class CommonEmail {
             buffer.append("中梦国网");
 //            sEmail.setMsg(buffer.toString());
             sEmail.setHtmlMsg(buffer.toString());
-            //发送
-//            sEmail.send();
+            //todo 发送开关
+            sEmail.send();
         } catch (EmailException e) {
             e.printStackTrace();
         }

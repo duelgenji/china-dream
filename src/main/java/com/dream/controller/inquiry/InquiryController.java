@@ -339,7 +339,7 @@ public class InquiryController {
         }
 
         //邮件通知所有用户
-//        inquiryService.pushEmail2User(inquiry);
+        inquiryService.pushEmail2User(inquiry);
 
         res.put("success",1);
         res.put("inquiryNo",inquiry.getInquiryNo());
@@ -525,7 +525,7 @@ public class InquiryController {
             }
         }
 
-        //todo filter没使用
+        //fixme filter没使用
         Map<String, Object> filters = new HashMap<>();
 
         if(industryCode!=null && industryCode.size()>0){

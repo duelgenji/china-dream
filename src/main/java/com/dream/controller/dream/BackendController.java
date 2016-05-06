@@ -18,6 +18,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -281,7 +282,8 @@ public class BackendController {
         }
 
         double currentAmount =  userIndex.getAmount();
-        currentAmount = currentAmount + amount;
+        DecimalFormat df=new DecimalFormat("0.00");
+        currentAmount = new Double(df.format(currentAmount + amount));
 
         UserAccountLog userAccountLog = new UserAccountLog();
         userAccountLog.setUser(user);
@@ -320,7 +322,7 @@ public class BackendController {
             return res;
         }
 
-        inquiry.setAdjustAmountRate(adjustAmountRate);
+        inquiry.setAdjustAmountRate(Math.abs(adjustAmountRate));
         inquiryRepository.save(inquiry);
 
         res.put("success", "1");

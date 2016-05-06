@@ -20,6 +20,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -178,11 +179,12 @@ public class MessageController{
              inquiryRepository.save(inquiry);
 
 
-             //todo 计算乙方余额
              double calcAmount = inquiry.getTotalPrice() * inquiry.getDefaultAmountRate() * inquiry.getAdjustAmountRate();
 
              UserIndex userIndex = user.getUserIndex();
+             DecimalFormat df=new DecimalFormat("0.00");
              double currentAmount = userIndex.getAmount();
+             currentAmount = new Double(df.format(currentAmount - calcAmount));
 
              userIndex.setAmount(currentAmount - calcAmount);
              userIndexRepository.save(userIndex);
