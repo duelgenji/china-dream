@@ -185,6 +185,7 @@ public class BackendController {
         List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
 
         String industry="",province="";
+        double amount = 0;
         String logoUrl;
 
         for (User u : userPage) {
@@ -211,10 +212,12 @@ public class BackendController {
                 industry = u.getCompanyIndustry().getName();
             if( u.getCompanyProvince() !=null)
                 province = u.getCompanyProvince().getName();
+            if( u.getUserIndex() !=null)
+                amount = u.getUserIndex().getAmount();
 
             map.put("industry", industry);
             map.put("province", province);
-            map.put("amount", u.getUserIndex().getAmount());
+            map.put("amount", amount);
             list.add(map);
         }
 
