@@ -68,7 +68,7 @@ public class SystemScheduleController {
         //发送60天即将流标邮件
         List<Inquiry> inquiryList = inquiryRepository.findByStatusAndModifyDateLessThanAndSendFailEmail(0, DateUtils.addDays(new Date(), -60), false);
         for ( Inquiry inquiry : inquiryList) {
-            commonEmail.sendEmail(inquiry.getUser().getEmail(),commonEmail.getContent(CommonEmail.TYPE.AUTO60,inquiry,null));
+            commonEmail.sendEmail(inquiry.getUser(),commonEmail.getContent(CommonEmail.TYPE.AUTO60,inquiry,null));
             inquiry.setSendFailEmail(true);
             inquiryRepository.save(inquiry);
         }
@@ -77,7 +77,7 @@ public class SystemScheduleController {
         //发送流标邮件
         List<Inquiry> inquiryList2  = inquiryRepository.findByStatusAndModifyDateLessThan(0, DateUtils.addDays(new Date(), -67));
         for ( Inquiry inquiry : inquiryList2) {
-            commonEmail.sendEmail(inquiry.getUser().getEmail(),commonEmail.getContent(CommonEmail.TYPE.AUTO67,inquiry,null));
+            commonEmail.sendEmail(inquiry.getUser(),commonEmail.getContent(CommonEmail.TYPE.AUTO67,inquiry,null));
             inquiry.setStatus(2);
             inquiryRepository.save(inquiry);
         }
@@ -85,7 +85,7 @@ public class SystemScheduleController {
         //发送 成功标 2天未响应邮件
         List<Message> messageList = messageRepository.findByStatusAndCreateTimeLessThanAndSendFailEmailAndType(0, DateUtils.addDays(new Date(), -2), false, 1);
         for ( Message message : messageList) {
-            commonEmail.sendEmail(message.getInquiryUser().getEmail(),commonEmail.getContent(CommonEmail.TYPE.NO_RESPONSE_A,message.getInquiry(),message.getUser()));
+            commonEmail.sendEmail(message.getInquiryUser(),commonEmail.getContent(CommonEmail.TYPE.NO_RESPONSE_A,message.getInquiry(),message.getUser()));
             message.setSendFailEmail(true);
             messageRepository.save(message);
         }

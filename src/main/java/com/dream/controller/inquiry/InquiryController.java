@@ -329,7 +329,7 @@ public class InquiryController {
                     message.setInquiryUser(inquiry.getUser());
 
                     //邀请 邮件
-                    commonEmail.sendEmail(invitedUser.getEmail(),commonEmail.getContent(CommonEmail.TYPE.INVITE_B,inquiry,invitedUser));
+                    commonEmail.sendEmail(invitedUser,commonEmail.getContent(CommonEmail.TYPE.INVITE_B,inquiry,invitedUser));
 
 
                     messageRepository.save(message);
@@ -755,7 +755,7 @@ public class InquiryController {
         message.setContent(description);
 
         messageRepository.save(message);
-        commonEmail.sendEmail(inquiry.getUser().getEmail(), commonEmail.getContent(CommonEmail.TYPE.REQUEST_A, inquiry, user));
+        commonEmail.sendEmail(inquiry.getUser(), commonEmail.getContent(CommonEmail.TYPE.REQUEST_A, inquiry, user));
 
 
         res.put("success",1);
@@ -1098,7 +1098,7 @@ public class InquiryController {
                     message.setInquiryUser(inquiry.getUser());
 
                     //邀请 邮件
-                    commonEmail.sendEmail(invitedUser.getEmail(),commonEmail.getContent(CommonEmail.TYPE.INVITE_B,inquiry,invitedUser));
+                    commonEmail.sendEmail(invitedUser,commonEmail.getContent(CommonEmail.TYPE.INVITE_B,inquiry,invitedUser));
 
                     messageRepository.save(message);
                 }
@@ -1108,7 +1108,7 @@ public class InquiryController {
         //发送下一轮 邮件
         List<Message> messages = messageRepository.findByInquiryAndRoundAndStatus(inquiry, inquiry.getRound()-1,1);
         for(Message m : messages){
-            commonEmail.sendEmail(m.getUser().getEmail(),commonEmail.getContent(CommonEmail.TYPE.ROUND_B,inquiry,m.getUser()));
+            commonEmail.sendEmail(m.getUser(),commonEmail.getContent(CommonEmail.TYPE.ROUND_B,inquiry,m.getUser()));
         }
 
 
@@ -1185,7 +1185,7 @@ public class InquiryController {
                     inquiry.setOpenPrice(openPrice);
 
                     //发送  选中用户邮件
-                    commonEmail.sendEmail(user_b.getEmail(),commonEmail.getContent(CommonEmail.TYPE.CHOSEN_B, inquiry, user_b));
+                    commonEmail.sendEmail(user_b,commonEmail.getContent(CommonEmail.TYPE.CHOSEN_B, inquiry, user_b));
 
                 }
             }else if(status==2){
@@ -1196,7 +1196,7 @@ public class InquiryController {
                 //获取所有授权用户(有站内信授权)
                 List<Message> messages = messageRepository.findByInquiryAndStatus(inquiry,1);
                 for(Message m : messages){
-                    commonEmail.sendEmail(m.getUser().getEmail(),commonEmail.getContent(CommonEmail.TYPE.FAIL_B,inquiry,m.getUser()));
+                    commonEmail.sendEmail(m.getUser(),commonEmail.getContent(CommonEmail.TYPE.FAIL_B,inquiry,m.getUser()));
                 }
 
             }

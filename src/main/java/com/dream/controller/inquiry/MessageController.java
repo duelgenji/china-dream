@@ -201,15 +201,15 @@ public class MessageController{
              // 发送成功邮件
              List<Message> messages = messageRepository.findByInquiryAndStatus(inquiry,1);
              for(Message m : messages){
-                 commonEmail.sendEmail(m.getUser().getEmail(),commonEmail.getContent(CommonEmail.TYPE.SUCCESS_B,inquiry,m.getUser()));
+                 commonEmail.sendEmail(m.getUser(),commonEmail.getContent(CommonEmail.TYPE.SUCCESS_B,inquiry,m.getUser()));
              }
 
         } else if(status==2 && message.getType()==1){
              //拒绝 邮件
-             commonEmail.sendEmail(message.getInquiryUser().getEmail(),commonEmail.getContent(CommonEmail.TYPE.REJECT_A,message.getInquiry(),message.getUser()));
+             commonEmail.sendEmail(message.getInquiryUser(),commonEmail.getContent(CommonEmail.TYPE.REJECT_A,message.getInquiry(),message.getUser()));
         } else if(status==1 && message.getType()==0){
              //同意 授权 邮件
-             commonEmail.sendEmail(message.getUser().getEmail(),commonEmail.getContent(CommonEmail.TYPE.AGREE_B,message.getInquiry(),message.getUser()));
+             commonEmail.sendEmail(message.getUser(),commonEmail.getContent(CommonEmail.TYPE.AGREE_B,message.getInquiry(),message.getUser()));
          }
         messageRepository.save(message);
 

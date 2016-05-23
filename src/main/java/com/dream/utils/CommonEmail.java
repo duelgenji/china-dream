@@ -114,7 +114,12 @@ public class CommonEmail {
         return "1";
     }
 
-    public String sendEmail(String email,String content){
+    public String sendEmail(User user,String content){
+
+        String email = user.getEmail();
+        if(user.isRemoved()){
+            return "1";
+        }
 
         HtmlEmail sEmail = new HtmlEmail ();
         //smtp host

@@ -35,7 +35,7 @@ public interface UserRepository extends MyRepository<User,Long>{
 
     List<User> findByStatusAndCreateTimeLessThan(int status,Date date);
 
-    @Query(value = "select u.email,u.nick_name from user u where u.status = 1 and u.removed_industry not like ?1 ",nativeQuery = true)
+    @Query(value = "select u.email,u.nick_name from user u where u.status = 1 and u.removed = 0 and u.removed_industry not like ?1 ",nativeQuery = true)
     List<Object[]> findByRemovedIndustry(String removedIndustry);
 
 }
