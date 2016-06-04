@@ -41,11 +41,11 @@ public class UploadUtils {
         switch (type) {
             case 0 :
                 bucketName = "chinadream";
-                url = "http://7xk71v.dl1.z0.glb.clouddn.com/" + key ;
+                url = "http://cdn.mychinadreams.com/" + key ;
             break;
             default:
                 bucketName = "chinadream";
-                url = "http://7xk71v.dl1.z0.glb.clouddn.com/" + key ;
+                url = "http://cdn.mychinadreams.com/" + key ;
                 break;
         }
 
