@@ -216,7 +216,7 @@ public class QuotationController {
         res.put("logoUrl",user.getLogoUrl());
         res.put("nickname",user.getNickName());
         res.put("userType",user.getType());
-        res.put("description",user.getDescription());
+        res.put("description",user.getDescription()!=null?user.getDescription():"");
         res.put("amount", String.format("%.2f", userIndex.getAmount()));
 
 

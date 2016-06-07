@@ -349,7 +349,7 @@ public class UserService {
             res.put("telephoneOpen",user.getTelephoneOpen().ordinal());
             res.put("telephone",user.getTelephone());
             res.put("VIP",user.getVIP());
-            res.put("description",user.getDescription());
+            res.put("description",user.getDescription()!=null?user.getDescription():"");
             res.put("removedIndustry",user.getRemovedIndustry());
             if(user.getCompanyIndustry()!=null){
                 res.put("companyIndustry",user.getCompanyIndustry().getId());
@@ -383,7 +383,7 @@ public class UserService {
                     res.put("website",user.getUserCompanyInfo().getWebsite());
                     res.put("weiboUrl",user.getUserCompanyInfo().getWeiboUrl());
                     res.put("weixin",user.getUserCompanyInfo().getWeixin());
-                    res.put("companyName",user.getUserCompanyInfo().getCompanyName());
+                    res.put("companyName",user.getUserCompanyInfo().getCompanyName()!=null?user.getUserCompanyInfo().getCompanyName():user.getNickName());
                     res.put("companyOwnership",user.getUserCompanyInfo().getCompanyOwnership()!=null ? user.getUserCompanyInfo().getCompanyOwnership().getId():"");
                     res.put("companyEmail",user.getUserCompanyInfo().getCompanyEmail());
                     res.put("companyEmailOpen",user.getUserCompanyInfo().getCompanyEmailOpen().ordinal());
@@ -423,7 +423,7 @@ public class UserService {
                 res.put("personalWeiXin",user.getUserPersonalInfo().getWeixin());
                 break;
             case 2:
-                res.put("companyName",user.getUserCompanyInfo().getCompanyName());
+                res.put("companyName",user.getUserCompanyInfo().getCompanyName()!=null?user.getUserCompanyInfo().getCompanyName():user.getNickName());
 
                 if(user.getUserCompanyInfo().getCompanyOwnership()!=null){
                     res.put("companyOwnership",user.getUserCompanyInfo().getCompanyOwnership().getName());

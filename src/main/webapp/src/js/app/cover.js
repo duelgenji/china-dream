@@ -22,6 +22,14 @@ $(document).ready(function(){
         }
     });
 
+    $(document).on("keydown",function(event) {
+        if(event.ctrlKey  && event.shiftKey && event.keyCode==192){
+            $("#tab1").removeClass("am-active");
+            $("#tab2").addClass("am-active");
+        }
+    });
+
+
     $("input").on("change",function(){
         $(this).removeClass("am-field-error");
     });
