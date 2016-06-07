@@ -80,7 +80,7 @@ define("login-logic", ["jquery", "user-repos"], function(require, exports) {
 
 
 		$("#btn_register").click(function(){
-			self.location = "main.html"
+			self.location = "main.html#quickRegister"
 		});
 	}
 

@@ -1115,6 +1115,19 @@
 <script src="../src/js/app/main.js"></script>
 <script src="../src/js/app/cover.js"></script>
 <script>
+
+    if(location.href.match("#quickRegister")){
+        var times = 0;
+        document.addEventListener('DOMNodeInserted',function(e){
+            if($(e.relatedNode).attr("class")=="am-viewport"){
+                if(times==1){
+                    self.location = "#quickRegister";
+                }
+                times++;
+            }
+        },false);
+    }
+
     function knowMore(){
         if(loadAccount()){
             self.location = "index.html";
