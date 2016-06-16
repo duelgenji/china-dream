@@ -193,7 +193,7 @@ public class MessageController{
              userAccountLog.setAuto(true);
              userAccountLog.setInquiry(inquiry);
              userAccountLog.setAmountChange(-calcAmount);
-             userAccountLog.setCurrentAmount(currentAmount - calcAmount);
+             userAccountLog.setCurrentAmount(currentAmount);
              userAccountLog.setUser(user);
              userAccountLogRepository.save(userAccountLog);
 
