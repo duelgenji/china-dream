@@ -104,4 +104,8 @@
 
   </dependencies>
 
+  <build>
+    <finalName>dream</finalName>
+  </build>
+
 </project>
