@@ -34,7 +34,7 @@
     <header id="header">
     </header>
     <!-- /header -->
-    <div id="my_container">
+    <div id="my_container" style="display: none;">
         <p><span style=";font-family:宋体;font-weight:bold;font-size:16px">询价发布方&nbsp;甲方</span><span
                 style=";font-family:宋体;font-size:16px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</span>
         </p>
@@ -331,6 +331,11 @@
     define("jquery", function () {
         return $;
     });
+    if(!loadAccount()){
+        $("#my_container").empty().append('<a href="login.html">请登录后查看</a>').show();
+    }else{
+        $("#my_container").show();
+    }
     seajs.use(["main", "list-logic"], function (mod, listMod) {
         mod.load().setActiveNav("help");
         listMod.load();
