@@ -227,7 +227,7 @@ input ,button{
 }
 
 .footer-link{
-    width: 600px;
+    width: 460px;
     margin-bottom: 30px;
 }
 .footer-link::after{
@@ -258,6 +258,13 @@ input ,button{
     font-size : 12px;
 }
 
+.footer-kefu{
+    float:left;
+    font-size: 12px;
+    color: white;
+    margin-left: 30px;
+
+}
 .footer-weixin{
     float:left;
 }
@@ -327,6 +334,11 @@ a.mail {
         display: none;
     }
     .footer-weixin{
+        float: none;
+        text-align: center;
+    }
+    .footer-kefu{
+        margin: 10px 0;
         float: none;
         text-align: center;
     }
