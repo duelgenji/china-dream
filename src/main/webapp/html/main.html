@@ -64,20 +64,10 @@
 <div class="banner banner-top">
     <div data-am-widget="slider" class="am-slider am-slider-b1" data-am-flexslider='{smoothHeight:true,useCSS:false,"controlNav":false,slideshowSpeed:5000,playAfterPaused:5000}' >
         <ul class="am-slides">
-            <!--<li>-->
-                <!--<img class="img_pc" src="http://cdn.mychinadreams.com/banner001.jpg?imageView2/1/w/1915/h/504&attname=dl.jpg">-->
-                <!--<img class="img_mb" src="http://cdn.mychinadreams.com/banner001.jpg?imageView2/0/w/1140/h/600/q/90&attname=dl.jpg">-->
-
-                <!--<div class="am-slider-desc">-->
-                    <!--<div class="am-u-lg-12 am-u-md-12 am-u-sm-12" style="text-align: center;">-->
-                        <!--<h2 style="color: #ffffff;" class="detail-h2">企业注册 送“3800”元</h2>-->
-                        <!--<p style="color: #ffffff;">-->
-                            <!--即日起---12月31日 开户就送3800元年费-->
-                        <!--</p>-->
-                    <!--</div>-->
-
-                <!--</div>-->
-            <!--</li>-->
+            <li onclick="self.location='#quickRegister'">
+                <img class="img_pc" src="http://cdn.mychinadreams.com/bannernew1.jpg?imageView2/1/w/1915/h/504&attname=dl.jpg">
+                <img class="img_mb" src="http://cdn.mychinadreams.com/bannernew2.png?imageView2/0/w/1140/h/600/q/90&attname=dl.jpg">
+            </li>
             <li>
                 <img class="img_pc" src="http://7xk71v.dl1.z0.glb.clouddn.com/bannerbanner001.jpg?imageView2/1/w/1915/h/504/q/90&attname=dl.jpg">
                 <img class="img_mb" src="http://7xk71v.dl1.z0.glb.clouddn.com/bannerbanner001h.jpg?imageView2/0/w/1140/h/600/q/90&attname=dl.jpg">
@@ -550,18 +540,13 @@
     </div>
 </div>
 
-<div class="amz-toolbar" id="amz-toolbar">
-    <a href="#top" title="回到顶部" class="am-icon-btn am-icon-arrow-up am-active" id="amz-go-top"></a>
-    <a href="#quickRegister" title="免费注册" class="am-icon-pencil-square-o am-icon-btn"></a>
-</div>
-
 <div class="about" id="quickRegister">
     <div class="am-g am-container">
         <div class="am-tabs-bd" id="register-tab">
             <div id="tab1" class="am-tab-panel am-active">
                 <div class="am-u-lg-12">
                     <h2 class="about-title about-color">
-                        免费注册中梦国网
+                        注册中梦国网
                         <span class="am-badge am-badge-danger am-radius" style="vertical-align:middle;">企业注册</span>
                     </h2>
                     <p class="about-sub-title text-red">
@@ -1121,6 +1106,20 @@
     </div>
 </div>
 
+<div class="amz-toolbar" id="amz-toolbar">
+    <a target="_self" href="#top" title="回到顶部" class="am-icon-btn am-icon-arrow-up am-active" id="amz-go-top"></a>
+    <a target="_self" href="#quickRegister" title="免费注册" class="am-icon-pencil-square-o am-icon-btn"></a>
+</div>
+
+<div class="top-bar" onclick="javascript:location.href='tel://4007845700'">
+    4007845700
+</div>
+
+<div class="bottom-bar">
+    <div class="bottom-bar-item" onclick="javascript:location.href='#top'">返回顶部</div>
+    <div class="bottom-bar-item a2" onclick="javascript:location.href='tel://4007845700'">免费咨询</div>
+    <div class="bottom-bar-item" onclick="javascript:location.href='#quickRegister'" style="background: #ef0a0a;color: white;">免费注册</div>
+</div>
 
 
 <!--[if lt IE 9]>
@@ -1156,6 +1155,15 @@
             self.location = "#quickRegister";
         }
     }
+</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?515a0bc4f2a6fcc5172eabe50cc5906d";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
 </script>
 
 </body>

@@ -198,6 +198,7 @@ input ,button{
 
 .footer{
     background-color:  #2d3e50;
+    padding-bottom: 60px;
     /*overflow: hidden;*/
 }
 
@@ -300,6 +301,52 @@ a.mail {
 .am-slider .am-slides .img_pc { display:block;}
 .am-slider .am-slides .img_mb { display:none;}
 
+.top-bar{
+    display: none;
+    width: 100%;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    position: fixed;
+    top: 0;
+    z-index: 9999;
+    color: #3d3d3d;
+}
+.bottom-bar{
+    display: none;
+    width: 100%;
+    height: 50px;
+    text-align: center;
+    background: #ffffff;
+    line-height: 35px;
+    position: fixed;
+    bottom: 0;
+    z-index: 9999;
+    border-top: 1px solid #c7c7c7;
+}
+
+.bottom-bar-item{
+    display: inline-block;
+    width: 33.3333333%;
+    height: 50px;
+    float: left;
+    font-size: 11px;
+    color: #3d3d3d;
+    line-height: 50px;
+    text-align: center;
+}
+
+.a2:before,.a2:after{
+    content: '';
+    display: block;
+    width: 1px;
+    height: 25px;
+    background: #e5e5e5;
+    position: absolute;
+    top: 15px;
+    overflow: hidden;
+}
+
 /*手机端css*/
 @media only screen and (max-width: 640px){
     .detail-h2 {
@@ -333,6 +380,10 @@ a.mail {
     .detail-angle-right ,.footer-link{
         display: none;
     }
+
+    .footer{
+        padding-bottom: 60px;
+    }
     .footer-weixin{
         float: none;
         text-align: center;
@@ -352,6 +403,10 @@ a.mail {
 
     .footer-beian, .footer-beian a{
       font-size: 12px;
+    }
+
+    .top-bar,.bottom-bar{
+        display: block;
     }
 }
 
