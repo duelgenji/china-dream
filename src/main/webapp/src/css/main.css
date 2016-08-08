@@ -261,11 +261,14 @@ input ,button{
 
 .footer-kefu{
     float:left;
-    font-size: 12px;
+    font-size: 16px;
     color: white;
     margin-left: 30px;
-
 }
+.footer-kefu-400{
+    font-size: 18px;
+}
+
 .footer-weixin{
     float:left;
 }
@@ -303,15 +306,28 @@ a.mail {
 
 .top-bar{
     display: none;
-    width: 100%;
     height: 50px;
     text-align: center;
     line-height: 50px;
     position: fixed;
     top: 0;
+    margin: 0 auto;
+    width: 200px;
+    left: 0;
+    right: 0;
     z-index: 9999;
     color: #3d3d3d;
 }
+
+.nav-400{
+    height: 50px;
+    line-height: 50px;
+    float: left;
+    margin-left: 50px;
+    font-size: 18px;
+    font-family: cursive;
+}
+
 .bottom-bar{
     display: none;
     width: 100%;
@@ -389,7 +405,7 @@ a.mail {
         text-align: center;
     }
     .footer-kefu{
-        margin: 10px 0;
+        margin: 30px 0;
         float: none;
         text-align: center;
     }
