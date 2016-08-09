@@ -5,6 +5,7 @@ import com.dream.entity.user.Manager;
 import com.dream.entity.user.User;
 import com.dream.entity.user.UserAccountLog;
 import com.dream.entity.user.UserIndex;
+import com.dream.repository.inquiry.InquiryFileRepository;
 import com.dream.repository.inquiry.InquiryRepository;
 import com.dream.repository.user.UserAccountLogRepository;
 import com.dream.repository.user.UserIndexRepository;
@@ -34,6 +35,9 @@ public class BackendController {
 
     @Autowired
     InquiryRepository inquiryRepository;
+
+    @Autowired
+    InquiryFileRepository inquiryFileRepository;
 
     @Autowired
     UserRepository userRepository;
@@ -332,4 +336,70 @@ public class BackendController {
         return res;
 
     }
+
+
+
+
+    /**
+     * 根据审核状态 获取询价列表
+     */
+    @RequestMapping("auditInquiryList")
+    public Map<String, Object> auditInquiryList(
+            @RequestParam(required = false) Integer auditStatus,
+            @PageableDefault(page = 0, size = 20,sort = "id", direction = Sort.Direction.DESC) Pageable pageable
+//            , @ModelAttribute("currentManager") Manager manager
+    ) {
+
+        Map<String, Object> res = new HashMap<>();
+
+        Map<String, Object> filters = new HashMap<>();
+
+        filters.put("auditStatus_equal", auditStatus);
+        filters.put("user.removed_equal", 0);
+
+        Page<Inquiry> inquiryList= inquiryRepository.findAll(filters,pageable);
+
+        List<Map<String, Object>> list = new ArrayList<>();
+        for (Inquiry inquiry : inquiryList.getContent()) {
+
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", inquiry.getId());
+            map.put("userId", inquiry.getUser().getId());
+            map.put("userName", inquiry.getUser().getNickName());
+            map.put("title", inquiry.getTitle());
+            map.put("inquiryNo", inquiry.getInquiryNo());
+            map.put("status", inquiry.getStatus());
+            map.put("totalPrice", inquiry.getTotalPrice());
+            map.put("round", inquiry.getRound());
+            map.put("limitDate", DateFormatUtils.format(inquiry.getLimitDate(), "yyyy-MM-dd HH:mm:ss"));
+            map.put("inquiryMode", inquiry.getInquiryMode().getName());
+            map.put("industryCode", inquiry.getCompanyIndustry()!=null ? inquiry.getCompanyIndustry().getName():"");
+            map.put("provinceCode", inquiry.getCompanyProvince()!=null ? inquiry.getCompanyProvince().getName():"");
+
+            map.put("remark", inquiry.getRemark());
+            map.put("contactName", inquiry.getContactName());
+            map.put("contactEmail", inquiry.getContactEmail());
+            map.put("contactPhone", inquiry.getContactPhone());
+            map.put("contactTel", inquiry.getContactTel());
+            map.put("contactFax", inquiry.getContactFax());
+            map.put("contactWeiXin", inquiry.getContactWeiXin());
+            map.put("contactWeiBo", inquiry.getContactWeiBo());
+            map.put("intervalHour", inquiry.getIntervalHour());
+            map.put("logoUrl", inquiry.getLogoUrl());
+            map.put("fileList", inquiryFileRepository.findByInquiryAndRound(inquiry,inquiry.getRound()));
+
+            if(inquiry.getLogoUrl()==null || "".equals(inquiry.getLogoUrl())){
+                map.put("logoUrl",inquiry.getCompanyIndustry().getLogoUrl()+"?imageView2/2/w/120&name=dl.jpg)");
+            }else{
+                map.put("logoUrl",inquiry.getLogoUrl()+"?imageView2/2/w/120&name=dl.jpg)" );
+            }
+
+            list.add(map);
+        }
+
+        res.put("success",1);
+        res.put("data",list);
+        return res;
+    }
+
 }

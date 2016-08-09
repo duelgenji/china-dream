@@ -194,6 +194,11 @@ public class Inquiry  extends AbstractPersistable<Long> {
 
     private double adjustAmountRate = 1;
 
+    /**
+     * 审核状态 0审核中 1拒绝 2通过
+     */
+    private int auditStatus;
+
     public User getUser() {
         return user;
     }
@@ -552,6 +557,14 @@ public class Inquiry  extends AbstractPersistable<Long> {
 
     public void setAdjustAmountRate(double adjustAmountRate) {
         this.adjustAmountRate = adjustAmountRate;
+    }
+
+    public int getAuditStatus() {
+        return auditStatus;
+    }
+
+    public void setAuditStatus(int auditStatus) {
+        this.auditStatus = auditStatus;
     }
 
     public Object getProperties(String name){

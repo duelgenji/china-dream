@@ -59,12 +59,12 @@ public class UserPersonalInfo implements Serializable {
     /**
      * 个人微博地址
      */
-    private String weiboUrl;
+    private String weiboUrl = "";
 
     /**
      * 个人微信号
      */
-    private String weixin;
+    private String weixin = "";
 
     public Long getId() {
         return id;
