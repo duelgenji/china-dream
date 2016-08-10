@@ -345,8 +345,8 @@ public class BackendController {
      */
     @RequestMapping("auditInquiryList")
     public Map<String, Object> auditInquiryList(
-            @RequestParam(required = false) Integer auditStatus,
-            @PageableDefault(page = 0, size = 20,sort = "id", direction = Sort.Direction.DESC) Pageable pageable
+            @RequestParam int auditStatus,
+            @PageableDefault(page = 0, size = 10,sort = "id", direction = Sort.Direction.DESC) Pageable pageable
 //            , @ModelAttribute("currentManager") Manager manager
     ) {
 
@@ -400,6 +400,30 @@ public class BackendController {
         res.put("success",1);
         res.put("data",list);
         return res;
+    }
+
+
+    /**
+     * 根据审核状态 获取询价列表
+     */
+    @RequestMapping("auditInquiryList")
+    public Map<String, Object> auditInquiryList(
+            @RequestParam long inquiryId,
+            @RequestParam int auditStatus
+            //            , @ModelAttribute("currentManager") Manager manager
+    ){
+        Map<String, Object> res = new HashMap<>();
+
+        Inquiry inquiry = inquiryRepository.findOne(inquiryId);
+
+        if(inquiry!=null && inquiry.getAuditStatus()!=2){
+            inquiry.setAuditStatus(auditStatus);
+            inquiryRepository.save(inquiry);
+        }
+
+        res.put("success",1);
+        return res;
+
     }
 
 }
