@@ -346,7 +346,7 @@ public class BackendController {
     @RequestMapping("auditInquiryList")
     public Map<String, Object> auditInquiryList(
             @RequestParam int auditStatus,
-            @PageableDefault(page = 0, size = 10,sort = "id", direction = Sort.Direction.DESC) Pageable pageable
+            @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable
 //            , @ModelAttribute("currentManager") Manager manager
     ) {
 
@@ -368,7 +368,6 @@ public class BackendController {
             map.put("userName", inquiry.getUser().getNickName());
             map.put("title", inquiry.getTitle());
             map.put("inquiryNo", inquiry.getInquiryNo());
-            map.put("status", inquiry.getStatus());
             map.put("totalPrice", inquiry.getTotalPrice());
             map.put("round", inquiry.getRound());
             map.put("limitDate", DateFormatUtils.format(inquiry.getLimitDate(), "yyyy-MM-dd HH:mm:ss"));
@@ -386,6 +385,7 @@ public class BackendController {
             map.put("contactWeiBo", inquiry.getContactWeiBo());
             map.put("intervalHour", inquiry.getIntervalHour());
             map.put("logoUrl", inquiry.getLogoUrl());
+            map.put("auditStatus", inquiry.getAuditStatus());
             map.put("fileList", inquiryFileRepository.findByInquiryAndRound(inquiry,inquiry.getRound()));
 
             if(inquiry.getLogoUrl()==null || "".equals(inquiry.getLogoUrl())){
@@ -406,8 +406,8 @@ public class BackendController {
     /**
      * 根据审核状态 获取询价列表
      */
-    @RequestMapping("auditInquiryList")
-    public Map<String, Object> auditInquiryList(
+    @RequestMapping("auditInquiry")
+    public Map<String, Object> auditInquiry(
             @RequestParam long inquiryId,
             @RequestParam int auditStatus
             //            , @ModelAttribute("currentManager") Manager manager

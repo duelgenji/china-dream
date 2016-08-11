@@ -59,11 +59,12 @@ function initSileBar(param){
     var html =
         //'<li data-col="index"><a href="#"><span class="am-icon-home"></span> 首页</a></li>' +
         '<li data-col="user"><a href="user.html"><span class="am-icon-users"></span> 用户</a></li>' +
-        '<li data-col="inquiry"><a href="inquiry.html"><span class="am-icon-pencil-square-o"></span> 梦想/询价</a></li>' +
+        '<li data-col="inquiry"><a href="inquiry.html"><span class="am-icon-pencil-square-o"></span> 询价</a></li>' +
         '<li data-col="file"><a href="file.html"><span class="am-icon-download"></span> 文件下载</a></li>' +
         '<li data-col="case"><a href="case.html"><span class="am-icon-archive"></span> 案例分析</a></li>' +
         '<li data-col="sensitive"><a href="sensitive.html"><span class="am-icon-warning"></span> 敏感词</a></li>' +
         '<li data-col="dream"><a href="dream.html"><span class="am-icon-birthday-cake"></span> 梦想语录</a></li>' +
+        '<li data-col="dream"><a href="inquiryAudit.html"><span class="am-icon-pencil-square"></span> 审核询价</a></li>' +
         '<li data-col="active"><a href="active.html"><span class="am-icon-key"></span> 激活用户</a></li>';
 
     $(".admin-sidebar-list").empty().append(html);
