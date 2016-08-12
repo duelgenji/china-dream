@@ -267,6 +267,34 @@ public class CommonEmail {
         }
         return "1";
     }
+
+
+    //发送审核通知邮件
+    public String auditEmail(Inquiry inquiry){
+        String content = "用户 "+inquiry.getUser().getNickName()+" 发布了 " +
+                inquiry.getTitle()+" 需要审核。";
+
+        HtmlEmail sEmail = new HtmlEmail ();
+        //smtp host
+        sEmail.setHostName("smtpdm.aliyun.com");
+        //登陆邮件服务器的用户名和密码
+        sEmail.setAuthentication("info@push.mychinadreams.com", "Zgmw20150514");
+        //接收人
+        try {
+            sEmail.addTo("ST1ST@163.com");
+            //发送人
+            sEmail.setFrom("info@push.mychinadreams.com", "中梦国网");
+            sEmail.setSubject("中梦国网 审核提示");
+
+            sEmail.setMsg(content);
+            sEmail.send();
+        } catch (EmailException e) {
+            e.printStackTrace();
+        }
+        return "1";
+    }
+
+    //
 //    public static void testEmail(String email) {
 //        HtmlEmail sEmail = new HtmlEmail ();
 //        sEmail.setHostName("smtpdm.aliyun.com");

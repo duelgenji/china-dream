@@ -66,7 +66,14 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
 
     function renderState(vals, ri, objval) {
         var result;
-        switch (vals) {
+        if(vals[1]==0){
+            result = "待审批";
+            return (objval.title = result);
+        }else if(vals[1]==1){
+            result = "审批退回";
+            return (objval.title = result);
+        }
+        switch (vals[0]) {
             case 1:
                 result = "成功";
                 break;
@@ -88,7 +95,12 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
 
     function renderOptOfInquiry(vals, ri, objval) {
         objval.title = "";
-        return '<div class="ui-optDiv"><a href="inquiryDetail.html?key=' + vals + '" title="查看">查看</a></div>';
+        if(vals[1]==1){
+            return '<div class="ui-optDiv"><a href="inquiryNew.html?key=' + vals[0] + '" title="修改">修改</a></div>';
+        }else if(vals[1]==0){
+            return '';
+        }
+        return '<div class="ui-optDiv"><a href="inquiryDetail.html?key=' + vals[0] + '" title="查看">查看</a></div>';
     }
 
     function renderOptOfCollect(vals, ri, objval) {

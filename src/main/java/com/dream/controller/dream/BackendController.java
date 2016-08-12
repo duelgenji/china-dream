@@ -10,6 +10,7 @@ import com.dream.repository.inquiry.InquiryRepository;
 import com.dream.repository.user.UserAccountLogRepository;
 import com.dream.repository.user.UserIndexRepository;
 import com.dream.repository.user.UserRepository;
+import com.dream.service.inquiry.InquiryService;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -47,6 +48,9 @@ public class BackendController {
 
     @Autowired
     UserAccountLogRepository userAccountLogRepository;
+
+    @Autowired
+    InquiryService inquiryService;
 
     /**
      * 用户删除
@@ -404,7 +408,7 @@ public class BackendController {
 
 
     /**
-     * 根据审核状态 获取询价列表
+     * 修改审核状态
      */
     @RequestMapping("auditInquiry")
     public Map<String, Object> auditInquiry(
@@ -418,6 +422,9 @@ public class BackendController {
 
         if(inquiry!=null && inquiry.getAuditStatus()!=2){
             inquiry.setAuditStatus(auditStatus);
+
+            //邮件通知所有用户
+            inquiryService.pushEmail2User(inquiry);
             inquiryRepository.save(inquiry);
         }
 

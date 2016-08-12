@@ -210,7 +210,7 @@ define("myzone-config", [], function(require, exports) {
 			},
 			body: {
 				align: "center",
-				fields: "inquiryStatus",
+				fields: "inquiryStatus,auditStatus",
 				renderFn: "renderState"
 			}
 		}, {
@@ -255,7 +255,7 @@ define("myzone-config", [], function(require, exports) {
 			},
 			body: {
 				align: "center",
-				fields: "inquiryId",
+				fields: "inquiryId,auditStatus",
 				renderFn: "renderOptOfInquiry"
 			}
 		}]

@@ -251,6 +251,7 @@ public class InquiryController {
             inquiry.setLogoUrl(fileUrl);
         }
 
+        inquiry.setAuditStatus(0);
         inquiryRepository.save(inquiry);
 
 
@@ -338,8 +339,9 @@ public class InquiryController {
             }
         }
 
-        //邮件通知所有用户
-        inquiryService.pushEmail2User(inquiry);
+        //发送审核通知邮件
+        commonEmail.auditEmail(inquiry);
+
 
         res.put("success",1);
         res.put("inquiryNo",inquiry.getInquiryNo());
@@ -783,7 +785,16 @@ public class InquiryController {
 
         filters.put("user_equal", user);
         if(status!=null){
-            filters.put("status_equal", status);
+            if(status<=2){
+                filters.put("status_equal", status);
+                filters.put("auditStatus_equal", 2);
+            }else if(status==3){
+                //待审批
+                filters.put("auditStatus_equal", 0);
+            }else if(status==4){
+                //审批退回
+                filters.put("auditStatus_equal", 1);
+            }
         }
 
         List<Inquiry> inquiryList = inquiryRepository.findAll(filters);
@@ -807,6 +818,7 @@ public class InquiryController {
             map.put("inquiryIndustry", inquiry.getCompanyIndustry()!=null ? inquiry.getCompanyIndustry().getName():"");
             map.put("inquiryProvince", inquiry.getCompanyProvince()!=null ? inquiry.getCompanyProvince().getName():"");
             map.put("inquiryPrice", inquiry.getTotalPrice());
+            map.put("auditStatus", inquiry.getAuditStatus());
             map.put("limitDate", DateFormatUtils.format(inquiry.getLimitDate(), "yyyy-MM-dd HH:mm:ss"));
 
             list.add(map);
@@ -930,6 +942,7 @@ public class InquiryController {
         user = userRepository.findOne(user.getId());
 
         Inquiry inquiry = inquiryRepository.findByUserAndId(user, inquiryId);
+        int auditStatus = inquiry.getAuditStatus();
         if(inquiry==null){
             res.put("success",0);
             res.put("message","查询错误");
@@ -942,14 +955,18 @@ public class InquiryController {
             return res;
         }
 
-        int round =inquiry.getRound();
-        if(round<3){
-            inquiryService.saveInquiryHistory(inquiry);
-            inquiry.setRound(round+1);
+        if(auditStatus==2){
+            int round =inquiry.getRound();
+            if(round<3){
+                inquiryService.saveInquiryHistory(inquiry);
+                inquiry.setRound(round+1);
+            }else{
+                res.put("success",0);
+                res.put("message","已经最后一轮");
+                return res;
+            }
         }else{
-            res.put("success",0);
-            res.put("message","已经最后一轮");
-            return res;
+            inquiry.setAuditStatus(0);
         }
 
         /*敏感词判断*/
@@ -1107,10 +1124,15 @@ public class InquiryController {
         }
 
         //发送下一轮 邮件
-        List<Message> messages = messageRepository.findByInquiryAndRoundAndStatus(inquiry, inquiry.getRound()-1,1);
-        for(Message m : messages){
-            commonEmail.sendEmail(m.getUser(),commonEmail.getContent(CommonEmail.TYPE.ROUND_B,inquiry,m.getUser()));
+        if(auditStatus==2) {
+            List<Message> messages = messageRepository.findByInquiryAndRoundAndStatus(inquiry, inquiry.getRound()-1,1);
+            for(Message m : messages){
+                commonEmail.sendEmail(m.getUser(),commonEmail.getContent(CommonEmail.TYPE.ROUND_B,inquiry,m.getUser()));
+            }
+        }else if(auditStatus==1){
+            commonEmail.auditEmail(inquiry);
         }
+
 
 
 
