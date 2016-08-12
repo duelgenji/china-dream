@@ -23,6 +23,9 @@
       margin-bottom: 0;
       font-size: 12px;
     }
+    .am-form-label{
+      padding-top: 0 !important;
+    }
   </style>
 </head>
 <body>
@@ -131,60 +134,61 @@
         <form class="am-form am-form-horizontal">
           <input type="hidden" id="inquiryId">
           <div class="am-form-group">
-            <label class="am-u-sm-3 am-form-label">标名</label><div class="am-u-sm-9">1</div>
+            <label class="am-u-sm-3 am-form-label">标名</label><div class="am-u-sm-9" data-key="title"> 1</div>
           </div>
           <div class="am-form-group">
-            <label class="am-u-sm-3 am-form-label">用户名</label><div class="am-u-sm-9">1</div>
+            <label class="am-u-sm-3 am-form-label">用户名</label><div class="am-u-sm-9" data-key="userName">1</div>
           </div>
           <div class="am-form-group">
-            <label class="am-u-sm-3 am-form-label">标的</label><div class="am-u-sm-9">1</div>
+            <label class="am-u-sm-3 am-form-label">标的</label><div class="am-u-sm-9" data-key="totalPrice">1</div>
           </div>
           <div class="am-form-group">
-            <label class="am-u-sm-3 am-form-label">截止时间</label><div class="am-u-sm-9">1</div>
+            <label class="am-u-sm-3 am-form-label">截止时间</label><div class="am-u-sm-9" data-key="limitDate">1</div>
           </div>
           <div class="am-form-group">
-            <label class="am-u-sm-3 am-form-label">询价类型</label><div class="am-u-sm-9">1</div>
+            <label class="am-u-sm-3 am-form-label">询价类型</label><div class="am-u-sm-9" data-key="inquiryMode">1</div>
           </div>
           <div class="am-form-group">
-            <label class="am-u-sm-3 am-form-label">行业</label><div class="am-u-sm-9">1</div>
+            <label class="am-u-sm-3 am-form-label">行业</label><div class="am-u-sm-9" data-key="industryCode">1</div>
           </div>
           <div class="am-form-group">
-            <label class="am-u-sm-3 am-form-label">地点</label><div class="am-u-sm-9">1</div>
+            <label class="am-u-sm-3 am-form-label">地点</label><div class="am-u-sm-9" data-key="provinceCode">1</div>
           </div>
           <div class="am-form-group">
-            <label class="am-u-sm-3 am-form-label">备注</label><div class="am-u-sm-9">1</div>
+            <label class="am-u-sm-3 am-form-label">备注</label><div class="am-u-sm-9" data-key="remark">1</div>
           </div>
           <div class="am-form-group">
-            <label class="am-u-sm-3 am-form-label">联系人姓名</label><div class="am-u-sm-9">1</div>
+            <label class="am-u-sm-3 am-form-label">联系人姓名</label><div class="am-u-sm-9" data-key="contactName">1</div>
           </div>
           <div class="am-form-group">
-            <label class="am-u-sm-3 am-form-label">手机</label><div class="am-u-sm-9">1</div>
+            <label class="am-u-sm-3 am-form-label">手机</label><div class="am-u-sm-9" data-key="contactPhone">1</div>
           </div>
           <div class="am-form-group">
-            <label class="am-u-sm-3 am-form-label">邮箱</label><div class="am-u-sm-9">1</div>
+            <label class="am-u-sm-3 am-form-label">邮箱</label><div class="am-u-sm-9" data-key="contactEmail">1</div>
           </div>
           <div class="am-form-group">
-            <label class="am-u-sm-3 am-form-label">电话</label><div class="am-u-sm-9">1</div>
+            <label class="am-u-sm-3 am-form-label">电话</label><div class="am-u-sm-9" data-key="contactTel">1</div>
           </div>
           <div class="am-form-group">
-            <label class="am-u-sm-3 am-form-label">传真</label><div class="am-u-sm-9">1</div>
+            <label class="am-u-sm-3 am-form-label">传真</label><div class="am-u-sm-9" data-key="contactFax">1</div>
           </div>
           <div class="am-form-group">
-            <label class="am-u-sm-3 am-form-label">微信</label><div class="am-u-sm-9">1</div>
+            <label class="am-u-sm-3 am-form-label">微信</label><div class="am-u-sm-9" data-key="contactWeiXin">1</div>
           </div>
           <div class="am-form-group">
-            <label class="am-u-sm-3 am-form-label">微博</label><div class="am-u-sm-9">1</div>
+            <label class="am-u-sm-3 am-form-label">微博</label><div class="am-u-sm-9" data-key="contactWeiBo">1</div>
           </div>
           <div class="am-form-group">
-            <label class="am-u-sm-3 am-form-label">图片</label><div class="am-u-sm-9">1</div>
+            <label class="am-u-sm-3 am-form-label">图片</label><div class="am-u-sm-9" data-key="logoUrl">1</div>
           </div>
           <div class="am-form-group">
-            <label class="am-u-sm-3 am-form-label">文件</label><div class="am-u-sm-9">1</div>
+            <label class="am-u-sm-3 am-form-label">文件</label><div class="am-u-sm-9" data-key="fileList">1</div>
           </div>
 
           <div class="am-form-group">
             <div class="am-u-sm-9 am-u-sm-offset-2">
-              <button id="btn_modify_amount" type="button" class="am-btn am-btn-default">确认</button>
+              <button id="btn_refuse" type="button" class="am-btn am-btn-danger">拒绝</button>
+              <button id="btn_accept" type="button" class="am-btn am-btn-success">通过</button>
             </div>
           </div>
         </form>

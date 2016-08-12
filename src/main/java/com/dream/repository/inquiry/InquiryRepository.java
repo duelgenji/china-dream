@@ -21,7 +21,7 @@ public interface InquiryRepository extends MyRepository<Inquiry,Long> {
 
     int countByUser(User user);
 
-    @Query("select count(*) from Inquiry i where i.user =:user and i.status =:status")
+    @Query("select count(*) from Inquiry i where i.user =:user and i.status =:status and i.auditStatus=2")
     int countByUserAndStatus(@Param("user") User user,@Param("status") int status);
 
     Page<Inquiry> findByInquiryNoLikeOrTitleLike(String key,String key2,Pageable pageable);

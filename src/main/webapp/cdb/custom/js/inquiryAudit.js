@@ -8,7 +8,7 @@ function ajaxRetrieveInquiryList() {
 
 
     var params={};
-    params.size=1;
+    params.size=10;
     params.auditStatus=0;
 
     var url="/backend/auditInquiryList";
@@ -34,8 +34,8 @@ function ajaxRetrieveInquiryList() {
     })
 }
 
-function ajaxModifyAdjustAmountRate(params) {
-    var url="/backend/modifyAdjustAmountRate";
+function ajaxAuditInquiry(params) {
+    var url="/backend/auditInquiry";
 
     $.ajax({
         url: baseUrl + url,
@@ -81,7 +81,7 @@ function updateTable(data){
             '<td data-id="'+obj.id+'">' +
             '<div class="am-btn-toolbar">' +
             '<div class="am-btn-group am-btn-group-xs">' +
-            '<button type="button" class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only btn-check"><span class="am-icon-trash-o"></span> 查看</button>' +
+            '<button type="button" class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only btn-check"> 查看</button>' +
             '</div>' +
             '</div>' +
             '</td>' +
@@ -95,7 +95,6 @@ function updateTable(data){
 
 $(document).ready(function(){
 
-
     ajaxRetrieveInquiryList();
 
     //点击搜索 调用请求数据
@@ -104,21 +103,48 @@ $(document).ready(function(){
     });
 
 
-    /* 修改费率modal */
+    /* 查看 */
     $(document).on("click",".btn-check", function() {
         var id = $(this).closest('tr').data('id');
         $('#modal-amount').modal("open");
         var json = $(this).closest('tr').data('json');
-        console.log(eval("("+decodeURI(json)+")"));
+        json = eval("("+decodeURI(json)+")");
         $("#inquiryId").val(id);
+        for(var i in json){
+
+            if(i=="fileList"){
+                var html = "";
+                for(var j = 0 ;j<json[i].length;j++){
+                    html += '<a href="'+json[i][j].fileUrl+'">'+json[i][j].remark+'</a><br/>';
+                }
+                $("div.am-u-sm-9[data-key="+i+"]").html(html);
+
+            }else if(i=="logoUrl"){
+                var html = '<img src="'+json[i]+'" />';
+                $("div.am-u-sm-9[data-key="+i+"]").html(html);
+            }
+            else{
+                $("div.am-u-sm-9[data-key="+i+"]").html(json[i]);
+            }
+
+        }
     });
 
-    /* 确认修改费率 */
-    $(document).on("click","#btn_modify_amount", function() {
+    /* 通过 */
+    $(document).on("click","#btn_accept", function() {
         var params={};
-        params.id=$("#inquiryId").val();
-        params.adjustAmountRate=$("#adjustAmountRate").val();
-        ajaxModifyAdjustAmountRate(params);
+        params.inquiryId=$("#inquiryId").val();
+        params.auditStatus=2;
+        console.log(params);
+        ajaxAuditInquiry(params);
+    });
+    /* 拒绝 */
+    $(document).on("click","#btn_refuse", function() {
+        var params={};
+        params.inquiryId=$("#inquiryId").val();
+        params.auditStatus=1;
+        console.log(params);
+        ajaxAuditInquiry(params);
     });
 
 

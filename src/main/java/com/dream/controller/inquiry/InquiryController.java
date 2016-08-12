@@ -426,6 +426,7 @@ public class InquiryController {
 
         filters.put("removed_equal", 0);
         filters.put("user.removed_equal", 0);
+        filters.put("auditStatus_equal", 2);
 
         Page<Inquiry> inquiryList= inquiryRepository.findAll(filters,pageable);
 
@@ -562,8 +563,8 @@ public class InquiryController {
         List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
         for (Inquiry inquiry : inquiryList) {
 
-            //被删除 不显示
-            if(inquiry.isRemoved() || inquiry.getUser().isRemoved())
+            //被删除 未通过审核 不显示
+            if(inquiry.getAuditStatus()!=2 || inquiry.isRemoved() || inquiry.getUser().isRemoved())
                 continue;
 
             Map<String, Object> map = new HashMap<String, Object>();
@@ -626,7 +627,7 @@ public class InquiryController {
 
 
         Inquiry inquiry = inquiryRepository.findOne(inquiryId);
-        if(inquiry==null){
+        if(inquiry==null || inquiry.getAuditStatus()!=2){
             res.put("success",0);
             res.put("message","查询错误");
             return res;
