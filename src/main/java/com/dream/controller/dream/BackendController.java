@@ -379,19 +379,29 @@ public class BackendController {
             map.put("industryCode", inquiry.getCompanyIndustry()!=null ? inquiry.getCompanyIndustry().getName():"");
             map.put("provinceCode", inquiry.getCompanyProvince()!=null ? inquiry.getCompanyProvince().getName():"");
 
-            map.put("remark", inquiry.getRemark());
-            map.put("contactName", inquiry.getContactName());
-            map.put("contactEmail", inquiry.getContactEmail());
-            map.put("contactPhone", inquiry.getContactPhone());
-            map.put("contactTel", inquiry.getContactTel());
-            map.put("contactFax", inquiry.getContactFax());
-            map.put("contactWeiXin", inquiry.getContactWeiXin());
-            map.put("contactWeiBo", inquiry.getContactWeiBo());
+
             map.put("intervalHour", inquiry.getIntervalHour());
             map.put("logoUrl", inquiry.getLogoUrl());
             map.put("auditStatus", inquiry.getAuditStatus());
-            map.put("fileList", inquiryFileRepository.findByInquiryAndRound(inquiry,inquiry.getRound()));
 
+            map.put("remark", inquiry.getRemark());
+            map.put("remarkOpen", inquiry.getRemarkOpen().toString());
+            map.put("contactName", inquiry.getContactName());
+            map.put("contactNameOpen", inquiry.getContactNameOpen().toString());
+            map.put("contactEmail", inquiry.getContactEmail());
+            map.put("contactEmailOpen", inquiry.getContactEmailOpen().toString());
+            map.put("contactPhone", inquiry.getContactPhone());
+            map.put("contactPhoneOpen", inquiry.getContactPhoneOpen().toString());
+            map.put("contactTel", inquiry.getContactTel());
+            map.put("contactTelOpen", inquiry.getContactTelOpen().toString());
+            map.put("contactFax", inquiry.getContactFax());
+            map.put("contactFaxOpen", inquiry.getContactFaxOpen().toString());
+            map.put("contactWeiXin", inquiry.getContactWeiXin());
+            map.put("contactWeiXinOpen", inquiry.getContactWeiXinOpen().toString());
+            map.put("contactWeiBo", inquiry.getContactWeiBo());
+            map.put("contactWeiBoOpen", inquiry.getContactWeiBoOpen().toString());
+            map.put("fileList", inquiryFileRepository.findByInquiryAndRound(inquiry,inquiry.getRound()));
+            map.put("filesOpen", inquiry.getFilesOpen().toString());
             if(inquiry.getLogoUrl()==null || "".equals(inquiry.getLogoUrl())){
                 map.put("logoUrl",inquiry.getCompanyIndustry().getLogoUrl()+"?imageView2/2/w/120&name=dl.jpg)");
             }else{

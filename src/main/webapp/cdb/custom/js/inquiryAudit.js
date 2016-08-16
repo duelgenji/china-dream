@@ -118,6 +118,8 @@ $(document).ready(function(){
                     html += '<a href="'+json[i][j].fileUrl+'">'+json[i][j].remark+'</a><br/>';
                 }
                 $("div.am-u-sm-9[data-key="+i+"]").html(html);
+                $("div.am-u-sm-9[data-key="+i+"]").append(" ("+json.filesOpen+")");
+
 
             }else if(i=="logoUrl"){
                 var html = '<img src="'+json[i]+'" />';
@@ -125,6 +127,9 @@ $(document).ready(function(){
             }
             else{
                 $("div.am-u-sm-9[data-key="+i+"]").html(json[i]);
+                if(json[i+"Open"]){
+                    $("div.am-u-sm-9[data-key="+i+"]").append(" ("+json[i+"Open"]+")");
+                }
             }
 
         }
