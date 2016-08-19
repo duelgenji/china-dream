@@ -186,7 +186,7 @@ public class MessageController{
              double currentAmount = userIndex.getAmount();
              currentAmount = new Double(df.format(currentAmount - calcAmount));
 
-             userIndex.setAmount(currentAmount - calcAmount);
+             userIndex.setAmount(currentAmount);
              userIndexRepository.save(userIndex);
 
              UserAccountLog userAccountLog = new UserAccountLog();
