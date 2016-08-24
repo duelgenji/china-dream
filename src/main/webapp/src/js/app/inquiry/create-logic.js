@@ -228,7 +228,7 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
 
         if (nextId == 2) {
             if (!valid_step1()) {
-                return;
+                //return;
             }
             var date = $("#purchaseCloseDate").val();
 
@@ -238,7 +238,7 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
 
         if (nextId == 3) {
             if (!valid_step2()) {
-                return;
+                //return;
             }
         }
 
@@ -254,7 +254,7 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
         }
         if (nextId == 4) {
             if (!valid_step3()) {
-                return;
+                //return;
             }
 
             $("#div_step4 ul span").each(function (i, span) {
@@ -310,6 +310,16 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
                         $("input[name='round'][type=radio]:checked").attr("title","第三轮(精益求精)");
                     }
 
+                    if(data.fileList.length>0){
+                        var list = data.fileList;
+                        for(var i=0;i<list.length;i++){
+                            $("#file"+(i+1)).hide();
+                            $("#file_span"+(i+1)).show();
+                            $("#file_span"+(i+1)).find(".file_uploaded_name").html(list[i].remark);
+                        }
+
+                    }
+
                     $("input,select,textarea").each(function (i, span) {
                         span = $(span);
                         var col = span.attr("name"),
@@ -323,7 +333,6 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
                             }else if(col=="limitDate"){
                                 $("#purchaseCloseDate").val(val.split(" ")[0]);
                                 $("#purchaseCloseDateHour").val(parseInt(val.split(" ")[1].split(":")[0])+":00");
-
                             }
                         }
                     });
@@ -481,6 +490,13 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
         if (!valid_step3()) {
             $(this).val("");
         }
+    })
+
+    //删除已上传的文件按钮
+    $(".file_uploaded_remove").on("click", function () {
+        var num = $(this).data("span");
+        $("#file_span"+num).hide();
+        $("#file"+num).show();
     })
 
     $("input, select, textarea").on("focus", function() {

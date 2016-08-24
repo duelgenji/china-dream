@@ -232,6 +232,28 @@
             text-align: inherit !important;
         }
 
+        .file_uploaded{
+            width: 243px;
+            display: none;
+            float: left;
+        }
+
+        .file_uploaded_name{
+            text-overflow: ellipsis;
+            overflow: hidden;
+            width: 124px;
+            white-space: nowrap;
+            display: block;
+            float: left;
+        }
+
+        .file_uploaded_remove{
+            text-decoration: underline;
+            float: right;
+            margin-right: 72px;
+            cursor: pointer;
+        }
+
     </style>
 
 </head>
@@ -553,6 +575,9 @@
                         </select>
                     </li>
                     <li>
+                        <div class="file_uploaded" id="file_span1"><span class="file_uploaded_name">文件1</span><span class="file_uploaded_remove" data-span="1">删除</span></div>
+                        <div class="file_uploaded" id="file_span2"><span class="file_uploaded_name">文件1</span><span class="file_uploaded_remove" data-span="2">删除</span></div>
+                        <div class="file_uploaded" id="file_span3"><span class="file_uploaded_name">文件1</span><span class="file_uploaded_remove" data-span="3">删除</span></div>
                         <input class="file_input" type="file" id="file1" name="file1" value="" placeholder="请选择要上传的附件">
                         <input class="file_input" type="file" id="file2" name="file2" value="" placeholder="请选择要上传的附件">
                         <input class="file_input" type="file" id="file3" name="file3" value="" placeholder="请选择要上传的附件">

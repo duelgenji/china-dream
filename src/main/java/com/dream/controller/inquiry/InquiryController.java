@@ -888,6 +888,8 @@ public class InquiryController {
         res.put("filesOpen", inquiry.getFilesOpen().ordinal());
         res.put("intervalHour", inquiry.getIntervalHour());
         res.put("modifyDate", inquiry.getModifyDate());
+        res.put("fileList", inquiryFileRepository.findByInquiryAndRound(inquiry,inquiry.getRound()));
+
 
         res.put("success",1);
         return res;
