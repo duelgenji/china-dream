@@ -228,7 +228,7 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
 
         if (nextId == 2) {
             if (!valid_step1()) {
-                //return;
+                return;
             }
             var date = $("#purchaseCloseDate").val();
 
@@ -238,7 +238,7 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
 
         if (nextId == 3) {
             if (!valid_step2()) {
-                //return;
+                return;
             }
         }
 
@@ -254,7 +254,7 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
         }
         if (nextId == 4) {
             if (!valid_step3()) {
-                //return;
+                return;
             }
 
             $("#div_step4 ul span").each(function (i, span) {
