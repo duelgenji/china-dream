@@ -350,8 +350,8 @@ public class BackendController {
     @RequestMapping("auditInquiryList")
     public Map<String, Object> auditInquiryList(
             @RequestParam int auditStatus,
-            @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable
-//            , @ModelAttribute("currentManager") Manager manager
+            @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+            @ModelAttribute("currentManager") Manager manager
     ) {
 
         Map<String, Object> res = new HashMap<>();
@@ -423,8 +423,8 @@ public class BackendController {
     @RequestMapping("auditInquiry")
     public Map<String, Object> auditInquiry(
             @RequestParam long inquiryId,
-            @RequestParam int auditStatus
-            //            , @ModelAttribute("currentManager") Manager manager
+            @RequestParam int auditStatus,
+            @ModelAttribute("currentManager") Manager manager
     ){
         Map<String, Object> res = new HashMap<>();
 
@@ -432,10 +432,12 @@ public class BackendController {
 
         if(inquiry!=null && inquiry.getAuditStatus()!=2){
             inquiry.setAuditStatus(auditStatus);
+            inquiryRepository.save(inquiry);
 
             //邮件通知所有用户
-            inquiryService.pushEmail2User(inquiry);
-            inquiryRepository.save(inquiry);
+            if(auditStatus==2){
+                inquiryService.pushEmail2User(inquiry);
+            }
         }
 
         res.put("success",1);
