@@ -46,8 +46,8 @@ public class SystemScheduleController {
     public void execute() {
 
         System.out.println("Mission running..."+ ++times);
-//        removeUser();
-//        inquiryOverLimitTime();
+        removeUser();
+        inquiryOverLimitTime();
     }
 
 
