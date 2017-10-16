@@ -371,7 +371,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                         var money = $("#modal-money");
 
                         var re = /^[0-9]+.?[0-9]*$/;
-                        if(money.val()!="" && !re.test(money.val())){
+                        if(money.val()=="" || !re.test(money.val())){
                             alert("请输入数字");
                             return;
                         }

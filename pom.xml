@@ -7,16 +7,6 @@
   <name>china-dream Maven Webapp</name>
   <version>1.0</version>
 
-  <repositories>
-    <repository>
-      <id>xlab-nexus-snapshots</id>
-      <url>http://101.231.124.8:45682/nexus/content/repositories/snapshots</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
-
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
@@ -30,10 +20,36 @@
   </properties>
 
   <dependencies>
+    <!--<dependency>-->
+      <!--<groupId>com.wonders.xlab</groupId>-->
+      <!--<artifactId>xlab-framework</artifactId>-->
+      <!--<version>1.0-SNAPSHOT</version>-->
+    <!--</dependency>-->
+
     <dependency>
-      <groupId>com.wonders.xlab</groupId>
-      <artifactId>xlab-framework</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-joda</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-hibernate4</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.0</version>
     </dependency>
 
     <dependency>
