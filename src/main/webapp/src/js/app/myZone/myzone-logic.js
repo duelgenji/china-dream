@@ -100,7 +100,8 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
         }else if(vals[1]==0){
             return '';
         }
-        return '<div class="ui-optDiv"><a href="inquiryDetail.html?key=' + vals[0] + '" title="查看">查看</a></div>';
+        // return '<div class="ui-optDiv"><a href="inquiryDetail.html?key=' + vals[0] + '" title="查看">查看</a></div>';
+        return '<div class="ui-optDiv"><button type="button" data-cmd="result" data-ri="' + ri + '">查看</button></div>';
     }
 
     function renderOptOfCollect(vals, ri, objval) {
@@ -150,10 +151,10 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
                     return '<div class="ui-optDiv"><button type="button" data-cmd="pass" data-ri="' + ri + '">同意</button><button type="button" data-cmd="refuse" data-ri="' + ri + '">拒绝</button><button type="button" data-cmd="check" data-ri="' + ri + '">查看</button></div>';
                     break;
                 case 1:
-                    return '<div class="ui-optDiv">已确认 <button type="button" data-cmd="check" data-ri="' + ri + '">查看</button></div>';
+                    return '<div class="ui-optDiv">已确认 <button type="button" data-cmd="check" data-ri="' + ri + '">查看</button> <button type="button" data-cmd="reason" data-ri="' + ri + '">原因</button></div>';
                     break;
                 case 2:
-                    return '<div class="ui-optDiv">已拒绝 <button type="button" data-cmd="check" data-ri="' + ri + '">查看</button></div>';
+                    return '<div class="ui-optDiv">已拒绝 <button type="button" data-cmd="check" data-ri="' + ri + '">查看</button> <button type="button" data-cmd="reason" data-ri="' + ri + '">原因</button></div>';
                     break;
             }
 
@@ -545,26 +546,60 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
                 var params = {};
                 params.status = 1;
                 params.messageId = data.messageId;
-                console.log(data.messageId);
-                ajaxModifyMessageStatus(params, function () {
-                    that.parent().empty();
-                }, function (result) {
-                    alert(result.message);
-                }, function () {
-                    alert("请求失败");
-                })
+                //如果是授权申请 通过和拒绝 填写原因
+                if(data.type == 0){
+
+                    showCmdModal("填写原因", '<textarea id="modal-description" style="resize: none;width: 96%;height: 100px;font-size: 14px;padding: 2%;" placeholder="请填写原因，以便今后查看历史记录"></textarea>', function () {
+                        params.reason = $("#modal-description").val();
+                        ajaxModifyMessageStatus(params, function () {
+                            that.parent().empty();
+                        }, function (result) {
+                            alert(result.message);
+                        }, function () {
+                            alert("请求失败");
+                        })
+                        dismissCmdModal();
+                    });
+
+                }else{
+                    ajaxModifyMessageStatus(params, function () {
+                        that.parent().empty();
+                    }, function (result) {
+                        alert(result.message);
+                    }, function () {
+                        alert("请求失败");
+                    })
+                }
+
             } else if (cmd == "refuse") {
                 var params = {};
                 params.status = 2;
-                params.messageId = data.messageId
+                params.messageId = data.messageId;
 
-                ajaxModifyMessageStatus(params, function () {
-                    that.parent().empty();
-                }, function (result) {
-                    alert(result.message);
-                }, function () {
-                    alert("请求失败");
-                })
+                //如果是授权申请 通过和拒绝 填写原因
+                if(data.type == 0){
+
+                    showCmdModal("填写原因", '<textarea id="modal-description" style="resize: none;width: 96%;height: 100px;font-size: 14px;padding: 2%;" placeholder="请填写原因，以便今后查看历史记录"></textarea>', function () {
+                        params.reason = $("#modal-description").val();
+                        ajaxModifyMessageStatus(params, function () {
+                            that.parent().empty();
+                        }, function (result) {
+                            alert(result.message);
+                        }, function () {
+                            alert("请求失败");
+                        })
+                        dismissCmdModal();
+                    });
+
+                }else{
+                    ajaxModifyMessageStatus(params, function () {
+                        that.parent().empty();
+                    }, function (result) {
+                        alert(result.message);
+                    }, function () {
+                        alert("请求失败");
+                    })
+                }
             }else if (cmd == "check") {
 
                 var text = "申请留言";
@@ -575,11 +610,36 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
                 }
 
                 showCmdModal("查看详情", '<ul class="ui-items">' +
-                '<li><label>申请日期:</label><div style="padding-left: 110px;">' +
-                '<p class="modal-date">'+data.createTime+'</p></div>' +
-                '<li><label>'+text+':</label><div style="padding-left: 110px;">' +
-                '<p class="modal-date">'+content+'</p></div>' +
-                '</ul>',null);
+                    '<li><label>申请日期:</label><div style="padding-left: 110px;">' +
+                    '<p class="modal-date">'+data.createTime+'</p></div>' +
+                    '<li><label>'+text+':</label><div style="padding-left: 110px;">' +
+                    '<p class="modal-date">'+content+'</p></div>' +
+                    '</ul>',null);
+            }else if (cmd == "reason") {
+
+                showCmdModal("查看原因", '<ul class="ui-items">' +
+                    '<li><label>填写原因:</label><div style="padding-left: 110px;">' +
+                    '<p class="modal-date">'+data.reason+'</p></div>' +
+                    '<li><label>填写日期:</label><div style="padding-left: 110px;">' +
+                    '<p class="modal-date">'+data.reasonTime+'</p></div>' +
+                    '</ul>',null);
+            }else if (cmd == "result") {
+
+
+                /**
+                 * 状态 0 询价中 1完成 2流标
+                 */
+                var arr= ["进行中","已成功","已流标"];
+
+                var status = arr[data.inquiryStatus];
+                var reason = data.failReason==""?"未填写":data.failReason;
+
+                showCmdModal("查看状态", '<ul class="ui-items">' +
+                    '<li><label>当前状态:</label><div style="padding-left: 110px;">' +
+                    '<p class="modal-date">'+status+'</p></div>' +
+                    '<li><label>结束备注:</label><div style="padding-left: 110px;">' +
+                    '<p class="modal-date">'+reason+'</p></div>' +
+                    '</ul>',null);
             }
         });
     };

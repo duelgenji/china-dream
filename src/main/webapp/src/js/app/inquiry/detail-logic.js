@@ -51,6 +51,11 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
         return (objVal.title = "第" + val + "轮");
     }
 
+    function renderRank(val, ri, objVal) {
+        val = val==null?"":val;
+        return '<span style="color:red">'+val+'</span>';
+    }
+
     function renderAttachments(vals, ri, objVal) {
         //var urls = (vals[1] || "").split(','),
         //    names = (vals[0] || "").split(',');
@@ -75,9 +80,14 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
     function fn_initGrid(config) {
         var grid = gridMod(config || configMod.gridConfig);
 
+        if(dataSource.inquiryMode=="全明询价"){
+            grid = gridMod(configMod.gridConfig2qm);
+        }
+
         grid.pubSub()
             .override("renderNickName", renderNickName)
             .override("renderRound", renderRound)
+            .override("renderRank", renderRank)
             .override("renderAttachments", renderAttachments)
             .override("renderOpt", renderOpt)
             .override("grid.databound", function () {
@@ -239,6 +249,12 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
         if(dataSource.applyStatus == 0){
 
             $("#btn_biddingApply").text("申请"+btnText);
+
+            //申请出价 正式出价 分按钮
+            $("#btn_zs_disable").text("正式"+btnText);
+            $("#btn_zs_disable").show();
+
+
             if(specialBP.indexOf(dataSource.industryCode)>=0){
                $("#btn_biddingApply").text("查看BP");
             }
@@ -247,6 +263,10 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
             $("#btn_biddingApply").attr("status", "working").text("已申请"+btnText);
         } else if (dataSource.applyStatus == 2) {
             $("#btn_biddingApply").data("cmd", "addBid").text("正式"+btnText);
+
+            //申请出价 正式出价 分按钮
+            $("#btn_sq_disable").text("申请"+btnText);
+            $("#btn_sq_disable").show();
         }
 
         if (dataSource.isCollection) {
@@ -319,7 +339,20 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                 var cmd = that.data("cmd");
 
                 if (cmd == "apply") {
-                    showCmdModal("申请出价", '<textarea id="modal-description" style="resize: none;width: 96%;height: 100px;font-size: 14px;padding: 2%;" placeholder="请输入内容，点击确定后将发送站内信给询价方，等待授权"></textarea>', function () {
+
+                    //申请出价默认文字
+                    var content = "";
+
+                    if(info.type==1){
+                        content = "您好，我是"+info.nickName+"，对您的项目非常感兴趣，愿意为您提供最好的价格和最优质的服务，请确认";
+                        if(info.website!=null && info.website!=""){
+                            content += "，也可通过中梦国网平台中我的页面访问我的个人主页"+info.website;
+                        }
+                    }
+                    if(info.type==2){
+                        content = "您好，我们是"+info.nickName+"，对您的项目非常感兴趣，愿意为您提供最好的价格和最优质的服务，请确认，也可通过中梦国网平台中我公司的页面访问我司主页"+info.website;
+                    }
+                    showCmdModal("申请出价", '<textarea id="modal-description" style="resize: none;width: 96%;height: 100px;font-size: 14px;padding: 2%;" placeholder="请输入内容，点击确定后将发送站内信给询价方，等待授权">'+content+'</textarea>', function () {
                         var params = {};
                         params.inquiryId = currentQueryObj.inquiryId;
                         params.description = $("#modal-description").val();
@@ -530,7 +563,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
 
             $("#btn_sucending").click(function () {
 
-                showCmdModal("系统提示", '<span style="font-size: 14px;padding-bottom: 20px;">请选择合同公司：</span><input class="modal-open" type="radio" name="openWinner" value="1" checked/><label for="openWinner" style="padding-left: 10px;float:none;font-weight:100;margin-right: 10px;">公开</label><input class="modal-open" type="radio" name="openWinner" value="0"/><label for="" style="padding-left: 10px;float:none;font-weight:100;height">不公开</label><div style="height: 10px;"></div>' +
+                showCmdModal("系统提示", '<span style="font-size: 14px;padding-bottom: 20px;"><span style="color:red">*</span>请选择合同公司：</span><input class="modal-open" type="radio" name="openWinner" value="1" checked/><label for="openWinner" style="padding-left: 10px;float:none;font-weight:100;margin-right: 10px;">公开</label><input class="modal-open" type="radio" name="openWinner" value="0"/><label for="" style="padding-left: 10px;float:none;font-weight:100;height">不公开</label><div style="height: 10px;"></div>' +
                 '<ul class="ui-items modal-user-list"></ul>', function () {
                     var params = {},
                         noCom = true;
@@ -544,18 +577,19 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                         }
                     });
 
-                    //if (noCom) {
-                    //    alert("请选择合同公司");
-                    //    return;
-                    //}
+                    if (noCom) {
+                       alert("请选择合同公司");
+                       return;
+                    }
 
                     var winner = $("input[name='openWinner']:checked"),
                         price = $("input[name='openPrice']:checked"),
-                        remark = $(".modal-remark");
+                        remark = $(".modal-remark"),
+                        failReason = $(".modal-reason");
 
                     var re = /^[0-9]+.?[0-9]*$/;
-                    if(remark.val()!="" && !re.test(remark.val())){
-                        alert("请输入数字");
+                    if(remark.val()=="" || !re.test(remark.val())){
+                        alert("请正确输入数字金额");
                         return;
                     }
                     if (winner.length == 0) {
@@ -567,6 +601,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                     params[remark.attr("name")] = remark.val();
                     params["inquiryId"] = dataSource.id;
                     params["status"] = 1;
+                    params["failReason"] = failReason.val();
 
 
                     if (confirm("是否确认将此标执行成功操作?")) {
@@ -597,7 +632,10 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                     arr.push(testList[i].userId);
                 }
 
-                $(".modal-user-list").append('<li style="padding-bottom: 0;">输入金额: <input class="modal-remark" placeholder="请输入中标金额" type="text" name="price" style="margin-left: 0;margin-right: 10px;"/><input class="modal-open" type="radio" name="openPrice" id="open" value="1" checked/><label for="openPrice" style="padding-left: 10px;float:none;font-weight:100;height">公开</label><input class="modal-open" type="radio" name="openPrice" id="no-open" value="0"/><label for="no-open" style="padding-left: 10px;float:none;font-weight:100;height">不公开</label></li>')
+                $(".modal-user-list").append('<li><span style="color:red">*</span>输入金额: <input class="modal-remark" placeholder="请输入中标金额" type="text" name="price" style="margin-left: 0;margin-right: 10px;"/><input class="modal-open" type="radio" name="openPrice" id="open" value="1" checked/><label for="openPrice" style="padding-left: 10px;float:none;font-weight:100;height">公开</label><input class="modal-open" type="radio" name="openPrice" id="no-open" value="0"/><label for="no-open" style="padding-left: 10px;float:none;font-weight:100;height">不公开</label></li>')
+                $(".modal-user-list").append('<li style="padding-bottom: 0;"><textarea class="modal-reason" type="text" name="failReason" style="margin-left: 0;resize: none;height:100px;width: 96%;padding: 2%;" placeholder="请输入原因，以便今后查看历史记录"/></li>')
+
+
             });
 
             $("#btn_failending").click(function () {

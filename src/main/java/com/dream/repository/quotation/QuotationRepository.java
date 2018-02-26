@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface QuotationRepository extends MyRepository<Quotation,Long> {
 
-    List<Quotation> findByInquiryAndRound(Inquiry inquiry,int round);
+    List<Quotation> findByInquiryAndRoundOrderByCreateTimeDesc(Inquiry inquiry,int round);
 
     @Query("from Quotation q where q.user = :user ")
     List<Quotation> findByUser(@Param("user") User user);
@@ -36,5 +36,7 @@ public interface QuotationRepository extends MyRepository<Quotation,Long> {
             " as a on a.aid=q.inquiry_id  where q.user_id =:user and q.round = a.around  group by q.inquiry_id  ) as ta " , nativeQuery = true)
     int countByDoneTimes(@Param("user") long user);
 
+    @Query(value = "select * from quotation where id in ( select max(id) as id from quotation where round =:round and inquiry_id =:inquiryId group by user_id) order by total_price asc", nativeQuery = true)
+    List<Quotation> findLastQuotationOrderByPrice(@Param("inquiryId")long inquiryId,@Param("round")int round);
 
 }

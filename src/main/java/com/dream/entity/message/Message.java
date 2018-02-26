@@ -61,6 +61,12 @@ public class Message extends AbstractPersistable<Long> {
      */
     private boolean sendFailEmail;
 
+    @Column(columnDefinition = "varchar(1000)")
+    private String reason = "";
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date reasonTime;
+
     public int getStatus() {
         return status;
     }
@@ -147,5 +153,21 @@ public class Message extends AbstractPersistable<Long> {
 
     public void setBade(boolean bade) {
         this.bade = bade;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public Date getReasonTime() {
+        return reasonTime;
+    }
+
+    public void setReasonTime(Date reasonTime) {
+        this.reasonTime = reasonTime;
     }
 }

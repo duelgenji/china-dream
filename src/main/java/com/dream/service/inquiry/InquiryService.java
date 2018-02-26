@@ -3,10 +3,12 @@ package com.dream.service.inquiry;
 import com.dream.entity.inquiry.Inquiry;
 import com.dream.entity.inquiry.InquiryFile;
 import com.dream.entity.inquiry.InquiryHistory;
+import com.dream.entity.message.Message;
 import com.dream.entity.quotation.Quotation;
 import com.dream.entity.quotation.QuotationFile;
 import com.dream.entity.user.OpenStatus;
 import com.dream.entity.user.User;
+import com.dream.entity.user.UserAccountLog;
 import com.dream.entity.user.UserIndex;
 import com.dream.repository.inquiry.InquiryFileRepository;
 import com.dream.repository.inquiry.InquiryHistoryRepository;
@@ -14,6 +16,7 @@ import com.dream.repository.inquiry.InquiryRepository;
 import com.dream.repository.message.MessageRepository;
 import com.dream.repository.quotation.QuotationFileRepository;
 import com.dream.repository.quotation.QuotationRepository;
+import com.dream.repository.user.UserAccountLogRepository;
 import com.dream.repository.user.UserIndexRepository;
 import com.dream.repository.user.UserRepository;
 import com.dream.utils.CommonEmail;
@@ -22,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 import static com.dream.entity.user.OpenStatus.OPEN;
@@ -58,6 +62,8 @@ public class InquiryService {
     @Autowired
     InquiryHistoryRepository inquiryHistoryRepository;
 
+    @Autowired
+    UserAccountLogRepository userAccountLogRepository;
     @Autowired
     CommonEmail commonEmail;
 
@@ -114,11 +120,13 @@ public class InquiryService {
         /*授权标记*/
         boolean isAuthorize= user.getId()!=null &&  messageRepository.findAllUserAndInquiryAndStatus(user, inquiry, 1).size() != 0;
 
+        /*排名标记*/
+        boolean isRank = false;
         //全明询价 只有注册用户才能看到他人出价
         if(user.getId()!=null){
             //除了全明询价 都至少授权才能看到
             if(inquiry.getInquiryMode().getId()<2 || isAuthorize || isOwner){
-                quotationList  =quotationRepository.findByInquiryAndRound(inquiry, inquiry.getRound());
+                quotationList  =quotationRepository.findByInquiryAndRoundOrderByCreateTimeDesc(inquiry, inquiry.getRound());
             }
         }
         List<QuotationFile> quotationFileList = new ArrayList<>();
@@ -163,6 +171,13 @@ public class InquiryService {
                         techFileList.add(fileMap);
                     }
                 }
+
+                //全明询价 获取我的出价排名
+                if(!isRank && inquiry.getInquiryMode().getId()<2){
+                    map.put("rank",getRank(inquiry,quotation));
+                    isRank = true;
+                }
+
                 map.put("businessFileList",businessFileList);
                 map.put("techFileList",techFileList);
                 myList.add(map);
@@ -394,7 +409,7 @@ public class InquiryService {
      */
     public void putQuotationList(Map<String, Object> res,  InquiryHistory ih){
 
-        List<Quotation> quotationList=quotationRepository.findByInquiryAndRound(ih.getInquiry(),ih.getRound());
+        List<Quotation> quotationList=quotationRepository.findByInquiryAndRoundOrderByCreateTimeDesc(ih.getInquiry(),ih.getRound());
         List<QuotationFile> quotationFileList;
 
         List<Map<String, Object>> histList = new ArrayList<Map<String,Object>>();
@@ -453,6 +468,67 @@ public class InquiryService {
 
         for (Object[] objects : userList) {
             commonEmail.pushEmail(objects[0].toString(),objects[1].toString(),inquiry);
+        }
+
+    }
+
+    //全明询价 获取我的出价排名
+    private int getRank(Inquiry inquiry,Quotation mine){
+        List<Quotation> list = quotationRepository.findLastQuotationOrderByPrice(inquiry.getId(),inquiry.getRound());
+
+        int index = 1;
+        for (Quotation q : list) {
+            if(q.getId().equals(mine.getId())){
+                break;
+            }
+            index++;
+        }
+        return index;
+    }
+
+    //甲方同意后自动结束流程
+    public void chooseAndFinish(User user_b, Inquiry inquiry, Long price){
+
+        Message message = new Message();
+        message.setUser(user_b);
+        message.setType(1);
+        message.setContent(price.toString());
+        message.setRound(inquiry.getRound());
+        message.setInquiry(inquiry);
+        message.setInquiryUser(inquiry.getUser());
+        message.setStatus(1);
+        messageRepository.save(message);
+
+
+        inquiry.setStatus(1);
+        inquiry.setWinner(user_b);
+        inquiry.setWinnerPrice(Long.parseLong(message.getContent()));
+        inquiry.setPurchaseCloseDate(new Date());
+        inquiryRepository.save(inquiry);
+
+        double calcAmount = inquiry.getTotalPrice() * inquiry.getDefaultAmountRate() * inquiry.getAdjustAmountRate();
+
+        UserIndex userIndex = user_b.getUserIndex();
+        DecimalFormat df=new DecimalFormat("0.00");
+        double currentAmount = userIndex.getAmount();
+        currentAmount = new Double(df.format(currentAmount - calcAmount));
+
+        userIndex.setAmount(currentAmount);
+        userIndexRepository.save(userIndex);
+
+        UserAccountLog userAccountLog = new UserAccountLog();
+        userAccountLog.setAuto(true);
+        userAccountLog.setInquiry(inquiry);
+        userAccountLog.setAmountChange(-calcAmount);
+        userAccountLog.setCurrentAmount(currentAmount);
+        userAccountLog.setUser(user_b);
+        userAccountLogRepository.save(userAccountLog);
+
+
+        // 发送成功邮件
+        List<Message> messages = messageRepository.findByInquiryAndStatus(inquiry,1);
+        for(Message m : messages){
+            commonEmail.sendEmail(m.getUser(),commonEmail.getContent(CommonEmail.TYPE.SUCCESS_B,inquiry,m.getUser()));
         }
 
     }

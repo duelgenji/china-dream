@@ -66,6 +66,11 @@ public class UserPersonalInfo implements Serializable {
      */
     private String weixin = "";
 
+    /**
+     * 个人网站
+     */
+    private String website;
+
     public Long getId() {
         return id;
     }
@@ -178,4 +183,11 @@ public class UserPersonalInfo implements Serializable {
         this.weixin = weixin;
     }
 
-  }
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+}

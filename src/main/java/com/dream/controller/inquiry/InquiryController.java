@@ -819,6 +819,7 @@ public class InquiryController {
             map.put("inquiryProvince", inquiry.getCompanyProvince()!=null ? inquiry.getCompanyProvince().getName():"");
             map.put("inquiryPrice", inquiry.getTotalPrice());
             map.put("auditStatus", inquiry.getAuditStatus());
+            map.put("failReason", inquiry.getFailReason());
             map.put("limitDate", DateFormatUtils.format(inquiry.getLimitDate(), "yyyy-MM-dd HH:mm:ss"));
 
             list.add(map);
@@ -1198,19 +1199,26 @@ public class InquiryController {
                     }
 
 
-                    Message message = new Message();
-                    message.setUser(user_b);
-                    message.setType(1);
-                    message.setContent(price.toString());
-                    message.setRound(inquiry.getRound());
-                    message.setInquiry(inquiry);
-                    message.setInquiryUser(user);
-                    messageRepository.save(message);
                     inquiry.setOpenWinner(openWinner);
                     inquiry.setOpenPrice(openPrice);
+                    inquiry.setFailReason(failReason);
+                    //甲方同意后自动结束流程
+                    inquiryService.chooseAndFinish(user_b,inquiry,price);
 
-                    //发送  选中用户邮件
-                    commonEmail.sendEmail(user_b,commonEmail.getContent(CommonEmail.TYPE.CHOSEN_B, inquiry, user_b));
+//                  改版之前的； MessageController.modifyMessageStatus 没有修改 因为不需要乙方站内信点击同意了
+//                    Message message = new Message();
+//                    message.setUser(user_b);
+//                    message.setType(1);
+//                    message.setContent(price.toString());
+//                    message.setRound(inquiry.getRound());
+//                    message.setInquiry(inquiry);
+//                    message.setInquiryUser(user);
+//                    messageRepository.save(message);
+//                    inquiry.setOpenWinner(openWinner);
+//                    inquiry.setOpenPrice(openPrice);
+//
+//                    //发送  选中用户邮件
+//                    commonEmail.sendEmail(user_b,commonEmail.getContent(CommonEmail.TYPE.CHOSEN_B, inquiry, user_b));
 
                 }
             }else if(status==2){

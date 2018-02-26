@@ -123,6 +123,8 @@ public class MessageController{
             map.put("inquiryMode", message.getInquiry().getInquiryMode().getName());
             map.put("inquiryRound", message.getInquiry().getRound());
             map.put("type", message.getType());
+            map.put("reason", message.getReason());
+            map.put("reasonTime", message.getReasonTime());
             list.add(map);
         }
 
@@ -141,6 +143,7 @@ public class MessageController{
     public Map<String, Object> modifyMessageStatus(
             @RequestParam(required = false) long messageId,
             @RequestParam(required = false) int status,
+            @RequestParam(required = false) String reason,
             @ModelAttribute("currentUser") User user) {
 
         Map<String, Object> res = new HashMap<>();
@@ -171,6 +174,7 @@ public class MessageController{
 
         message.setStatus(status);
          if(status==1 && message.getType()==1){
+             //乙方确认 甲方的选择合同 = 出价成功
              Inquiry inquiry =  message.getInquiry();
              inquiry.setStatus(1);
              inquiry.setWinner(user);
@@ -210,6 +214,12 @@ public class MessageController{
         } else if(status==1 && message.getType()==0){
              //同意 授权 邮件
              commonEmail.sendEmail(message.getUser(),commonEmail.getContent(CommonEmail.TYPE.AGREE_B,message.getInquiry(),message.getUser()));
+             message.setReasonTime(new Date());
+             message.setReason(reason);
+         }else if(status==2 && message.getType()==0){
+             //拒绝 授权
+             message.setReasonTime(new Date());
+             message.setReason(reason);
          }
         messageRepository.save(message);
 

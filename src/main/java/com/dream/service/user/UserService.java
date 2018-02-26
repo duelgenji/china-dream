@@ -155,6 +155,9 @@ public class UserService {
                 if(request.getParameter("weixin")!=null){
                     userPersonalInfo.setWeixin(request.getParameter("weixin"));
                 }
+                if(request.getParameter("website")!=null){
+                    userPersonalInfo.setWebsite(request.getParameter("website"));
+                }
                 if(request.getParameter("companyIndustry")!=null){
                     Long iid=Long.parseLong(request.getParameter("companyIndustry"));
                     CompanyIndustry companyIndustry= companyIndustryRepository.findOne(iid);
@@ -378,6 +381,7 @@ public class UserService {
                     res.put("majorOpen",user.getUserPersonalInfo().getMajorOpen().ordinal());
                     res.put("school",user.getUserPersonalInfo().getSchool());
                     res.put("schoolOpen",user.getUserPersonalInfo().getSchoolOpen().ordinal());
+                    res.put("website",user.getUserPersonalInfo().getWebsite());
                     break;
                 case 2:
                     res.put("website",user.getUserCompanyInfo().getWebsite());

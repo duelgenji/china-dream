@@ -25,13 +25,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @SpringBootApplication
 @EnableJpaAuditing
 @EnableJpaRepositories(
-        basePackages = {"${app.basePackages}"},
+        basePackages = {"com.dream"},
         repositoryBaseClass = MyRepositoryImpl.class
 )
 @EnableScheduling
 @EnableAsync
 @EntityScan({"${app.basePackages}"})
-@ComponentScan({"${app.basePackages}"})
+@ComponentScan({"com.dream"})
 public class Application extends SpringBootServletInitializer {
 
     @Value("${jackson.indent.output}")

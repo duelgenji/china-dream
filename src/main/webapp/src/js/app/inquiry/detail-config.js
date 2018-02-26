@@ -108,7 +108,109 @@ define("detail-config", [], function(require, exports) {
                 issort: false,
                 renderFn: "renderOpt"
             }
-        }];
+        }],
+    columns_qm = [{
+        index: 1,
+        head: {
+            width: 99,
+            issort: false,
+            text: "排名"
+        },
+        body: {
+            align: "center",
+            fields: "rank",
+            renderFn: "renderRank"
+        }
+    }, {
+        index: 2,
+        head: {
+            width: 99,
+            issort: false,
+            text: "当前轮数"
+        },
+        body: {
+            align: "center",
+            fields: "round",
+            renderFn: "renderRound"
+        }
+    }, {
+        index: 3,
+        head: {
+            text: "投标方名称",
+            width: 132,
+            issort: false,
+            align: "center"
+        },
+        body: {
+            align: "center",
+            fields: "userNickName,userId",
+            renderFn:"renderNickName"
+        }
+    },  {
+        index: 4,
+        head: {
+            text: "报价日期",
+            width: 169,
+            issort: false,
+            align: "center"
+        },
+        body: {
+            align: "center",
+            fields: "createTime"
+        }
+    }, {
+        index: 5,
+        head: {
+            text: "报价金额",
+            width: 169,
+            issort: false,
+            align: "center"
+        },
+        body: {
+            align: "center",
+            fields: "totalPrice"
+        }
+    }, {
+        index: 6,
+        head: {
+            text: "商务附件",
+            width: 200,
+            issort: false,
+            align: "center"
+        },
+        body: {
+            align: "center",
+            fields: "businessFileList",
+            renderFn: "renderAttachments"
+        }
+    },  {
+        index: 7,
+        head: {
+            text: "技术附件",
+            width: 200,
+            issort: false,
+            align: "center"
+        },
+        body: {
+            align: "center",
+            fields: "techFileList",
+            renderFn: "renderAttachments"
+        }
+    }, {
+        index: 8,
+        head: {
+            text: "操作",
+            width: 120,
+            issort: false,
+            align: "center"
+        },
+        body: {
+            align: "center",
+            // fields: "id",
+            issort: false,
+            renderFn: "renderOpt"
+        }
+    }];
 
     exports.gridConfig = {
         key: "myBidGrid",
@@ -121,6 +223,13 @@ define("detail-config", [], function(require, exports) {
         key: "otherBidGrid",
         renderTo: "data2",
         columns: columns,
+        sortCss: sortCss
+    };
+
+    exports.gridConfig2qm = {
+        key: "myBidGrid",
+        renderTo: "data",
+        columns: columns_qm,
         sortCss: sortCss
     };
 

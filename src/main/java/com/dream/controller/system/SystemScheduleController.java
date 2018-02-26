@@ -65,22 +65,22 @@ public class SystemScheduleController {
     }
 
     public void inquiryOverLimitTime(){
-        //发送60天即将流标邮件
-        List<Inquiry> inquiryList = inquiryRepository.findByStatusAndModifyDateLessThanAndSendFailEmail(0, DateUtils.addDays(new Date(), -60), false);
-        for ( Inquiry inquiry : inquiryList) {
-            commonEmail.sendEmail(inquiry.getUser(),commonEmail.getContent(CommonEmail.TYPE.AUTO60,inquiry,null));
-            inquiry.setSendFailEmail(true);
-            inquiryRepository.save(inquiry);
-        }
-
-        //67天自动流标
-        //发送流标邮件
-        List<Inquiry> inquiryList2  = inquiryRepository.findByStatusAndModifyDateLessThan(0, DateUtils.addDays(new Date(), -67));
-        for ( Inquiry inquiry : inquiryList2) {
-            commonEmail.sendEmail(inquiry.getUser(),commonEmail.getContent(CommonEmail.TYPE.AUTO67,inquiry,null));
-            inquiry.setStatus(2);
-            inquiryRepository.save(inquiry);
-        }
+//        //发送60天即将流标邮件
+//        List<Inquiry> inquiryList = inquiryRepository.findByStatusAndModifyDateLessThanAndSendFailEmail(0, DateUtils.addDays(new Date(), -60), false);
+//        for ( Inquiry inquiry : inquiryList) {
+//            commonEmail.sendEmail(inquiry.getUser(),commonEmail.getContent(CommonEmail.TYPE.AUTO60,inquiry,null));
+//            inquiry.setSendFailEmail(true);
+//            inquiryRepository.save(inquiry);
+//        }
+//
+//        //67天自动流标
+//        //发送流标邮件
+//        List<Inquiry> inquiryList2  = inquiryRepository.findByStatusAndModifyDateLessThan(0, DateUtils.addDays(new Date(), -67));
+//        for ( Inquiry inquiry : inquiryList2) {
+//            commonEmail.sendEmail(inquiry.getUser(),commonEmail.getContent(CommonEmail.TYPE.AUTO67,inquiry,null));
+//            inquiry.setStatus(2);
+//            inquiryRepository.save(inquiry);
+//        }
 
         //发送 成功标 2天未响应邮件
         List<Message> messageList = messageRepository.findByStatusAndCreateTimeLessThanAndSendFailEmailAndType(0, DateUtils.addDays(new Date(), -2), false, 1);
