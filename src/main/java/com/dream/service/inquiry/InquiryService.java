@@ -183,6 +183,12 @@ public class InquiryService {
                 myList.add(map);
             }else{
                 //他人出价
+
+                //全明询价 改为无法看到他人出价
+                if(inquiry.getInquiryMode().getId().equals(1L) && !isOwner){
+                    continue;
+                }
+
                 if(!inquiry.getInquiryMode().getId().equals(3l) || isOwner){
                     /*半明询价 乙方不能看到文件*/
                     quotationFileList=quotationFileRepository.findByQuotation(quotation);

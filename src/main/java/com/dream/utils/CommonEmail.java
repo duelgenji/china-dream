@@ -157,7 +157,7 @@ public class CommonEmail {
 //            sEmail.setMsg(buffer.toString());
             sEmail.setHtmlMsg(buffer.toString());
             //todo 发送开关
-//            sEmail.send();
+            sEmail.send();
         } catch (EmailException e) {
             e.printStackTrace();
         }
@@ -261,7 +261,7 @@ public class CommonEmail {
 //            sEmail.setMsg(buffer.toString());
             sEmail.setHtmlMsg(buffer.toString());
             //todo 发送开关
-//            sEmail.send();
+            sEmail.send();
         } catch (EmailException e) {
             e.printStackTrace();
         }

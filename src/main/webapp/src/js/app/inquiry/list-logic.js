@@ -159,8 +159,8 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
         var mode = vals[2];
         var modeDetail = "";
         switch (mode) {
-            case "全明询价":
-                modeDetail = "当询价方勾选全明询价选项后，即所有在本网站注册用户均可在该询价截止时间前看见所有参与出价方之方案，报价，清单及所有文件。";
+            case "竞价排名":
+                modeDetail = "该规则请与中梦国网工作人员联系。";
                 break;
             case "明询价":
                 modeDetail = "当询价方勾选明询价选项后，即所有被授权出价方均可在该询价截止时间前看见对手之方案，报价，清单及所有文件。并可多次修改方案和出价。";

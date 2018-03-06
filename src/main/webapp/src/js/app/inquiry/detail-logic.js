@@ -80,7 +80,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
     function fn_initGrid(config) {
         var grid = gridMod(config || configMod.gridConfig);
 
-        if(dataSource.inquiryMode=="全明询价"){
+        if(dataSource.inquiryMode=="竞价排名"){
             grid = gridMod(configMod.gridConfig2qm);
         }
 
@@ -607,7 +607,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                     if (confirm("是否确认将此标执行成功操作?")) {
                         //console.log(JSON.stringify(params));
                         changeInquiryStatus(params, function (data) {
-                            alert("已发送站内信，请等待对方确认!");
+                            // alert("已发送站内信，请等待对方确认!");
                             location.reload();
                         }, function (data) {
                             alert(data.message);

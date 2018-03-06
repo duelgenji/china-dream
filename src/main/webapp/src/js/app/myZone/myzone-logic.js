@@ -169,7 +169,7 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
         var reslt = "";
         switch (val) {
             case 1:
-                reslt = "全明询价";
+                reslt = "竞价排名";
                 break;
             case 2:
                 reslt = "明询价";
