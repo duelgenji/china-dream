@@ -177,6 +177,9 @@ define("list-logic", ["jquery", "inquiry-repos", "list-config", "pure-grid", "pu
             case "全暗询价":
                 modeDetail = "当询价方勾选全暗询价选项后，所有出价方上传之方案，报价，清单及所有文件均储存于本网站服务器上，待截止时间后2小时后之内发送至询价方。";
                 break;
+            case "限时竞价":
+                modeDetail = "该规则请与中梦国网工作人员联系。";
+                break;
         }
 
         return vals[0] + "<br />第" + vals[1] + "轮<br /><span title=" + modeDetail + ">" + mode + "</span>";

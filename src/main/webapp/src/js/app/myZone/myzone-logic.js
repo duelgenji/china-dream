@@ -186,6 +186,9 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
             case 6:
                 reslt = "全暗询价";
                 break;
+            case 7:
+                reslt = "限时竞价";
+                break;
         }
         return reslt;
     }
@@ -468,6 +471,23 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
         $("#select_msg").on("change", function () {
             fn_initGrid(configMod["gridCfg4"]);
             fn_getMyLettermsgList();
+        });
+
+
+        $("#btn_export").on("click", function () {
+            dialogMod.mask.show();
+
+            ajaxExport(null, function (data) {
+                window.open(data.zipUrl);
+                dialogMod.mask.hide();
+            }, function (result) {
+                alert(result.message);
+                dialogMod.mask.hide();
+            }, function () {
+                alert("请求失败");
+                dialogMod.mask.hide();
+
+            });
         });
 
 

@@ -13,6 +13,7 @@ import com.dream.repository.quotation.QuotationRepository;
 import com.dream.repository.user.UserCollectionRepository;
 import com.dream.repository.user.UserIndexRepository;
 import com.dream.repository.user.UserRepository;
+import com.dream.service.inquiry.InquiryService;
 import com.dream.service.user.UserService;
 import com.dream.utils.UploadUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -52,6 +53,9 @@ public class QuotationController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    InquiryService inquiryService;
 
     @Autowired
     UserCollectionRepository userCollectionRepository;
@@ -98,6 +102,20 @@ public class QuotationController {
             return res;
         }
 
+
+        //判断限时竞价逻辑
+
+        if(inquiry.getInquiryMode().getId()==7){
+            String verifyResult = inquiryService.verifyQuotationLimit(user,inquiryId);
+            if(!verifyResult.equals("")){
+                res.put("success",0);
+                res.put("message",verifyResult);
+                return res;
+            }
+        }
+
+
+        //正式出价
         Quotation quotation = new Quotation();
         quotation.setUser(user);
         quotation.setInquiry(inquiry);

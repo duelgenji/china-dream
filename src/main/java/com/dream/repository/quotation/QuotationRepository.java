@@ -7,6 +7,7 @@ import com.wonders.xlab.framework.repository.MyRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,5 +39,11 @@ public interface QuotationRepository extends MyRepository<Quotation,Long> {
 
     @Query(value = "select * from quotation where id in ( select max(id) as id from quotation where round =:round and inquiry_id =:inquiryId group by user_id) order by total_price asc", nativeQuery = true)
     List<Quotation> findLastQuotationOrderByPrice(@Param("inquiryId")long inquiryId,@Param("round")int round);
+
+    @Query(value = "select * from quotation where id in ( select max(id) as id from quotation where round =:round and inquiry_id =:inquiryId and create_time>:createTime group by user_id) order by total_price asc", nativeQuery = true)
+    List<Quotation> findLastQuotationByTimeOrderByPrice(@Param("inquiryId")long inquiryId,@Param("round")int round,@Param("createTime")Date createTime);
+
+    @Query("from Quotation q where q.user = :user and q.inquiry= :inquiry and q.round=:round and q.createTime between :startTime and :endTime")
+    List<Quotation> findByInquiryAndRoundAndCreateTimeBetween(@Param("user") User user,@Param("inquiry")Inquiry inquiry,@Param("round")int round,@Param("startTime") Date startTime, @Param("endTime") Date endTime);
 
 }

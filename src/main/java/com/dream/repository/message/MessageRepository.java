@@ -39,4 +39,7 @@ public interface MessageRepository  extends MyRepository<Message,Long> {
 
     List<Message> findByStatusAndCreateTimeLessThanAndSendFailEmailAndType(int status,Date date,boolean sendFailEmail,int type);
 
+    @Query("from Message m where m.inquiry = :inquiry and m.round=:round and m.type=0 order by id desc ")
+    List<Message> findByInquiryAndRound( @Param("inquiry") Inquiry inquiry, @Param("round") int round);
+
 }

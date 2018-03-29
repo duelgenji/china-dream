@@ -1,15 +1,17 @@
 package com.dream.service.inquiry;
 
+import com.dream.dto.excel.ExportDto;
+import com.dream.dto.excel.InquiryExportDto;
+import com.dream.dto.excel.QuotationExportDto;
+import com.dream.dto.excel.RoundExportDto;
 import com.dream.entity.inquiry.Inquiry;
 import com.dream.entity.inquiry.InquiryFile;
 import com.dream.entity.inquiry.InquiryHistory;
 import com.dream.entity.message.Message;
 import com.dream.entity.quotation.Quotation;
 import com.dream.entity.quotation.QuotationFile;
-import com.dream.entity.user.OpenStatus;
-import com.dream.entity.user.User;
-import com.dream.entity.user.UserAccountLog;
-import com.dream.entity.user.UserIndex;
+import com.dream.entity.user.*;
+import com.dream.interceptor.CommonException;
 import com.dream.repository.inquiry.InquiryFileRepository;
 import com.dream.repository.inquiry.InquiryHistoryRepository;
 import com.dream.repository.inquiry.InquiryRepository;
@@ -17,13 +19,22 @@ import com.dream.repository.message.MessageRepository;
 import com.dream.repository.quotation.QuotationFileRepository;
 import com.dream.repository.quotation.QuotationRepository;
 import com.dream.repository.user.UserAccountLogRepository;
+import com.dream.repository.user.UserExportLogRepository;
 import com.dream.repository.user.UserIndexRepository;
 import com.dream.repository.user.UserRepository;
 import com.dream.utils.CommonEmail;
+import com.dream.utils.ExcelUtils;
+import com.dream.utils.UploadUtils;
+import com.qiniu.processing.OperationStatus;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.poi.ss.usermodel.DateUtil;
+import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DecimalFormat;
 import java.util.*;
@@ -36,6 +47,7 @@ import static com.dream.entity.user.OpenStatus.OPEN;
 @Service
 public class InquiryService {
 
+    Logger logger = LoggerFactory.getLogger(InquiryService.class);
 
     @Autowired
     InquiryRepository inquiryRepository;
@@ -64,6 +76,10 @@ public class InquiryService {
 
     @Autowired
     UserAccountLogRepository userAccountLogRepository;
+
+    @Autowired
+    UserExportLogRepository userExportLogRepository;
+
     @Autowired
     CommonEmail commonEmail;
 
@@ -172,8 +188,8 @@ public class InquiryService {
                     }
                 }
 
-                //全明询价 获取我的出价排名
-                if(!isRank && inquiry.getInquiryMode().getId()<2){
+                //竞价排名 或者 限时竞价 获取我的出价排名
+                if(!isRank && (inquiry.getInquiryMode().getId()==1 || inquiry.getInquiryMode().getId()==7 )){
                     map.put("rank",getRank(inquiry,quotation));
                     isRank = true;
                 }
@@ -478,9 +494,32 @@ public class InquiryService {
 
     }
 
-    //全明询价 获取我的出价排名
-    private int getRank(Inquiry inquiry,Quotation mine){
-        List<Quotation> list = quotationRepository.findLastQuotationOrderByPrice(inquiry.getId(),inquiry.getRound());
+    //竞价排名 获取我的出价排名
+    private String getRank(Inquiry inquiry,Quotation mine){
+        List<Quotation> list ;
+        if(inquiry.getInquiryMode().getId()==1){
+            //竞价排名
+            list = quotationRepository.findLastQuotationOrderByPrice(inquiry.getId(),inquiry.getRound());
+        }else{
+            //限时竞价
+            //获取时间
+            Date limitDate = inquiry.getLimitDate();
+            Date now = new Date();
+
+            //当前时间在截止时间前20-30分钟的
+            if(limitDate.getTime()-now.getTime()<30*60*1000 && limitDate.getTime()-now.getTime()>=20*60*1000){
+                //半小时前的出价
+                list = quotationRepository.findLastQuotationByTimeOrderByPrice(inquiry.getId(),inquiry.getRound(),new Date(limitDate.getTime()-30*60*1000));
+            }else if(limitDate.getTime()-now.getTime()<20*60*1000 && limitDate.getTime()-now.getTime()>=10*60*1000){
+                //20分钟前的
+                list = quotationRepository.findLastQuotationByTimeOrderByPrice(inquiry.getId(),inquiry.getRound(),new Date(limitDate.getTime()-20*60*1000));
+            }else if(limitDate.getTime()-now.getTime()<10*60*1000){
+                list = quotationRepository.findLastQuotationOrderByPrice(inquiry.getId(),inquiry.getRound());
+            }else{
+                return "暂无排名";
+            }
+
+        }
 
         int index = 1;
         for (Quotation q : list) {
@@ -489,7 +528,7 @@ public class InquiryService {
             }
             index++;
         }
-        return index;
+        return index+"";
     }
 
     //甲方同意后自动结束流程
@@ -538,5 +577,180 @@ public class InquiryService {
         }
 
     }
+
+
+    //限时竞价 判断是否能出价
+    public String verifyQuotationLimit(User user, long inquiryId){
+        Inquiry inquiry = inquiryRepository.findOne(inquiryId);
+
+        Date limitDate = inquiry.getLimitDate();
+        Date now = new Date();
+
+        List<Quotation> list;
+
+        //当前时间在截止时间30分钟的
+        if(limitDate.getTime()-now.getTime() >= 30*60*1000){
+            //判断三十分钟前有没有出价
+            list = quotationRepository.findByInquiryAndRoundAndCreateTimeBetween(user,inquiry,inquiry.getRound(),new Date(0),new Date(limitDate.getTime()-30*60*1000));
+            if(list.size()>0){
+                return "请在"+new DateTime(new Date(limitDate.getTime()-30*60*1000)).toString("hh:mm:ss")+"之后再次出价";
+            }
+
+        }else if(limitDate.getTime()-now.getTime()<30*60*1000 && limitDate.getTime()-now.getTime()>=20*60*1000){
+
+            list = quotationRepository.findByInquiryAndRoundAndCreateTimeBetween(user,inquiry,inquiry.getRound(),new Date(limitDate.getTime()-30*60*1000),new Date(limitDate.getTime()-20*60*1000));
+            if(list.size()>0){
+                return "请在"+new DateTime(new Date(limitDate.getTime()-20*60*1000)).toString("hh:mm:ss")+"之后再次出价";
+            }
+
+        }else if(limitDate.getTime()-now.getTime()<20*60*1000 && limitDate.getTime()-now.getTime()>=10*60*1000){
+
+            list = quotationRepository.findByInquiryAndRoundAndCreateTimeBetween(user,inquiry,inquiry.getRound(),new Date(limitDate.getTime()-20*60*1000),new Date(limitDate.getTime()-10*60*1000));
+            if(list.size()>0){
+                return "不能再次出价";
+            }
+
+        }else if(limitDate.getTime()-now.getTime()<10*60*1000){
+            return "最后出价时间已过";
+        }
+
+        return "";
+    }
+
+    //导出excel 返回zip url
+    @Transactional
+    public String exportToExcel(User user, String os){
+
+        //判断近日的导出日志
+        UserExportLog record = userExportLogRepository.findFirstByUserOrderByCreateTimeDesc(user);
+        if(record!=null){
+
+            long mill = new Date().getTime() - record.getCreateTime().getTime();
+
+            //一天内成功过的 直接返回原来的url
+            if(mill <  24 * 60 * 60 * 1000 && record.getStatus()==0){
+                return record.getZipUrl();
+            }
+
+            // 检查有没有完成 更改状态 返回url
+            if(record.getStatus()==1 || record.getStatus()==2){
+                OperationStatus status = new UploadUtils().checkZipStatus(record.getPersistentId());
+
+                if(status.code != 1 && status.code != 2 ){
+                    record.setStatus(status.code);
+                    userExportLogRepository.save(record);
+                    return record.getZipUrl();
+                }
+            }
+
+        }
+
+        ExportDto exportDto = new ExportDto();
+        exportDto.setName("用户"+user.getNickName()+"询价导出" + new DateTime().toString("yyMMdd"));
+        List<InquiryExportDto> inquiryExportDtoList = new ArrayList<>();
+
+        List<Inquiry> inquiryList = inquiryRepository.findByUser(user);
+
+        if(inquiryList.size()<1){
+            throw new CommonException("没有可以导出的询价");
+        }
+
+        logger.info("有"+inquiryList.size() +"条询价");
+
+        for(Inquiry inquiry : inquiryList){
+            if(inquiry.getStatus()==0 || inquiry.getAuditStatus()!=2){
+                continue;
+            }
+
+            InquiryExportDto inquiryExportDto = new InquiryExportDto();
+            inquiryExportDto.inquiry2Dto(inquiry);
+
+            List<InquiryFile> inquiryFile = inquiryFileRepository.findByInquiryAndRound(inquiry, inquiry.getRound());
+            inquiryExportDto.setInquiryFileList(inquiryFile);
+
+            List<RoundExportDto> roundExportDtoList = new ArrayList<>();
+            RoundExportDto roundExportDto;
+            for (int i = 1; i <= inquiry.getRound(); i++) {
+
+                roundExportDto = new RoundExportDto();
+                List<Message> messageList = messageRepository.findByInquiryAndRound(inquiry, i);
+                List<Quotation> quotationList = quotationRepository.findByInquiryAndRoundOrderByCreateTimeDesc(inquiry , i);
+                List<QuotationExportDto> quotationExportDtoList = new ArrayList<>();
+
+                roundExportDto.setMessageList(messageList);
+                QuotationExportDto quotationExportDto;
+                for(Quotation quotation : quotationList){
+                    quotationExportDto = new QuotationExportDto();
+                    quotationExportDto.setUserUrl("http://www.mychinadreams.com/test/html/userDetail.html?key="+quotation.getUser().getId());
+                    quotationExportDto.setName(quotation.getUser().getNickName());
+                    quotationExportDto.setProvince(quotation.getUser().getCompanyProvince()!=null?quotation.getUser().getCompanyProvince().getName():"");
+                    quotationExportDto.setPrice(quotation.getTotalPrice().toString());
+                    quotationExportDto.setDateTime(new DateTime(quotation.getCreateTime()).toString("yyyy-MM-dd hh:mm:ss"));
+
+                    List<QuotationFile> quotationFileList = quotationFileRepository.findByQuotation(quotation);
+                    List<QuotationFile> businessFileList = new ArrayList<>();
+                    List<QuotationFile> techFileList = new ArrayList<>();
+                    for(QuotationFile quotationFile : quotationFileList){
+                        if(quotationFile.getType()==0){
+                            businessFileList.add(quotationFile);
+                        }else if(quotationFile.getType()==1){
+                            techFileList.add(quotationFile);
+                        }
+                    }
+                    quotationExportDto.setBusinessFileList(businessFileList);
+                    quotationExportDto.setTechFileList(techFileList);
+                    quotationExportDtoList.add(quotationExportDto);
+
+                }
+
+                logger.info("第"+i +"轮" + messageList.size() + "," + quotationExportDtoList.size());
+
+                roundExportDto.setQuotationExportDtoList(quotationExportDtoList);
+                roundExportDtoList.add(roundExportDto);
+
+            }
+
+            inquiryExportDto.setRoundExportDtoList(roundExportDtoList);
+
+
+            inquiryExportDtoList.add(inquiryExportDto);
+        }
+        exportDto.setInquiryExportDtoList(inquiryExportDtoList);
+
+        ExcelUtils excelUtils= new ExcelUtils();
+
+        String excelUrl = UploadUtils.uploadFile("excel/"+exportDto.getName()+".xlsx",excelUtils.exportToExcel(exportDto));
+
+        UserExportLog userExportLog = new UserExportLog();
+        userExportLog.setUser(user);
+        userExportLog.setExcelUrl(excelUrl);
+        userExportLog.setZipUrl("http://cdn.mychinadreams.com/zip/"+exportDto.getName()+".zip");
+
+        //创建压缩
+        String perId = UploadUtils.mkzip(excelUrl, excelUtils.fileLinkList, os);
+        userExportLog.setPersistentId(perId);
+
+
+        for (int i = 1; i <=10; i++) {
+            logger.info("check zip status time" + i);
+            OperationStatus status = new UploadUtils().checkZipStatus(perId);
+            if(status.code != 1 && status.code != 2 ){
+                userExportLog.setStatus(status.code);
+                break;
+            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        userExportLogRepository.save(userExportLog);
+
+        return userExportLog.getZipUrl();
+    }
+
+
+
+
 
 }

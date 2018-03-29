@@ -351,7 +351,7 @@
                         </label>
                         <input type="hidden" id="hd_purchaseCloseDate" name="limitDate">
                         <input id="purchaseCloseDate" type="text" autocomplete="OFF" style="width:156px;"
-                               placeholder="请输入项目截止时间" data-valid="require" data-pos="470" data-errmsg="格式有误,范例：2011-10-01" data-errmsg2="日期无效，不能超过60天">
+                               placeholder="请输入项目截止时间" data-valid="require" data-pos="470" data-errmsg="格式有误,范例：2011-10-01" data-errmsg2="日期无效，不能在当前时间之前或者超过60天">
                         <img id="calendar_ctrl" class="ui-calendar_ctrl"/>
                         <select id="purchaseCloseDateHour" style="width:65px;margin-left:2px;">
                             <option value="0:00">0:00</option>
@@ -415,16 +415,20 @@
                             <option value="6">
                                 全暗询价
                             </option>
+                            <option value="7">
+                                限时竞价
+                            </option>
                         </select>
 
 
-                        <em>
+                        <em style="font-size: 10px;">
                             <span title="该规则请与中梦国网工作人员联系。">竞价排名</span>
                             <span title="当询价方勾选明询价选项后，即所有被授权出价方均可在该询价截止时间前看见对手之方案，报价，清单及所有文件。并可多次修改方案和出价。">明询价</span>
                             <span title="当询价方勾选半明询价选项后，即被授权出价方可在该询价截止时间前仅看见对手之报价。并可多次出价。">半明询价</span>
                             <span title="当询价方勾选暗询价选项后，仅询价方可实时看见出价方之方案，报价，清单及所有文件。">半暗询价</span>
                             <span title="当询价方勾选半暗询价选项后，仅询价方可看见出价方之技术文件，及所有不涉及价格之文件（询价方请自行在所发布的询价文件中严格规定技术文件和商务文件的定义，可参考中梦国网文件下载模板），而清单及报价均储存于本网站服务器上，待截止时间后2-240小时后（用户自行定义）之内发送至询价方。">暗询价</span>
                             <span title="当询价方勾选全暗询价选项后，所有出价方上传之方案，报价，清单及所有文件均储存于本网站服务器上，待截止时间后2小时后之内发送至询价方。">全暗询价</span>
+                            <span title="该规则请与中梦国网工作人员联系。">限时竞价</span>
                         </em>
                     </li>
                     <li>

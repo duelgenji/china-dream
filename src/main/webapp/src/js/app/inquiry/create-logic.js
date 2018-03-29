@@ -127,9 +127,11 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
 
         }else if(val && val.match(/^(\d{4})\-(\d{1,2})\-(\d{1,2})$/ )){
 
-            var d= new Date(val).getTime();
+            var d= new Date( (val+" "+$("#purchaseCloseDateHour").val()).replace(/-/g,"/")).getTime();
             var now = new Date().getTime();
-            if(!d || d<now || d-now>=1000*60*60*24*61){
+            console.log(new Date(d).toDateString())
+            console.log(new Date(now).toDateString())
+            if(!d || (new Date(d).toDateString()!=new Date(now).toDateString() && d<now)  || d-now>=1000*60*60*24*61){
                 showErrorTip(dom.data("pos"), dom.data("errmsg2"));
                 isError = !!1;
             }
@@ -437,6 +439,17 @@ define("create-logic", ["jquery", "main", "inquiry-repos", "pure-validator", "pu
             }
         }
 
+        //切换为限时竞价 改变时间选择控件
+        if($(this).val()==7){
+            $("#purchaseCloseDate").attr("disabled","disabled");
+            $("#purchaseCloseDate").val(c__dateToString(new Date()));
+            $("#calendar_ctrl").hide();
+            $("#purchaseCloseDateHour").empty().append("<option value='9:00'>9:00</option><option value='10:00'>10:00</option><option value='11:00'>11:00</option><option value='12:00'>12:00</option><option value='13:00'>13:00</option><option value='14:00'>14:00</option><option value='15:00'>15:00</option><option value='16:00'>16:00</option><option value='17:00'>17:00</option><option value='18:00'>18:00</option>");
+        }else{
+            $("#purchaseCloseDate").removeAttr("disabled");
+            $("#calendar_ctrl").show();
+            $("#purchaseCloseDateHour").empty().append("<option value='0:00'>0:00</option><option value='1:00'>1:00</option><option value='2:00'>2:00</option><option value='3:00'>3:00</option><option value='4:00'>4:00</option><option value='5:00'>5:00</option><option value='6:00'>6:00</option><option value='7:00'>7:00</option><option value='8:00'>8:00</option><option value='9:00'>9:00</option><option value='10:00' selected=\"selected\">10:00</option><option value='11:00'>11:00</option><option value='12:00'>12:00</option><option value='13:00'>13:00</option><option value='14:00'>14:00</option><option value='15:00'>15:00</option><option value='16:00'>16:00</option><option value='17:00'>17:00</option><option value='18:00'>18:00</option><option value='19:00'>19:00</option><option value='20:00'>20:00</option><option value='21:00'>21:00</option><option value='22:00'>22:00</option><option value='23:00'>23:00</option>");
+        }
 
     });
 

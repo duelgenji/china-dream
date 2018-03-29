@@ -80,7 +80,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
     function fn_initGrid(config) {
         var grid = gridMod(config || configMod.gridConfig);
 
-        if(dataSource.inquiryMode=="竞价排名"){
+        if(dataSource.inquiryMode=="竞价排名" || dataSource.inquiryMode=="限时竞价"){
             grid = gridMod(configMod.gridConfig2qm);
         }
 
@@ -389,7 +389,6 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                         '<button id="modal-confirm" type="submit" style="display: none;">333</button></ul></form>', function () {
                         $("#modal-confirm").click();
                     });
-
                     $(".delete-file").hide().on("click", function () {
                         $(this).prev().val("");
                         $(this).hide();
@@ -406,6 +405,11 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                         var re = /^[0-9]+.?[0-9]*$/;
                         if(money.val()=="" || !re.test(money.val())){
                             alert("请输入数字");
+                            return;
+                        }
+
+                        if(dataSource.inquiryMode == "限时竞价" && money.val()< dataSource.totalPrice){
+                            alert("金额不能小于标的"+dataSource.totalPrice);
                             return;
                         }
 

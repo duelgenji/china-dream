@@ -113,7 +113,7 @@ public  class UserController {
         }
         if(type==2 && Arrays.asList(new String[]{"126.com", "163.com", "139.com", "gmail.com", "hotmail.com",
                 "sohu.com", "sina.com", "sina.cn", "yeah.net", "qq.com", "189.cn", "263.net", "outlook.com",
-                "21cn.com", "188.com", "wo.cn", "sogou.com"}).contains(email.split("@")[1])){
+                "21cn.com", "188.com", "wo.cn", "sogou.com", "vip.163.com"}).contains(email.split("@")[1])){
             res.put("success", "0");
             res.put("message", "请不要使用个人邮箱");
             return res;

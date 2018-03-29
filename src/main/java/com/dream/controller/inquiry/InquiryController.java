@@ -1279,4 +1279,34 @@ public class InquiryController {
         res.put("success",1);
         return res;
     }
+
+    /**
+     * 导出
+     */
+    @RequestMapping("export")
+    public Map<String, Object> export(
+//            @RequestParam(required = false) long userId,
+            @RequestParam(required = false) String os
+            , @ModelAttribute("currentUser") User user
+    ){
+        Map<String, Object> res = new HashMap<>();
+
+        if(user.getId()==null){
+            res.put("success",0);
+            res.put("message","请先登录");
+            return res;
+        }
+
+        String zipUrl = inquiryService.exportToExcel(user, os);
+        if(zipUrl==null || zipUrl.equals("")){
+            res.put("message","打包失败 请联系管理员");
+            res.put("success",0);
+            return res;
+        }
+
+        res.put("zipUrl",zipUrl);
+        res.put("success",1);
+        return res;
+    }
+
 }

@@ -66,3 +66,31 @@ function ajaxRetrieveAccountLogList (params, ok, fail, error) {
         //complete
     })
 }
+
+function ajaxExport(params, ok, fail, error){
+
+    params = {};
+
+    if(/Windows/.test(navigator.userAgent)){
+        params.os = "Windows";
+    }
+    $.ajax({
+        url: baseUrl + "/inquiry/export",
+        type : "get",
+        dataType: "json",
+        data : params,
+        success: function (result) {
+            if (result.success == 1) {
+                ok(result);
+            } else {
+                if (fail) {
+                    fail(result);
+                } else {
+                    alert(result.message);
+                }
+            }
+        },
+        error: error
+        //complete
+    })
+}
