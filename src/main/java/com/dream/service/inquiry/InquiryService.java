@@ -228,8 +228,8 @@ public class InquiryService {
                     /*明询价 或者是甲方 才能看到他人*/
                     histList.add(map);
                 }else if(isOwner){
-                    if(inquiry.getInquiryMode().getId().equals(4l)){
-                        /* 半暗询价 甲方可以看到*/
+                    if(inquiry.getInquiryMode().getId().equals(4l) || inquiry.getInquiryMode().getId().equals(7l)){
+                        /* 半暗询价 限时竞价 甲方可以看到*/
                         histList.add(map);
                     }else if(inquiry.getInquiryMode().getId().equals(5l) ){
                         /* 暗询价 截止时间到 甲方可以看到 */

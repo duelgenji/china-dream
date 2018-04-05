@@ -325,10 +325,10 @@ public class ExcelUtils {
                 logger.info("投标信息 商务 B" + (pointerRow + i));
 
                 cell = row.createCell(5);
-//                cell.setCellValue(file.getRemark());
-                setLinkCell(cell,  file.getRemark());
+                cell.setCellValue(file.getRemark());
+                setLinkCell(cell, file.getRemark());
 //                cell.setCellFormula("hyperlink(\"./file/"+URLEncoder.DEFAULT.encode(file.getRemark())+"\",\""+file.getRemark()+"\")");
-                cell.setCellFormula("hyperlink(\"./file/"+file.getRemark()+"\",\""+file.getRemark()+"\")");
+//                cell.setCellFormula("hyperlink(\"./file/"+file.getRemark()+"\",\""+file.getRemark()+"\")");
                 fileLinkList.add(new FileLink(file.getFileUrl(), file.getRemark()));
 //                System.out.println(cell.getRowIndex() + ", " + cell.getColumnIndex()+ " :" + cell.getStringCellValue());
                 i++;
@@ -346,10 +346,10 @@ public class ExcelUtils {
                 logger.info("投标信息 技术 B" + (pointerRow + i));
 
                 cell = row.createCell(6);
-//                cell.setCellValue(file.getRemark());
+                cell.setCellValue(file.getRemark());
                 setLinkCell(cell,  file.getRemark());
 //                cell.setCellFormula("hyperlink(\"./file/"+URLEncoder.DEFAULT.encode(file.getRemark())+"\",\""+file.getRemark()+"\")");
-                cell.setCellFormula("hyperlink(\"./file/"+file.getRemark()+"\",\""+file.getRemark()+"\")");
+//                cell.setCellFormula("hyperlink(\"./file/"+file.getRemark()+"\",\""+file.getRemark()+"\")");
 
                 fileLinkList.add(new FileLink(file.getFileUrl(), file.getRemark()));
 //                System.out.println(cell.getRowIndex() + ", " + cell.getColumnIndex()+ " :" + cell.getStringCellValue());
@@ -385,9 +385,9 @@ public class ExcelUtils {
     }
 
     private void setLinkCell(XSSFCell cell, String url){
-//        link = createHelper.createHyperlink(HyperlinkType.FILE);
-//        link.setAddress(URLEncoder.DEFAULT.encode(url.replace(" ","")));
-//        cell.setHyperlink(link);
+        link = createHelper.createHyperlink(HyperlinkType.URL);
+        link.setAddress("file/"+url.replace(" ",""));
+        cell.setHyperlink(link);
         cell.setCellStyle(hyperLinkStyle);
     }
 

@@ -478,7 +478,7 @@ define("myzone-logic", ["main", "myzone-config", "jquery", "user-repos", "bid-re
             dialogMod.mask.show();
 
             ajaxExport(null, function (data) {
-                window.open(data.zipUrl);
+                location.href= data.zipUrl;
                 dialogMod.mask.hide();
             }, function (result) {
                 alert(result.message);

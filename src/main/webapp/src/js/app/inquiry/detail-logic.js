@@ -408,8 +408,8 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
                             return;
                         }
 
-                        if(dataSource.inquiryMode == "限时竞价" && money.val()< dataSource.totalPrice){
-                            alert("金额不能小于标的"+dataSource.totalPrice);
+                        if(dataSource.inquiryMode == "限时竞价" && money.val()> dataSource.totalPrice){
+                            alert("金额不能大于标的"+dataSource.totalPrice);
                             return;
                         }
 

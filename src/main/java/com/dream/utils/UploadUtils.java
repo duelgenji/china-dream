@@ -134,7 +134,7 @@ public class UploadUtils {
             //excel文件
             fps.append("/url/"+UrlSafeBase64.encodeToString(excelUrl)+"/alias/"+UrlSafeBase64.encodeToString(excelName));
             for(FileLink fileLink : fileLinkList){
-                fps.append("/url/"+UrlSafeBase64.encodeToString(fileLink.getUrl())+"/alias/"+UrlSafeBase64.encodeToString("file/"+fileLink.getName()));
+                fps.append("/url/"+UrlSafeBase64.encodeToString(fileLink.getUrl())+"/alias/"+UrlSafeBase64.encodeToString("file/"+fileLink.getName().replace(" ","")));
             }
 
             fps.append("|saveas/"+UrlSafeBase64.encodeToString("chinadream:zip/"+excelName.split("\\.")[0]+".zip"));
