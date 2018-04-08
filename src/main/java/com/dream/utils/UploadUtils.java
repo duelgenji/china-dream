@@ -133,8 +133,10 @@ public class UploadUtils {
             //等待压缩的文件
             //excel文件
             fps.append("/url/"+UrlSafeBase64.encodeToString(excelUrl)+"/alias/"+UrlSafeBase64.encodeToString(excelName));
+            int index = 1;
             for(FileLink fileLink : fileLinkList){
-                fps.append("/url/"+UrlSafeBase64.encodeToString(fileLink.getUrl())+"/alias/"+UrlSafeBase64.encodeToString("file/"+fileLink.getName().replace(" ","")));
+                fps.append("/url/"+UrlSafeBase64.encodeToString(fileLink.getUrl())+"/alias/"+UrlSafeBase64.encodeToString("file/"+"file"+index+"."+fileLink.getName().split("\\.")[fileLink.getName().split("\\.").length-1]));
+                index++;
             }
 
             fps.append("|saveas/"+UrlSafeBase64.encodeToString("chinadream:zip/"+excelName.split("\\.")[0]+".zip"));

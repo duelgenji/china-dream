@@ -35,6 +35,7 @@ public class ExcelUtils {
     XSSFCellStyle hyperLinkStyle = wb.createCellStyle();
     XSSFCellStyle centerStyle = wb.createCellStyle();
     XSSFCellStyle titleBoldStyle = wb.createCellStyle();
+    XSSFCellStyle stringStyle = wb.createCellStyle();
     XSSFCellStyle greenTextStyle = wb.createCellStyle();
     XSSFCellStyle redTextStyle = wb.createCellStyle();
 
@@ -44,6 +45,7 @@ public class ExcelUtils {
     XSSFCellStyle[] messageStatusStyle = {null,greenTextStyle,redTextStyle};
 
     public List<FileLink> fileLinkList = new ArrayList<>();
+    private int fileSize = 1;
 
     public ExcelUtils() {
         Font font = wb.createFont();
@@ -68,6 +70,8 @@ public class ExcelUtils {
         font = wb.createFont();
         font.setColor(IndexedColors.RED.getIndex());
         redTextStyle.setFont(font);
+
+        stringStyle.setDataFormat(BuiltinFormats.getBuiltinFormat("text"));
 
     }
 
@@ -189,6 +193,7 @@ public class ExcelUtils {
             }
             cell = row.createCell(1 + baseMapCount%3 * 4);
             cell.setCellValue(map.getName());
+            cell.setCellStyle(stringStyle);
             try {
                 Field field = inquiryExportDto.getClass().getDeclaredField(map.getProp());
                 field.setAccessible(true);
@@ -198,12 +203,14 @@ public class ExcelUtils {
                     for (InquiryFile file :inquiryFileList) {
                         cell = row.createCell(2 + baseMapCount%3 * 4 + i++);
                         setLinkCell(cell,  file.getRemark());
-                        cell.setCellFormula("hyperlink(\"./file/"+file.getRemark()+"\",\""+file.getRemark()+"\")");
+                        fileLinkList.add(new FileLink(file.getFileUrl(), file.getRemark()));
+//                        cell.setCellFormula("hyperlink(\"./file/"+file.getRemark()+"\",\""+file.getRemark()+"\")");
                     }
 
                 }else{
                     cell = row.createCell(2 + baseMapCount%3 * 4);
                     cell.setCellValue((String) field.get(inquiryExportDto));
+                    cell.setCellStyle(stringStyle);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -385,10 +392,11 @@ public class ExcelUtils {
     }
 
     private void setLinkCell(XSSFCell cell, String url){
-        link = createHelper.createHyperlink(HyperlinkType.URL);
-        link.setAddress("file/"+url.replace(" ",""));
+        link = createHelper.createHyperlink(HyperlinkType.FILE);
+        link.setAddress("file/file"+fileSize+"."+url.split("\\.")[url.split("\\.").length-1]);
         cell.setHyperlink(link);
         cell.setCellStyle(hyperLinkStyle);
+        fileSize++;
     }
 
 //    public static void main(String[] args) {

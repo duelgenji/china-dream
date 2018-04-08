@@ -445,7 +445,6 @@ public class InquiryService {
             map.put("round",quotation.getRound());
             map.put("totalPrice",quotation.getTotalPrice());
             map.put("userId",quotation.getUser().getId());
-            map.put("userNickname",quotation.getUser().getNickName());
             if(quotation.getUser().getCompanyProvince()!=null){
                 map.put("userProvince",quotation.getUser().getCompanyProvince().getName());
             }else{

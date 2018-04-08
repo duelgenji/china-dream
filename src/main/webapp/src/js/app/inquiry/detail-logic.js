@@ -124,6 +124,7 @@ define("detail-logic", ["detail-config", "main", "inquiry-repos", "bid-repos", "
         var grid = gridMod(config || configMod.gridConfig3);
 
         grid.pubSub()
+            .override("renderNickName", renderNickName)
             .override("renderRound", renderRound)
             .override("renderAttachments", renderAttachments)
             .override("renderOpt", renderOpt)
