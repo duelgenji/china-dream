@@ -5,6 +5,7 @@ import com.dream.entity.inquiry.Inquiry;
 import com.dream.entity.inquiry.InquiryFile;
 import com.dream.entity.message.Message;
 import com.dream.entity.quotation.QuotationFile;
+import com.dream.interceptor.CommonException;
 import com.qiniu.util.UrlSafeBase64;
 import org.apache.catalina.util.URLEncoder;
 import org.apache.poi.common.usermodel.HyperlinkType;
@@ -227,7 +228,9 @@ public class ExcelUtils {
         XSSFCell cell;
         int baseRow = sheet.getLastRowNum() + 2;
 
-        sheet.addMergedRegion(new CellRangeAddress(baseRow,baseRow + list.size(),0,0));
+        if(list.size()>1){
+            sheet.addMergedRegion(new CellRangeAddress(baseRow,baseRow + list.size(),0,0));
+        }
 
         row = sheet.createRow(baseRow);
 
@@ -244,6 +247,7 @@ public class ExcelUtils {
         cell.setCellValue("备注");
         cell.setCellStyle(titleBoldStyle);
 
+        logger.info("第"+round+"轮");
 
 
         for (Message s : list) {
@@ -383,8 +387,11 @@ public class ExcelUtils {
             cell.setCellValue("");
         }
 
+        logger.info("乙方投标信息 第"+round+"轮  "+ baseRow + ", " +(baseRow +totalSize));
 
-        sheet.addMergedRegion(new CellRangeAddress(baseRow,baseRow + totalSize,0,0));
+        if(totalSize>1){
+            sheet.addMergedRegion(new CellRangeAddress(baseRow,baseRow + totalSize,0,0));
+        }
         row = sheet.getRow(baseRow);
         cell = row.createCell(0);
         cell.setCellValue("乙方投标信息 第"+round+"轮");
@@ -414,6 +421,31 @@ public class ExcelUtils {
 
     public static void main(String[] args) {
 
+//        XSSFWorkbook wb = new XSSFWorkbook();
+//
+//        XSSFSheet sheet;
+//
+//
+//        sheet = wb.createSheet("test");
+//
+//        XSSFRow row = sheet.createRow(0);
+//
+//        XSSFCell cell = row.createCell(0);
+//        cell.setCellValue("1000000000000000");
+//
+//        XSSFCellStyle stringStyle = wb.createCellStyle();
+//        stringStyle.setDataFormat(BuiltinFormats.getBuiltinFormat("text"));
+//        cell.setCellStyle(stringStyle);
+//
+//
+//        FileOutputStream fileOut = null;
+//        try {
+//            fileOut = new FileOutputStream("/Users/knight/test.xlsx");
+//            wb.write(fileOut);
+//            fileOut.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
 

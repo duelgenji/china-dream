@@ -963,13 +963,13 @@ public class InquiryController {
             if(round<3){
                 inquiryService.saveInquiryHistory(inquiry);
                 inquiry.setRound(round+1);
+                inquiry.setAuditStatus(0);
+
             }else{
                 res.put("success",0);
                 res.put("message","已经最后一轮");
                 return res;
             }
-        }else{
-            inquiry.setAuditStatus(0);
         }
 
         /*敏感词判断*/
